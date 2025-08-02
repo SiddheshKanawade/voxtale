@@ -1,0 +1,6 @@
+# Video editing and processing
+moviepy>=1.0.3
+
+# Audio processing (moviepy dependency, but explicit for clarity)
+imageio>=2.4.1
+imageio-ffmpeg>=0.4.2
