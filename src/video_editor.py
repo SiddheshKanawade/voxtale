@@ -178,6 +178,7 @@ def create_video_from_assets(
     image_effect: str = "kenburns",
     crossfade: float = 0.5,
     fps: int = 30,
+    video_size: Tuple[int, int] = (1024, 1024),
 ):
     """Create a narrated slideshow video with subtitles.
 
@@ -216,6 +217,11 @@ def create_video_from_assets(
     img_duration = audio_clip.duration / len(images)
 
     video_clips: List[ImageClip] = []
+    
+    # === Create a small red dot to mark center ===
+    # dot_radius = 5
+    # dot = ColorClip(size=(dot_radius*2, dot_radius*2), color=(255, 0, 0)).with_duration(img_duration).with_position(("center", "center"))
+    
     for i, img_path in enumerate(images):
         clip: ImageClip = ImageClip(str(img_path)).with_duration(img_duration)
 
@@ -234,7 +240,8 @@ def create_video_from_assets(
                 clip = clip.with_effects([
                     vfx.Resize(lambda t: 1.3 - 0.3 * (t / img_duration))
                 ])
-
+        clip = CompositeVideoClip([clip.with_position("center")], size=video_size)
+        
         # Add cross-fade between consecutive clips using vfx
         if crossfade > 0 and i > 0:
             clip = clip.with_effects([vfx.CrossFadeIn(crossfade)])
@@ -248,8 +255,8 @@ def create_video_from_assets(
     subtitle_clips = _generate_caption_clip(captions, slideshow.size)
 
     # Combine slideshow with all subtitle clips
-    all_clips = [slideshow] + subtitle_clips
-    final_video = CompositeVideoClip(all_clips)
+    all_clips = [slideshow] + subtitle_clips #+ [dot]
+    final_video = CompositeVideoClip(all_clips, size=video_size)
 
     print(f"\n⏳ Rendering video to {output_path!s} (this may take a while)...")
     final_video.write_videofile(
@@ -284,7 +291,7 @@ def _cli():  # pragma: no cover
         "--crossfade", type=float, default=0.5, help="Crossfade duration between images"
     )
     parser.add_argument("--fps", type=int, default=30, help="Output frames per second")
-
+    parser.add_argument("--video_size", type=Tuple[int, int], default=(1024, 1024), help="Output video size")
     args = parser.parse_args()
 
     create_video_from_assets(
@@ -295,6 +302,7 @@ def _cli():  # pragma: no cover
         image_effect=args.effect,
         crossfade=args.crossfade,
         fps=args.fps,
+        video_size=args.video_size,
     )
 
 
