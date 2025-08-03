@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import random
 import os
 from pathlib import Path
 from typing import List, Tuple
@@ -14,6 +15,29 @@ from moviepy import (
     concatenate_videoclips,
     vfx,
 )
+
+def _dynamic_image_durations(audio_duration: float, image_count: int) -> List[float]:
+    """Return a list of durations for each image.
+    
+    The durations are calculated based on the audio duration and the number of images.
+    """
+    equally_distributed_duration = [audio_duration / image_count] * image_count
+    for i in range(image_count):
+        delta = round(random.uniform(0, (audio_duration / image_count) * 0.1), 2)
+        j = random.randint(0, image_count - 1)
+        if i == j:
+            continue
+        
+        changed_i = equally_distributed_duration[i] - delta
+        changed_j = equally_distributed_duration[j] + delta
+        
+        if changed_i <= 0.8*audio_duration / image_count or changed_j >= 1.2*audio_duration / image_count:
+            continue
+        
+        equally_distributed_duration[i] = changed_i
+        equally_distributed_duration[j] = changed_j
+    
+    return equally_distributed_duration
 
 def _load_images(image_dir: Path) -> List[Path]:
     """Return a sorted list of image paths from *image_dir*.
@@ -168,8 +192,6 @@ def _generate_caption_clip(captions: List[Tuple[Tuple[float, float], str]], vide
     
     return all_caption_clips
 
-
-
 def create_video_from_assets(
     images_dir: str | os.PathLike = "images",
     audio_dir: str | os.PathLike = "audio",
@@ -214,16 +236,14 @@ def create_video_from_assets(
     audio_clip = AudioFileClip(str(audio_file))
 
     # Determine how long each image stays on screen.
-    img_duration = audio_clip.duration / len(images)
+    img_durations = _dynamic_image_durations(audio_clip.duration, len(images))
+    equally_distributed_duration = audio_clip.duration / len(images)
+    assert sum(img_durations) == audio_clip.duration
 
     video_clips: List[ImageClip] = []
     
-    # === Create a small red dot to mark center ===
-    # dot_radius = 5
-    # dot = ColorClip(size=(dot_radius*2, dot_radius*2), color=(255, 0, 0)).with_duration(img_duration).with_position(("center", "center"))
-    
     for i, img_path in enumerate(images):
-        clip: ImageClip = ImageClip(str(img_path)).with_duration(img_duration)
+        clip: ImageClip = ImageClip(str(img_path)).with_duration(img_durations[i])
 
         if image_effect == "kenburns":
             # Apply alternating continuous zoom in/out effect
@@ -233,12 +253,12 @@ def create_video_from_assets(
             if zoom_in:
                 # Zoom in: start at normal size, end at 1.3x
                 clip = clip.with_effects([
-                    vfx.Resize(lambda t: 1.0 + 0.3 * (t / img_duration))
+                    vfx.Resize(lambda t: 1.0 + 0.3 * (t / equally_distributed_duration)) # Should have equally distributed duration of image, else 0.3/img_durations[i] can be less or greaterthan 0.3
                 ])
             else:
                 # Zoom out: start at 1.3x, end at normal size  
                 clip = clip.with_effects([
-                    vfx.Resize(lambda t: 1.3 - 0.3 * (t / img_duration))
+                    vfx.Resize(lambda t: 1.3 - 0.3 * (t / equally_distributed_duration))
                 ])
         clip = CompositeVideoClip([clip.with_position("center")], size=video_size)
         
@@ -255,7 +275,7 @@ def create_video_from_assets(
     subtitle_clips = _generate_caption_clip(captions, slideshow.size)
 
     # Combine slideshow with all subtitle clips
-    all_clips = [slideshow] + subtitle_clips #+ [dot]
+    all_clips = [slideshow] + subtitle_clips
     final_video = CompositeVideoClip(all_clips, size=video_size)
 
     print(f"\n⏳ Rendering video to {output_path!s} (this may take a while)...")

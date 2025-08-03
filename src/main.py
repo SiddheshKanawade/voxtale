@@ -13,7 +13,7 @@ def main() -> None:
         audio_dir=root / "audio",
         transcript_path=root / "whisper" / "transcript.json",
         output_path=root / "output.mp4",
-        fps=24,
+        fps=60,
     )
 
 
