@@ -7,6 +7,7 @@ from typing import List, Tuple
 
 from moviepy import (
     AudioFileClip,
+    ColorClip,
     CompositeVideoClip,
     ImageClip,
     TextClip,
@@ -108,32 +109,64 @@ def _parse_whisper_transcript(json_path: Path) -> List[Tuple[Tuple[float, float]
     return captions
 
 
-def _generate_caption_clip(captions: List[Tuple[Tuple[float, float], str]], video_size):
-    """Create caption clips from captions list.
-
-    *captions* is a list of ((start, end), text) entries.
-    Returns a list of TextClip objects positioned and timed correctly.
+def _create_caption_clip(text: str, start: float, end: float, video_size):
+    """Create a text clip with semi-transparent black background that fits the text.
+    
+    Args:
+        text: The text to display
+        start: Start time in seconds
+        end: End time in seconds  
+        video_size: Tuple of (width, height) for the video
     """
-    caption_clips = []
+    duration = end - start
+    video_width, video_height = video_size
+    
+    object_height_pixel = video_height - 150
+    
+    # Create the main text clip
+    txt_clip = TextClip(
+        text=text,
+        font_size=38,
+        color="white",
+        stroke_color="black", 
+        stroke_width=1,
+        method="caption",
+        size=(int(video_size[0] * 0.9), None),
+        margin=(10, 10),
+        text_align="center",
+        transparent=True,
+    ).with_start(start).with_duration(duration).with_position(("center", object_height_pixel))
+    
+    # Get the actual text dimensions
+    text_width, text_height = txt_clip.size
+    
+    # Create black background that matches text size with padding
+    bg_width = text_width+5  # 20px padding on each side
+    bg_height = text_height+10  # 10px padding top/bottom
+    
+    background = ColorClip(
+        size=(bg_width, bg_height),
+        color=(0, 0, 0),  # Black
+        duration=duration,
+    ).with_opacity(0.5).with_start(start).with_position(("center", object_height_pixel)) # Position is top-left corner of the text
+    
+    return [background, txt_clip]
+
+
+def _generate_caption_clip(captions: List[Tuple[Tuple[float, float], str]], video_size):
+    """Create caption clips with semi-transparent backgrounds that fit the text.
+    
+    *captions* is a list of ((start, end), text) entries.
+    Returns a list of clip objects for the composite video.
+    """
+    all_caption_clips = []
     
     for (start, end), text in captions:
-        txt_clip = (
-            TextClip(
-                text=text,
-                font_size=48,
-                color="white",
-                stroke_color="black",
-                stroke_width=2,
-                method="caption",
-                size=(int(video_size[0] * 0.9), None),
-            )
-            .with_start(start)
-            .with_duration(end - start)
-            .with_position(("center", "bottom"))
-        )
-        caption_clips.append(txt_clip)
+        # Create caption clips for this text
+        clips = _create_caption_clip(text, start, end, video_size)
+        all_caption_clips.extend(clips)
     
-    return caption_clips
+    return all_caption_clips
 
 
 
@@ -209,7 +242,7 @@ def create_video_from_assets(
     # Combine slideshow with all subtitle clips
     all_clips = [slideshow] + subtitle_clips
     final_video = CompositeVideoClip(all_clips)
-    
+
     print(f"\n⏳ Rendering video to {output_path!s} (this may take a while)...")
     final_video.write_videofile(
         str(output_path),
