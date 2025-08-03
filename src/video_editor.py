@@ -195,7 +195,7 @@ def create_video_from_assets(
         Destination video file.  Container format is inferred from extension
         (e.g. `.mp4`, `.mov`, `.mkv`, ...).
     image_effect
-        "kenburns" for slight zoom-in effect, "none" for still images.
+        "kenburns" for alternating continuous zoom in/out effect, "none" for still images.
     crossfade
         Cross-fade duration in seconds between consecutive images.  Use 0 to
         disable.
@@ -220,12 +220,20 @@ def create_video_from_assets(
         clip: ImageClip = ImageClip(str(img_path)).with_duration(img_duration)
 
         if image_effect == "kenburns":
-            # Apply a Ken Burns effect using resize with a slight zoom
-            # We'll resize the clip to be slightly larger and then crop it to create zoom effect
-            zoom_factor = 1.1  # 10% zoom
-            clip = clip.with_effects([
-                vfx.Resize(zoom_factor),  # Zoom in by scaling up
-            ])
+            # Apply alternating continuous zoom in/out effect
+            # Even indexed images zoom in, odd indexed images zoom out
+            zoom_in = (i % 2 == 0)  # First image (index 0) zooms in, then alternates
+            
+            if zoom_in:
+                # Zoom in: start at normal size, end at 1.3x
+                clip = clip.with_effects([
+                    vfx.Resize(lambda t: 1.0 + 0.3 * (t / img_duration))
+                ])
+            else:
+                # Zoom out: start at 1.3x, end at normal size  
+                clip = clip.with_effects([
+                    vfx.Resize(lambda t: 1.3 - 0.3 * (t / img_duration))
+                ])
 
         # Add cross-fade between consecutive clips using vfx
         if crossfade > 0 and i > 0:
