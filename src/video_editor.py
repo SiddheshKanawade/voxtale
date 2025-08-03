@@ -9,9 +9,11 @@ from typing import List, Tuple
 from moviepy import (
     AudioFileClip,
     ColorClip,
+    CompositeAudioClip,
     CompositeVideoClip,
     ImageClip,
     TextClip,
+    concatenate_audioclips,
     concatenate_videoclips,
     vfx,
 )
@@ -201,8 +203,10 @@ def create_video_from_assets(
     crossfade: float = 0.5,
     fps: int = 30,
     video_size: Tuple[int, int] = (1024, 1024),
+    background_audio_dir: str | os.PathLike | None = "background_audio",
+    background_volume: float = 0.3,
 ):
-    """Create a narrated slideshow video with subtitles.
+    """Create a narrated slideshow video with subtitles and optional background music.
 
     Parameters
     ----------
@@ -224,6 +228,12 @@ def create_video_from_assets(
         disable.
     fps
         Frames per second for output video.
+    background_audio_dir
+        Folder containing background music file. If None, no background music is added.
+        If the background audio is shorter than the video, it will be looped.
+        If longer, it will be trimmed to match video duration.
+    background_volume
+        Volume level for background music (0.0 to 1.0). Default is 0.3.
     """
 
     images_dir = Path(images_dir)
@@ -269,7 +279,37 @@ def create_video_from_assets(
 
     # Concatenate and add audio.
     slideshow = concatenate_videoclips(video_clips, method="compose")
-    slideshow = slideshow.with_audio(audio_clip)
+    
+    # Handle background music
+    final_audio = audio_clip
+    if background_audio_dir is not None:
+        background_audio_dir = Path(background_audio_dir)
+        try:
+            background_audio_file = _select_audio(background_audio_dir)
+            background_clip = AudioFileClip(str(background_audio_file))
+            
+            # Adjust background music volume
+            background_clip = background_clip.with_volume_scaled(background_volume)
+            
+            # Handle duration differences
+            video_duration = audio_clip.duration
+            if background_clip.duration < video_duration:
+                # Loop background music if it's shorter than video
+                num_loops = int(video_duration / background_clip.duration) + 1
+                background_clips = [background_clip] * num_loops
+                looped_background = concatenate_audioclips(background_clips)
+                background_clip = looped_background.subclipped(0, video_duration)
+            elif background_clip.duration > video_duration:
+                # Trim background music if it's longer than video
+                background_clip = background_clip.subclipped(0, video_duration)
+            
+            # Mix narration with background music
+            final_audio = CompositeAudioClip([audio_clip, background_clip])
+            
+        except FileNotFoundError as e:
+            print(f"Warning: {e}. Proceeding without background music.")
+    
+    slideshow = slideshow.with_audio(final_audio)
 
     captions = _parse_whisper_transcript(transcript_path)
     subtitle_clips = _generate_caption_clip(captions, slideshow.size)
@@ -312,6 +352,9 @@ def _cli():  # pragma: no cover
     )
     parser.add_argument("--fps", type=int, default=30, help="Output frames per second")
     parser.add_argument("--video_size", type=Tuple[int, int], default=(1024, 1024), help="Output video size")
+    parser.add_argument("--background_audio_dir", default="background_audio", help="Folder with background music (optional)")
+    parser.add_argument("--background_volume", type=float, default=0.3, help="Background music volume (0.0-1.0)")
+    parser.add_argument("--no_background", action="store_true", help="Disable background music")
     args = parser.parse_args()
 
     create_video_from_assets(
@@ -323,6 +366,8 @@ def _cli():  # pragma: no cover
         crossfade=args.crossfade,
         fps=args.fps,
         video_size=args.video_size,
+        background_audio_dir=None if args.no_background else args.background_audio_dir,
+        background_volume=args.background_volume,
     )
 
 

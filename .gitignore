@@ -213,3 +213,4 @@ whisper/
 .DS_Store
 *.m4a
 playground/
+*.mp3
