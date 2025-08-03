@@ -212,3 +212,5 @@ whisper/
 *.mp4
 .DS_Store
 *.m4a
+playground/
+*.mp3

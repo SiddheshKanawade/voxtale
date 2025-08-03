@@ -1,18 +1,45 @@
 from __future__ import annotations
 
 import json
+import random
 import os
 from pathlib import Path
 from typing import List, Tuple
 
 from moviepy import (
     AudioFileClip,
+    ColorClip,
+    CompositeAudioClip,
     CompositeVideoClip,
     ImageClip,
     TextClip,
+    concatenate_audioclips,
     concatenate_videoclips,
     vfx,
 )
+
+def _dynamic_image_durations(audio_duration: float, image_count: int) -> List[float]:
+    """Return a list of durations for each image.
+    
+    The durations are calculated based on the audio duration and the number of images.
+    """
+    equally_distributed_duration = [audio_duration / image_count] * image_count
+    for i in range(image_count):
+        delta = round(random.uniform(0, (audio_duration / image_count) * 0.1), 2)
+        j = random.randint(0, image_count - 1)
+        if i == j:
+            continue
+        
+        changed_i = equally_distributed_duration[i] - delta
+        changed_j = equally_distributed_duration[j] + delta
+        
+        if changed_i <= 0.8*audio_duration / image_count or changed_j >= 1.2*audio_duration / image_count:
+            continue
+        
+        equally_distributed_duration[i] = changed_i
+        equally_distributed_duration[j] = changed_j
+    
+    return equally_distributed_duration
 
 def _load_images(image_dir: Path) -> List[Path]:
     """Return a sorted list of image paths from *image_dir*.
@@ -108,34 +135,64 @@ def _parse_whisper_transcript(json_path: Path) -> List[Tuple[Tuple[float, float]
     return captions
 
 
-def _generate_caption_clip(captions: List[Tuple[Tuple[float, float], str]], video_size):
-    """Create caption clips from captions list.
-
-    *captions* is a list of ((start, end), text) entries.
-    Returns a list of TextClip objects positioned and timed correctly.
+def _create_caption_clip(text: str, start: float, end: float, video_size):
+    """Create a text clip with semi-transparent black background that fits the text.
+    
+    Args:
+        text: The text to display
+        start: Start time in seconds
+        end: End time in seconds  
+        video_size: Tuple of (width, height) for the video
     """
-    caption_clips = []
+    duration = end - start
+    video_width, video_height = video_size
+    
+    object_height_pixel = video_height - 150
+    
+    # Create the main text clip
+    txt_clip = TextClip(
+        text=text,
+        font_size=38,
+        color="white",
+        stroke_color="black", 
+        stroke_width=1,
+        method="caption",
+        size=(int(video_size[0] * 0.9), None),
+        margin=(10, 10),
+        text_align="center",
+        transparent=True,
+    ).with_start(start).with_duration(duration).with_position(("center", object_height_pixel))
+    
+    # Get the actual text dimensions
+    text_width, text_height = txt_clip.size
+    
+    # Create black background that matches text size with padding
+    bg_width = text_width+5  # 20px padding on each side
+    bg_height = text_height+10  # 10px padding top/bottom
+    
+    background = ColorClip(
+        size=(bg_width, bg_height),
+        color=(0, 0, 0),  # Black
+        duration=duration,
+    ).with_opacity(0.5).with_start(start).with_position(("center", object_height_pixel)) # Position is top-left corner of the text
+    
+    return [background, txt_clip]
+
+
+def _generate_caption_clip(captions: List[Tuple[Tuple[float, float], str]], video_size):
+    """Create caption clips with semi-transparent backgrounds that fit the text.
+    
+    *captions* is a list of ((start, end), text) entries.
+    Returns a list of clip objects for the composite video.
+    """
+    all_caption_clips = []
     
     for (start, end), text in captions:
-        txt_clip = (
-            TextClip(
-                text=text,
-                font_size=48,
-                color="white",
-                stroke_color="black",
-                stroke_width=2,
-                method="caption",
-                size=(int(video_size[0] * 0.9), None),
-            )
-            .with_start(start)
-            .with_duration(end - start)
-            .with_position(("center", "bottom"))
-        )
-        caption_clips.append(txt_clip)
+        # Create caption clips for this text
+        clips = _create_caption_clip(text, start, end, video_size)
+        all_caption_clips.extend(clips)
     
-    return caption_clips
-
-
+    return all_caption_clips
 
 def create_video_from_assets(
     images_dir: str | os.PathLike = "images",
@@ -145,8 +202,11 @@ def create_video_from_assets(
     image_effect: str = "kenburns",
     crossfade: float = 0.5,
     fps: int = 30,
+    video_size: Tuple[int, int] = (1024, 1024),
+    background_audio_dir: str | os.PathLike | None = "background_audio",
+    background_volume: float = 0.3,
 ):
-    """Create a narrated slideshow video with subtitles.
+    """Create a narrated slideshow video with subtitles and optional background music.
 
     Parameters
     ----------
@@ -162,12 +222,18 @@ def create_video_from_assets(
         Destination video file.  Container format is inferred from extension
         (e.g. `.mp4`, `.mov`, `.mkv`, ...).
     image_effect
-        "kenburns" for slight zoom-in effect, "none" for still images.
+        "kenburns" for alternating continuous zoom in/out effect, "none" for still images.
     crossfade
         Cross-fade duration in seconds between consecutive images.  Use 0 to
         disable.
     fps
         Frames per second for output video.
+    background_audio_dir
+        Folder containing background music file. If None, no background music is added.
+        If the background audio is shorter than the video, it will be looped.
+        If longer, it will be trimmed to match video duration.
+    background_volume
+        Volume level for background music (0.0 to 1.0). Default is 0.3.
     """
 
     images_dir = Path(images_dir)
@@ -180,20 +246,32 @@ def create_video_from_assets(
     audio_clip = AudioFileClip(str(audio_file))
 
     # Determine how long each image stays on screen.
-    img_duration = audio_clip.duration / len(images)
+    img_durations = _dynamic_image_durations(audio_clip.duration, len(images))
+    equally_distributed_duration = audio_clip.duration / len(images)
+    assert sum(img_durations) == audio_clip.duration
 
     video_clips: List[ImageClip] = []
+    
     for i, img_path in enumerate(images):
-        clip: ImageClip = ImageClip(str(img_path)).with_duration(img_duration)
+        clip: ImageClip = ImageClip(str(img_path)).with_duration(img_durations[i])
 
         if image_effect == "kenburns":
-            # Apply a Ken Burns effect using resize with a slight zoom
-            # We'll resize the clip to be slightly larger and then crop it to create zoom effect
-            zoom_factor = 1.1  # 10% zoom
-            clip = clip.with_effects([
-                vfx.Resize(zoom_factor),  # Zoom in by scaling up
-            ])
-
+            # Apply alternating continuous zoom in/out effect
+            # Even indexed images zoom in, odd indexed images zoom out
+            zoom_in = (i % 2 == 0)  # First image (index 0) zooms in, then alternates
+            
+            if zoom_in:
+                # Zoom in: start at normal size, end at 1.3x
+                clip = clip.with_effects([
+                    vfx.Resize(lambda t: 1.0 + 0.3 * (t / equally_distributed_duration)) # Should have equally distributed duration of image, else 0.3/img_durations[i] can be less or greaterthan 0.3
+                ])
+            else:
+                # Zoom out: start at 1.3x, end at normal size  
+                clip = clip.with_effects([
+                    vfx.Resize(lambda t: 1.3 - 0.3 * (t / equally_distributed_duration))
+                ])
+        clip = CompositeVideoClip([clip.with_position("center")], size=video_size)
+        
         # Add cross-fade between consecutive clips using vfx
         if crossfade > 0 and i > 0:
             clip = clip.with_effects([vfx.CrossFadeIn(crossfade)])
@@ -201,15 +279,45 @@ def create_video_from_assets(
 
     # Concatenate and add audio.
     slideshow = concatenate_videoclips(video_clips, method="compose")
-    slideshow = slideshow.with_audio(audio_clip)
+    
+    # Handle background music
+    final_audio = audio_clip
+    if background_audio_dir is not None:
+        background_audio_dir = Path(background_audio_dir)
+        try:
+            background_audio_file = _select_audio(background_audio_dir)
+            background_clip = AudioFileClip(str(background_audio_file))
+            
+            # Adjust background music volume
+            background_clip = background_clip.with_volume_scaled(background_volume)
+            
+            # Handle duration differences
+            video_duration = audio_clip.duration
+            if background_clip.duration < video_duration:
+                # Loop background music if it's shorter than video
+                num_loops = int(video_duration / background_clip.duration) + 1
+                background_clips = [background_clip] * num_loops
+                looped_background = concatenate_audioclips(background_clips)
+                background_clip = looped_background.subclipped(0, video_duration)
+            elif background_clip.duration > video_duration:
+                # Trim background music if it's longer than video
+                background_clip = background_clip.subclipped(0, video_duration)
+            
+            # Mix narration with background music
+            final_audio = CompositeAudioClip([audio_clip, background_clip])
+            
+        except FileNotFoundError as e:
+            print(f"Warning: {e}. Proceeding without background music.")
+    
+    slideshow = slideshow.with_audio(final_audio)
 
     captions = _parse_whisper_transcript(transcript_path)
     subtitle_clips = _generate_caption_clip(captions, slideshow.size)
 
     # Combine slideshow with all subtitle clips
     all_clips = [slideshow] + subtitle_clips
-    final_video = CompositeVideoClip(all_clips)
-    
+    final_video = CompositeVideoClip(all_clips, size=video_size)
+
     print(f"\n⏳ Rendering video to {output_path!s} (this may take a while)...")
     final_video.write_videofile(
         str(output_path),
@@ -243,7 +351,10 @@ def _cli():  # pragma: no cover
         "--crossfade", type=float, default=0.5, help="Crossfade duration between images"
     )
     parser.add_argument("--fps", type=int, default=30, help="Output frames per second")
-
+    parser.add_argument("--video_size", type=Tuple[int, int], default=(1024, 1024), help="Output video size")
+    parser.add_argument("--background_audio_dir", default="background_audio", help="Folder with background music (optional)")
+    parser.add_argument("--background_volume", type=float, default=0.3, help="Background music volume (0.0-1.0)")
+    parser.add_argument("--no_background", action="store_true", help="Disable background music")
     args = parser.parse_args()
 
     create_video_from_assets(
@@ -254,6 +365,9 @@ def _cli():  # pragma: no cover
         image_effect=args.effect,
         crossfade=args.crossfade,
         fps=args.fps,
+        video_size=args.video_size,
+        background_audio_dir=None if args.no_background else args.background_audio_dir,
+        background_volume=args.background_volume,
     )
 
 
