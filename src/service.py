@@ -484,7 +484,7 @@ async def generate_video(payload: GenerateVideoRequest, background_tasks: Backgr
         logger.info("Rendering video to %s", output_path)
         create_video_from_assets(
             images_dir=str(IMAGES_DIR),
-            audio_dir=str(AUDIO_DIR),
+            audio_file=str(audio_path),
             transcript_path=str(whisper_path),
             output_path=str(output_path),
             fps=60,

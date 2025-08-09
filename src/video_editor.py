@@ -198,6 +198,7 @@ def _generate_caption_clip(captions: List[Tuple[Tuple[float, float], str]], vide
 
 def create_video_from_assets(
     images_dir: str | os.PathLike = "images",
+    audio_file: str | os.PathLike | None = None,
     audio_dir: str | os.PathLike = "audio",
     transcript_path: str | os.PathLike = "whisper/transcript.json",
     output_path: str | os.PathLike = "output.mp4",
@@ -239,13 +240,17 @@ def create_video_from_assets(
     """
 
     images_dir = Path(images_dir)
-    audio_dir = Path(audio_dir)
     transcript_path = Path(transcript_path)
     output_path = Path(output_path)
 
     images = _load_images(images_dir)
-    audio_file = _select_audio(audio_dir)
-    audio_clip = AudioFileClip(str(audio_file))
+    # Resolve audio file path directly if provided; otherwise select from directory for backwards compatibility
+    if audio_file is not None:
+        audio_file_path = Path(audio_file)
+    else:
+        audio_dir = Path(audio_dir)
+        audio_file_path = _select_audio(audio_dir)
+    audio_clip = AudioFileClip(str(audio_file_path))
 
     # Determine how long each image stays on screen.
     img_durations = _dynamic_image_durations(audio_clip.duration, len(images))
