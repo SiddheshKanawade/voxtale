@@ -77,46 +77,48 @@ def _parse_whisper_transcript(json_path: Path) -> List[Tuple[Tuple[float, float]
     captions = []
     
     # Handle different Whisper output formats
-    if isinstance(data, list) and len(data) > 0 and "words" in data[0]:
+    if (isinstance(data, list) and len(data) > 0 and "words" in data[0]) or (
+        isinstance(data, dict) and "words" in data
+    ):
         # Word-level format: group words into segments
-        words = data[0]["words"]
-        
+        words = data[0]["words"] if isinstance(data, list) else data["words"]
+
         # Group words into segments (every 8-12 words or by punctuation)
         current_segment = []
         segment_start = None
-        
+
         for word_data in words:
             word = word_data["word"]
             start = float(word_data["start"])
             end = float(word_data["end"])
-            
+
             if segment_start is None:
                 segment_start = start
-            
+
             current_segment.append(word)
-            
+
             # End segment on punctuation or after 10 words
             should_end_segment = (
-                len(current_segment) >= 10 or
-                word.endswith('.') or 
-                word.endswith('!') or 
-                word.endswith('?') or
-                word.endswith(',')
+                len(current_segment) >= 10
+                or word.endswith('.')
+                or word.endswith('!')
+                or word.endswith('?')
+                or word.endswith(',')
             )
-            
+
             if should_end_segment:
                 text = " ".join(current_segment).strip()
                 if text:  # Only add non-empty segments
                     captions.append(((segment_start, end), text))
                 current_segment = []
                 segment_start = None
-        
+
         # Add any remaining words as final segment
         if current_segment:
             text = " ".join(current_segment).strip()
             if text:
-                final_end = words[-1]["end"] if words else segment_start + 1
-                captions.append(((segment_start, final_end), text))
+                final_end = words[-1]["end"] if words else (segment_start + 1 if segment_start is not None else 1)
+                captions.append(((segment_start if segment_start is not None else 0.0, final_end), text))
                 
     elif isinstance(data, dict) and "segments" in data:
         # Standard segment-level format
@@ -248,7 +250,16 @@ def create_video_from_assets(
     # Determine how long each image stays on screen.
     img_durations = _dynamic_image_durations(audio_clip.duration, len(images))
     equally_distributed_duration = audio_clip.duration / len(images)
-    assert sum(img_durations) == audio_clip.duration
+    # Normalize durations to exactly match the audio duration to avoid float drift
+    current_total = sum(img_durations)
+    if current_total <= 0:
+        raise ValueError("Computed non-positive total duration for images")
+    if abs(current_total - audio_clip.duration) > 1e-6:
+        scale = audio_clip.duration / current_total
+        img_durations = [d * scale for d in img_durations]
+        # Correct any remaining rounding residue on the last item
+        head_sum = sum(img_durations[:-1])
+        img_durations[-1] = max(audio_clip.duration - head_sum, 0.0)
 
     video_clips: List[ImageClip] = []
     

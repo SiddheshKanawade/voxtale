@@ -364,6 +364,7 @@ def _maybe_upload_to_r2(local_path: Path, key: str) -> Optional[str]:
             endpoint_url=R2_ENDPOINT_URL,
             aws_access_key_id=R2_ACCESS_KEY_ID,
             aws_secret_access_key=R2_SECRET_ACCESS_KEY,
+            region_name="auto",
         )
         logger.info("Uploading to R2 bucket=%s key=%s", R2_BUCKET, key)
         s3.upload_file(str(local_path), R2_BUCKET, key, ExtraArgs={"ContentType": "video/mp4", "ACL": "public-read"})
