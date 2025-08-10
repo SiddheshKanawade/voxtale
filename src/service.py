@@ -144,7 +144,7 @@ async def _generate_storyline(system_prompt: str, biography: str) -> str:
             "role": "system",
             "content": (
                 "You will get a voice over text. Remove any heading or title. "
-                "Return only the narration text with the final CTA kept. Target length ~250 words."
+                "Return only the narration text with the final CTA kept. Target length ~5000 characters."
             ),
         },
         {"role": "user", "content": content},
