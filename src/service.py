@@ -250,7 +250,7 @@ async def _deepseek_image_prompt(context_name: str, chunk_text: str, image_conte
     return sanitized
 
 
-async def _together_flux_image(prompt: str, width: int = 1024, height: int = 1024, steps: int = 4) -> bytes:
+async def _together_flux_image(prompt: str, width: int = 1440, height: int = 960, steps: int = 4) -> bytes:
     if not TOGETHER_API_KEY:
         raise HTTPException(status_code=500, detail="TOGETHER_API_KEY not configured")
     url = "https://api.together.xyz/v1/images/generations"
@@ -483,7 +483,7 @@ async def generate_video(payload: GenerateVideoRequest, background_tasks: Backgr
     def _render_video() -> None:
         logger.info("Rendering video to %s", output_path)
         create_video_from_assets(
-            images_dir=str(IMAGES_DIR),
+            images=image_paths,
             audio_file=str(audio_path),
             transcript_path=str(whisper_path),
             output_path=str(output_path),

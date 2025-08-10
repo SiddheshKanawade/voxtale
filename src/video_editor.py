@@ -197,7 +197,7 @@ def _generate_caption_clip(captions: List[Tuple[Tuple[float, float], str]], vide
     return all_caption_clips
 
 def create_video_from_assets(
-    images_dir: str | os.PathLike = "images",
+    images: List[Path],
     audio_file: str | os.PathLike | None = None,
     audio_dir: str | os.PathLike = "audio",
     transcript_path: str | os.PathLike = "whisper/transcript.json",
@@ -205,7 +205,7 @@ def create_video_from_assets(
     image_effect: str = "kenburns",
     crossfade: float = 0.5,
     fps: int = 30,
-    video_size: Tuple[int, int] = (1024, 1024),
+    video_size: Tuple[int, int] = (1440, 960),
     background_audio_dir: str | os.PathLike | None = "background_audio",
     background_volume: float = 0.3,
 ):
@@ -239,11 +239,9 @@ def create_video_from_assets(
         Volume level for background music (0.0 to 1.0). Default is 0.3.
     """
 
-    images_dir = Path(images_dir)
     transcript_path = Path(transcript_path)
     output_path = Path(output_path)
 
-    images = _load_images(images_dir)
     # Resolve audio file path directly if provided; otherwise select from directory for backwards compatibility
     if audio_file is not None:
         audio_file_path = Path(audio_file)
@@ -279,12 +277,12 @@ def create_video_from_assets(
             if zoom_in:
                 # Zoom in: start at normal size, end at 1.3x
                 clip = clip.with_effects([
-                    vfx.Resize(lambda t: 1.0 + 0.3 * (t / equally_distributed_duration)) # Should have equally distributed duration of image, else 0.3/img_durations[i] can be less or greaterthan 0.3
+                    vfx.Resize(lambda t: 1.0 + 0.2 * (t / equally_distributed_duration)) # Should have equally distributed duration of image, else 0.3/img_durations[i] can be less or greaterthan 0.3
                 ])
             else:
                 # Zoom out: start at 1.3x, end at normal size  
                 clip = clip.with_effects([
-                    vfx.Resize(lambda t: 1.3 - 0.3 * (t / equally_distributed_duration))
+                    vfx.Resize(lambda t: 1.2 - 0.2 * (t / equally_distributed_duration))
                 ])
         clip = CompositeVideoClip([clip.with_position("center")], size=video_size)
         
@@ -367,7 +365,7 @@ def _cli():  # pragma: no cover
         "--crossfade", type=float, default=0.5, help="Crossfade duration between images"
     )
     parser.add_argument("--fps", type=int, default=30, help="Output frames per second")
-    parser.add_argument("--video_size", type=Tuple[int, int], default=(1024, 1024), help="Output video size")
+    parser.add_argument("--video_size", type=Tuple[int, int], default=(1440, 960), help="Output video size")
     parser.add_argument("--background_audio_dir", default="background_audio", help="Folder with background music (optional)")
     parser.add_argument("--background_volume", type=float, default=0.3, help="Background music volume (0.0-1.0)")
     parser.add_argument("--no_background", action="store_true", help="Disable background music")
