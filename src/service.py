@@ -67,16 +67,17 @@ R2_PUBLIC_DOMAIN = os.getenv("R2_PUBLIC_DOMAIN", "")  # e.g. https://pub-xxxxxx.
 
 class GenerateVideoRequest(BaseModel):
     name: str = Field(..., description="Person or topic name")
-    biography: str = Field(..., description="Input biography text")
+    pdf_file_path: str = Field(..., description="Path to PDF file to extract content from")
     system_prompt: Optional[str] = Field(
         default=(
-            "You are a YouTube scriptwriter creating short, faceless documentary-style videos. "
-            "Based on the biography provided, write a concise and factual script of around 275 words. "
-            "The script will be used for a 1–2 minute YouTube Shorts video. Follow these rules: "
+            "You are a YouTube scriptwriter creating faceless documentary-style videos. "
+            "Based on the PDF content provided, write a comprehensive and factual script of exactly 6000 characters. "
+            "The script will be used for a longer-form video. Follow these rules: "
             "Tone: Neutral and documentary-style. Avoid dramatization or exaggerated storytelling. "
-            "Content must be based only on verifiable facts from the input. Do not add fictionalized scenes, dialogue, or speculation. "
-            "Do not make value judgments. Use short, clear sentences for voiceover. Follow a chronological structure (intro → milestones → factual closing line). "
-            "After the closing line, add a short CTA like: If you enjoyed this, subscribe for more real stories from around the world."
+            "Content must be based only on verifiable facts from the PDF input. Do not add fictionalized scenes, dialogue, or speculation. "
+            "Do not make value judgments. Use clear, engaging sentences for voiceover. Follow a logical structure (intro → key points → conclusion). "
+            "Target exactly 6000 characters including spaces. "
+            "After the main content, add a short CTA like: If you enjoyed this, subscribe for more real stories from around the world."
         )
     )
     image_context: Optional[str] = Field(
@@ -112,46 +113,76 @@ def _ensure_dirs() -> None:
     WHISPER_DIR.mkdir(parents=True, exist_ok=True)
 
 
-async def _deepseek_chat(messages: List[Dict[str, Any]]) -> str:
-    if not DEEPSEEK_API_KEY:
-        raise HTTPException(status_code=500, detail="DEEPSEEK_API_KEY not configured")
-    url = "https://api.deepseek.com/chat/completions"
-    headers = {"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"}
-    payload = {"model": "deepseek-chat", "messages": messages, "stream": False}
-    logger.info("Calling Deepseek chat with %d messages", len(messages))
+async def _openai_chat(messages: List[Dict[str, Any]], model: str = "gpt-4o-mini") -> str:
+    if not OPENAI_API_KEY:
+        raise HTTPException(status_code=500, detail="OPENAI_API_KEY not configured")
+    url = "https://api.openai.com/v1/chat/completions"
+    headers = {"Authorization": f"Bearer {OPENAI_API_KEY}", "Content-Type": "application/json"}
+    payload = {"model": model, "messages": messages, "stream": False}
+    logger.info("Calling OpenAI chat with model %s and %d messages", model, len(messages))
     async with httpx.AsyncClient(timeout=120) as client:
         r = await client.post(url, headers=headers, json=payload)
         if r.status_code >= 400:
-            logger.error("Deepseek error: %s", r.text)
-            raise HTTPException(status_code=502, detail=f"Deepseek error: {r.text}")
+            logger.error("OpenAI error: %s", r.text)
+            raise HTTPException(status_code=502, detail=f"OpenAI error: {r.text}")
         data = r.json()
     result = data.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
-    logger.info("Deepseek chat response length=%d", len(result))
+    logger.info("OpenAI chat response length=%d", len(result))
     return result
 
 
-async def _generate_storyline(system_prompt: str, biography: str) -> str:
-    logger.info("Generating storyline from biography (length=%d)", len(biography))
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": biography},
-    ]
-    content = await _deepseek_chat(messages)
-    logger.info("Initial storyline length=%d", len(content))
-    # Minimal cleanup similar to the n8n flow step "Remove heading, title"
-    cleanup_messages = [
-        {
-            "role": "system",
-            "content": (
-                "You will get a voice over text. Remove any heading or title. "
-                "Return only the narration text with the final CTA kept. Target length ~5000 characters."
-            ),
-        },
-        {"role": "user", "content": content},
-    ]
-    final_storyline = await _deepseek_chat(cleanup_messages)
-    logger.info("Final storyline length=%d", len(final_storyline))
-    return final_storyline
+async def _generate_storyline_from_pdf(system_prompt: str, pdf_file_path: str) -> str:
+    logger.info("Generating storyline from PDF: %s", pdf_file_path)
+    
+    # Check if PDF file exists
+    pdf_path = Path(pdf_file_path)
+    if not pdf_path.exists():
+        raise HTTPException(status_code=400, detail=f"PDF file not found: {pdf_file_path}")
+    
+    try:
+        # Extract text from PDF locally
+        import PyPDF2
+        
+        with open(pdf_path, "rb") as f:
+            pdf_reader = PyPDF2.PdfReader(f)
+            pdf_text = ""
+            for page in pdf_reader.pages:
+                pdf_text += page.extract_text() + "\n"
+        
+        logger.info("Extracted text from PDF (length=%d)", len(pdf_text))
+        
+        # Generate storyline with extracted text using OpenAI GPT-4o-mini
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"Based on this PDF content, create a storyline:\n\n{pdf_text}"}
+        ]
+        
+        initial_storyline = await _openai_chat(messages, model="gpt-4o-mini")
+        logger.info("Initial storyline generated (length=%d)", len(initial_storyline))
+        
+        # Cleanup step: Remove headings, titles, etc.
+        cleanup_messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You will receive a voice-over text for a video. Clean it up by removing any headings, titles, "
+                    "section markers, or formatting elements. Return only the clean narration text that flows naturally "
+                    "for voice-over. Keep the final CTA (call-to-action). Maintain the target length of around 6000 characters. "
+                    "The text should be ready for text-to-speech conversion."
+                ),
+            },
+            {"role": "user", "content": initial_storyline},
+        ]
+        
+        final_storyline = await _openai_chat(cleanup_messages, model="gpt-4o-mini")
+        logger.info("Final cleaned storyline length=%d", len(final_storyline))
+        return final_storyline
+        
+    except ImportError:
+        raise HTTPException(status_code=500, detail="PyPDF2 not installed. Please install it: pip install PyPDF2")
+    except Exception as e:
+        logger.error("Error processing PDF: %s", str(e))
+        raise HTTPException(status_code=500, detail=f"Error processing PDF: {str(e)}")
 
 
 async def _elevenlabs_tts(text: str, voice_id: str = ELEVENLABS_VOICE_ID, filename: str = "voice.mp3") -> Path:
@@ -230,7 +261,7 @@ def _group_words_by_interval(words: List[Dict[str, Any]], interval: float) -> Li
     return result
 
 
-async def _deepseek_image_prompt(context_name: str, chunk_text: str, image_context: str) -> str:
+async def _openai_image_prompt(context_name: str, chunk_text: str, image_context: str) -> str:
     system = (
         "You are an image prompt designer. Convert the transcript text into a prompt for image generation. "
         f"Style and quality: {image_context}. Output only the prompt text. No quotes or commas."
@@ -238,7 +269,7 @@ async def _deepseek_image_prompt(context_name: str, chunk_text: str, image_conte
     user = f"Context - {context_name}. Image Prompt - {chunk_text}"
     messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     logger.info("Generating image prompt (context=%s, chunk_len=%d)", context_name, len(chunk_text))
-    prompt = await _deepseek_chat(messages)
+    prompt = await _openai_chat(messages)
     # sanitize
     sanitized = (
         prompt.replace("\n", " ")
@@ -408,8 +439,8 @@ async def generate_video(payload: GenerateVideoRequest, background_tasks: Backgr
         payload.output_basename,
     )
 
-    # 1) Storyline
-    storyline = await _generate_storyline(payload.system_prompt, payload.biography)
+    # 1) Storyline from PDF
+    storyline = await _generate_storyline_from_pdf(payload.system_prompt, payload.pdf_file_path)
     logger.info("Storyline generated (length=%d)", len(storyline))
 
     # 2) ElevenLabs TTS
@@ -443,9 +474,9 @@ async def generate_video(payload: GenerateVideoRequest, background_tasks: Backgr
     groups = _group_words_by_interval(words, payload.group_interval_seconds)
     logger.info("Computed %d groups for image generation", len(groups))
 
-    # 4) Generate images in parallel: Deepseek prompt -> Together FLUX
+    # 4) Generate images in parallel: OpenAI prompt -> Together FLUX
     async def gen_image(idx: int, text: str) -> Path:
-        prompt = await _deepseek_image_prompt(payload.name, text, payload.image_context or "")
+        prompt = await _openai_image_prompt(payload.name, text, payload.image_context or "")
         img_bytes = await _together_flux_image(prompt)
         return _write_image(idx, img_bytes, audio_name)
 
@@ -489,7 +520,7 @@ async def generate_video(payload: GenerateVideoRequest, background_tasks: Backgr
             output_path=str(output_path),
             fps=60,
             background_audio_dir=str(BACKGROUND_AUDIO_DIR),
-            background_volume=0.3,
+            background_volume=0.2,
         )
 
     # MoviePy is synchronous/CPU-bound; run in threadpool to keep event loop responsive
