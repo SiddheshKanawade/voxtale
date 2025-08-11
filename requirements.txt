@@ -4,3 +4,12 @@ moviepy>=1.0.3
 # Audio processing (moviepy dependency, but explicit for clarity)
 imageio>=2.4.1
 imageio-ffmpeg>=0.4.2
+
+# Service
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+httpx>=0.27.0
+boto3>=1.34.0
+
+# PDF processing
+PyPDF2>=3.0.0

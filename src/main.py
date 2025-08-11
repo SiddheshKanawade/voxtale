@@ -8,9 +8,10 @@ from src.video_editor import create_video_from_assets
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
 
+    # Example: pass explicit audio file
     create_video_from_assets(
         images_dir=root / "images",
-        audio_dir=root / "audio",
+        audio_file=next((root / "audio").glob("*.mp3"), None),
         transcript_path=root / "whisper" / "transcript.json",
         output_path=root / "output.mp4",
         fps=60,
