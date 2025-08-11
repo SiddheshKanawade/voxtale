@@ -113,7 +113,7 @@ def _ensure_dirs() -> None:
     WHISPER_DIR.mkdir(parents=True, exist_ok=True)
 
 
-async def _openai_chat(messages: List[Dict[str, Any]], model: str = "gpt-4o-mini") -> str:
+async def _openai_chat(messages: List[Dict[str, Any]], model: str = "gpt-4o") -> str:
     if not OPENAI_API_KEY:
         raise HTTPException(status_code=500, detail="OPENAI_API_KEY not configured")
     url = "https://api.openai.com/v1/chat/completions"
@@ -157,7 +157,7 @@ async def _generate_storyline_from_pdf(system_prompt: str, pdf_file_path: str) -
             {"role": "user", "content": f"Based on this PDF content, create a storyline:\n\n{pdf_text}"}
         ]
         
-        initial_storyline = await _openai_chat(messages, model="gpt-4o-mini")
+        initial_storyline = await _openai_chat(messages, model="gpt-4o")
         logger.info("Initial storyline generated (length=%d)", len(initial_storyline))
         
         # Cleanup step: Remove headings, titles, etc.
@@ -174,7 +174,7 @@ async def _generate_storyline_from_pdf(system_prompt: str, pdf_file_path: str) -
             {"role": "user", "content": initial_storyline},
         ]
         
-        final_storyline = await _openai_chat(cleanup_messages, model="gpt-4o-mini")
+        final_storyline = await _openai_chat(cleanup_messages, model="gpt-4o")
         logger.info("Final cleaned storyline length=%d", len(final_storyline))
         return final_storyline
         
