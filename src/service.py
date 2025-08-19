@@ -59,6 +59,9 @@ R2_ENDPOINT_URL = os.getenv("R2_ENDPOINT_URL", "")  # e.g. https://<accountid>.r
 R2_BUCKET = os.getenv("R2_BUCKET", "faceless-yt")
 R2_PUBLIC_DOMAIN = os.getenv("R2_PUBLIC_DOMAIN", "")  # e.g. https://pub-xxxxxx.r2.dev
 
+GPT_MODEL = os.getenv("GPT_MODEL", "gpt-5")
+MAX_CHARS = 25000
+
 
 # ----------------------------
 # Request/Response models
@@ -120,15 +123,30 @@ async def _openai_chat(messages: List[Dict[str, Any]], model: str = "gpt-4o") ->
     headers = {"Authorization": f"Bearer {OPENAI_API_KEY}", "Content-Type": "application/json"}
     payload = {"model": model, "messages": messages, "stream": False}
     logger.info("Calling OpenAI chat with model %s and %d messages", model, len(messages))
-    async with httpx.AsyncClient(timeout=120) as client:
-        r = await client.post(url, headers=headers, json=payload)
-        if r.status_code >= 400:
-            logger.error("OpenAI error: %s", r.text)
-            raise HTTPException(status_code=502, detail=f"OpenAI error: {r.text}")
-        data = r.json()
-    result = data.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
-    logger.info("OpenAI chat response length=%d", len(result))
-    return result
+
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        try:
+            async with httpx.AsyncClient(timeout=300) as client:
+                r = await client.post(url, headers=headers, json=payload)
+                if r.status_code >= 400:
+                    logger.error("OpenAI error: %s", r.text)
+                    raise HTTPException(status_code=502, detail=f"OpenAI error: {r.text}")
+                data = r.json()
+            result = data.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
+            logger.info("OpenAI chat response length=%d", len(result))
+            return result
+        except httpx.ReadTimeout:
+            logger.warning("ReadTimeout occurred on attempt %d/%d", attempt + 1, max_attempts)
+            if attempt < max_attempts - 1:
+                backoff = 2 ** attempt
+                logger.info("Retrying after %.2f seconds", backoff)
+                await asyncio.sleep(backoff)
+            else:
+                raise HTTPException(status_code=504, detail="OpenAI request timed out after multiple attempts")
+        except Exception as e:
+            logger.exception("Unexpected error: %s", str(e))
+            raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 
 async def _generate_storyline_from_pdf(system_prompt: str, pdf_file_path: str) -> str:
@@ -138,50 +156,54 @@ async def _generate_storyline_from_pdf(system_prompt: str, pdf_file_path: str) -
     pdf_path = Path(pdf_file_path)
     if not pdf_path.exists():
         raise HTTPException(status_code=400, detail=f"PDF file not found: {pdf_file_path}")
-    
+
     try:
-        # Extract text from PDF locally
+        # Extract text from PDF
         import PyPDF2
         
         with open(pdf_path, "rb") as f:
             pdf_reader = PyPDF2.PdfReader(f)
-            pdf_text = ""
-            for page in pdf_reader.pages:
-                pdf_text += page.extract_text() + "\n"
-        
+            pdf_text = "\n".join(page.extract_text() or "" for page in pdf_reader.pages)
+
         logger.info("Extracted text from PDF (length=%d)", len(pdf_text))
-        
-        # Generate storyline with extracted text using OpenAI GPT-4o-mini
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"Based on this PDF content, create a storyline:\n\n{pdf_text}"}
-        ]
-        
-        initial_storyline = await _openai_chat(messages, model="gpt-4o")
-        logger.info("Initial storyline generated (length=%d)", len(initial_storyline))
-        
-        # Cleanup step: Remove headings, titles, etc.
+
+        # Chunk the PDF text to avoid hitting limits
+        chunks = [pdf_text[i:i+MAX_CHARS] for i in range(0, len(pdf_text), MAX_CHARS)]
+        partial_storylines = []
+
+        for idx, chunk in enumerate(chunks, 1):
+            logger.info("Processing chunk %d/%d (length=%d)", idx, len(chunks), len(chunk))
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Create part {idx} of the storyline from this content:\n\n{chunk}"}
+            ]
+            result = await _openai_chat(messages, model=GPT_MODEL)
+            partial_storylines.append(result)
+            time.sleep(20)
+
+        # Combine all partial results
+        combined_storyline = "\n\n".join(partial_storylines)
+        logger.info("Combined storyline length=%d", len(combined_storyline))
+
+        # Final cleanup: remove titles, section markers, etc.
         cleanup_messages = [
             {
                 "role": "system",
                 "content": (
-                    "You will receive a voice-over text for a video. Clean it up by removing any headings, titles, "
-                    "section markers, or formatting elements. Return only the clean narration text that flows naturally "
-                    "for voice-over. Keep the final CTA (call-to-action). Maintain the target length of around 6000 characters. "
-                    "The text should be ready for text-to-speech conversion."
+                    "You will receive a storyline text for a video. Clean it up by removing headings, titles, "
+                    "section markers, or formatting. Return only smooth narration text, ready for TTS. "
+                    "Maintain around 90000 characters and keep the final CTA."
                 ),
             },
-            {"role": "user", "content": initial_storyline},
+            {"role": "user", "content": combined_storyline},
         ]
-        
-        final_storyline = await _openai_chat(cleanup_messages, model="gpt-4o")
+
+        final_storyline = await _openai_chat(cleanup_messages, model="gpt-5")
         logger.info("Final cleaned storyline length=%d", len(final_storyline))
         return final_storyline
-        
-    except ImportError:
-        raise HTTPException(status_code=500, detail="PyPDF2 not installed. Please install it: pip install PyPDF2")
+
     except Exception as e:
-        logger.error("Error processing PDF: %s", str(e))
+        logger.exception("Error processing PDF: %s", str(e))
         raise HTTPException(status_code=500, detail=f"Error processing PDF: {str(e)}")
 
 
@@ -269,7 +291,7 @@ async def _openai_image_prompt(context_name: str, chunk_text: str, image_context
     user = f"Context - {context_name}. Image Prompt - {chunk_text}"
     messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     logger.info("Generating image prompt (context=%s, chunk_len=%d)", context_name, len(chunk_text))
-    prompt = await _openai_chat(messages)
+    prompt = await _openai_chat(messages, model="gpt-5-mini")
     # sanitize
     sanitized = (
         prompt.replace("\n", " ")
