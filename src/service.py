@@ -86,7 +86,7 @@ class GenerateVideoRequest(BaseModel):
     image_context: Optional[str] = Field(
         default=(
             "Photorealism Ultra Detailed 8K Ray Tracing Volumetric Lighting PBR Cinematic Composition. "
-            "Design prompts suitable for faceless biography visuals."
+            "Design prompts suitable for biography visuals."
         ),
         description="Stylistic guidance for image prompts",
     )
@@ -192,7 +192,7 @@ async def _generate_storyline_from_pdf(system_prompt: str, pdf_file_path: str) -
                 "content": (
                     "You will receive a storyline text for a video. Clean it up by removing headings, titles, "
                     "section markers, or formatting. Return only smooth narration text, ready for TTS. "
-                    "Maintain around 90000 characters and keep the final CTA."
+                    "Maintain around 9000 characters and keep the final CTA."
                 ),
             },
             {"role": "user", "content": combined_storyline},
@@ -285,13 +285,16 @@ def _group_words_by_interval(words: List[Dict[str, Any]], interval: float) -> Li
 
 async def _openai_image_prompt(context_name: str, chunk_text: str, image_context: str) -> str:
     system = (
-        "You are an image prompt designer. Convert the transcript text into a prompt for image generation. "
-        f"Style and quality: {image_context}. Output only the prompt text. No quotes or commas."
+        "You are an expert image prompt designer. Convert the transcript text into a detailed and vivid prompt for image generation. "
+        f"Ensure the prompt captures the essence of the text and prominently features the face of {context_name}. "
+        f"Include stylistic elements: {image_context}. "
+        "Focus on clarity, creativity, and flexibility to produce high-quality images. Output only the prompt text. No quotes or commas."
     )
     user = f"Context - {context_name}. Image Prompt - {chunk_text}"
     messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     logger.info("Generating image prompt (context=%s, chunk_len=%d)", context_name, len(chunk_text))
     prompt = await _openai_chat(messages, model="gpt-5-mini")
+    logger.info("Image prompt generated: %s", prompt)
     # sanitize
     sanitized = (
         prompt.replace("\n", " ")
@@ -299,6 +302,8 @@ async def _openai_image_prompt(context_name: str, chunk_text: str, image_context
         .replace(",", " ")
         .strip()
     )
+    # Add context name to the prompt
+    sanitized = f"Generate an image persona of {context_name} with the following prompt: {sanitized}"
     logger.info("Image prompt generated (len=%d)", len(sanitized))
     return sanitized
 
