@@ -59,7 +59,7 @@ R2_ENDPOINT_URL = os.getenv("R2_ENDPOINT_URL", "")  # e.g. https://<accountid>.r
 R2_BUCKET = os.getenv("R2_BUCKET", "faceless-yt")
 R2_PUBLIC_DOMAIN = os.getenv("R2_PUBLIC_DOMAIN", "")  # e.g. https://pub-xxxxxx.r2.dev
 
-GPT_MODEL = os.getenv("GPT_MODEL", "gpt-5")
+GPT_MODEL = os.getenv("GPT_MODEL", "gpt-4o-mini")
 MAX_CHARS = 25000
 
 
@@ -192,13 +192,13 @@ async def _generate_storyline_from_pdf(system_prompt: str, pdf_file_path: str) -
                 "content": (
                     "You will receive a storyline text for a video. Clean it up by removing headings, titles, "
                     "section markers, or formatting. Return only smooth narration text, ready for TTS. "
-                    "Maintain around 9000 characters and keep the final CTA."
+                    "Ensure the final output is less than 10,000 characters, summarizing ONLY if necessary, and keep the final CTA."
                 ),
             },
             {"role": "user", "content": combined_storyline},
         ]
 
-        final_storyline = await _openai_chat(cleanup_messages, model="gpt-5")
+        final_storyline = await _openai_chat(cleanup_messages, model="gpt-4o-mini")
         logger.info("Final cleaned storyline length=%d", len(final_storyline))
         return final_storyline
 
@@ -293,7 +293,7 @@ async def _openai_image_prompt(context_name: str, chunk_text: str, image_context
     user = f"Context - {context_name}. Image Prompt - {chunk_text}"
     messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     logger.info("Generating image prompt (context=%s, chunk_len=%d)", context_name, len(chunk_text))
-    prompt = await _openai_chat(messages, model="gpt-5-mini")
+    prompt = await _openai_chat(messages, model="gpt-4o-mini")
     logger.info("Image prompt generated: %s", prompt)
     # sanitize
     sanitized = (
