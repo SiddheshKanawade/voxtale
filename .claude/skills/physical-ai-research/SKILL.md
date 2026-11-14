@@ -166,6 +166,7 @@ S = 100 × D × (0.30·NV + 0.25·A + 0.20·C + 0.25·Q)
 |---|---|---|
 | **NV** news value, 0–1 | Your judgement on five news values (Harcup & O'Neill), each 0–3, mean ÷ 3 | Table below |
 | **A** attention, 0–1 | How much the field is paying attention | max of: the cluster's best paper `prior`; its best X post `eng_pct`; for YouTube coverage, min(1, log10(1 + total views) / 6) |
+| | | A post found outside the harvest (via `chatter.py` or search) gets `discover.engagement()` and its percentile against the harvest's X posts. Script the arithmetic so it's reproducible |
 | **C** corroboration, 0–1 | Independent sources covering it (Techmeme's link-count idea) | min(1, log2(1 + n) / 4): 1 source 0.25, 3 → 0.5, 7 → 0.75, 15+ → 1 |
 | **Q** source quality, 0–1 | Strength of the best primary evidence | 1.0 primary source with concrete numbers or a demo; 0.7 primary but vague, or tier-1 press with named sources; 0.4 tech blog / secondary; 0.2 aggregator or unverified |
 | **D** freshness | Mild decay; this is a weekly roundup | max(0.6, 1 − 0.06 × days since the primary source's date) |

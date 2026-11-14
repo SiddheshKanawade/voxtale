@@ -1,0 +1,242 @@
+[
+ {
+  "story": "OpenAI folds its robotics team: general AI models now drive robots",
+  "type": "opinion+paper",
+  "S": 79.0,
+  "NV": 0.8,
+  "NV_parts": {
+   "magnitude": 3,
+   "surprise": 3,
+   "power_elite": 3,
+   "audio_visuals": 1,
+   "relevance": 2
+  },
+  "A": 0.886,
+  "C": 0.646,
+  "Q": 1.0,
+  "D": 0.94,
+  "n_sources": 5,
+  "picked": true,
+  "segment": "story-1"
+ },
+ {
+  "story": "Tesla opens personal Cybercab orders (geofenced, $299/mo)",
+  "type": "release",
+  "S": 78.8,
+  "NV": 0.8,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 2,
+   "power_elite": 3,
+   "audio_visuals": 2,
+   "relevance": 3
+  },
+  "A": 1.0,
+  "C": 0.865,
+  "Q": 0.7,
+  "D": 0.94,
+  "n_sources": 10,
+  "picked": true,
+  "segment": "story-2"
+ },
+ {
+  "story": "Gemini Robotics 2.5: Apollo 2 at 96% on Mercedes lines (pilot)",
+  "type": "release",
+  "S": 71.2,
+  "NV": 0.8,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 1,
+   "power_elite": 3,
+   "audio_visuals": 3,
+   "relevance": 3
+  },
+  "A": 0.99,
+  "C": 1,
+  "Q": 1.0,
+  "D": 0.76,
+  "n_sources": 15,
+  "picked": true,
+  "segment": "story-3"
+ },
+ {
+  "story": "SuperMimic: humanoid motion skills in 3 GPU-hours (CoRL)",
+  "type": "paper",
+  "S": 67.3,
+  "NV": 0.6,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 2,
+   "power_elite": 1,
+   "audio_visuals": 3,
+   "relevance": 1
+  },
+  "A": 1.0,
+  "C": 0.702,
+  "Q": 1.0,
+  "D": 0.82,
+  "n_sources": 6,
+  "picked": true,
+  "segment": "story-4"
+ },
+ {
+  "story": "Runway Praxis-1 open weights (Apache 2.0, 27B world action model)",
+  "type": "release",
+  "S": 63.7,
+  "NV": 0.533,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 2,
+   "power_elite": 1,
+   "audio_visuals": 2,
+   "relevance": 1
+  },
+  "A": 0.95,
+  "C": 0.646,
+  "Q": 1.0,
+  "D": 0.82,
+  "n_sources": 5,
+  "picked": true,
+  "segment": "story-5"
+ },
+ {
+  "story": "GXO-Apptronik LOI for up to 1,000 Apollo humanoids",
+  "type": "deployment",
+  "S": 62.6,
+  "NV": 0.467,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 1,
+   "power_elite": 1,
+   "audio_visuals": 1,
+   "relevance": 2
+  },
+  "A": 0.62,
+  "C": 0.83,
+  "Q": 1.0,
+  "D": 0.88,
+  "n_sources": 9,
+  "picked": false,
+  "segment": null
+ },
+ {
+  "story": "Agile Robots $500M Series F at $8.5B (+ Path Robotics $300M)",
+  "type": "funding",
+  "S": 62.1,
+  "NV": 0.467,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 1,
+   "power_elite": 2,
+   "audio_visuals": 1,
+   "relevance": 1
+  },
+  "A": 0.63,
+  "C": 0.792,
+  "Q": 1.0,
+  "D": 0.88,
+  "n_sources": 8,
+  "picked": false,
+  "segment": null
+ },
+ {
+  "story": "NVIDIA GR00T 2 (weights due December)",
+  "type": "release",
+  "S": 61.3,
+  "NV": 0.733,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 1,
+   "power_elite": 3,
+   "audio_visuals": 3,
+   "relevance": 2
+  },
+  "A": 0.96,
+  "C": 0.83,
+  "Q": 1.0,
+  "D": 0.7,
+  "n_sources": 9,
+  "picked": false,
+  "segment": null
+ },
+ {
+  "story": "NHTSA recall query: Waymo school-bus fix didn't hold",
+  "type": "deployment",
+  "S": 44.0,
+  "NV": 0.6,
+  "NV_parts": {
+   "magnitude": 1,
+   "surprise": 1,
+   "power_elite": 3,
+   "audio_visuals": 1,
+   "relevance": 3
+  },
+  "A": 0.52,
+  "C": 0.865,
+  "Q": 1.0,
+  "D": 0.6,
+  "n_sources": 10,
+  "picked": false,
+  "segment": null
+ },
+ {
+  "story": "VLA reality check: kNN replay 91.7% on LIBERO",
+  "type": "paper",
+  "S": 43.0,
+  "NV": 0.4,
+  "NV_parts": {
+   "magnitude": 1,
+   "surprise": 3,
+   "power_elite": 0,
+   "audio_visuals": 1,
+   "relevance": 1
+  },
+  "A": 0.66,
+  "C": 0.396,
+  "Q": 1.0,
+  "D": 0.7,
+  "n_sources": 2,
+  "picked": false,
+  "segment": null
+ },
+ {
+  "story": "MuJoCo 4.0",
+  "type": "release",
+  "S": 42.6,
+  "NV": 0.467,
+  "NV_parts": {
+   "magnitude": 2,
+   "surprise": 1,
+   "power_elite": 2,
+   "audio_visuals": 2,
+   "relevance": 0
+  },
+  "A": 0.96,
+  "C": 0.396,
+  "Q": 1.0,
+  "D": 0.6,
+  "n_sources": 2,
+  "picked": false,
+  "segment": null
+ },
+ {
+  "story": "India MeitY questions head-cam robot-training data",
+  "type": "deployment",
+  "S": 41.8,
+  "NV": 0.533,
+  "NV_parts": {
+   "magnitude": 1,
+   "surprise": 2,
+   "power_elite": 2,
+   "audio_visuals": 1,
+   "relevance": 2
+  },
+  "A": 0.0,
+  "C": 0.702,
+  "Q": 0.7,
+  "D": 0.88,
+  "n_sources": 6,
+  "picked": false,
+  "segment": null
+ }
+]
