@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""What people are saying about one story: X, Hacker News and YouTube, for the research skill's context step.
+
+Usage: python3 -I tools/chatter.py "<query>" [--url URL ...] [--arxiv ID] [--transcripts N --out DIR] > chatter.json
+
+Run it for each shortlisted story, after it's picked (not during the harvest). The query is the story's name as people
+would write it ("Gemini Robotics 2.5", "Figure 03 BMW"). --url and --arxiv add searches for posts linking the primary
+source, which catch the posts that don't name it.
+
+| Source  | Method                                                                  | Key                |
+|---------|-------------------------------------------------------------------------|--------------------|
+| X       | twitterapi.io advanced_search, queryType=Top (most engaged, any date)   | TWITTERAPI_IO_KEY  |
+| HN      | Algolia search over all time (comments are where experts push back)     | none               |
+| YouTube | yt-dlp "ytsearch": who has already covered it, and how many views       | none               |
+
+--transcripts N saves the auto-captions of the N most-viewed videos to DIR as plain text, to read how other channels
+explained it (and what they got wrong). Best-effort: YouTube rate-limits caption downloads (HTTP 429) from time to time,
+and then only titles, channels and view counts come back. Reddit blocks unauthenticated API reads: search it with WebSearch
+(`site:reddit.com <query>`) instead.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import sys
+import urllib.parse
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from discover import _tweet, get, key, log  # noqa: E402
+
+
+def x(api_key: str, queries: list[str]) -> list[dict]:
+    seen, out = set(), []
+    for q in queries:
+        try:
+            payload = json.loads(get("https://api.twitterapi.io/twitter/tweet/advanced_search?" + urllib.parse.urlencode(
+                {"query": f"{q} -filter:retweets", "queryType": "Top"}), {"X-API-Key": api_key}))
+        except Exception as ex:
+            log(f"x: {q!r}: FAILED {ex}")
+            continue
+        for t in filter(None, map(_tweet, payload.get("tweets") or [])):
+            if t["id"] not in seen:
+                seen.add(t["id"])
+                out.append(t)
+    return sorted(out, key=lambda t: t.get("likes") or 0, reverse=True)[:25]
+
+
+def hn(queries: list[str]) -> list[dict]:
+    seen, out = set(), []
+    for q in queries:
+        payload = json.loads(get("https://hn.algolia.com/api/v1/search?" + urllib.parse.urlencode(
+            {"query": q, "tags": "story", "hitsPerPage": 10})))
+        for h in payload.get("hits") or []:
+            if h["objectID"] not in seen and (h.get("points") or 0) >= 5:
+                seen.add(h["objectID"])
+                out.append({"title": h.get("title"), "points": h.get("points"), "comments": h.get("num_comments"),
+                            "url": h.get("url"), "discussion": f"https://news.ycombinator.com/item?id={h['objectID']}",
+                            "created": h.get("created_at")})
+    return sorted(out, key=lambda h: h["points"] or 0, reverse=True)
+
+
+def youtube(query: str, n: int = 12) -> list[dict]:
+    run = subprocess.run(["yt-dlp", "--flat-playlist", "-j", f"ytsearch{n}:{query}"], capture_output=True, text=True)
+    vids = []
+    for line in run.stdout.splitlines():
+        d = json.loads(line)
+        vids.append({"title": d.get("title"), "channel": d.get("channel"), "views": d.get("view_count"),
+                     "duration_s": d.get("duration"), "url": d.get("url")})
+    return sorted(vids, key=lambda v: v["views"] or 0, reverse=True)
+
+
+def transcript(url: str, out: Path) -> Path | None:
+    stem = out / re.sub(r"\W+", "_", url.rsplit("=", 1)[-1])
+    run = subprocess.run(["yt-dlp", "--skip-download", "--write-auto-subs", "--sub-langs", "en", "--sub-format", "vtt",
+                          "--sleep-subtitles", "3", "-o", str(stem), url], capture_output=True, text=True)
+    vtt = next(iter(sorted(out.glob(stem.name + "*.vtt"))), None)
+    if not vtt:  # YouTube often answers caption requests with 429 for a while; it's best-effort
+        log(f"youtube: no transcript for {url}: {(run.stderr.strip().splitlines() or ['?'])[-1]}")
+        return None
+    lines = [re.sub(r"<[^>]+>", "", l).strip() for l in vtt.read_text().splitlines()
+             if l.strip() and "-->" not in l and not l.startswith(("WEBVTT", "Kind:", "Language:"))]
+    text = " ".join(dict.fromkeys(lines))  # auto-captions repeat each line as it scrolls
+    txt = stem.with_suffix(".txt")
+    txt.write_text(text + "\n")
+    vtt.unlink()
+    return txt
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("query")
+    ap.add_argument("--url", nargs="*", default=[], help="primary-source URLs to find posts linking them")
+    ap.add_argument("--arxiv", help="arXiv id, to catch posts linking any mirror of the paper")
+    ap.add_argument("--transcripts", type=int, default=0)
+    ap.add_argument("--out", type=Path, help="directory for transcripts")
+    args = ap.parse_args()
+
+    names = [f'"{args.query}"'] + [f'url:"{urllib.parse.urlsplit(u).netloc + urllib.parse.urlsplit(u).path}"'
+                                    for u in args.url] + ([f'"{args.arxiv}"'] if args.arxiv else [])
+    k = key("TWITTERAPI_IO_KEY")
+    result = {
+        "query": args.query,
+        "x": x(k, names) if k else (log("x: no TWITTERAPI_IO_KEY, skipped") or []),
+        "hn": hn([args.query] + args.url + ([args.arxiv] if args.arxiv else [])),
+        "youtube": youtube(args.query),
+    }
+    if args.transcripts and args.out:
+        args.out.mkdir(parents=True, exist_ok=True)
+        for v in result["youtube"][:args.transcripts]:
+            v["transcript"] = str(transcript(v["url"], args.out) or "")
+    log(f"x: {len(result['x'])}, hn: {len(result['hn'])}, youtube: {len(result['youtube'])}")
+    json.dump(result, sys.stdout, indent=1, ensure_ascii=False)
+
+
+if __name__ == "__main__":
+    main()

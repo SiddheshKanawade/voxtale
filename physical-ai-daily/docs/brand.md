@@ -35,6 +35,6 @@ alternative (`episodes/2026-11-14-sample-v7-*`). Attention rules that shaped it 
 | Sting | 1.6 s after the cold open: pixels pop in, the arrow drives forward, the name wipes in | `brand.tsx` Sting |
 | Named sections | Every story uses the same four markers: IN PLAIN ENGLISH, THE EVIDENCE, WHY IT MATTERS, REALITY CHECK. Each gets a chip at top right. (A tick sound was tried and removed: it overlapped speech, see `docs/attention.md`.) Set per beat with `"section": "plain" / "evidence" / "matters" / "reality"` | `Episode.tsx` SectionChip |
 | Spoken cues | "Story one / Story two" opens each story, the caveat beat opens with "Reality check.", and the outro opens with "That's Pixels to Actions." | narration rules |
-| End card | Lockup, "Sources linked in the description" and Subscribe; no URL, no newsletter | `scenes.tsx` End |
+| End card | Lockup, "Sources linked in the description" and Subscribe; no URL, no digest | `scenes.tsx` End |
 
-**Not in the video:** the website, its URL, the newsletter, pricing.
+**Not in the video:** the website, its URL, the digest, pricing.

@@ -1,35 +1,41 @@
 #!/usr/bin/env python3
-"""Collect the week's candidate stories from arXiv, X, news and Hacker News into one deduplicated JSON list.
+"""Collect the last week's candidate stories from arXiv, X and news into one deduplicated, signal-annotated JSON list.
 
-Usage: python3 -I tools/discover.py [--days 7] [--only arxiv,x,news,hn] > <ep>/candidates-<date>.json
+Usage: python3 -I tools/discover.py [--days 7] [--only arxiv,x,news] > <ep>/candidates-<date>.json
        python3 -I tools/discover.py --merge <ep>/candidates-*.json > <ep>/candidates.json
 
-Sources, accounts and queries live in sources.json, plus the newsletter's six topic profiles in p2a_topics.json
-(git-ignored; refresh with tools/sync_p2a_topics.py). Methods follow the prazo5 digest engine behind the Pixels2Actions
-newsletter, minus its embedding scorer: relevance is judged by the model reading this file (the physical-ai-research
-skill), not by cosine similarity.
+Sources, accounts and queries live in sources.json, plus the P2A digest's six topic profiles in p2a_topics.json
+(git-ignored). Every harvest first re-syncs those profiles from prazo5 (tools/sync_p2a_topics.py); if the sync fails it
+falls back to the last copy with a warning, and stops if there is none. Methods follow prazo5, the digest engine behind
+Pixels2Actions, minus its embedding scorer: relevance is judged by the model reading this file (the
+physical-ai-research skill), not by cosine similarity.
 
-| Source | Method                                                          | Key (env or .env)                        |
-|--------|-----------------------------------------------------------------|------------------------------------------|
-| arXiv  | export.arxiv.org API: cs.RO + keyword-filtered cs.CV/LG/AI, paged | none                                     |
-| X      | twitterapi.io advanced_search: batched from: + topic keywords   | TWITTERAPI_IO_KEY (else public timeline) |
-| News   | NewsData.io /latest, title match, paged (covers ~48 h only)     | NEWSDATAIO (else skipped: use WebSearch) |
-| HN     | Algolia search, points above a floor                            | none                                     |
+| Source | Method                                                                    | Key (env or .env)               |
+|--------|---------------------------------------------------------------------------|---------------------------------|
+| arXiv  | export.arxiv.org API: cs.RO in full + cs.CV/LG/AI/eess.SY filtered by our terms and every digest keyword, paged | none |
+| X      | twitterapi.io advanced_search: batched from: + topic keywords             | TWITTERAPI_IO_KEY (else public) |
+| News   | NewsData.io /latest, title match, paged (covers ~36 h only)               | NEWSDATAIO (else skipped)       |
+| HN     | Algolia, points floor. Off by default (mostly off-topic); tools/chatter.py searches HN per story instead | none |
 
-News only reaches back about two days on the free plan, so for a weekly episode either run this daily and --merge the
-files, or cover older news with web search. A missing key or a failing source degrades to "no items" with a line on
-stderr; it never sinks the run.
+The sources run in parallel. News only reaches back about 36 h on the free plan, so for a weekly episode either run
+`--only news` daily and --merge the files, or cover older news with web search. A missing key or a failing source
+degrades to "no items" with a line on stderr; it never sinks the run.
 
 Every item gets:
-- `mentions`: the other items that link to it (a tweet or HN post pointing at a paper or press release), the cheapest
+- `mentions`: the other items that link to it (a tweet pointing at a paper or press release), the cheapest
   cross-source signal of what people are actually talking about.
-- `topics`: newsletter topics whose keywords appear in its text, or whose account posted it. A lexical hint for
-  triage, not a relevance score.
+- `topics`: digest topics whose keywords appear in its text, or whose account posted it. A lexical hint, not a score.
+
+Papers also get `signals` (alphaXiv organisations, votes and visits; Hugging Face Daily Papers upvotes; code and
+stars; demo video; X attention) and a `prior` from 0 to 1 (see paper_priors). X posts get an `engagement` score and
+its percentile `eng_pct` (see engagement). Priors are a sort key for reading order, not the editorial ranking.
 """
 from __future__ import annotations
 
 import argparse
+import bisect
 import json
+import math
 import os
 import re
 import sys
@@ -45,6 +51,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 UA = {"User-Agent": "Mozilla/5.0"}
 ATOM = "{http://www.w3.org/2005/Atom}"
+ARXIV_NS = "{http://arxiv.org/schemas/atom}"
 
 
 def key(name: str) -> str | None:
@@ -75,24 +82,39 @@ def log(msg: str) -> None:
     print(msg, file=sys.stderr)
 
 
-def load_topics() -> list[dict]:
+def load_topics(sync: bool) -> list[dict]:
+    # The digest's topic profiles are required: they steer the X accounts, the arXiv terms and triage. Re-sync them on
+    # every harvest; on failure, use the last copy if there is one.
     path = ROOT / "p2a_topics.json"
+    if sync:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))  # -I drops the script's own directory
+            import sync_p2a_topics
+            sync_p2a_topics.main()
+        except BaseException as ex:  # sync exits via sys.exit on a missing key or psql error
+            if not path.exists():
+                sys.exit(f"topics: sync failed ({ex}) and there is no p2a_topics.json; fix RENDER_API_KEY or psql first")
+            age = (time.time() - path.stat().st_mtime) / 86400
+            log(f"topics: sync FAILED ({ex}); using the copy from {age:.0f} days ago")
     if not path.exists():
-        log("topics: no p2a_topics.json (run tools/sync_p2a_topics.py); harvesting without newsletter topics")
-        return []
+        sys.exit("topics: no p2a_topics.json; run tools/sync_p2a_topics.py")
     return json.loads(path.read_text())
 
 
 # --- arXiv -----------------------------------------------------------------------------------------------------------
 
-def arxiv(cfg: dict, since: datetime, cap: int = 3000) -> list[dict]:
-    # cs.RO in full, plus papers from the broader ML categories whose abstract names an embodied topic (world models,
-    # VLAs and robot learning are often filed under cs.LG or cs.CV only). Newest first, paged until past the window.
-    terms = "+OR+".join(f'abs:%22{urllib.parse.quote(t)}%22' for t in cfg.get("arxiv_terms", []))
+def arxiv(cfg: dict, topics: list[dict], since: datetime, cap: int = 3000) -> list[dict]:
+    # Exhaustive on purpose: cs.RO in full, plus papers from the broader ML categories whose title or abstract names
+    # an embodied topic (world models, VLAs and robot learning are often filed under cs.LG or cs.CV only). The terms
+    # are ours plus every digest keyword, in chunks so each query URL stays short. Newest first, paged past the window.
+    terms = list(dict.fromkeys(t.lower() for t in cfg.get("arxiv_terms", []) + [k for tp in topics
+                                                                              for k in tp.get("keywords") or []]))
     other = "+OR+".join(f"cat:{c}" for c in cfg.get("arxiv_also", []))
     queries = ["+OR+".join(f"cat:{c}" for c in cfg["arxiv_categories"])]
-    if terms and other:
-        queries.append(f"%28{other}%29+AND+%28{terms}%29")
+    for i in range(0, len(terms) if other else 0, 12):
+        chunk = "+OR+".join(f'abs:%22{urllib.parse.quote(t)}%22+OR+ti:%22{urllib.parse.quote(t)}%22'
+                            for t in terms[i:i + 12])
+        queries.append(f"%28{other}%29+AND+%28{chunk}%29")
     out, seen = [], set()
     for q in queries:
         for start in range(0, cap, 500):
@@ -111,15 +133,104 @@ def arxiv(cfg: dict, since: datetime, cap: int = 3000) -> list[dict]:
                     "url": f"https://arxiv.org/abs/{pid}",
                     "title": " ".join(e.findtext(f"{ATOM}title").split()),
                     "text": " ".join(e.findtext(f"{ATOM}summary").split()),
-                    "authors": [a.findtext(f"{ATOM}name") for a in e.findall(f"{ATOM}author")][:8],
+                    "authors": [a.findtext(f"{ATOM}name") for a in e.findall(f"{ATOM}author")],
                     "published": published.isoformat(),
                     "categories": [c.get("term") for c in e.findall(f"{ATOM}category")],
+                    # Authors' comment: venue ("Accepted to CoRL 2026"), page count, project page or code link.
+                    "comment": " ".join((e.findtext(f"{ARXIV_NS}comment") or "").split()),
                 })
             time.sleep(3)  # arXiv asks for one request every 3 s
             oldest = entries[-1].findtext(f"{ATOM}published") if entries else None
             if not oldest or datetime.fromisoformat(oldest.replace("Z", "+00:00")) < since:
                 break
     return out
+
+
+# --- Paper signals ---------------------------------------------------------------------------------------------------
+# A paper 0-7 days old has no citations yet, so rank by the early signals the literature finds predictive (see the
+# research skill's "Ranking" section for sources): attention from people who read it (alphaXiv votes and visits,
+# Hugging Face Daily Papers upvotes, X posts by accounts with reach), released code, and, capped, who wrote it.
+# Semantic Scholar is left out: its author profiles for brand-new papers are fragmented (h-index far too low) and its
+# affiliations are empty.
+
+def _alphaxiv(pid: str) -> dict:
+    try:
+        d = json.loads(get(f"https://api.alphaxiv.org/v2/papers/{pid}/metadata"))["data"]
+    except Exception:
+        return {}
+    group = d.get("paper_group") or {}
+    m = group.get("metrics") or {}
+    researchers = [a.get("researcher") or {} for a in d.get("authors_v2") or []]
+    return {
+        "orgs": [o["name"] for o in d.get("organization_info") or [] if o.get("name")],
+        "ax_votes": m.get("public_total_votes") or 0,
+        "ax_visits_7d": (m.get("visits_count") or {}).get("last7Days") or 0,
+        "max_h": max([r.get("hIndex") or 0 for r in researchers] or [0]),
+        "affiliations": [r["affiliation"] for r in researchers if r.get("affiliation")][:6],
+    }
+
+
+def _hf_daily(since: datetime) -> dict[str, dict]:
+    # Hugging Face's curated Daily Papers, by ISO week (paged 100 at a time). Covers only a few % of arXiv, so absence
+    # means little; presence and upvotes mean a lot.
+    out, day = {}, since
+    weeks = []
+    while day <= datetime.now(timezone.utc) + timedelta(days=7):
+        y, w, _ = day.isocalendar()
+        weeks.append(f"{y}-W{w:02d}")
+        day += timedelta(days=7)
+    for week in dict.fromkeys(weeks):
+        for page in range(10):
+            try:
+                rows = json.loads(get(f"https://huggingface.co/api/daily_papers?week={week}&limit=100&p={page}"))
+            except Exception as ex:
+                log(f"papers: Hugging Face {week}: FAILED {ex}")
+                break
+            for r in rows:
+                p = r.get("paper") or {}
+                out[p.get("id")] = {"hf_upvotes": p.get("upvotes") or 0, "github": p.get("githubRepo"),
+                                    "stars": p.get("githubStars"), "video": any(str(u).endswith((".mp4", ".webm"))
+                                                                                for u in r.get("mediaUrls") or []),
+                                    "project_page": p.get("projectPage")}
+            if len(rows) < 100:
+                break
+    return out
+
+
+def _stars(repo: str) -> int | None:
+    m = re.match(r"https?://github\.com/([\w.-]+/[\w.-]+)", repo or "")
+    if not m:
+        return None
+    try:  # unauthenticated: 60 requests an hour, so only for papers without HF's star count
+        return json.loads(get(f"https://api.github.com/repos/{m.group(1).removesuffix('.git')}"))["stargazers_count"]
+    except Exception:
+        return None
+
+
+def paper_signals(papers: list[dict]) -> None:
+    from concurrent.futures import ThreadPoolExecutor
+    hf = _hf_daily(min((datetime.fromisoformat(p["published"]) for p in papers), default=datetime.now(timezone.utc)))
+    with ThreadPoolExecutor(4) as pool:
+        ax = list(pool.map(lambda p: _alphaxiv(p["id"]), papers))
+    lookups = 0
+    for p, a in zip(papers, ax):
+        h = hf.get(p["id"], {})
+        blob = f"{p.get('text', '')} {p.get('comment', '')}"
+        repo = h.get("github") or next(iter(re.findall(r"https?://github\.com/[\w.-]+/[\w.-]+", blob)), None)
+        stars = h.get("stars")
+        if repo and stars is None and lookups < 50:
+            lookups += 1
+            stars = _stars(repo)
+        p["signals"] = {
+            **a, "hf_upvotes": h.get("hf_upvotes", 0), "github": repo, "stars": stars,
+            "video": bool(h.get("video")) or bool(re.search(r"\bvideos?\b|project page|github\.io", blob, re.I)),
+            "project_page": h.get("project_page") or next(iter(re.findall(r"https?://[\w.-]+\.github\.io[\w./-]*", blob)), None),
+            "venue": next(iter(re.findall(r"(?:accepted|to appear|published) (?:at|to|in|by) ([^.;,]+)", p.get("comment", ""),
+                                          re.I)), None),
+        }
+    log(f"papers: signals for {len(papers)} ({sum(1 for a in ax if a)} on alphaXiv, "
+        f"{sum(1 for p in papers if p['signals']['hf_upvotes'])} on HF Daily Papers, "
+        f"{sum(1 for p in papers if p['signals']['github'])} with code)")
 
 
 # --- X ---------------------------------------------------------------------------------------------------------------
@@ -179,7 +290,7 @@ def x_paid(cfg: dict, topics: list[dict], since: datetime, api_key: str) -> list
             out += x_search(api_key, q, pages=cfg.get("x_pages_per_batch", 10))
         except Exception as ex:
             log(f"x: batch {batch[0]}..: FAILED {ex}")
-    # Keyword search finds posts from people we don't follow. The newsletter's topic keywords are specific enough to
+    # Keyword search finds posts from people we don't follow. The digest's topic keywords are specific enough to
     # keep out the crypto "physical AI" spam a generic phrase pulls in; the likes floor drops the long tail.
     per_topic = cfg.get("x_keywords_per_topic", 4)
     kws = cfg.get("x_keywords", []) + [f'"{k}"' for t in topics for k in (t.get("keywords") or [])[:per_topic]]
@@ -194,7 +305,7 @@ def x_paid(cfg: dict, topics: list[dict], since: datetime, api_key: str) -> list
 
 def x_public(cfg: dict, topics: list[dict], since: datetime) -> list[dict]:
     # Fallback without a key: the embed widget's profile timeline. Rate-limited (~30 per window) and sometimes stale,
-    # so only our own short account list, not the newsletter's.
+    # so only our own short account list, not the digest's.
     out = []
     for h in cfg["x_accounts"]:
         try:
@@ -292,7 +403,74 @@ def tag(items: list[dict], topics: list[dict]) -> None:
         it["topics"] = sorted(set(hits + owners.get((it.get("handle") or "").lower(), [])))
 
 
-def merge(items: list[dict], topics: list[dict]) -> list[dict]:
+def _pct(values: list[float]):
+    # Percentile within this week's pool: share of the pool strictly below v. Zeros stay 0; heavy tails don't dominate.
+    ordered = sorted(values)
+    n = max(1, len(ordered) - 1)
+    return lambda v: bisect.bisect_left(ordered, v) / n
+
+
+def _lognorm(values: list[float]):
+    # log(1+x) / log(1+max) within this week's pool. For sparse signals (most papers have 0 upvotes and no posts) a
+    # percentile would hand a single upvote the 95th percentile; this keeps 1 upvote near 0.15 when the week's best has 100.
+    top = math.log1p(max(values, default=0))
+    return lambda v: math.log1p(v) / top if top else 0.0
+
+
+def engagement(t: dict) -> float:
+    # Absolute reach plus over-performance for the account's size (ln(engagement/followers) is the best virality proxy
+    # in the literature): a 2k-like post from a 5k-follower researcher beats a 2k-like post from a 30M brand account.
+    e = (t.get("likes") or 0) + 2 * (t.get("retweets") or 0) + 3 * (t.get("quotes") or 0) + 0.5 * (t.get("replies") or 0)
+    return 0.6 * math.log10(1 + e) + 0.4 * math.log((e + 1) / ((t.get("followers") or 0) + 100))
+
+
+def org_tier(names: list[str], cfg: dict) -> float:
+    blob = " | ".join(names)
+    hit = lambda orgs: any(re.search(rf"(?<!\w){re.escape(o)}(?!\w)", blob, re.I) for o in orgs)
+    return 1.0 if hit(cfg.get("orgs_lab", [])) else 0.5 if hit(cfg.get("orgs_university", [])) else 0.0
+
+
+def paper_priors(papers: list[dict], tweets: dict[str, dict], cfg: dict) -> None:
+    """prior = 0.30 N(HF upvotes) + 0.20 N(X attention) + 0.10 N(alphaXiv) + 0.15 code + 0.10 demo + 0.15 prestige.
+
+    N() is log(1+x) / log(1+max) over this week's papers (see _lognorm). HF upvotes and alphaXiv (votes + visits/20) are divided by
+    sqrt(days old + 1) so Friday's papers aren't buried. X attention sums, over distinct accounts that posted the
+    paper, min(log10(1+followers), 7) + log10(1+likes): who shares a paper matters more than how many. code = 0.5 for a
+    repo + 0.5 min(1, log10(1+stars)/3). demo = 1 for a video or project page (this is a video channel). prestige = 1
+    for a lab in sources.json orgs_lab, 0.5 for orgs_university; it counts a third as much when nobody is paying
+    attention (attention + code < 0.1), because big-lab papers get hype regardless and reviewers already over-reward
+    prestige.
+    """
+    now = datetime.now(timezone.utc)
+    rows = []
+    for p in papers:
+        s = p.setdefault("signals", {})
+        age = max(0.0, (now - datetime.fromisoformat(p["published"])).total_seconds() / 86400)
+        posts = {}
+        for url in p.get("mentions", []):
+            t = tweets.get(url)
+            if t:
+                posts.setdefault(t["handle"].lower(), []).append(t)
+        x_att = sum(min(math.log10(1 + (ts[0].get("followers") or 0)), 7) + math.log10(1 + max(t.get("likes") or 0 for t in ts))
+                    for ts in posts.values())
+        rows.append((p, s, (s.get("hf_upvotes") or 0) / math.sqrt(age + 1),
+                     ((s.get("ax_votes") or 0) + (s.get("ax_visits_7d") or 0) / 20) / math.sqrt(age + 1), x_att,
+                     len(posts)))
+    p_hf, p_ax, p_x = (_lognorm([r[i] for r in rows]) for i in (2, 3, 4))
+    for p, s, hf, ax, x_att, n_posts in rows:
+        attention = 0.30 * p_hf(hf) + 0.20 * p_x(x_att) + 0.10 * p_ax(ax)
+        code = 0.15 * ((0.5 if s.get("github") else 0) + 0.5 * min(1, math.log10(1 + (s.get("stars") or 0)) / 3))
+        demo = 0.10 * bool(s.get("video") or s.get("project_page"))
+        tier = org_tier((s.get("orgs") or []) + (s.get("affiliations") or []), cfg)
+        prestige = (0.15 if attention + code >= 0.1 else 0.05) * tier
+        p["signals"]["x_accounts"] = n_posts
+        p["signals"]["org_tier"] = tier
+        p["prior"] = round(attention + code + demo + prestige, 3)
+        p["prior_parts"] = {"attention": round(attention, 3), "code": round(code, 3), "demo": round(demo, 3),
+                            "prestige": round(prestige, 3)}
+
+
+def merge(items: list[dict], topics: list[dict], cfg: dict) -> list[dict]:
     by_url: dict[str, dict] = {}
     for it in items:
         # First wins: the same post can match a handle batch and a keyword. An HN post is keyed by its discussion so it
@@ -310,44 +488,60 @@ def merge(items: list[dict], topics: list[dict]) -> list[dict]:
             if target is not None and target is not it:
                 target["mentions"].append(it["url"] if it["type"] != "hn" else it["discussion"])
     tag(list(by_url.values()), topics)
+    tweets = {it["url"]: it for it in by_url.values() if it["type"] == "x"}
+    for t in tweets.values():
+        t["engagement"] = round(engagement(t), 3)
+    p_eng = _pct([t["engagement"] for t in tweets.values()])
+    for t in tweets.values():
+        t["eng_pct"] = round(p_eng(t["engagement"]), 3)
+    paper_priors([it for it in by_url.values() if it["type"] == "paper"], tweets, cfg)
     return sorted(by_url.values(), key=lambda i: i["published"], reverse=True)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--days", type=float, default=7, help="window for every source (one episode per week)")
-    ap.add_argument("--only", default="arxiv,x,news,hn")
+    ap.add_argument("--days", type=float, default=7, help="window, counted back from now (one episode per week)")
+    ap.add_argument("--only", default="arxiv,x,news", help="comma list from arxiv,x,news,hn")
     ap.add_argument("--merge", nargs="+", metavar="JSON", help="merge earlier harvests instead of fetching")
     args = ap.parse_args()
     cfg = json.loads((ROOT / "sources.json").read_text())
-    topics = load_topics()
+    topics = load_topics(sync=not args.merge)
 
     if args.merge:
         items = [it for f in args.merge for it in json.loads(Path(f).read_text())]
     else:
+        from concurrent.futures import ThreadPoolExecutor
         since = datetime.now(timezone.utc) - timedelta(days=args.days)
         only = set(args.only.split(","))
-        items = []
+
+        def papers() -> list[dict]:
+            got = arxiv(cfg, topics, since)
+            paper_signals(got)
+            return got
+
         runs = {
-            "arxiv": lambda: arxiv(cfg, since),
+            "arxiv": papers,
             "x": lambda: x_paid(cfg, topics, since, k) if (k := key("TWITTERAPI_IO_KEY")) else (log("x: no "
                          "TWITTERAPI_IO_KEY, falling back to the public timeline (unreliable)") or x_public(cfg, topics, since)),
             "news": lambda: news(cfg, since, pool) if (pool := keys("NEWSDATAIO")) else (log("news: no NEWSDATAIO "
                             "key, skipped; cover news with web search") or []),
             "hn": lambda: hn(cfg, since),
         }
-        for name, run in runs.items():
-            if name not in only:
-                continue
+
+        def safe(name: str) -> list[dict]:
             try:
-                got = run()
+                got = runs[name]()
                 log(f"{name}: {len(got)} items")
-                items += got
+                return got
             except Exception as ex:  # one source failing shouldn't sink the run
                 log(f"{name}: FAILED {ex}")
-    merged = merge(items, topics)
+                return []
+
+        with ThreadPoolExecutor(len(runs)) as pool_:
+            items = [it for got in pool_.map(safe, [n for n in runs if n in only]) for it in got]
+    merged = merge(items, topics, cfg)
     log(f"total: {len(merged)} after dedup, {sum(1 for i in merged if i['mentions'])} with cross-source mentions, "
-        f"{sum(1 for i in merged if i['topics'])} tagged with a newsletter topic")
+        f"{sum(1 for i in merged if i['topics'])} tagged with a digest topic")
     json.dump(merged, sys.stdout, indent=1, ensure_ascii=False)
 
 

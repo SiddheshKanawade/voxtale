@@ -12,7 +12,10 @@ Project: `physical-ai-daily/` in the voxtale repo. Everything runs locally on th
 
 ```
 sources.json                 accounts, arXiv categories, news queries (user-editable)
-tools/discover.py            arXiv + X + news + HN candidates -> deduped JSON (physical-ai-research skill)
+tools/discover.py            arXiv + X + news candidates with signals and priors -> deduped JSON (physical-ai-research skill)
+tools/credits.py             remaining credit per paid source (twitterapi.io, NewsData, ElevenLabs, Render)
+tools/triage_batches.py      harvest -> reading batches for triage subagents
+tools/chatter.py             what X, HN and YouTube say about one story
 tools/capture.mjs            page / tweet / element / video-frame screenshots via installed Chrome, in-page highlight
 tools/crop.py                crop a figure panel (fractions) + write its metadata json
 tools/voice.py               episode.json -> audio/<seg>_<beat>.wav + props.json (word timings, punctuation, media metadata)
@@ -30,7 +33,8 @@ Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-be
 
 ## Audience and pacing (user feedback, 2026-11-13)
 
-- **The viewer is a product manager:** high-level understanding, no robotics background. Define every term on screen
+- **The viewer has a slight technical background but little knowledge of the field** (updated 2026-11-14; was "a
+  product manager"). Hard concepts are fine when explained so that viewer can follow. Define every term on screen
   (an acronym scene for "VLA"), use one everyday analogy per hard idea ("works like a mousetrap"), and end each story
   with *why it matters* plus a reality check.
 - **Keep it moving.** No single static visual holds for more than **~5–7 s** (`HOLD_CAP_S = 7`). Cut points follow the
@@ -40,12 +44,12 @@ Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-be
   page screenshots. Screenshots appear only for the headline and the highlighted proof sentence.
 - Length is driven by content. Aim for 3–5 stories at 60–110 s each. Don't pad toward a target length.
 - **Cadence (user plan, 2026-11-14):** one long-form video a week with the week's top 3–5 stories, explained as now.
-  Shorts cut from it promote it. This is unlike the newsletter, which is daily.
+  Shorts cut from it promote it. This is unlike the P2A digest, which is daily.
 
 ## Pipeline
 
-1. **Research.** Run the `physical-ai-research` skill: harvest (`tools/discover.py`: arXiv, X, NewsData.io, HN),
-   widen with web search, triage, score, and verify. It writes `<ep>/candidates.json` and a scored shortlist in
+1. **Research.** Run the `physical-ai-research` skill: credit check, harvest (`tools/discover.py`: arXiv, X,
+   NewsData.io), subagent triage, web search, what people are saying, scoring, and verification. It writes `<ep>/candidates.json` and a scored shortlist in
    `<ep>/research.md`. Never pad to reach a story count.
 2. **Pick.** Take the shortlist's top 3–5. Show it to the user before scripting unless they said to run unattended.
 3. **Re-check** each pick against the verification rules below while capturing; research doesn't replace them.
@@ -103,15 +107,16 @@ The first sample's searches returned two plausible but false items: a "$500M Agi
 - Story arc: hook (what happened) → plain-English explainer (analogy + diagram) → evidence (source visual, highlighted sentence) → why it matters → reality check. Don't use hype words like "shocking" or "changes everything".
 - The intro teases the stories with visuals in about 20 s. The outro opens with "That's Pixels to Actions." (written
   that way so the TTS says it naturally), points to the sources and cues Subscribe. Never mention the website or the
-  newsletter in the video: the brand is meant to be a subtle presence.
+  digest in the video: the brand is meant to be a subtle presence.
 
 ## Source access (tested 2026-11-13)
 
 | Source | Method | Status |
 |---|---|---|
-| arXiv | export.arxiv.org API (`discover.py`: cs.RO plus keyword-filtered cs.CV/LG/AI), abs/html pages | Reliable. arXiv content is often CC BY; check the license line. |
+| arXiv | export.arxiv.org API (`discover.py`: cs.RO plus cs.CV/LG/AI/eess.SY filtered by our terms and the digest keywords), abs/html pages | Reliable. arXiv content is often CC BY; check the license line. |
 | News discovery | NewsData.io `/latest` (`discover.py`, key `NEWSDATAIO`) plus web search | Needs a key; free tier is credit-limited. Without it, web search only. |
-| Hacker News | Algolia API (`discover.py`), points floor | Reliable, no key |
+| Hacker News, YouTube | `chatter.py` per shortlisted story (HN Algolia; yt-dlp search) | No key. Not harvested weekly: mostly off-topic. YouTube captions are rate-limited at times |
+| Paper signals | alphaXiv metadata (orgs, votes, visits), Hugging Face Daily Papers, GitHub (`discover.py`) | No key; alphaXiv's endpoint is undocumented |
 | News/blogs | `capture.mjs page` (headless Chrome; only ever clicks reject/necessary-only consent buttons) | Reliable for public pages. Paywalls are not bypassed. |
 | Single X post | `capture.mjs tweet <id>` (official embed); `cdn.syndication.twimg.com/tweet-result?id=` for JSON | Reliable without login |
 | X discovery | twitterapi.io `advanced_search` (`discover.py`, key `TWITTERAPI_IO_KEY`): batched `from:` queries plus keyword search with a likes floor | Paid per tweet. Without the key, falls back to `syndication.twitter.com` timelines: **unreliable** (30 per window, sometimes stale) |
@@ -155,7 +160,7 @@ Don't change the identity without the user's say-so. The research behind it is i
 - **Attention rules** (`docs/attention.md`): no moving or decorative backgrounds; no music or effects under speech;
   one focal element per beat; a new visual every 5–7 s; the first item on screen within 0.4 s; episodes under about
   6 min.
-- **End card:** lockup, "Sources linked in the description", Subscribe. Never the website, URL or newsletter. The outro
+- **End card:** lockup, "Sources linked in the description", Subscribe. Never the website, URL or digest. The outro
   narration opens "That's Pixels to Actions."
 - **Thumbnails:** use the `youtube-thumbnails` skill. It researches first, makes 5–7 candidates, rubric-scores them,
   picks one, and keeps two runners-up for Test & Compare.

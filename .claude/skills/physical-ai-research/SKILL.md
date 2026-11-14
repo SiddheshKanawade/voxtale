@@ -1,178 +1,263 @@
 ---
 name: physical-ai-research
-description: Find, triage, verify and rank the week's physical-AI stories (robots, humanoids, embodied and world models, autonomy) for the weekly Pixels2Actions episode (project physical-ai-daily). Harvests arXiv, X (twitterapi.io), NewsData.io and Hacker News with tools/discover.py, steered by the newsletter's six topic profiles, widens with as many web searches as the day needs, judges relevance and quality itself (no embeddings), verifies every survivor against its primary source, and writes a scored shortlist to <ep>/research.md. Use when the user asks what happened this week in physical AI, to find stories, to research or shortlist an episode, or as step 1 of making an episode.
+description: Find, triage, verify and rank the last 7 days of physical-AI stories (robots, humanoids, embodied and world models, autonomy) for the weekly Pixels2Actions episode (project physical-ai-daily). Checks API credits, syncs the P2A digest's six topic profiles, harvests arXiv exhaustively (with alphaXiv / Hugging Face / code / X signals and a paper prior), X (twitterapi.io) and NewsData.io with tools/discover.py, has subagents read every item in full, widens with web search, gathers what people are saying (X, Reddit, HN, YouTube), scores stories with a fixed formula, verifies each against its primary source, and writes a shortlist to <ep>/research.md. Use when the user asks what happened this week in physical AI, to find stories, to research or shortlist an episode, or as step 1 of making an episode.
 ---
 
 # Story research (Pixels2Actions)
 
 **Cadence:** one long-form video a week covering the week's top 3–5 stories, plus Shorts cut from it to promote it.
-This is unlike the newsletter, which is daily.
+The P2A digest (prazo5) is daily; this channel is weekly.
 
 **Output:** `episodes/<date>[-slug]/research.md`, a shortlist of 3–5 verified stories plus reserves. The
 `physical-ai-daily` skill scripts from it.
 
-**Files:**
-- Harvester: `physical-ai-daily/tools/discover.py`.
-- Our accounts, categories and queries: `physical-ai-daily/sources.json`.
-- The newsletter's topic profiles: `physical-ai-daily/p2a_topics.json`. It's git-ignored; refresh it with
-  `tools/sync_p2a_topics.py`.
+**Tools** (all in `physical-ai-daily/tools/`, run with `python3 -I`):
 
-**Lineage.** The harvest methods come from prazo5, the engine behind the user's Pixels2Actions newsletter: batched
-`from:` X queries on twitterapi.io, NewsData.io `/latest` with key pooling, HN Algolia with a points floor, and arXiv by
-day. prazo5 then ranks by OpenAI embedding similarity to an anchor text. **This skill doesn't.** You read the
-candidates and judge them against the editorial anchor below, because a model reading a story can tell "a humanoid
-shipped to a factory" from "a paper that mentions humanoids in passing", and cosine similarity can't. The faithfulness
-rules in step 5 are adapted from prazo5's summary prompts, which went through several adversarial rounds on real
-digest data.
+| Tool | Does |
+|---|---|
+| `credits.py` | Key and remaining-credit check for every paid source |
+| `discover.py` | Syncs the digest topics, harvests arXiv + X + news, adds signals and priors, dedupes |
+| `sync_p2a_topics.py` | The topic sync on its own (discover.py calls it) |
+| `triage_batches.py` | Splits the harvest into reading batches for triage subagents |
+| `chatter.py` | What X, HN and YouTube say about one story |
 
-## Editorial anchor (what counts)
+Config: `physical-ai-daily/sources.json` (our accounts, arXiv terms, news queries, org tiers). Digest topics:
+`physical-ai-daily/p2a_topics.json` (git-ignored; the repo is public and the prompts are the digest's edge).
 
-The viewer is a product manager with no robotics background who wants to know **what changed in machines that act in
+**Lineage.** Harvest methods come from prazo5, the engine behind the Pixels2Actions digest. prazo5 ranks by OpenAI
+embedding similarity; **this skill doesn't**. Models read every candidate in full and judge it, because a reader can
+tell "a humanoid shipped to a factory" from "a paper that mentions humanoids in passing" and cosine similarity can't.
+The faithfulness rules in step 8 are adapted from prazo5's summary prompts.
+
+## Audience and editorial anchor
+
+The viewer has **a slight technical background but little knowledge of the field**. Hard concepts are welcome as long
+as they can be explained so that viewer follows them. The question every story answers: **what changed in machines that act in
 the physical world, and why it matters**.
 
 - **In:** robots of any shape (humanoids, arms, quadrupeds, drones, warehouse and surgical robots); robot foundation
-  models, VLAs, and world models used for control or simulation; sim-to-real; autonomous vehicles and robotaxis;
-  dexterous hands, actuators and sensors when they unlock a capability; real deployments, pilots, and safety or
-  regulatory events; funding and M&A of $50M or more, or strategically notable; big labs entering or leaving robotics.
-- **Out, unless it touches robots:** chatbots and LLM releases, generic AI funding, crypto, consumer gadgets, market
-  research "reports", and listicles.
-- **Borderline: keep it only if you can say in one sentence what changes for a physical system.**
+  models, VLAs and world models used for control or simulation; sim-to-real; autonomous vehicles and robotaxis;
+  dexterous hands, actuators and sensors that unlock a capability; real deployments, pilots, safety and regulatory
+  events; funding and M&A of $50M+ or strategically notable; big labs entering or leaving robotics.
+- **Out, unless it touches robots:** chatbots and LLM releases, generic AI funding, crypto, consumer gadgets,
+  market-research "reports", listicles.
+- **Borderline:** keep it only if you can say in one sentence what changes for a physical system.
 
-**The newsletter's six topics are the depth layer.** They live in `p2a_topics.json`: `vla-generalization`,
+**The digest's six topics are the depth layer, and they're required.** `p2a_topics.json` holds `vla-generalization`,
 `latent-actions-world-models`, `video-gen-policies`, `human-video-demos`, `teleop-data-collection` and
-`video-reward-eval`. Each has a long hand-tuned prompt naming the systems, papers and benchmarks that matter, and
-these prompts are why the newsletter's coverage of the niche is good. Read the prompts before triage, and use them two
-ways:
-- **To recognise what is significant.** A new model in a line the prompt names (pi0.7, GR00T, V-JEPA, UMI) is
-  news, even when the post is quiet.
-- **To find what a PM would care about inside a research week.** The topics are research-deep, but the channel is not.
-  A topic item makes the video only if it can be explained with an analogy and has a "why it matters". Prefer one
-  strong research story a week over several thin ones.
-
-Every item from `discover.py` carries `topics` tags: keyword hits, or posted by that topic's account. They're a
-lexical hint, not a score. Untagged items can still be the week's biggest story, such as a humanoid deployment. Examples: a video
-  model sold as a "world model", or a chip launch aimed at robotics.
+`video-reward-eval`: each a hand-tuned prompt naming the systems, papers and benchmarks that matter, ranked keywords
+and ~20 X accounts. They steer the harvest (accounts, X keywords, arXiv terms) and triage: a new model in a line a
+prompt names (pi0.7, GR00T, V-JEPA, UMI) is news even when the post is quiet. Every item's `topics` tags are a lexical
+hint, not a score; untagged items can still be the week's biggest story.
 
 ## Workflow
 
-### 0. Window and keys
+### 0. Window and credits
 
-- **Window:** the 7 days since the last episode (`--days 7`). Check `episodes/` for what the last episode already
-  covered, and don't repeat it unless there's real news on it.
-- **News only reaches back about 36 h** on the NewsData free plan. Ideally run `discover.py --only news` once a day
-  through the week into `<ep>/candidates-<date>.json` files and merge them. Otherwise, cover the earlier days with web
-  search in step 2, and say so in `research.md`.
-- **Keys** go in `physical-ai-daily/.env` (git-ignored; never print or commit them). They were copied from the
-  prazo5 Render service.
-  - `TWITTERAPI_IO_KEY`: X search. Billed per tweet returned; a weekly run returns about 1,000 tweets.
-  - `NEWSDATAIO`: news, a pool of 3 free keys.
-  - `RENDER_API_KEY`: only for `sync_p2a_topics.py`.
-- **If a key is missing:** `discover.py` says so on stderr and falls back (X) or skips (news). Tell the user which
-  source ran degraded, and make up for it with web search in step 2.
+- **Window: the 7 days ending now** (`--days 7`), not "since the last episode". Still check `episodes/` for what was
+  already covered, and don't repeat a story unless there's real news on it.
+- **Run `credits.py` first.** It prints OK / LOW / OUT / MISSING per source (twitterapi.io balance, each pooled NewsData
+  key's credits left today, ElevenLabs characters, Render access) and exits 1 if a harvest source is out. Tell the user
+  which sources will run degraded before harvesting, and make up for them with web search. Never print a key.
+- **News reaches back only ~36 h** on the NewsData free plan. If daily `discover.py --only news` files exist in the
+  episode folder, merge them; otherwise cover the older days with web search and say so in `research.md`.
 
 ### 1. Harvest
 
 ```
-python3 -I physical-ai-daily/tools/sync_p2a_topics.py              # optional: refresh the newsletter topics
-python3 -I physical-ai-daily/tools/discover.py --days 7 > <ep>/candidates-<date>.json
+python3 -I physical-ai-daily/tools/credits.py
+python3 -I physical-ai-daily/tools/discover.py --days 7 > <ep>/candidates-<date>.json   # syncs topics first
 python3 -I physical-ai-daily/tools/discover.py --merge <ep>/candidates-*.json > <ep>/candidates.json
 ```
 
-- **What a weekly run returns:** about 1,500 items in about 5 minutes: ~350 papers, ~1,000 X posts, ~150 news items
-  and ~20 HN posts.
-- **X is the noisiest source.** Big labs post plenty that isn't robotics, such as ChatGPT features or an IPO. Triage
-  drops those quickly.
+- **Topic sync is part of every harvest.** If it fails, discover.py says so and uses the last copy; with no copy it
+  stops. Report a failed sync.
+- **arXiv is exhaustive:** all of cs.RO, plus cs.CV / cs.LG / cs.AI / eess.SY papers whose title or abstract contains
+  any of our terms or any of the ~90 digest keywords. Papers then get `signals` (alphaXiv organisations, votes, 7-day
+  visits, researcher h-index; Hugging Face Daily Papers upvotes, code repo and stars, demo video, project page, venue
+  from the authors' comment; X accounts that posted it) and a `prior` (see Ranking). About 350 papers a week; the paper
+  step alone takes ~4 min.
+- **X:** our accounts plus ~120 digest accounts in `from:` batches of 10, plus the digest keywords with a likes floor.
+  Each post gets `engagement` and its percentile `eng_pct`.
+- **Hacker News and Reddit are not harvested.** Most of what they surface is off-topic for this channel; they're used
+  per story in step 5 instead. (`--only hn` still works if a week needs it.)
+- **Read the per-source counts on stderr.** A source returning 0 usually means a failure, not a quiet week.
 
-- **Read the per-source counts on stderr.** A source returning 0 usually means a failure, not a quiet day: check it.
-- **Read every candidate's title or first line.** A week brings about 1,500, so print them compactly and go source
-  by source, sorted by engagement within X. For example:
-  `jq -r '.[] | [.type, (.likes // .points // ""), (.mentions|length), (.title // .text)[:140]] | @tsv'`.
-- **Read the abstracts and full text only for items that pass a first relevance pass.**
+### 2. Read everything (triage subagents)
 
-### 2. Widen with web search (no fixed count: as many as the day needs)
-
-The harvest misses things: company newsrooms that don't tweet, news outside NewsData's index, and anything in
-another language. Search until new searches stop turning up new stories.
-
-Cover at least these angles:
-
-- **The newsletter topics.** Run one search per topic for the week's releases in the lines its prompt names.
-- **Follow-ups on the strongest leads.** Find the primary source behind every promising tweet or HN post, plus any
-  coverage that adds facts.
-- **Newsrooms and blogs** of the big players: DeepMind, NVIDIA, Tesla, Figure, Boston Dynamics, Agility, Apptronik,
-  1X, Unitree, Physical Intelligence, Skild, Waymo, Amazon Robotics, OpenAI, Meta FAIR.
-- **Money and deals:** funding, M&A, and IPO filings in robotics over the window.
-- **Deployments and safety:** pilots, fleet sizes, recalls, regulator actions (NHTSA, the EU AI Act, China MIIT).
-- **China's humanoid ecosystem:** Unitree, UBTech, AgiBot, Galbot, Xpeng. It's under-covered in English feeds.
-- **Counter-signal:** for each top candidate, search for criticism, corrections, or "staged demo" claims before
-  ranking it.
-
-Add new finds to your working list with their URL and the date you saw on the page.
-
-### 3. Triage (adapted from prazo5's gates; the first gate that fires wins)
-
-1. **Aggregator:** a roundup or list naming 3 or more unrelated items with no central subject. Drop it, but mine it
-   for leads.
-2. **Promo:** a market-research report, sponsored post, or "Top 10 robots" list. Drop it.
-3. **Empty:** nothing specific can be stated without inventing it, like a bare link or "big news soon". Drop it.
-4. **Off-anchor:** fails the editorial anchor above. Drop it.
-5. **Otherwise keep it.** Opinions and predictions from credible people stay, attributed ("Jim Fan argues…").
-
-Then **cluster**: the same event seen as a tweet, a press release, a paper and an HN thread is one story. Merge them,
-and keep every URL. Its `mentions` count and the number of independent sources are its buzz.
-
-### 4. Score and rank
-
-Score each cluster 0–2 on each criterion:
-
-| Criterion | 2 | 0 |
-|---|---|---|
-| **Impact for a PM** | Changes what is possible, buyable or regulated | Incremental and academic |
-| **Novelty** | First, new record, or new entrant or exit | A rerun of last month |
-| **Evidence** | Primary source with concrete numbers | Secondary only, or vague |
-| **Visual** | Video, demo stills or clear figures available | Text only |
-| **Buzz** | Several independent sources, high engagement | One post, no pickup |
-| **Freshness** | Inside the window on the primary source | Older, resurfacing |
-
-- **Ranking:** order by total score. Break ties with the channel default: deployment > release > funding > paper >
-  opinion.
-- **Variety:** aim for a mix, for example not five humanoid funding rounds. At least one story should be something
-  the viewer could not have read on a mainstream front page.
-- **Buzz never rescues weak evidence.** A viral claim with no primary source stays out. At most, mention it as
-  unconfirmed.
-
-### 5. Verify (every story on the shortlist)
-
-Apply the verification rules in the `physical-ai-daily` skill (primary source, date on the primary source, numbers
-verbatim on a capturable page, vendor-reported results labelled as such). On top of those, these are prazo5's
-faithfulness rules:
-
-- **Use only stated facts.** Never infer an outcome, cause or reaction the source doesn't state. A filing is not a
-  ruling.
-- **Preserve epistemic status.** "Plans to", "in talks", "reportedly", "aims to", pilot, preprint: an announced plan is
-  never a completed action.
-- **Scope and attribution:**
-  - Keep each number attached to the exact system and subset the source gives it ("78% on the IDB tasks", not "78%").
-  - The subject of the result must be the system that achieved it, not the benchmark it was measured on.
-- **Qualifiers:** use "first", "state-of-the-art" or "robust" only if the source says it, about the same claim.
-- **Truncated text:**
-  - A news API snippet that cuts off mid-sentence doesn't exist past its last full sentence.
-  - Never use a number whose unit was cut off.
-  - Open the article itself.
-- **Copy names, versions and numbers character for character.**
-
-### 6. Write `research.md`
+Titles and first lines lose context, so every item is read in full, by subagents in parallel:
 
 ```
-# Research <date> (window: <from> → <to>; sources: arXiv ✓, X ✓/degraded, News ✓/skipped, HN ✓, web searches: N)
+python3 -I physical-ai-daily/tools/triage_batches.py <ep>/candidates.json <ep>/triage
+```
+
+That writes ~8–10 batch files, one source each (papers with full abstracts and signals, posts with links and
+engagement, news with descriptions), ordered by prior. **Spawn one subagent per batch, all in one message.** Give each:
+the batch path, `p2a_topics.json` (to read the six prompts first), the Audience and editorial anchor section above, the
+triage gates below, and this output contract, written to `<ep>/triage/verdicts_NN.json`:
+
+```
+[{"url": "...", "verdict": "keep" | "maybe" | "drop", "gate": "aggregator|promo|empty|off-anchor|null",
+  "event": "<short name of the underlying event, for clustering>", "why": "<one line>",
+  "leads": ["<url or name of anything the item points at worth chasing>"]}]
+```
+
+Tell them: judge relevance against the anchor and topic prompts, never by keyword match; don't drop a paper for being
+hard (that is step 6's call); a post that only links somewhere is judged by what it links to, so list the link in
+`leads`. Then **you** read every keep and maybe yourself, in full: open the abstract page, article or thread.
+
+**Triage gates** (adapted from prazo5; the first gate that fires wins):
+1. **Aggregator:** a roundup naming 3+ unrelated items with no central subject. Drop it, but mine it for leads.
+2. **Promo:** market-research report, sponsored post, "Top 10 robots" list. Drop.
+3. **Empty:** nothing specific can be stated without inventing it ("big news soon", a bare link). Drop, after
+   following the link.
+4. **Off-anchor:** fails the editorial anchor. Drop.
+5. **Otherwise keep.** Opinions and predictions stay when the source is genuine and knows what it's talking about:
+   a researcher, a lab, a company, an engineer with a track record. Attribute them ("DeepMind's team argues…").
+
+### 3. Widen with web search
+
+The harvest misses things: newsrooms that don't post on X, news outside NewsData's index and its 36 h reach, other
+languages, filings. Search as much as the week needs, wherever you judge stories are hiding, until new searches stop
+turning up new stories. Usual blind spots, as reminders and not a checklist: primary sources behind leads, company
+newsrooms, funding and filings, deployments and safety or regulator actions, China's humanoid ecosystem, and anything
+the digest prompts name that didn't show up. Add finds with their URL and the date shown on the page.
+
+### 4. Cluster
+
+The same event seen as a post, a press release, a paper and an article is one story. Merge by the subagents' `event`
+names, keep every URL, and count independent sources (different outlets or accounts, not the company re-posting
+itself) for C in step 6.
+
+### 5. What people are saying (for the ~8–12 strongest clusters)
+
+Before scoring, learn what's happening around each candidate:
+
+```
+python3 -I physical-ai-daily/tools/chatter.py "<story name>" --url <primary url> [--arxiv <id>] \
+    [--transcripts 2 --out <ep>/chatter/<slug>] > <ep>/chatter/<slug>.json
+```
+
+- **X:** the most-engaged posts about it, including posts linking the primary source without naming it. Who's
+  excited, who's sceptical, which experts weighed in.
+- **Hacker News:** all-time search; the comments are where experts push back.
+- **YouTube:** who has already covered it and with how many views (trend signal, and an angle to avoid repeating).
+  Captions of the top videos when YouTube allows (best-effort; it rate-limits caption downloads).
+- **Reddit and forums:** web search (`site:reddit.com <name>`, r/robotics, r/MachineLearning, r/singularity) and
+  respected blogs or forums. Reddit blocks unauthenticated API reads.
+
+Record per story: the consensus, the strongest pushback, expert takes worth quoting (attributed), and existing
+coverage. Pushback feeds the Reality-check beat. Hype doesn't count as evidence (Q stays as it is).
+
+### 6. Score and rank
+
+Every cluster gets a **story score S from 0 to 100**:
+
+```
+S = 100 × D × (0.30·NV + 0.25·A + 0.20·C + 0.25·Q)
+```
+
+| Term | What it is | How to compute |
+|---|---|---|
+| **NV** news value, 0–1 | Your judgement on five news values (Harcup & O'Neill), each 0–3, mean ÷ 3 | Table below |
+| **A** attention, 0–1 | How much the field is paying attention | max of: the cluster's best paper `prior`; its best X post `eng_pct`; for YouTube coverage, min(1, log10(1 + total views) / 6) |
+| **C** corroboration, 0–1 | Independent sources covering it (Techmeme's link-count idea) | min(1, log2(1 + n) / 4): 1 source 0.25, 3 → 0.5, 7 → 0.75, 15+ → 1 |
+| **Q** source quality, 0–1 | Strength of the best primary evidence | 1.0 primary source with concrete numbers or a demo; 0.7 primary but vague, or tier-1 press with named sources; 0.4 tech blog / secondary; 0.2 aggregator or unverified |
+| **D** freshness | Mild decay; this is a weekly roundup | max(0.6, 1 − 0.06 × days since the primary source's date) |
+
+**News values** (score each 0–3):
+
+| Value | 0 | 3 |
+|---|---|---|
+| Magnitude | Incremental | A capability jump, deployment at scale, $500M+, or a new record |
+| Surprise | Expected, a rerun of last month | Nobody saw it coming: a first, an exit, a reversal |
+| Power elite | Unknown actor | A major lab, company or government |
+| Audio-visuals | Text only | Real video or a striking demo we can show |
+| Relevance | Only specialists care | Changes what the viewer could see, buy, use or worry about |
+
+Then:
+- **Gates:** Q < 0.4 can't be shortlisted (mention it as unconfirmed at most). Buzz never rescues weak evidence.
+- **Ranking:** sort by S. Break ties with deployment > release > funding > paper > opinion.
+- **Constraints:** at most 2 stories per company; at least one research story when one scores within 10 points of the
+  5th pick; variety (not five humanoid funding rounds); at least one story the viewer couldn't have read on a
+  mainstream front page.
+- **Show the arithmetic** in `research.md` (each term per story), so the user can argue with it.
+
+**Research stories need an explanation, but don't drop them easily.** A paper makes the video when it can be explained
+to the viewer: an everyday analogy, a figure or demo that shows the idea, and a clear why-it-matters. If none comes to
+mind, dig: the paper's intro and figures, the project page and video, the authors' threads, how YouTube explainers
+put it (`chatter.py`). If it still won't explain, decide on what the field says: keep it when it's groundbreaking, or
+when attention is high (a top prior, many X accounts with reach, YouTube coverage). YouTube runs on what's trending,
+and a paper everyone is talking about is worth the extra effort to explain.
+
+### 7. Paper ranking (how `prior` is computed, and why)
+
+```
+prior = 0.30·N(HF upvotes) + 0.20·N(X attention) + 0.10·N(alphaXiv votes + visits/20)
+      + 0.15·code + 0.10·demo + 0.15·prestige                      (0–1; implemented in discover.py paper_priors)
+```
+
+- N(x) = log(1+x) / log(1+week's max). Upvotes and alphaXiv are divided by √(days old + 1) first, so Friday's papers
+  aren't buried.
+- **X attention** sums, over distinct accounts that posted the paper, min(log10(1 + followers), 7) + log10(1 + likes):
+  who shares a paper matters more than how many times it's shared.
+- **code** = 0.5 for a repo + 0.5·min(1, log10(1 + stars) / 3).
+- **demo** = 1 for a video or project page.
+- **prestige** = 1 for a lab in `orgs_lab` (Google DeepMind, NVIDIA, Meta, Physical Intelligence, …), 0.5 for
+  `orgs_university` (Stanford, CMU, Tsinghua, …), else 0. It only counts a third when attention + code < 0.1.
+
+Why: brand-new papers have no citations, and the best early predictors are attention signals. Tweets predicted later
+citations in Eysenbach 2011 ([JMIR](https://pmc.ncbi.nlm.nih.gov/articles/PMC3278109/)). Papers shared by big AI
+accounts got 2–3× the citations of matched controls ([arXiv 2401.13782](https://arxiv.org/abs/2401.13782)). Early
+access patterns forecast citations in 2.3M arXiv papers ([arXiv 2511.03877](https://arxiv.org/abs/2511.03877)). Code
+and GitHub engagement add precision ([GitScholar](https://arxiv.org/abs/2609.26361),
+[NeurIPS code study](https://arxiv.org/abs/2308.10008)). Prestige is real but biased: reviewers favour famous authors
+and top companies (odds ratios 1.6–2.1, [WSDM 2017](https://arxiv.org/abs/1702.00502)), and much of industry's
+citation gap is selection ([NBER](https://conference.nber.org/conf_papers/f205421/f205421.pdf)). So prestige is capped,
+and a big-lab paper with hype but no code or benchmark gets its claims checked harder. Semantic Scholar isn't used: for
+0–7-day papers its author profiles are fragmented and affiliations empty. alphaXiv's metadata endpoint is undocumented
+and may break; discover.py then logs fewer "on alphaXiv" papers, and the prior leans on the rest.
+
+The prior is a **reading order and a term in A**, not the decision. A paper with prior 0.2 can still be the week's best
+story.
+
+### 8. Verify (every story on the shortlist)
+
+Apply the verification rules in the `physical-ai-daily` skill (primary source, date on the primary source, numbers
+verbatim on a capturable page, vendor-reported results labelled as such). On top of those, prazo5's faithfulness rules:
+
+- **Use only stated facts.** Never infer an outcome, cause or reaction the source doesn't state. A filing is not a ruling.
+- **Preserve epistemic status.** "Plans to", "in talks", "reportedly", "aims to", pilot, preprint: an announced plan is
+  never a completed action.
+- **Scope and attribution:** keep each number attached to the exact system and subset ("78% on the IDB tasks", not
+  "78%"); the subject of a result is the system that achieved it, not the benchmark.
+- **Qualifiers:** "first", "state-of-the-art" or "robust" only if the source says it, about the same claim.
+- **Copy names, versions and numbers character for character.**
+- **Snippets:** news-API descriptions and search snippets often cut off mid-sentence. List useful ones in
+  `research.md` under Snippets, marked *unverified*: knowing something was reported can shape the video. But a snippet
+  is never a source for a fact or number in the narration until the full article confirms it, and a number whose unit
+  or context was cut off is never used.
+
+### 9. Write `research.md`
+
+```
+# Research <date> (window: <from> → <to>)
+Sources: arXiv ✓ (N papers), X ✓ (N), News ✓/degraded (N), topics synced ✓/stale, credits: <credits.py summary>,
+web searches: N, triage batches: N
 
 ## Shortlist
-| # | Story | Type | Score | Primary source (date) | Key fact, verbatim | Visual | Caveat |
-...one row per story, best first. Then for each: a 24–30 word summary (named subject first, the single most important
-number), every URL in the cluster, and the exact sentence to highlight with capture.mjs --find.
+| # | Story | Type | S | NV | A | C | Q | D | Primary source (date) | Key fact, verbatim | Visual | Caveat |
+Then for each story:
+- a 24–30 word summary (named subject first, the single most important number)
+- how we'll explain it: the analogy, figure or demo
+- what people are saying: consensus, strongest pushback, notable takes (attributed), existing YouTube coverage
+- every URL in the cluster, and the exact sentence to highlight with capture.mjs --find
 
 ## Reserves
 2–3 stories that scored next, with one line on why they didn't make it.
+
+## Snippets (unverified)
+Useful snippets not yet confirmed by a full article: quote, outlet, URL, "truncated" if cut off.
 
 ## Dropped (worth knowing)
 Notable items cut at triage or verification, each with the reason ("no primary source", "announced in September").
@@ -183,6 +268,8 @@ Show the shortlist to the user before scripting, unless they said to run unatten
 
 ## Keep improving
 
-- **Add good finds to `sources.json`:** a new account that broke a story goes in `x_accounts`. A query that found
-  something the harvest missed goes in `news_queries` or `x_keywords`.
-- **Note failures** (sources down, keys out of quota, false leads) in the run's `research.md`.
+- **Tune the weights** after 4–6 episodes against what performed (YouTube retention per story segment). Today's
+  weights rest on correlational studies (papers) and editorial judgement guided by news-values research (stories).
+- **Add good finds to `sources.json`:** an account that broke a story goes in `x_accounts`, a lab that keeps showing
+  up in strong papers goes in `orgs_lab`, a query that found something the harvest missed goes in `news_queries`.
+- **Note failures** (sources down, credits out, false leads) in the run's `research.md`.

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Copy the Pixels2Actions newsletter's sub-topic profiles from prazo5's database into p2a_topics.json (git-ignored).
+"""Copy the Pixels2Actions P2A digest's sub-topic profiles from prazo5's database into p2a_topics.json (git-ignored).
 
 Usage: python3 -I tools/sync_p2a_topics.py
 
-The newsletter's coverage comes from six narrow prazo5 accounts (VLA, world models, teleop data, ...). Each has a
+The digest's coverage comes from six narrow prazo5 accounts (VLA, world models, teleop data, ...). Each has a
 hand-tuned topic prompt, ranked search keywords and ~20 X accounts its finder picked. discover.py reads them for the
 weekly harvest, and the research skill uses the prompts as part of its editorial anchor. The file stays out of git
-because the repo is public and the prompts are the newsletter's edge.
+because the repo is public and the prompts are the digest's edge.
 
 Needs RENDER_API_KEY in .env (or the environment) and psql. The account list comes from the p2a-shared env group's
 PRAZO_ACCOUNTS; the database is opened read-only.
@@ -63,7 +63,9 @@ def main() -> None:
     topics = json.loads(out.stdout)
     (ROOT / "p2a_topics.json").write_text(json.dumps(topics, indent=1, ensure_ascii=False) + "\n")
     for t in topics:
-        print(f"{t['name']}: {len(t['keywords'] or [])} keywords, {len(t['x_accounts'] or [])} X accounts")
+        # stderr: discover.py calls this before writing its JSON to stdout
+        print(f"topics: {t['name']}: {len(t['keywords'] or [])} keywords, {len(t['x_accounts'] or [])} X accounts",
+              file=sys.stderr)
 
 
 if __name__ == "__main__":
