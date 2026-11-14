@@ -230,3 +230,16 @@ two (0.740 and 0.642), so the screen and the listener agree on this passage. v3 
 
 The user did not give scores, so this doesn't yet show whether directed Andrew (C) is preferred over current Andrew (D).
 The pause problem came from the full episode, not this short passage.
+
+
+The user then added that E (v3 Eric) also sounded good, and more realistic.
+
+**Round 3 (2026-11-14), judged on realism:** there were eight samples: six built-in voices on Eleven v4 (Eric, Chris,
+Brian, Adam, Roger, Daniel), plus v3 Eric and current Andrew as references. The user picked **B, which is v3 Eric**. That
+is the same take they singled out in round 2, picked again blind among eight samples. v4 Eric (A) was not preferred,
+even though v4 leads the Artificial Analysis arena. Arena Elo averages many listeners and many texts, so for this
+listener and this narration style it did not carry over.
+
+**Current choice: ElevenLabs v3, voice Eric (`cjVigY5qzO86Huf0OWal`), one pass per beat, timestamps from the API.**
+- This passage is short, and v3 varies from take to take, so the next check is a full episode.
+- A full episode is 36 beats and about 3,600 characters, which fits the free tier about twice a month.
