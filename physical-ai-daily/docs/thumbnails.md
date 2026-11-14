@@ -39,3 +39,22 @@ python3 tools/thumbnails.py episodes/<dir> [design ...]   # -> out/thumb_<n>_<de
 ```
 
 The preview shows each thumbnail beside its 168×94 version.
+
+## Round 2: evidence-led template (2026-11-14)
+
+The user didn't like round 1 (face / stat / split) and asked for a thumbnail that invites viewing and shows evidence.
+More research:
+
+| Finding | Source | Strength |
+|---|---|---|
+| Curiosity-gap titles reveal enough to raise a question but not answer it; misleading packaging raises clicks but repeated exposure breeds scepticism | [Clickbait linguistics (ResearchGate)](https://www.researchgate.net/publication/367299547_The_Linguistic_and_Typological_Features_of_Clickbait_in_Youtube_Video_Titles); [misleading news thumbnails survey (PDF)](https://pdfs.semanticscholar.org/c6ef/6cd28a85f864533800b6927aa082caa68dc6.pdf); [Wikipedia: Clickbait](https://en.wikipedia.org/wiki/Clickbait) | Moderate (small surveys, consistent with theory) |
+| Viewer satisfaction = expectation (set by title and thumbnail) vs delivery | [Viewer responses to clickbait on YouTube](https://www.researchgate.net/publication/395261047_Viewer_Responses_to_Clickbait_on_YouTube_A_Marketing_Perspective) | Moderate |
+| High-reputation sources get clicked more regardless of content; expert quotes raise trust; credibility *labels* alone don't change behaviour | [Winter & Krämer, source cues](https://www.researchgate.net/publication/268517126_A_question_of_credibility_-_Effects_of_source_cues_and_recommendations_on_information_selection_on_news_sites_and_blogs); [Science Advances, labels null](https://www.science.org/doi/10.1126/sciadv.abl3844) | Strong (experiments, incl. a field RCT) |
+| Faces and overlay text rise with breakout size; contrast does not | [vidIQ July 2026](https://vidiq.com/vi/research/youtube-thumbnail-study/) | Correlational, coded sample |
+| Title and thumbnail should split one promise, not repeat each other | [vidIQ titles](https://vidiq.com/blog/post/youtube-video-title/), [Hooklab](https://hooklab.co.uk/blog/should-your-youtube-title-and-thumbnail-say-the-same-thing), [Overseeros](https://www.overseeros.com/blog/youtube-click-promise) | Practitioner consensus |
+| Arrows help only to point at small or unfamiliar things; otherwise a cliché | [Linus Tech Tips](https://rosetta.to/u/linustechtips/why-our-thumbnails-look-like-this), [thumbnailtest](https://thumbnailtest.com/?p=926) | Anecdotal |
+
+**Design that follows:** the `evidence` layout. A big subject "face", a 2-line hook whose coloured line is an honest
+curiosity gap the video closes (the "call to watch"), and a tilted **receipt**: a crop of the source stating the claim,
+with the number highlighted and a "SOURCE: ..." tag. Round-1 layouts stay in the code but are no longer the default.
+The working rules live in the `youtube-thumbnails` skill (`.claude/skills/youtube-thumbnails/SKILL.md`).

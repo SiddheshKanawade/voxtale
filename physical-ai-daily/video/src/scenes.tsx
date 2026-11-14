@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Easing, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, Media, STAGE, Visual, Word } from "./theme";
 import { Lockup } from "./brand";
+import { current } from "./design";
 import { Kitting, Snap } from "./diagrams";
 
 type P = { v: Visual; dur: number; index: number; words: Word[] };
@@ -15,8 +16,14 @@ export const cueFrame = (words: Word[], cue: string | undefined, fps: number, fa
 };
 
 // Reveal times for a list of items: each item's `cue` word if present, else spread over the first 60% of the beat.
+// The first item always lands within FIRST_REVEAL_S, so a scene never opens on an empty stage waiting for its cue word
+// (the light-version audit found 1-2 s blank frames at beat starts).
+const FIRST_REVEAL_S = 0.4;
 const reveals = (items: { cue?: string }[], words: Word[], fps: number, dur: number) =>
-  items.map((it, i) => cueFrame(words, it.cue, fps, Math.round((i / Math.max(1, items.length)) * dur * 0.6)));
+  items.map((it, i) => {
+    const at = cueFrame(words, it.cue, fps, Math.round((i / Math.max(1, items.length)) * dur * 0.6));
+    return i === 0 ? Math.min(at, Math.round(FIRST_REVEAL_S * fps)) : at;
+  });
 
 const pop = (frame: number, at: number, fps: number) => spring({ frame: frame - at, fps, config: { damping: 14, mass: 0.6 } });
 
@@ -49,7 +56,8 @@ const Card: React.FC<{ m: Media; box: { x: number; y: number; w: number; h: numb
   const w = m.width * fit, h = m.height * fit;
   return (
     <div style={{ position: "absolute", left: box.x + (box.w - w) / 2, top: box.y + (box.h - h) / 2, width: w, height: h,
-      borderRadius: 14, overflow: "hidden", boxShadow: "0 30px 80px rgba(0,0,0,0.55)", background: bg, ...style }}>
+      borderRadius: 14, overflow: "hidden", background: bg, ...style,
+      boxShadow: current.light ? "0 18px 50px rgba(31,32,35,0.18), 0 0 0 1px rgba(31,32,35,0.08)" : "0 30px 80px rgba(0,0,0,0.55)" }}>
       <Img src={staticFile(m.src)} style={{ width: "100%", height: "100%", objectFit: "contain", ...imgStyle }} />
     </div>
   );
@@ -102,9 +110,15 @@ const Photo: React.FC<P> = ({ v, dur, index, words }) => {
   // Past the hold cap, cut to a tighter frame off-centre (a "punch-in"), so the shot reads as new.
   const punched = frame >= punchCut(words, dur, fps);
   const pk = punched ? 1.35 : 1, po = punched ? "62% 40%" : "50% 50%";
+  // On a light page a full-bleed photo has to fade into warm white, which greys the photo out; frame it instead.
   const media = v.fit === "contain"
     ? <Card m={m} box={STAGE} imgStyle={{ transform: `scale(${(1 + 0.06 * t) * pk})`, transformOrigin: po }} />
-    : (
+    : current.light ? (
+      <div style={{ position: "absolute", left: STAGE.x, top: STAGE.y - 10, width: STAGE.w, height: STAGE.h + 20, borderRadius: 18,
+        overflow: "hidden", boxShadow: "0 18px 50px rgba(31,32,35,0.18), 0 0 0 1px rgba(31,32,35,0.08)" }}>
+        <Img src={staticFile(m.src)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${s * pk}) translateX(${x}%)`, transformOrigin: po }} />
+      </div>
+    ) : (
       <AbsoluteFill>
         <Img src={staticFile(m.src)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${s * pk}) translateX(${x}%)`, transformOrigin: po }} />
         <AbsoluteFill style={{ background: `linear-gradient(rgba(${C.bgRgb},0.85) 0%, rgba(${C.bgRgb},0) 28%, rgba(${C.bgRgb},0) 62%, rgba(${C.bgRgb},0.9) 100%)` }} />
@@ -286,9 +300,11 @@ const Hub: React.FC<P> = ({ v, dur, words }) => {
       <div style={{ position: "absolute", left: cx - 150, top: cy - 150, width: 300, height: 300, borderRadius: 150, background: C.panel2,
         border: `6px solid ${C.accent}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         transform: `scale(${c * (1 + 0.03 * Math.sin(frame / 8))})`, boxShadow: `0 0 ${60 + 20 * Math.sin(frame / 8)}px rgba(240,201,69,0.35)` }}>
-        <div style={{ fontSize: 120 }}>{v.center!.icon}</div>
-        <div style={{ fontSize: 28, fontWeight: 800, textAlign: "center" }}>{v.center!.label}</div>
+        <div style={{ fontSize: 140 }}>{v.center!.icon}</div>
       </div>
+      {/* label below the circle: inside it, long names ran past the rim */}
+      <div style={{ position: "absolute", left: cx - 260, width: 520, top: cy + 172, textAlign: "center", fontSize: 40, fontWeight: 800,
+        opacity: c }}>{v.center!.label}</div>
       {spokes.map((sp, i) => {
         const s = pop(frame, at[i] + 8, fps);
         const on = i === current;

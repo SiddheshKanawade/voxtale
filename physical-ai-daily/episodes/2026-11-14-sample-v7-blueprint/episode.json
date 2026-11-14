@@ -568,34 +568,68 @@
   ],
   "thumbnails": [
     {
-      "layout": "face",
+      "layout": "evidence",
       "lines": [
-        "Robots",
-        "*at work*"
+        "96% success",
+        "*but...*"
       ],
       "image": "assets/dm_merc_36s.png",
       "focus": "55% 35%",
-      "label": "NEWS"
+      "receipt": {
+        "src": "assets/s2_tweet.png",
+        "source": "GOOGLE DEEPMIND",
+        "crop": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.34
+        },
+        "mark": {
+          "x": 0.845,
+          "y": 0.665,
+          "w": 0.095,
+          "h": 0.12
+        }
+      }
     },
     {
-      "layout": "stat",
-      "stat": "96%",
+      "layout": "evidence",
       "lines": [
-        "in a real",
-        "*car factory*"
+        "Robot brain",
+        "*2× better?*"
       ],
       "image": "assets/dm_merc_8s.png",
-      "focus": "30% 40%"
+      "focus": "25% 30%",
+      "receipt": {
+        "src": "assets/s1_quote.png",
+        "source": "GOOGLE DEEPMIND",
+        "crop": {
+          "x": 0.28,
+          "y": 0.41,
+          "w": 0.45,
+          "h": 0.16
+        }
+      }
     },
     {
-      "layout": "split",
+      "layout": "evidence",
       "lines": [
-        "Robots leave",
-        "the *lab*"
+        "No battery.",
+        "*How?*"
       ],
-      "image": "assets/dm_merc_8s.png",
-      "image2": "assets/p_jumper.png",
-      "focus": "25% 30%"
+      "image": "assets/p_jumper.png",
+      "focus": "50% 70%",
+      "receipt": {
+        "src": "assets/s3_hero.png",
+        "source": "ARXIV PAPER",
+        "crop": {
+          "x": 0.0,
+          "y": 0.095,
+          "w": 0.66,
+          "h": 0.135
+        }
+      },
+      "zoom": 1.3
     }
   ]
 }

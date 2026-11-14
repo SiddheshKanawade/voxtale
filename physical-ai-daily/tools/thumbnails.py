@@ -29,6 +29,9 @@ def main(ep_dir: Path, designs: list[str]) -> None:
         for n, v in enumerate(variants, 1):
             for d in designs:
                 props = Path(tmp) / f"{n}_{d}.json"
+                if v.get("receipt") and "aspect" not in v["receipt"]:  # crop maths needs the page's height/width
+                    meta = json.loads((ep_dir / v["receipt"]["src"]).with_suffix(".json").read_text())
+                    v["receipt"]["aspect"] = meta["height"] / meta["width"]
                 props.write_text(json.dumps({**v, "design": d}))
                 png = out / f"thumb_{n}_{d}.png"
                 subprocess.run(["npx", "remotion", "still", "src/index.ts", "Thumbnail", str(png), f"--props={props}",

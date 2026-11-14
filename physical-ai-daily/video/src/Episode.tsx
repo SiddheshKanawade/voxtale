@@ -210,8 +210,10 @@ const SectionChip: React.FC<{ section: string }> = ({ section }) => {
 };
 
 const Credit: React.FC<{ text: string }> = ({ text }) => (
-  <div style={{ position: "absolute", left: 64, bottom: 178, fontSize: 20, color: "#b5b3ae", fontWeight: 600,
-    background: "rgba(15,15,17,0.8)", padding: "6px 14px", borderRadius: 8 }}>
+  <div style={{ position: "absolute", left: 64, bottom: 178, fontSize: 20, fontWeight: 600, padding: "6px 14px", borderRadius: 8,
+    ...(current.light // a dark block reads as heavy on paper; keep the chip light there
+      ? { color: "#55575e", background: "rgba(255,255,255,0.88)", border: "1px solid rgba(31,32,35,0.12)" }
+      : { color: "#b5b3ae", background: "rgba(15,15,17,0.8)" }) }}>
     {text}
   </div>
 );

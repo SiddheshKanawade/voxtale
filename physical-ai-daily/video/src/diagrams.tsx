@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, Word } from "./theme";
+import { current } from "./design";
 import { cueFrame } from "./scenes";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -41,8 +42,9 @@ export const Kitting: React.FC<{ dur: number; words: Word[] }> = ({ dur, words }
         <text x={610} y={470} fill={C.dim} fontSize={36} fontWeight={700} textAnchor="middle" opacity={binsIn}>Bulk bins: parts mixed together</text>
         {BINS.map((b, bi) => (
           <g key={bi} transform={`translate(0 ${(1 - binsIn) * 120})`}>
-            <rect x={b.x - 125} y={b.y - 100} width={250} height={200} rx={18} fill="#1e4fd8" />
-            <rect x={b.x - 125} y={b.y - 100} width={250} height={36} rx={12} fill="#2b63f0" />
+            {/* neutral bins (were saturated blue, off-palette): the coloured parts stay the only focal colour */}
+            <rect x={b.x - 125} y={b.y - 100} width={250} height={200} rx={18} fill={C.panel2} stroke={C.dim} strokeOpacity={0.35} strokeWidth={3} />
+            <rect x={b.x - 125} y={b.y - 100} width={250} height={36} rx={12} fill={C.dim} fillOpacity={0.3} />
             {BIN_PARTS[bi].map((p, k) => !picked(bi, k) && <Part key={k} shape={p.shape} x={b.x + p.dx} y={b.y + p.dy} r={26} />)}
           </g>
         ))}
@@ -53,7 +55,8 @@ export const Kitting: React.FC<{ dur: number; words: Word[] }> = ({ dur, words }
             const p = slotPos(i);
             return (
               <g key={i}>
-                <rect x={p.x - 90} y={p.y - 80} width={180} height={170} rx={14} fill="rgba(0,0,0,0.35)" />
+                <rect x={p.x - 90} y={p.y - 80} width={180} height={170} rx={14} fill={current.light ? "rgba(31,32,35,0.06)" : "rgba(0,0,0,0.35)"}
+                  stroke={C.dim} strokeOpacity={current.light ? 0.3 : 0} strokeDasharray="8 6" strokeWidth={2} />
                 <text x={p.x - 74} y={p.y - 50} fill={C.accent} fontSize={30} fontWeight={900}>{i + 1}</text>
                 <Part shape={s.shape} x={p.x} y={p.y + 5} ghost />
               </g>
