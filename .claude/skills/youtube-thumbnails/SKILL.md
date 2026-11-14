@@ -53,8 +53,20 @@ Renderer: `physical-ai-daily/tools/thumbnails.py`.
 
 Thumbnail practice and YouTube's tools change, so don't rely only on the evidence above. Before designing:
 
-1. Run 2-3 web searches in one turn, for example: `YouTube thumbnail study <current year>`, `YouTube Test & Compare
-   thumbnail update`, `<topic> YouTube thumbnails what works` (e.g. robotics or AI explainers).
+1. **Search aggressively, not a token check.** Run at least 8–10 searches, sent in parallel batches, and use `extended`
+   mode for anything recent or niche. Cover all of these angles:
+   - new thumbnail studies and data (`YouTube thumbnail study <current year>`, `thumbnail CTR analysis`, vidIQ / 1of10
+     / eden.so research)
+   - YouTube's own changes: Test & Compare, the Studio packaging and title-test features, Creator Insider, YouTube Help
+   - the episode's topic niche (`robotics YouTube thumbnails`, `AI explainer thumbnails what works`), plus what the
+     current top videos on this story use (search the story name + YouTube)
+   - curiosity, clickbait and trust research (new papers on misleading thumbnails or source cues)
+   - text, faces and readability on mobile and TV home feeds
+   - anything that contradicts our rules: search for counter-evidence on purpose (`thumbnail text hurts CTR`,
+     `faces don't matter thumbnails`)
+
+   Open the strongest sources (primary studies, YouTube docs) and read them rather than trusting search snippets. Keep
+   going until new searches stop turning up new findings.
 2. Prefer data (coded samples, A/B results, YouTube's own docs) over opinion blogs. Note each source's strength the way
    `docs/thumbnails.md` does.
 3. Compare with the evidence list above. **If something is new or contradicts it, append a dated row to
