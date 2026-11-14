@@ -1,9 +1,9 @@
 export const C = {
-  bg: "#0b0e14",
-  panel: "#151a24",
-  panel2: "#1d2432",
-  ink: "#f2f4f8",
-  dim: "#8b93a3",
+  bg: "#0f0f11", // neutral charcoal (was navy; user found it bluish and dated)
+  panel: "#1a1a1d",
+  panel2: "#242428",
+  ink: "#f5f4f2",
+  dim: "#9a9893",
   accent: "#f0c945", // Pixels2Actions yellow
   brand: "#f43f2e", // Pixels2Actions red
   good: "#4ade80",
@@ -42,15 +42,16 @@ export type Visual = {
   right?: { icon: string; title: string; sub: string };
 };
 
-export type Beat = { narration: string; visual: Visual; audio: string; duration: number; words: Word[] };
+export type Beat = { narration: string; visual: Visual; audio: string; duration: number; words: Word[]; section?: string };
 export type Segment = {
   id: string; kind: "title" | "story"; headline: string; label?: string;
   source?: string; sourceDate?: string; beats: Beat[]; duration: number;
 };
 export type EpisodeProps = { title: string; date: string; segments: Segment[] };
 
-// Segment start times in seconds, with the brand sting (stingS long) inserted after the cold-open title segment.
-export const timeline = (segments: Segment[], stingS: number) => {
+// Segment start times in seconds, with the brand sting (stingS long) inserted after the cold-open title segment and
+// an end tail (endS) after the last segment, where the end card holds while the sonic logo plays.
+export const timeline = (segments: Segment[], stingS: number, endS = 0) => {
   let t = 0, sting = -1;
   const starts = segments.map((s, i) => {
     const at = t;
@@ -58,5 +59,5 @@ export const timeline = (segments: Segment[], stingS: number) => {
     if (s.kind === "title" && sting < 0 && i < segments.length - 1) { sting = t; t += stingS; }
     return at;
   });
-  return { starts, sting, total: t };
+  return { starts, sting, end: t, total: t + endS };
 };

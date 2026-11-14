@@ -1,7 +1,7 @@
 import React from "react";
 import { Composition } from "remotion";
 import { Episode, EpisodeProps } from "./Episode";
-import { STING_S } from "./brand";
+import { END_S, STING_S } from "./brand";
 import { timeline } from "./theme";
 
 const FPS = 30;
@@ -19,7 +19,7 @@ export const Root: React.FC = () => (
     durationInFrames={FPS}
     defaultProps={placeholder}
     calculateMetadata={({ props }) => ({
-      durationInFrames: Math.max(FPS, Math.ceil(timeline(props.segments, STING_S).total * FPS)),
+      durationInFrames: Math.max(FPS, Math.ceil(timeline(props.segments, STING_S, END_S).total * FPS)),
     })}
   />
 );

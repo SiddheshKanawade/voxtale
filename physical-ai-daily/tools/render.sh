@@ -8,10 +8,13 @@ NAME="physical-ai-daily-$(basename "$EP")"
 
 [[ " $* " == *" --skip-voice "* ]] || "$ROOT/.venv/bin/python" "$ROOT/tools/voice.py" "$EP"
 
+# Sonic logo + section tick (generated, identical every episode), served from the episode dir like other media.
+"$ROOT/.venv/bin/python" "$ROOT/tools/brand_audio.py" "$EP/brand" >/dev/null
+
 cd "$ROOT/video"
 mkdir -p "$EP/qa" "$EP/out"
 rm -f "$EP"/qa/f*.png
-TOTAL=$(python3 -c "import json;print(int(sum(s['duration'] for s in json.load(open('$EP/props.json'))['segments'])*30))")
+TOTAL=$(python3 -c "import json;print(int((sum(s['duration'] for s in json.load(open('$EP/props.json'))['segments'])+3.2)*30))")  # + sting + end tail
 for f in $(python3 -c "print(' '.join(str(int($TOTAL*k/7)) for k in range(1,7)))"); do
   npx remotion still src/index.ts Episode "$EP/qa/f$f.png" --frame="$f" --props="$EP/props.json" --public-dir="$EP" >/dev/null
 done

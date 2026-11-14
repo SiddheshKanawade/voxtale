@@ -12,3 +12,4 @@ voicelab/blind*/
 voicelab/analysis/
 voicelab/*.html
 *.wav
+episodes/*/brand/

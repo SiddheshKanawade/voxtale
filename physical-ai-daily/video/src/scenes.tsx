@@ -84,7 +84,7 @@ const Shot: React.FC<P> = ({ v, dur, words }) => {
       {v.stamp && (
         <div style={{ position: "absolute", right: 200, top: 230, transform: `rotate(-8deg) scale(${0.6 + st * 0.4})`, opacity: st,
           border: `6px solid ${C.bad}`, color: C.bad, fontWeight: 900, fontSize: 64, padding: "8px 28px", borderRadius: 12,
-          letterSpacing: 4, textTransform: "uppercase", background: "rgba(11,14,20,0.85)" }}>{v.stamp}</div>
+          letterSpacing: 4, textTransform: "uppercase", background: "rgba(15,15,17,0.85)" }}>{v.stamp}</div>
       )}
     </>
   );
@@ -107,7 +107,7 @@ const Photo: React.FC<P> = ({ v, dur, index, words }) => {
     : (
       <AbsoluteFill>
         <Img src={staticFile(m.src)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${s * pk}) translateX(${x}%)`, transformOrigin: po }} />
-        <AbsoluteFill style={{ background: "linear-gradient(rgba(11,14,20,0.85) 0%, rgba(11,14,20,0) 28%, rgba(11,14,20,0) 62%, rgba(11,14,20,0.9) 100%)" }} />
+        <AbsoluteFill style={{ background: "linear-gradient(rgba(15,15,17,0.85) 0%, rgba(15,15,17,0) 28%, rgba(15,15,17,0) 62%, rgba(15,15,17,0.9) 100%)" }} />
       </AbsoluteFill>
     );
   const ov = pop(frame, 6, fps);
@@ -128,7 +128,7 @@ const Photo: React.FC<P> = ({ v, dur, index, words }) => {
       {v.tags?.map((tag, i) => {
         const tp = pop(frame, Math.round(fps * (0.8 + i * 0.7)), fps);
         return (
-          <div key={tag} style={{ position: "absolute", left: 90, top: 560 + i * 90, background: "rgba(11,14,20,0.88)", border: `3px solid ${C.accent}`,
+          <div key={tag} style={{ position: "absolute", left: 90, top: 560 + i * 90, background: "rgba(15,15,17,0.88)", border: `3px solid ${C.accent}`,
             borderRadius: 40, padding: "10px 24px", fontSize: 36, fontWeight: 800, opacity: tp, transform: `translateX(${(1 - tp) * -60}px)` }}>📍 {tag}</div>
         );
       })}
@@ -285,7 +285,7 @@ const Hub: React.FC<P> = ({ v, dur, words }) => {
       </svg>
       <div style={{ position: "absolute", left: cx - 150, top: cy - 150, width: 300, height: 300, borderRadius: 150, background: C.panel2,
         border: `6px solid ${C.accent}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        transform: `scale(${c * (1 + 0.03 * Math.sin(frame / 8))})`, boxShadow: `0 0 ${60 + 20 * Math.sin(frame / 8)}px rgba(255,225,77,0.35)` }}>
+        transform: `scale(${c * (1 + 0.03 * Math.sin(frame / 8))})`, boxShadow: `0 0 ${60 + 20 * Math.sin(frame / 8)}px rgba(240,201,69,0.35)` }}>
         <div style={{ fontSize: 120 }}>{v.center!.icon}</div>
         <div style={{ fontSize: 28, fontWeight: 800, textAlign: "center" }}>{v.center!.label}</div>
       </div>
@@ -333,7 +333,7 @@ const Stat: React.FC<P> = ({ v, dur, words }) => {
       </div>
       {v.side && (() => {
         const s = pop(frame, 10, fps);
-        return <Card m={v.side} box={{ x: STAGE.x + STAGE.w * 0.58, y: STAGE.y - 20, w: STAGE.w * 0.42, h: STAGE.h + 20 }} bg="#15202b"
+        return <Card m={v.side} box={{ x: STAGE.x + STAGE.w * 0.58, y: STAGE.y - 20, w: STAGE.w * 0.42, h: STAGE.h + 20 }} bg={C.panel}
           style={{ opacity: s, transform: `translateX(${(1 - s) * 200}px) rotate(${(1 - s) * 4}deg)` }} />;
       })()}
     </>

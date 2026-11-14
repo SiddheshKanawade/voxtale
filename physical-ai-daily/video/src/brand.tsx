@@ -34,9 +34,10 @@ export const Lockup: React.FC<{ size: number }> = ({ size }) => (
   </span>
 );
 
-// Short silent sting between the cold open and the first story: the pixels pop in one by one, then the arrow
+// Short sting between the cold open and the first story, over the sonic logo: the pixels pop in one by one, then the arrow
 // drives forward and the name wipes in.
 export const STING_S = 1.6;
+export const END_S = 1.6; // end card hold after the sign-off, for the sonic logo
 
 export const Sting: React.FC = () => {
   const frame = useCurrentFrame();
