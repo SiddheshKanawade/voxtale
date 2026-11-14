@@ -71,7 +71,7 @@ const GRID = (step: number, a: number, rgb = "255,255,255") =>
   `linear-gradient(90deg, rgba(${rgb},${a}) 1px, transparent 1px) 0 0 / ${step}px ${step}px`;
 
 // Backdrops. The pixel, signal and aurora candidates drift; blueprint, the chosen one, stays still (docs/attention.md).
-const Backdrop: React.FC<{ kind: Design["backdrop"] }> = ({ kind }) => {
+export const Backdrop: React.FC<{ kind: Design["backdrop"] }> = ({ kind }) => {
   const frame = useCurrentFrame();
   const drift = `${frame * 0.3}px ${frame * 0.15}px`;
   if (kind === "paper") return (

@@ -565,5 +565,37 @@
         }
       ]
     }
+  ],
+  "thumbnails": [
+    {
+      "layout": "face",
+      "lines": [
+        "Robots",
+        "*at work*"
+      ],
+      "image": "assets/dm_merc_36s.png",
+      "focus": "55% 35%",
+      "label": "NEWS"
+    },
+    {
+      "layout": "stat",
+      "stat": "96%",
+      "lines": [
+        "in a real",
+        "*car factory*"
+      ],
+      "image": "assets/dm_merc_8s.png",
+      "focus": "30% 40%"
+    },
+    {
+      "layout": "split",
+      "lines": [
+        "Robots leave",
+        "the *lab*"
+      ],
+      "image": "assets/dm_merc_8s.png",
+      "image2": "assets/p_jumper.png",
+      "focus": "25% 30%"
+    }
   ]
 }
