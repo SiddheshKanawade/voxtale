@@ -1,0 +1,52 @@
+{
+  "title": "Physical AI Daily",
+  "date": "November 13, 2026",
+  "voice": "en-US-AndrewNeural",
+  "segments": [
+    {
+      "id": "intro",
+      "kind": "title",
+      "headline": "A humanoid on a Mercedes line, and robots that run on sunlight",
+      "narration": "This is Physical AI Daily for November thirteenth. Today: Google DeepMind's new robot model, the factory test behind it, and tiny robots that run on nothing but sunlight."
+    },
+    {
+      "id": "s1",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Gemini Robotics 2.5",
+      "source": "deepmind.google",
+      "sourceDate": "Nov 10, 2026",
+      "url": "https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/",
+      "visuals": ["assets/s1_hero.png", "assets/s1_quote.png"],
+      "narration": "Google DeepMind released Gemini Robotics 2.5, which it calls its most capable vision language action model so far. DeepMind tested it on more than two hundred tasks, like serving food with tongs, tying a bow on a gift box, and pipetting liquid. Compared to its previous models, it reports a thirty to one hundred percent higher success rate, and tasks finished twenty to thirty percent faster. Those are DeepMind's own numbers. There is no independent evaluation yet."
+    },
+    {
+      "id": "s2",
+      "kind": "story",
+      "label": "ON X",
+      "headline": "96% on a real production line",
+      "source": "x.com/GoogleDeepMind",
+      "sourceDate": "Nov 10, 2026",
+      "url": "https://x.com/GoogleDeepMind/status/2120169796184478162",
+      "visuals": ["assets/s2_tweet.png"],
+      "narration": "The more interesting part is where they tested it. On X, DeepMind shared that Apptronik's Apollo 2 humanoid, running Gemini Robotics 2.5, picked and organized car parts on Mercedes-Benz production lines with ninety six percent accuracy. It's a proof of concept, not a fleet deployment. But it's a factory, not a lab."
+    },
+    {
+      "id": "s3",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "SunLightBots",
+      "source": "arXiv:2611.14729",
+      "sourceDate": "Nov 10, 2026",
+      "url": "https://arxiv.org/abs/2611.14729",
+      "visuals": ["assets/s3_hero.png", "assets/s3_quote.png", "assets/s3_fig1.png"],
+      "narration": "And from arXiv: SunLightBots. Researchers built soft robots weighing less than a gram that move under ordinary sunlight, about one sun of intensity. A liquid crystal elastomer slowly stores the light's energy, then snaps through, releasing it as fast motion, peaking at eighty nine watts per kilogram. They show the robots swimming, crawling, and jumping, with no battery and no tether."
+    },
+    {
+      "id": "outro",
+      "kind": "title",
+      "headline": "Sources in the description",
+      "narration": "Links to every source are in the description. That's Physical AI Daily. See you tomorrow."
+    }
+  ]
+}

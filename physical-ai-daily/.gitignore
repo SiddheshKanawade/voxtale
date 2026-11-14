@@ -1,0 +1,14 @@
+# Generated or third-party content stays local: environments, renders, voiced audio, captured source screenshots.
+node_modules/
+.venv*/
+episodes/*/assets/
+episodes/*/audio/
+episodes/*/out/
+episodes/*/qa/
+episodes/*/props.json
+voicelab/samples/
+voicelab/leveled/
+voicelab/blind/
+voicelab/analysis/
+voicelab/*.html
+*.wav

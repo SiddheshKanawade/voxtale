@@ -1,0 +1,13 @@
+{
+  "_note": "Starter list. Edit freely: these are the accounts and categories the daily discovery pass reads.",
+  "arxiv_categories": ["cs.RO"],
+  "x_accounts": [
+    "GoogleDeepMind", "Figure_robot", "Tesla_Optimus", "BostonDynamics", "Apptronik", "agilityrobotics",
+    "UnitreeRobotics", "physical_int", "1x_tech", "NVIDIARobotics", "DrJimFan", "chelseabfinn", "svlevine",
+    "TheHumanoidHub", "therobotreport"
+  ],
+  "news_queries": [
+    "humanoid robot news", "physical AI announcement", "robot foundation model", "robotics funding round",
+    "vision-language-action model release"
+  ]
+}

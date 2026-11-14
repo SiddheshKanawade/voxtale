@@ -1,0 +1,558 @@
+{
+  "title": "Physical AI Daily",
+  "date": "November 13, 2026",
+  "voice": "en-US-AndrewNeural",
+  "segments": [
+    {
+      "id": "intro",
+      "kind": "title",
+      "headline": "Physical AI Daily",
+      "beats": [
+        {
+          "narration": "Robots are leaving the lab, and this week we got two very different examples of what that looks like.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_5s.png",
+            "overlay": "Robots are leaving the lab",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "One is a humanoid sorting car parts in a real Mercedes-Benz factory. The other is a robot that weighs less than a gram and runs on light.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/dm_merc_12s.png",
+                "label": "Humanoid in a car factory",
+                "cue": "humanoid"
+              },
+              {
+                "src": "assets/p_jumper.png",
+                "label": "Robot powered by light",
+                "cue": "other"
+              }
+            ],
+            "credit": "Google DeepMind · Lee et al., arXiv:2611.14729 (CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "Let's break both down in plain English. No robotics degree needed.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Two stories. Plain English.",
+            "sub": "November 13, 2026"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Google's robot brain goes to the factory",
+      "source": "deepmind.google · x.com/GoogleDeepMind",
+      "sourceDate": "Nov 10, 2026",
+      "urls": [
+        "https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/",
+        "https://x.com/GoogleDeepMind/status/2120169796184478162"
+      ],
+      "beats": [
+        {
+          "narration": "Story one. Google DeepMind just released Gemini Robotics 2.5.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s1_hero.png"
+          }
+        },
+        {
+          "narration": "The easiest way to think about it: it's not a robot. It's a brain that can be put into many different robots, from humanoids to two-armed robots.",
+          "visual": {
+            "type": "hub",
+            "center": {
+              "icon": "🧠",
+              "label": "Gemini Robotics 2.5"
+            },
+            "spokes": [
+              {
+                "icon": "🤖",
+                "label": "Humanoids",
+                "sub": "Apptronik Apollo 2",
+                "cue": "put"
+              },
+              {
+                "icon": "🦾",
+                "label": "Two-armed robots",
+                "sub": "Franka Duo",
+                "cue": "many"
+              },
+              {
+                "icon": "➕",
+                "label": "Other robot types",
+                "cue": "different"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Researchers call this kind of model a V L A. Vision, language, action.",
+          "visual": {
+            "type": "acronym",
+            "letters": [
+              {
+                "letter": "V",
+                "word": "Vision"
+              },
+              {
+                "letter": "L",
+                "word": "Language"
+              },
+              {
+                "letter": "A",
+                "word": "Action"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "The robot sees what's in front of it, understands an instruction written in everyday language, and turns that into hand and arm movements.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "👁️",
+                "label": "Sees",
+                "sub": "the scene in front of it",
+                "cue": "sees"
+              },
+              {
+                "icon": "💬",
+                "label": "Understands",
+                "sub": "an everyday instruction",
+                "cue": "understands"
+              },
+              {
+                "icon": "🤲",
+                "label": "Acts",
+                "sub": "moves hands and arms",
+                "cue": "turns"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "DeepMind tested it on more than two hundred different tasks.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_grid_4s.png",
+            "badge": "200+ tasks tested",
+            "badgeCue": "two",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "Things like serving food with tongs, tying a bow on a gift box, and using a pipette like a lab technician.",
+          "visual": {
+            "type": "flow",
+            "arrows": false,
+            "steps": [
+              {
+                "icon": "🍰",
+                "label": "Serving food",
+                "sub": "with tongs",
+                "cue": "serving"
+              },
+              {
+                "icon": "🎀",
+                "label": "Tying a bow",
+                "sub": "on a gift box",
+                "cue": "tying"
+              },
+              {
+                "icon": "🧪",
+                "label": "Pipetting",
+                "sub": "like a lab technician",
+                "cue": "pipette"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Here's the robot working on that gift box.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_hero_5s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "Compared with Google's previous version, it succeeds thirty to one hundred percent more often, depending on the task, and works twenty to thirty percent faster.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 100,
+                "prefix": "+30–",
+                "suffix": "%",
+                "label": "higher success rate",
+                "cue": "thirty"
+              },
+              {
+                "from": 0,
+                "to": 30,
+                "prefix": "20–",
+                "suffix": "%",
+                "label": "faster",
+                "cue": "twenty"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "One caveat worth remembering. These are Google's own numbers. Nobody has independently checked them yet.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s1_quote.png",
+            "stamp": "Self-reported"
+          }
+        },
+        {
+          "narration": "The bigger news is where they tested it.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Lab → Factory"
+          }
+        },
+        {
+          "narration": "Google worked with robot maker Apptronik and Mercedes-Benz to put the model inside Apptronik's Apollo humanoid,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_2s.png",
+            "pan": "out",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "on real production lines in Germany and Hungary.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_12s.png",
+            "tags": [
+              "Sindelfingen, Germany",
+              "Kecskemét, Hungary"
+            ],
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "The job is called kitting. Parts arrive mixed together in big bins, and someone has to pick the right ones and lay them into trays, in the exact order each car needs.",
+          "visual": {
+            "type": "kitting"
+          }
+        },
+        {
+          "narration": "It's repetitive, physically tiring work, and it keeps the whole assembly line moving.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_15s.png",
+            "pan": "right",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "The result? A ninety-six percent success rate.",
+          "visual": {
+            "type": "stat",
+            "side": "assets/s2_tweet.png",
+            "items": [
+              {
+                "from": 0,
+                "to": 96,
+                "suffix": "%",
+                "label": "success rate on the line",
+                "cue": "ninety"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "And Apptronik's CEO says the model improved dramatically in just a few weeks of extra training.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s1_ceo_quote.png"
+          }
+        },
+        {
+          "narration": "That's the big bet in physical AI. Instead of programming a custom machine for every job, you train one general brain, and teach it new jobs quickly.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🛠️",
+              "title": "Old way",
+              "sub": "A custom-programmed machine for every task",
+              "cue": "programming"
+            },
+            "right": {
+              "icon": "🧠",
+              "title": "The new bet",
+              "sub": "One general brain that learns new jobs fast",
+              "cue": "train"
+            }
+          }
+        },
+        {
+          "narration": "But keep it in perspective. This was a proof of concept, not a fleet of robots working the line every day.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Real factory, real car parts"
+              },
+              {
+                "status": "ok",
+                "text": "96% success in the pilot"
+              },
+              {
+                "status": "no",
+                "text": "Not a full deployment yet"
+              },
+              {
+                "status": "no",
+                "text": "Not independently verified"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "Robots that run on sunlight",
+      "source": "arXiv:2611.14729 (CC BY 4.0)",
+      "sourceDate": "Nov 10, 2026",
+      "urls": [
+        "https://arxiv.org/abs/2611.14729"
+      ],
+      "beats": [
+        {
+          "narration": "Story two is a research paper, and it's a clever one.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s3_hero.png"
+          }
+        },
+        {
+          "narration": "Almost every robot runs on a battery. When the battery dies, the robot stops, and someone has to recharge it.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🔋",
+                "label": "Charged",
+                "sub": "robot works",
+                "cue": "battery"
+              },
+              {
+                "icon": "🪫",
+                "label": "Drained",
+                "sub": "robot stops",
+                "cue": "dies"
+              },
+              {
+                "icon": "🧑‍🔧",
+                "label": "Recharge",
+                "sub": "a human steps in",
+                "cue": "recharge"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "These researchers built soft robots that weigh less than a gram and carry no battery at all. Their only power source is light.",
+          "visual": {
+            "type": "panels",
+            "items": [
+              {
+                "src": "assets/p_swimmer.png",
+                "label": "Swimmer"
+              },
+              {
+                "src": "assets/p_crawler.png",
+                "label": "Crawler"
+              },
+              {
+                "src": "assets/p_jumper.png",
+                "label": "Jumper"
+              }
+            ],
+            "credit": "Figure: Lee et al., arXiv:2611.14729 (CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "But there's a problem. Sunlight is gentle. It delivers energy slowly, while jumping or swimming needs a quick burst.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "☀️",
+              "title": "Sunlight",
+              "sub": "A slow, steady trickle of energy",
+              "cue": "sunlight"
+            },
+            "right": {
+              "icon": "⚡",
+              "title": "Jumping",
+              "sub": "Needs a sudden burst",
+              "cue": "jumping"
+            }
+          }
+        },
+        {
+          "narration": "Their solution works like a mousetrap.",
+          "visual": {
+            "type": "kinetic",
+            "text": "🪤 Like a mousetrap"
+          }
+        },
+        {
+          "narration": "A special material warms up in the light and slowly bends a tiny curved strip, storing up energy, until the strip suddenly snaps the other way and releases it all at once.",
+          "visual": {
+            "type": "snap"
+          }
+        },
+        {
+          "narration": "You can see it in the paper's jumping test. The robot sits under the light, loading up. Then it snaps and hops into the air, and resets to do it again.",
+          "visual": {
+            "type": "panels",
+            "items": [
+              {
+                "src": "assets/p_jump_t30.png",
+                "label": "Loading",
+                "cue": "sits"
+              },
+              {
+                "src": "assets/p_jump_t73.png",
+                "label": "Snap!",
+                "cue": "snaps"
+              },
+              {
+                "src": "assets/p_jump_t74.png",
+                "label": "Landing",
+                "cue": "hops"
+              },
+              {
+                "src": "assets/p_jump_t120.png",
+                "label": "Reset",
+                "cue": "resets"
+              }
+            ],
+            "credit": "Figure 7c: Lee et al., arXiv:2611.14729 (CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "In the paper, it jumped more than twenty times in a row without losing height.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/p_jump_chart.png",
+            "fit": "contain",
+            "badge": "20+ jumps in a row",
+            "credit": "Figure 7d: Lee et al., arXiv:2611.14729 (CC BY 4.0)",
+            "badgeCue": "twenty"
+          }
+        },
+        {
+          "narration": "The swimmer uses the same snap to push itself through water, moving more than three body lengths every cycle.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/p_swim_seq.png",
+            "fit": "contain",
+            "credit": "Figure 5c: Lee et al., arXiv:2611.14729 (CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "And at its peak, the mechanism puts out eighty-nine watts per kilogram.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 89,
+                "suffix": " W/kg",
+                "label": "peak power from light",
+                "cue": "eighty"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "That's more than earlier light-powered designs managed with comparable light, according to the paper's own comparison.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/p_power_chart.png",
+            "fit": "contain",
+            "credit": "Figure 1d: Lee et al., arXiv:2611.14729 (CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "One honest caveat. The core mechanism works at roughly the strength of natural sunlight, but the robot demos used one and a half to two times that, in a lab.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Mechanism works near 1× sunlight",
+                "cue": "core"
+              },
+              {
+                "status": "warn",
+                "text": "Robot demos used 1.5–2× sunlight",
+                "cue": "demos"
+              },
+              {
+                "status": "warn",
+                "text": "Lab research, not a product",
+                "cue": "lab"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Still, it points toward tiny machines that power themselves from their surroundings,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/p_jumper.png",
+            "fit": "contain",
+            "overlay": "Powered by its environment",
+            "credit": "Figure: Lee et al., arXiv:2611.14729 (CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "with no charger, and no one needed to recharge them.",
+          "visual": {
+            "type": "kinetic",
+            "text": "No charger. No battery."
+          }
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "kind": "title",
+      "headline": "Physical AI Daily",
+      "beats": [
+        {
+          "narration": "That's Physical AI Daily. Every source is linked in the description. If this was useful, subscribe, and I'll break down tomorrow's stories the same way.",
+          "visual": {
+            "type": "end",
+            "subscribeCue": "subscribe"
+          }
+        }
+      ]
+    }
+  ]
+}

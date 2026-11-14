@@ -1,0 +1,1 @@
+Robots are leaving the lab, and this week we got two very different examples of what that looks like. Their solution works like a mousetrap. A special material warms up in the light and slowly bends a tiny curved strip, storing up energy, until the strip suddenly snaps the other way and releases it all at once. The result? A ninety-six percent success rate.
