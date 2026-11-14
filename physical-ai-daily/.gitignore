@@ -20,3 +20,8 @@ p2a_topics.json
 
 # Scheduled NewsData pulls (tools/news_daily.sh): third-party headlines and descriptions.
 news/
+
+# Research working files: third-party text (harvests, triage batches, chatter).
+episodes/*/candidates*.json
+episodes/*/triage/
+episodes/*/chatter/
