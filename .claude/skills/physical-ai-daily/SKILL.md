@@ -24,10 +24,9 @@ video/src/brand.tsx          Pixels2Actions logo mark, wordmark, lockup, and the
 episodes/<date>[-slug]/      episode.json, assets/, audio/, qa/, out/
 ```
 
-**Reference episode: `episodes/2026-11-14-sample-v5-brand/`** (2 stories, about 4:03, 36 beats; v2's script with the
-frozen voice and branding). Copy its `episode.json` shape, including the `tts`/`voice`/`model` keys.
-v1 (`2026-11-13-sample/`, one static screenshot per story) is obsolete: the user dropped off midway. Too little
-motion, and too technical.
+**Reference episode: `episodes/2026-11-14-sample-v7-blueprint/`** (frozen 2026-11-14: 2 stories, 4:04, 36 beats).
+Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-beat `section`, and `thumbnails`.
+`episodes/2026-11-14-sample-v7-blueprint-light/` is the same episode in the light design.
 
 ## Audience and pacing (user feedback, 2026-11-13)
 
@@ -130,14 +129,33 @@ six Eleven v4 voices (`docs/voice-research.md` sections 7b–9).
 
 Higgsfield MCP has image models (Nano Banana Pro/2, GPT Image 2.6, FLUX), but the account had **0 credits** on 2026-11-13. Check `balance` first. Use synthetic images only for explainer diagrams or concepts with no source visual, and never for something that looks like a real event or product.
 
-## Format (current: v0.3, 16:9 long-form, branded 2026-11-14)
+## Format (FROZEN 2026-11-14: v1.0, 16:9 long-form; the user approved it)
 
-Dark background with a drifting grid of faint square pixels. Brand colours: red `#f43f2e` for the label chips and the
-chapter progress bar, yellow `#f0c945` as the accent and caption highlight. The top bar holds the Pixels2Actions lockup
-plus the date, then the label chip + headline + "STORY n/N", a credit chip on every beat, and punctuated word-synced
-captions grouped at clause breaks. A 1.6 s silent logo sting plays after the cold open (`brand.tsx`, inserted by
-`timeline()` after the `title` segment). The end card shows the lockup, "Sources linked in the description" and
-Subscribe, with no URL. A Short (9:16) version isn't built yet.
+Don't change the identity without the user's say-so. The research behind it is in `docs/brand.md` (identity),
+`docs/attention.md` (what holds attention) and `docs/thumbnails.md`.
+
+- **Design:** `"design": "blueprint"` (default): near-black `#0a0a0b` with a fine **static** engineering grid.
+  `"blueprint-light"` is the approved alternative: warm paper `#fbfaf7`, ink grid and text; photos become framed cards.
+  The other candidates in `video/src/design.ts` (charcoal, paper, signal, aurora) are unused.
+- **Brand:** top bar = Pixels2Actions lockup (logo mark + wordmark, `brand.tsx`) + date. Red `#f43f2e` for label chips
+  and the chapter progress bar; yellow `#f0c945` for accents and the spoken-word caption highlight.
+- **Sonic logo** (`tools/brand_audio.py`, generated, original): plays only in silent gaps, with the 1.6 s logo sting
+  after the cold open and on a 1.6 s end-card tail. Never under the voice.
+- **Named sections** recur in every story, as a visual chip only (no sound): set `"section"` on the beat where it
+  starts. Values: `plain` (In plain English), `evidence` (The evidence), `matters` (Why it matters), `reality`
+  (Reality check). The caveat beat's narration opens with "Reality check."
+- **Every beat:** label chip + headline + "STORY n/N", credit chip, and **captions (required, the user's call)**:
+  punctuated, word-synced, grouped at clause breaks.
+- **Attention rules** (`docs/attention.md`): no moving or decorative backgrounds; no music or effects under speech;
+  one focal element per beat; a new visual every 5–7 s; the first item on screen within 0.4 s; episodes under about
+  6 min.
+- **End card:** lockup, "Sources linked in the description", Subscribe. Never the website, URL or newsletter. The outro
+  narration opens "That's Pixels to Actions."
+- **Thumbnails:** use the `youtube-thumbnails` skill. It researches first, makes 5–7 candidates, rubric-scores them,
+  picks one, and keeps two runners-up for Test & Compare.
+- **Light-mode QA:** after any visual change, sample about 15 frames across the render (dark and light) and look for
+  empty stages, washed-out media and colours that only work on dark.
+- A Short (9:16) version isn't built yet.
 
 ## Copyright
 

@@ -1,4 +1,4 @@
-# Channel identity (proposal, 2026-11-14; awaiting the user's confirmation)
+# Channel identity (FROZEN 2026-11-14: approved by the user; the skill's Format section is the summary)
 
 **Goal:** anyone who sees a video can tell it's from this channel, without the video advertising Pixels2Actions or the
 website. The user likes the name and logo in the top bar and found the old navy background bluish and dated.

@@ -1,7 +1,7 @@
 import { C } from "./theme";
 
-// Channel design directions (docs/brand.md). An episode picks one with "design" in episode.json; the default is
-// "charcoal". applyDesign() overwrites the shared colour tokens in C before the episode renders, so every scene follows.
+// Channel design directions (docs/brand.md). An episode picks one with "design" in episode.json. Frozen 2026-11-14:
+// "blueprint" is the default and "blueprint-light" the approved alternative; the others were candidates. applyDesign() overwrites the shared colour tokens in C before the episode renders, so every scene follows.
 export type Design = {
   colors: Partial<typeof C>;
   backdrop: "pixels" | "paper" | "blueprint" | "signal" | "aurora";
@@ -49,10 +49,10 @@ export const DESIGNS: Record<string, Design> = {
 
 const BASE = { ...C };
 
-export let current: Design = DESIGNS.charcoal;
+export let current: Design = DESIGNS.blueprint;
 
 export const applyDesign = (name?: string): Design => {
-  current = DESIGNS[name ?? "charcoal"] ?? DESIGNS.charcoal;
+  current = DESIGNS[name ?? "blueprint"] ?? DESIGNS.blueprint;
   Object.assign(C, BASE, current.colors);
   return current;
 };

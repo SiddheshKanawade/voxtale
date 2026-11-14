@@ -21,7 +21,7 @@ def main(ep_dir: Path, designs: list[str]) -> None:
     ep_dir = ep_dir.resolve()  # remotion runs from video/, so paths must be absolute
     ep = json.loads((ep_dir / "episode.json").read_text())
     variants = ep.get("thumbnails") or sys.exit("episode.json has no \"thumbnails\" list")
-    designs = designs or [ep.get("design", "charcoal")]
+    designs = designs or [ep.get("design", "blueprint")]
     out = ep_dir / "out"
     out.mkdir(exist_ok=True)
     made = []
