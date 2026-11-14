@@ -53,8 +53,9 @@ Renderer: `physical-ai-daily/tools/thumbnails.py`.
 
 Thumbnail practice and YouTube's tools change, so don't rely only on the evidence above. Before designing:
 
-1. **Search aggressively, not a token check.** Run at least 8–10 searches, sent in parallel batches, and use `extended`
-   mode for anything recent or niche. Cover all of these angles:
+1. **Search aggressively, not a token check.** Decide how many searches based on the episode's topics and what
+   turns up. Send them in parallel batches, and use `extended` mode for anything recent or niche. Cover all of these
+   angles:
    - new thumbnail studies and data (`YouTube thumbnail study <current year>`, `thumbnail CTR analysis`, vidIQ / 1of10
      / eden.so research)
    - YouTube's own changes: Test & Compare, the Studio packaging and title-test features, Creator Insider, YouTube Help
