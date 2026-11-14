@@ -16,6 +16,7 @@ tools/discover.py            arXiv + X + news candidates with signals and priors
 tools/credits.py             remaining credit per paid source (twitterapi.io, NewsData, ElevenLabs, Render)
 tools/triage_batches.py      harvest -> reading batches for triage subagents
 tools/chatter.py             what X, HN and YouTube say about one story
+tools/news_daily.sh          scheduled NewsData pull (launchd via tools/install_news_schedule.sh) into news/
 tools/capture.mjs            page / tweet / element / video-frame screenshots via installed Chrome, in-page highlight
 tools/crop.py                crop a figure panel (fractions) + write its metadata json
 tools/voice.py               episode.json -> audio/<seg>_<beat>.wav + props.json (word timings, punctuation, media metadata)

@@ -17,8 +17,9 @@ physical-ai-research skill), not by cosine similarity.
 | News   | NewsData.io /latest, title match, paged (covers ~36 h only)               | NEWSDATAIO (else skipped)       |
 | HN     | Algolia, points floor. Off by default (mostly off-topic); tools/chatter.py searches HN per story instead | none |
 
-The sources run in parallel. News only reaches back about 36 h on the free plan, so for a weekly episode either run
-`--only news` daily and --merge the files, or cover older news with web search. A missing key or a failing source
+The sources run in parallel. News only reaches back about 36 h on the free plan, so a launchd job
+(tools/install_news_schedule.sh) pulls news twice a day into news/ (git-ignored), and every harvest that includes news
+folds in the saved items inside its window. Days the Mac was off still need web search. A missing key or a failing source
 degrades to "no items" with a line on stderr; it never sinks the run.
 
 Every item gets:
@@ -170,6 +171,17 @@ def _alphaxiv(pid: str) -> dict:
     }
 
 
+def _openalex_orgs(pid: str) -> list[str]:
+    # Fallback when alphaXiv has no organisations for a paper (or its undocumented endpoint breaks). OpenAlex indexes
+    # arXiv papers 2-4 days after submission and fills institutions later still, so it mostly helps older papers.
+    try:
+        w = json.loads(get(f"https://api.openalex.org/works/doi:10.48550/arXiv.{pid}"))
+    except Exception:
+        return []
+    return list(dict.fromkeys(i["display_name"] for a in w.get("authorships") or [] for i in a.get("institutions") or []
+                              if i.get("display_name")))
+
+
 def _hf_daily(since: datetime) -> dict[str, dict]:
     # Hugging Face's curated Daily Papers, by ISO week (paged 100 at a time). Covers only a few % of arXiv, so absence
     # means little; presence and upvotes mean a lot.
@@ -212,6 +224,10 @@ def paper_signals(papers: list[dict]) -> None:
     hf = _hf_daily(min((datetime.fromisoformat(p["published"]) for p in papers), default=datetime.now(timezone.utc)))
     with ThreadPoolExecutor(4) as pool:
         ax = list(pool.map(lambda p: _alphaxiv(p["id"]), papers))
+        missing = [i for i, a in enumerate(ax) if not a.get("orgs")]
+        for i, orgs in zip(missing, pool.map(lambda i: _openalex_orgs(papers[i]["id"]), missing)):
+            if orgs:
+                ax[i] = {**ax[i], "orgs": orgs, "orgs_from": "openalex"}
     lookups = 0
     for p, a in zip(papers, ax):
         h = hf.get(p["id"], {})
@@ -228,7 +244,8 @@ def paper_signals(papers: list[dict]) -> None:
             "venue": next(iter(re.findall(r"(?:accepted|to appear|published) (?:at|to|in|by) ([^.;,]+)", p.get("comment", ""),
                                           re.I)), None),
         }
-    log(f"papers: signals for {len(papers)} ({sum(1 for a in ax if a)} on alphaXiv, "
+    log(f"papers: signals for {len(papers)} ({sum(1 for a in ax if 'ax_votes' in a)} on alphaXiv, "
+        f"{sum(1 for a in ax if a.get('orgs_from'))} orgs from OpenAlex, {sum(1 for a in ax if not a.get('orgs'))} without orgs, "
         f"{sum(1 for p in papers if p['signals']['hf_upvotes'])} on HF Daily Papers, "
         f"{sum(1 for p in papers if p['signals']['github'])} with code)")
 
@@ -498,14 +515,32 @@ def merge(items: list[dict], topics: list[dict], cfg: dict) -> list[dict]:
     return sorted(by_url.values(), key=lambda i: i["published"], reverse=True)
 
 
+def saved_news(since: datetime) -> list[dict]:
+    # The scheduled pull (tools/news_daily.sh, twice a day) saves news/news-<stamp>.json, because NewsData's free plan
+    # only reaches back ~36 h. A weekly harvest folds in every saved item inside its window; merge() dedupes them.
+    out, files = [], sorted((ROOT / "news").glob("news-*.json"))
+    for f in files:
+        try:
+            out += [it for it in json.loads(f.read_text()) if datetime.fromisoformat(it["published"]) >= since]
+        except (ValueError, KeyError) as ex:
+            log(f"news: skipped {f.name}: {ex}")
+    if files:
+        log(f"news: {len(out)} saved items in the window from {len(files)} scheduled pulls "
+            f"({files[0].stem[5:]} to {files[-1].stem[5:]})")
+    else:
+        log("news: no scheduled pulls saved (tools/install_news_schedule.sh); older news needs web search")
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=float, default=7, help="window, counted back from now (one episode per week)")
     ap.add_argument("--only", default="arxiv,x,news", help="comma list from arxiv,x,news,hn")
     ap.add_argument("--merge", nargs="+", metavar="JSON", help="merge earlier harvests instead of fetching")
+    ap.add_argument("--no-sync", action="store_true", help="skip the topic sync (only for the scheduled news pull)")
     args = ap.parse_args()
     cfg = json.loads((ROOT / "sources.json").read_text())
-    topics = load_topics(sync=not args.merge)
+    topics = load_topics(sync=not (args.merge or args.no_sync))
 
     if args.merge:
         items = [it for f in args.merge for it in json.loads(Path(f).read_text())]
@@ -539,6 +574,8 @@ def main() -> None:
 
         with ThreadPoolExecutor(len(runs)) as pool_:
             items = [it for got in pool_.map(safe, [n for n in runs if n in only]) for it in got]
+        if "news" in only and not args.no_sync:  # the scheduled pull itself saves only what it fetched
+            items += saved_news(since)
     merged = merge(items, topics, cfg)
     log(f"total: {len(merged)} after dedup, {sum(1 for i in merged if i['mentions'])} with cross-source mentions, "
         f"{sum(1 for i in merged if i['topics'])} tagged with a digest topic")

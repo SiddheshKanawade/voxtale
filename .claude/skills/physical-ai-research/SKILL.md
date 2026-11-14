@@ -19,7 +19,8 @@ The P2A digest (prazo5) is daily; this channel is weekly.
 | `discover.py` | Syncs the digest topics, harvests arXiv + X + news, adds signals and priors, dedupes |
 | `sync_p2a_topics.py` | The topic sync on its own (discover.py calls it) |
 | `triage_batches.py` | Splits the harvest into reading batches for triage subagents |
-| `chatter.py` | What X, HN and YouTube say about one story |
+| `chatter.py` | What X, HN and YouTube (views, descriptions, top comments) say about one story |
+| `news_daily.sh`, `install_news_schedule.sh` | Twice-daily saved news pull (launchd), folded into the weekly harvest |
 
 Config: `physical-ai-daily/sources.json` (our accounts, arXiv terms, news queries, org tiers). Digest topics:
 `physical-ai-daily/p2a_topics.json` (git-ignored; the repo is public and the prompts are the digest's edge).
@@ -59,8 +60,11 @@ hint, not a score; untagged items can still be the week's biggest story.
 - **Run `credits.py` first.** It prints OK / LOW / OUT / MISSING per source (twitterapi.io balance, each pooled NewsData
   key's credits left today, ElevenLabs characters, Render access) and exits 1 if a harvest source is out. Tell the user
   which sources will run degraded before harvesting, and make up for them with web search. Never print a key.
-- **News reaches back only ~36 h** on the NewsData free plan. If daily `discover.py --only news` files exist in the
-  episode folder, merge them; otherwise cover the older days with web search and say so in `research.md`.
+- **News reaches back only ~36 h** on the NewsData free plan, so a launchd job on this Mac
+  (`tools/install_news_schedule.sh`, already installed; `--remove` uninstalls) pulls news at 08:00 and 20:00 into
+  `physical-ai-daily/news/` (git-ignored, kept 21 days, log in `news/pull.log`). The weekly harvest folds those saved
+  items in automatically and says on stderr how many pulls it found. Gaps (days the Mac was off) need web search; say
+  so in `research.md`.
 
 ### 1. Harvest
 
@@ -74,7 +78,7 @@ python3 -I physical-ai-daily/tools/discover.py --merge <ep>/candidates-*.json > 
   stops. Report a failed sync.
 - **arXiv is exhaustive:** all of cs.RO, plus cs.CV / cs.LG / cs.AI / eess.SY papers whose title or abstract contains
   any of our terms or any of the ~90 digest keywords. Papers then get `signals` (alphaXiv organisations, votes, 7-day
-  visits, researcher h-index; Hugging Face Daily Papers upvotes, code repo and stars, demo video, project page, venue
+  visits, researcher h-index, with OpenAlex as the fallback for organisations; Hugging Face Daily Papers upvotes, code repo and stars, demo video, project page, venue
   from the authors' comment; X accounts that posted it) and a `prior` (see Ranking). About 350 papers a week; the paper
   step alone takes ~4 min.
 - **X:** our accounts plus ~120 digest accounts in `from:` batches of 10, plus the digest keywords with a likes floor.
@@ -142,7 +146,8 @@ python3 -I physical-ai-daily/tools/chatter.py "<story name>" --url <primary url>
   excited, who's sceptical, which experts weighed in.
 - **Hacker News:** all-time search; the comments are where experts push back.
 - **YouTube:** who has already covered it and with how many views (trend signal, and an angle to avoid repeating).
-  Captions of the top videos when YouTube allows (best-effort; it rate-limits caption downloads).
+  For the top 3 videos: upload date, likes, the full description (channels often summarise the story there) and the
+  top 20 comments. Captions with `--transcripts` are best-effort (YouTube often answers caption downloads with 429).
 - **Reddit and forums:** web search (`site:reddit.com <name>`, r/robotics, r/MachineLearning, r/singularity) and
   respected blogs or forums. Reddit blocks unauthenticated API reads.
 
@@ -263,13 +268,17 @@ Useful snippets not yet confirmed by a full article: quote, outlet, URL, "trunca
 Notable items cut at triage or verification, each with the reason ("no primary source", "announced in September").
 ```
 
+Also write `<ep>/scores.json`: one row per scored cluster (picked or not) with S and every term, in the format in
+`physical-ai-daily/docs/research-tuning.md`. That's what tunes the weights later.
+
 Show the shortlist to the user before scripting, unless they said to run unattended. Then hand off to the
 `physical-ai-daily` skill (step 4, `episode.json`).
 
 ## Keep improving
 
-- **Tune the weights** after 4–6 episodes against what performed (YouTube retention per story segment). Today's
-  weights rest on correlational studies (papers) and editorial judgement guided by news-values research (stories).
+- **Tune the weights** after 4–6 episodes against what performed (YouTube retention per story segment), following
+  `physical-ai-daily/docs/research-tuning.md`. Today's weights rest on correlational studies (papers) and editorial
+  judgement guided by news-values research (stories).
 - **Add good finds to `sources.json`:** an account that broke a story goes in `x_accounts`, a lab that keeps showing
   up in strong papers goes in `orgs_lab`, a query that found something the harvest missed goes in `news_queries`.
 - **Note failures** (sources down, credits out, false leads) in the run's `research.md`.

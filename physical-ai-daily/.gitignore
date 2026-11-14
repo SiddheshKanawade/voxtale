@@ -15,5 +15,8 @@ voicelab/*.html
 episodes/*/brand/
 episodes/*/designs/
 
-# Newsletter topic profiles synced from prazo5 (tools/sync_p2a_topics.py): private, the repo is public.
+# Digest topic profiles synced from prazo5 (tools/sync_p2a_topics.py): private, the repo is public.
 p2a_topics.json
+
+# Scheduled NewsData pulls (tools/news_daily.sh): third-party headlines and descriptions.
+news/
