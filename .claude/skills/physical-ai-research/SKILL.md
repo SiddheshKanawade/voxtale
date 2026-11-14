@@ -1,13 +1,21 @@
 ---
 name: physical-ai-research
-description: Find, triage, verify and rank the day's physical-AI stories (robots, humanoids, embodied and world models, autonomy) for a Pixels2Actions episode (project physical-ai-daily). Harvests arXiv, X (twitterapi.io), NewsData.io and Hacker News with tools/discover.py, widens with as many web searches as the day needs, judges relevance and quality itself (no embeddings), verifies every survivor against its primary source, and writes a scored shortlist to <ep>/research.md. Use when the user asks what happened today in physical AI, to find stories, to research or shortlist an episode, or as step 1 of making an episode.
+description: Find, triage, verify and rank the week's physical-AI stories (robots, humanoids, embodied and world models, autonomy) for the weekly Pixels2Actions episode (project physical-ai-daily). Harvests arXiv, X (twitterapi.io), NewsData.io and Hacker News with tools/discover.py, steered by the newsletter's six topic profiles, widens with as many web searches as the day needs, judges relevance and quality itself (no embeddings), verifies every survivor against its primary source, and writes a scored shortlist to <ep>/research.md. Use when the user asks what happened this week in physical AI, to find stories, to research or shortlist an episode, or as step 1 of making an episode.
 ---
 
 # Story research (Pixels2Actions)
 
-Output: `episodes/<date>[-slug]/research.md`, a shortlist of 3–5 verified stories (plus reserves) that the
-`physical-ai-daily` skill scripts from. Harvester: `physical-ai-daily/tools/discover.py`. Accounts, categories and
-queries: `physical-ai-daily/sources.json`.
+**Cadence:** one long-form video a week covering the week's top 3–5 stories, plus Shorts cut from it to promote it.
+This is unlike the newsletter, which is daily.
+
+**Output:** `episodes/<date>[-slug]/research.md`, a shortlist of 3–5 verified stories plus reserves. The
+`physical-ai-daily` skill scripts from it.
+
+**Files:**
+- Harvester: `physical-ai-daily/tools/discover.py`.
+- Our accounts, categories and queries: `physical-ai-daily/sources.json`.
+- The newsletter's topic profiles: `physical-ai-daily/p2a_topics.json`. It's git-ignored; refresh it with
+  `tools/sync_p2a_topics.py`.
 
 **Lineage.** The harvest methods come from prazo5, the engine behind the user's Pixels2Actions newsletter: batched
 `from:` X queries on twitterapi.io, NewsData.io `/latest` with key pooling, HN Algolia with a points floor, and arXiv by
@@ -28,30 +36,56 @@ the physical world, and why it matters**.
   regulatory events; funding and M&A of $50M or more, or strategically notable; big labs entering or leaving robotics.
 - **Out, unless it touches robots:** chatbots and LLM releases, generic AI funding, crypto, consumer gadgets, market
   research "reports", and listicles.
-- **Borderline: keep it only if you can say in one sentence what changes for a physical system.** Examples: a video
+- **Borderline: keep it only if you can say in one sentence what changes for a physical system.**
+
+**The newsletter's six topics are the depth layer.** They live in `p2a_topics.json`: `vla-generalization`,
+`latent-actions-world-models`, `video-gen-policies`, `human-video-demos`, `teleop-data-collection` and
+`video-reward-eval`. Each has a long hand-tuned prompt naming the systems, papers and benchmarks that matter, and
+these prompts are why the newsletter's coverage of the niche is good. Read the prompts before triage, and use them two
+ways:
+- **To recognise what is significant.** A new model in a line the prompt names (pi0.7, GR00T, V-JEPA, UMI) is
+  news, even when the post is quiet.
+- **To find what a PM would care about inside a research week.** The topics are research-deep, but the channel is not.
+  A topic item makes the video only if it can be explained with an analogy and has a "why it matters". Prefer one
+  strong research story a week over several thin ones.
+
+Every item from `discover.py` carries `topics` tags: keyword hits, or posted by that topic's account. They're a
+lexical hint, not a score. Untagged items can still be the week's biggest story, such as a humanoid deployment. Examples: a video
   model sold as a "world model", or a chip launch aimed at robotics.
 
 ## Workflow
 
 ### 0. Window and keys
 
-- **Window:** since the last episode. The default is the last 36 h for X, news and HN, and 72 h for arXiv, because
-  announcements lag and skip weekends. Check `episodes/` for what the last episode already covered, and don't repeat it
-  unless there's real news on it.
-- **Keys** go in `physical-ai-daily/.env` (git-ignored; never print or commit them):
-  - `TWITTERAPI_IO_KEY`: X search. Billed per tweet returned.
-  - `NEWSDATAIO`: news. One key, or a JSON array of keys to pool free-tier quota.
+- **Window:** the 7 days since the last episode (`--days 7`). Check `episodes/` for what the last episode already
+  covered, and don't repeat it unless there's real news on it.
+- **News only reaches back about 36 h** on the NewsData free plan. Ideally run `discover.py --only news` once a day
+  through the week into `<ep>/candidates-<date>.json` files and merge them. Otherwise, cover the earlier days with web
+  search in step 2, and say so in `research.md`.
+- **Keys** go in `physical-ai-daily/.env` (git-ignored; never print or commit them). They were copied from the
+  prazo5 Render service.
+  - `TWITTERAPI_IO_KEY`: X search. Billed per tweet returned; a weekly run returns about 1,000 tweets.
+  - `NEWSDATAIO`: news, a pool of 3 free keys.
+  - `RENDER_API_KEY`: only for `sync_p2a_topics.py`.
 - **If a key is missing:** `discover.py` says so on stderr and falls back (X) or skips (news). Tell the user which
   source ran degraded, and make up for it with web search in step 2.
 
 ### 1. Harvest
 
 ```
-python3 -I physical-ai-daily/tools/discover.py --hours 36 --paper-hours 72 > <ep>/candidates.json
+python3 -I physical-ai-daily/tools/sync_p2a_topics.py              # optional: refresh the newsletter topics
+python3 -I physical-ai-daily/tools/discover.py --days 7 > <ep>/candidates-<date>.json
+python3 -I physical-ai-daily/tools/discover.py --merge <ep>/candidates-*.json > <ep>/candidates.json
 ```
 
+- **What a weekly run returns:** about 1,500 items in about 5 minutes: ~350 papers, ~1,000 X posts, ~150 news items
+  and ~20 HN posts.
+- **X is the noisiest source.** Big labs post plenty that isn't robotics, such as ChatGPT features or an IPO. Triage
+  drops those quickly.
+
 - **Read the per-source counts on stderr.** A source returning 0 usually means a failure, not a quiet day: check it.
-- **Read every candidate's title or first line.** There are often 100–300, so print them compactly, for example
+- **Read every candidate's title or first line.** A week brings about 1,500, so print them compactly and go source
+  by source, sorted by engagement within X. For example:
   `jq -r '.[] | [.type, (.likes // .points // ""), (.mentions|length), (.title // .text)[:140]] | @tsv'`.
 - **Read the abstracts and full text only for items that pass a first relevance pass.**
 
@@ -62,6 +96,7 @@ another language. Search until new searches stop turning up new stories.
 
 Cover at least these angles:
 
+- **The newsletter topics.** Run one search per topic for the week's releases in the lines its prompt names.
 - **Follow-ups on the strongest leads.** Find the primary source behind every promising tweet or HN post, plus any
   coverage that adds facts.
 - **Newsrooms and blogs** of the big players: DeepMind, NVIDIA, Tesla, Figure, Boston Dynamics, Agility, Apptronik,

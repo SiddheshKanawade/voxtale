@@ -39,6 +39,8 @@ Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-be
 - Prefer real source imagery (video stills from the announcement, paper figure panels) and animated explainers over
   page screenshots. Screenshots appear only for the headline and the highlighted proof sentence.
 - Length is driven by content. Aim for 3–5 stories at 60–110 s each. Don't pad toward a target length.
+- **Cadence (user plan, 2026-11-14):** one long-form video a week with the week's top 3–5 stories, explained as now.
+  Shorts cut from it promote it. This is unlike the newsletter, which is daily.
 
 ## Pipeline
 
