@@ -12,7 +12,7 @@ Project: `physical-ai-daily/` in the voxtale repo. Everything runs locally on th
 
 ```
 sources.json                 accounts, arXiv categories, news queries (user-editable)
-tools/discover.py            arXiv + X candidates -> JSON on stdout
+tools/discover.py            arXiv + X + news + HN candidates -> deduped JSON (physical-ai-research skill)
 tools/capture.mjs            page / tweet / element / video-frame screenshots via installed Chrome, in-page highlight
 tools/crop.py                crop a figure panel (fractions) + write its metadata json
 tools/voice.py               episode.json -> audio/<seg>_<beat>.wav + props.json (word timings, punctuation, media metadata)
@@ -42,9 +42,11 @@ Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-be
 
 ## Pipeline
 
-1. **Discover.** `python3 -I tools/discover.py --hours 36 > <ep>/candidates.json`, plus WebSearch over `news_queries` in `sources.json`.
-2. **Verify every story** (rules below). Drop anything that fails. Never pad to reach 10.
-3. **Rank and pick.** Default: real-world deployment > model/product release > funding > paper > opinion. Prefer stories with a strong visual (figure, video still, chart). Show the shortlist to the user before scripting unless they said to run unattended.
+1. **Research.** Run the `physical-ai-research` skill: harvest (`tools/discover.py`: arXiv, X, NewsData.io, HN),
+   widen with web search, triage, score, and verify. It writes `<ep>/candidates.json` and a scored shortlist in
+   `<ep>/research.md`. Never pad to reach a story count.
+2. **Pick.** Take the shortlist's top 3–5. Show it to the user before scripting unless they said to run unattended.
+3. **Re-check** each pick against the verification rules below while capturing; research doesn't replace them.
 4. **Write `episode.json`.** Segments (`kind` story/title, `label` NEWS / ON X / PAPER, `headline` ≤ 40 chars,
    `source`, `sourceDate`, `urls`), each holding `beats: [{narration, visual}]`. Split narration at sentence or clause
    boundaries so static beats stay ≤ 7 s. `voice.py` prints `WARN` for photo/shot/kinetic beats over the cap.
@@ -105,10 +107,12 @@ The first sample's searches returned two plausible but false items: a "$500M Agi
 
 | Source | Method | Status |
 |---|---|---|
-| arXiv | export.arxiv.org API (`discover.py`), abs/html pages | Reliable. arXiv content is often CC BY; check the license line. |
+| arXiv | export.arxiv.org API (`discover.py`: cs.RO plus keyword-filtered cs.CV/LG/AI), abs/html pages | Reliable. arXiv content is often CC BY; check the license line. |
+| News discovery | NewsData.io `/latest` (`discover.py`, key `NEWSDATAIO`) plus web search | Needs a key; free tier is credit-limited. Without it, web search only. |
+| Hacker News | Algolia API (`discover.py`), points floor | Reliable, no key |
 | News/blogs | `capture.mjs page` (headless Chrome; only ever clicks reject/necessary-only consent buttons) | Reliable for public pages. Paywalls are not bypassed. |
 | Single X post | `capture.mjs tweet <id>` (official embed); `cdn.syndication.twimg.com/tweet-result?id=` for JSON | Reliable without login |
-| X account timelines | `syndication.twitter.com/srv/timeline-profile/...` | **Unreliable:** rate limit 30 per window (got 429s) and sometimes stale (one account returned posts that were months old). Treat as hints. For dependable discovery, use the user's logged-in Chrome (claude-in-chrome) or the paid X API. |
+| X discovery | twitterapi.io `advanced_search` (`discover.py`, key `TWITTERAPI_IO_KEY`): batched `from:` queries plus keyword search with a likes floor | Paid per tweet. Without the key, falls back to `syndication.twitter.com` timelines: **unreliable** (30 per window, sometimes stale) |
 | x.com directly | headless browser | Blank page without login |
 
 ## Voice (frozen 2026-11-14)
