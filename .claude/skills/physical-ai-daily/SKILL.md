@@ -5,7 +5,7 @@ description: Produce an episode of the "Physical AI Daily" YouTube channel — d
 
 # Physical AI Daily
 
-Project: this folder (`physical-ai-daily/`). Everything runs locally on the Mac.
+Project: `physical-ai-daily/` in the voxtale repo. Everything runs locally on the Mac.
 
 ```
 sources.json                 accounts, arXiv categories, news queries (user-editable)

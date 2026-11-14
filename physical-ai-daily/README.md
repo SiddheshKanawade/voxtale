@@ -17,6 +17,6 @@ episode.json (script + visuals per beat)
 | `episodes/` | Episode scripts (`episode.json`). Captured assets, audio and renders are not committed |
 | `voicelab/` | Voice comparison experiments (Edge, Kokoro, Chatterbox) and the objective screen + blind-test generator |
 | `docs/voice-research.md` | Evidence and measurements behind the narration-voice choice |
-| `skill/SKILL.md` | The Claude Code skill that drives episode production |
+| `../.claude/skills/physical-ai-daily/` | The Claude Code skill that drives episode production (symlinked into `~/.claude/skills`) |
 
 Render an episode with `tools/render.sh episodes/<dir>`. Add `--skip-voice` to reuse existing audio.
