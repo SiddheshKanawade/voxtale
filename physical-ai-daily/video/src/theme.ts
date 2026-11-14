@@ -1,5 +1,6 @@
 export const C = {
   bg: "#0f0f11", // neutral charcoal (was navy; user found it bluish and dated)
+  bgRgb: "15,15,17", // bg as r,g,b for fades
   panel: "#1a1a1d",
   panel2: "#242428",
   ink: "#f5f4f2",
@@ -47,7 +48,7 @@ export type Segment = {
   id: string; kind: "title" | "story"; headline: string; label?: string;
   source?: string; sourceDate?: string; beats: Beat[]; duration: number;
 };
-export type EpisodeProps = { title: string; date: string; segments: Segment[] };
+export type EpisodeProps = { title: string; date: string; segments: Segment[]; design?: string; reviewLabel?: string };
 
 // Segment start times in seconds, with the brand sting (stingS long) inserted after the cold-open title segment and
 // an end tail (endS) after the last segment, where the end card holds while the sonic logo plays.

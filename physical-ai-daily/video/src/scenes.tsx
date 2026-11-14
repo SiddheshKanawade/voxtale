@@ -107,7 +107,7 @@ const Photo: React.FC<P> = ({ v, dur, index, words }) => {
     : (
       <AbsoluteFill>
         <Img src={staticFile(m.src)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${s * pk}) translateX(${x}%)`, transformOrigin: po }} />
-        <AbsoluteFill style={{ background: "linear-gradient(rgba(15,15,17,0.85) 0%, rgba(15,15,17,0) 28%, rgba(15,15,17,0) 62%, rgba(15,15,17,0.9) 100%)" }} />
+        <AbsoluteFill style={{ background: `linear-gradient(rgba(${C.bgRgb},0.85) 0%, rgba(${C.bgRgb},0) 28%, rgba(${C.bgRgb},0) 62%, rgba(${C.bgRgb},0.9) 100%)` }} />
       </AbsoluteFill>
     );
   const ov = pop(frame, 6, fps);
@@ -118,7 +118,7 @@ const Photo: React.FC<P> = ({ v, dur, index, words }) => {
       {v.overlay && (
         <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
           <div style={{ fontSize: 96, fontWeight: 900, letterSpacing: -2, textAlign: "center", maxWidth: 1400, lineHeight: 1.05,
-            opacity: ov, transform: `translateY(${(1 - ov) * 40}px)`, textShadow: "0 6px 30px rgba(0,0,0,0.85)" }}>{v.overlay}</div>
+            color: "#f5f4f2", opacity: ov, transform: `translateY(${(1 - ov) * 40}px)`, textShadow: "0 6px 30px rgba(0,0,0,0.85)" }}>{v.overlay}</div>
         </AbsoluteFill>
       )}
       {v.badge && (
@@ -129,7 +129,7 @@ const Photo: React.FC<P> = ({ v, dur, index, words }) => {
         const tp = pop(frame, Math.round(fps * (0.8 + i * 0.7)), fps);
         return (
           <div key={tag} style={{ position: "absolute", left: 90, top: 560 + i * 90, background: "rgba(15,15,17,0.88)", border: `3px solid ${C.accent}`,
-            borderRadius: 40, padding: "10px 24px", fontSize: 36, fontWeight: 800, opacity: tp, transform: `translateX(${(1 - tp) * -60}px)` }}>📍 {tag}</div>
+            borderRadius: 40, padding: "10px 24px", fontSize: 36, fontWeight: 800, color: "#f5f4f2", opacity: tp, transform: `translateX(${(1 - tp) * -60}px)` }}>📍 {tag}</div>
         );
       })}
     </>

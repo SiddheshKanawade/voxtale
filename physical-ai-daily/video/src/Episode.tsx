@@ -2,11 +2,13 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, FONT, EpisodeProps, Segment, Word, timeline } from "./theme";
 import { BRAND, END_S, Lockup, STING_S, Sting } from "./brand";
+import { Design, applyDesign, current } from "./design";
 import { Scene } from "./scenes";
 
 export type { EpisodeProps } from "./theme";
 
-export const Episode: React.FC<EpisodeProps> = ({ date, segments }) => {
+export const Episode: React.FC<EpisodeProps> = ({ date, segments, design, reviewLabel }) => {
+  const look = applyDesign(design); // before any child renders: scenes read the colour tokens from C
   const { fps } = useVideoConfig();
   const stories = segments.filter((s) => s.kind === "story");
   const tl = timeline(segments, STING_S, END_S);
@@ -14,7 +16,7 @@ export const Episode: React.FC<EpisodeProps> = ({ date, segments }) => {
   let beatNo = 0;
   return (
     <AbsoluteFill style={{ fontFamily: FONT, color: C.ink, background: C.bg }}>
-      <Backdrop />
+      <Backdrop kind={look.backdrop} />
       {segments.map((seg, k) => {
         let from = Math.round(tl.starts[k] * fps);
         const segStart = from;
@@ -47,6 +49,10 @@ export const Episode: React.FC<EpisodeProps> = ({ date, segments }) => {
           <Audio src={staticFile("brand/sonic_logo.wav")} volume={0.5} />
         </Sequence>
       )}
+      {reviewLabel && ( // design-comparison clips only: names the option on screen
+        <div style={{ position: "absolute", right: 60, bottom: 170, background: "rgba(0,0,0,0.8)", color: "#fff", fontSize: 56,
+          fontWeight: 800, padding: "14px 28px", borderRadius: 14 }}>{reviewLabel}</div>
+      )}
       <Sequence from={Math.round(tl.end * fps)} durationInFrames={endTail}>
         <Audio src={staticFile("brand/sonic_logo.wav")} volume={0.5} />
       </Sequence>
@@ -54,13 +60,53 @@ export const Episode: React.FC<EpisodeProps> = ({ date, segments }) => {
   );
 };
 
-const PIXEL_TILE = `url("data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><rect x="19" y="19" width="6" height="6" rx="1.2" fill="#fff" fill-opacity="0.05"/></svg>')}")`;
+const PIXEL_TILE_OF = (fill: string, opacity: number) => `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><rect x="19" y="19" width="6" height="6" rx="1.2" fill="${fill}" fill-opacity="${opacity}"/></svg>`)}")`;
+const PIXEL_TILE = PIXEL_TILE_OF("#fff", 0.05);
 
-// Neutral charcoal with a faint warm glow in the brand colours, a vignette, and a slow-drifting grid of square
-// "pixels" (the brand motif) so even static scenes never sit perfectly still.
-const Backdrop: React.FC = () => {
+const PAPER_TILE = PIXEL_TILE_OF("#1f2023", 0.06);
+const GRID = (step: number, a: number) =>
+  `linear-gradient(rgba(255,255,255,${a}) 1px, transparent 1px) 0 0 / ${step}px ${step}px, ` +
+  `linear-gradient(90deg, rgba(255,255,255,${a}) 1px, transparent 1px) 0 0 / ${step}px ${step}px`;
+
+// Every backdrop moves slowly so even static scenes never sit perfectly still.
+const Backdrop: React.FC<{ kind: Design["backdrop"] }> = ({ kind }) => {
   const frame = useCurrentFrame();
+  const drift = `${frame * 0.3}px ${frame * 0.15}px`;
+  if (kind === "paper") return (
+    <AbsoluteFill style={{ background: `radial-gradient(ellipse 60% 55% at 8% 0%, rgba(244,63,46,0.06), transparent 70%), ${C.bg}` }}>
+      <AbsoluteFill style={{ backgroundImage: PAPER_TILE, backgroundSize: "44px 44px", backgroundPosition: drift }} />
+    </AbsoluteFill>
+  );
+  if (kind === "blueprint") return (
+    <AbsoluteFill style={{ background: `radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,0.5)), ${C.bg}` }}>
+      <AbsoluteFill style={{ background: `${GRID(240, 0.09)}, ${GRID(48, 0.05)}`, backgroundPosition: drift }} />
+    </AbsoluteFill>
+  );
+  if (kind === "signal") {
+    const x = 70 + 25 * Math.sin(frame / 90);
+    return (
+      <AbsoluteFill style={{ background: [
+        `radial-gradient(ellipse 45% 70% at ${x}% 110%, rgba(244,63,46,0.22), transparent 70%)`,
+        "radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,0.5))", C.bg].join(", ") }}>
+        <AbsoluteFill style={{ backgroundImage: PIXEL_TILE, backgroundSize: "44px 44px", backgroundPosition: drift }} />
+        <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 10, background: BRAND.red }} />
+      </AbsoluteFill>
+    );
+  }
+  if (kind === "aurora") {
+    const blob = (color: string, x: number, y: number, size: number) => (
+      <div style={{ position: "absolute", left: x - size / 2, top: y - size / 2, width: size, height: size, borderRadius: "50%",
+        background: color, filter: "blur(150px)", opacity: 0.32 }} />
+    );
+    return (
+      <AbsoluteFill style={{ background: C.bg, overflow: "hidden" }}>
+        {blob(BRAND.red, 380 + 220 * Math.sin(frame / 140), 160 + 120 * Math.cos(frame / 170), 900)}
+        {blob("rgba(240,201,69,0.55)", 1550 + 200 * Math.cos(frame / 160), 900 + 100 * Math.sin(frame / 130), 700)}
+        <AbsoluteFill style={{ background: "radial-gradient(ellipse 120% 90% at 50% 45%, transparent 50%, rgba(0,0,0,0.55))" }} />
+      </AbsoluteFill>
+    );
+  }
   return (
     <AbsoluteFill style={{
       background: [
@@ -81,7 +127,7 @@ const Backdrop: React.FC = () => {
 const TopBar: React.FC<{ date: string }> = ({ date }) => (
   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 78, display: "flex", alignItems: "center",
     justifyContent: "space-between", padding: "0 64px", fontSize: 24, letterSpacing: 3, fontWeight: 700,
-    background: "linear-gradient(rgba(15,15,17,0.9), rgba(15,15,17,0))" }}>
+    background: `linear-gradient(rgba(${C.bgRgb},0.9), rgba(${C.bgRgb},0))` }}>
     <Lockup size={30} />
     <span style={{ color: C.dim, fontWeight: 500, letterSpacing: 1 }}>{date}</span>
   </div>
@@ -117,7 +163,7 @@ const StoryHeader: React.FC<{ seg: Segment; index: number; total: number; animat
         opacity: s, transform: `translateX(${(1 - s) * -40}px)` }}>
         <span style={{ background: C.brand, color: "#fff", fontWeight: 800, fontSize: 22, padding: "6px 12px",
           borderRadius: 6, letterSpacing: 2 }}>{seg.label}</span>
-        <span style={{ fontSize: 42, fontWeight: 800, letterSpacing: -1, textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>{seg.headline}</span>
+        <span style={{ fontSize: 42, fontWeight: 800, letterSpacing: -1, textShadow: current.headlineShadow }}>{seg.headline}</span>
       </div>
       <div style={{ position: "absolute", top: 112, right: 64, fontSize: 26, color: C.dim, fontWeight: 700 }}>
         STORY {index}/{total}
@@ -131,6 +177,15 @@ export const SECTIONS: Record<string, string> = {
   plain: "In plain English", evidence: "The evidence", matters: "Why it matters", reality: "Reality check",
 };
 
+const CHIP: Record<Design["chip"], (glow: number) => React.CSSProperties> = {
+  outline: (g) => ({ background: "rgba(26,26,29,0.92)", border: `2px solid rgba(244,63,46,${0.35 + 0.65 * g})`, color: "#f5f4f2" }),
+  solid: (g) => ({ background: BRAND.red, color: "#fff", boxShadow: `0 0 ${30 * g}px rgba(244,63,46,0.8)` }),
+  mono: () => ({ fontFamily: "'SF Mono', Menlo, monospace", fontWeight: 600, letterSpacing: 1, color: C.accent,
+    background: "rgba(10,10,11,0.85)", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 4 }),
+  glass: (g) => ({ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(14px)", color: "#f5f4f2",
+    border: `1px solid rgba(255,255,255,${0.18 + 0.4 * g})` }),
+};
+
 // hideChip: the scene already shows the section name as its title, so only the tick plays.
 const SectionChip: React.FC<{ section: string; hideChip?: boolean }> = ({ section, hideChip }) => {
   const frame = useCurrentFrame();
@@ -141,18 +196,17 @@ const SectionChip: React.FC<{ section: string; hideChip?: boolean }> = ({ sectio
     <>
       <Audio src={staticFile("brand/tick.wav")} volume={0.35} />
       {!hideChip && <div style={{ position: "absolute", top: 156, right: 64, display: "flex", alignItems: "center", gap: 12,
-        background: "rgba(26,26,29,0.92)", border: `2px solid rgba(244,63,46,${0.35 + 0.65 * glow})`, borderRadius: 10,
-        padding: "8px 16px", fontSize: 22, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase",
-        opacity: s, transform: `translateX(${(1 - s) * 60}px)` }}>
-        <span style={{ width: 14, height: 14, borderRadius: 3, background: BRAND.yellow, display: "inline-block" }} />
-        {SECTIONS[section] ?? section}
+        padding: "8px 16px", fontSize: 22, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase", borderRadius: 10,
+        opacity: s, transform: `translateX(${(1 - s) * 60}px)`, ...CHIP[current.chip](glow) }}>
+        {current.chip !== "mono" && <span style={{ width: 14, height: 14, borderRadius: 3, background: BRAND.yellow, display: "inline-block" }} />}
+        {current.chip === "mono" ? `// ${SECTIONS[section] ?? section}` : SECTIONS[section] ?? section}
       </div>}
     </>
   );
 };
 
 const Credit: React.FC<{ text: string }> = ({ text }) => (
-  <div style={{ position: "absolute", left: 64, bottom: 178, fontSize: 20, color: C.dim, fontWeight: 600,
+  <div style={{ position: "absolute", left: 64, bottom: 178, fontSize: 20, color: "#b5b3ae", fontWeight: 600,
     background: "rgba(15,15,17,0.8)", padding: "6px 14px", borderRadius: 8 }}>
     {text}
   </div>
@@ -179,7 +233,7 @@ const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
       <div style={{ background: "rgba(0,0,0,0.78)", borderRadius: 14, padding: "12px 26px", fontSize: 48, fontWeight: 700,
         letterSpacing: -0.5, maxWidth: 1640, textAlign: "center" }}>
         {chunk.map((i) => (
-          <span key={i} style={{ color: i === active ? C.accent : C.ink, marginRight: 13 }}>{words[i].text}</span>
+          <span key={i} style={{ color: i === active ? BRAND.yellow : "#f5f4f2", marginRight: 13 }}>{words[i].text}</span>
         ))}
       </div>
     </div>
