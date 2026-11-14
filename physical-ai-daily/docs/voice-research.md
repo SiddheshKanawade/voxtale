@@ -224,4 +224,9 @@ The scores come from re-ranking all 24 samples, so the absolute numbers moved sl
 
 ## 8. Results of the listening test
 
-*(filled in once the user has listened: winner, runner-up, and what they noticed)*
+**Round 2 (2026-11-14):** the user picked C and D as the best of five. Unblinded, C is directed Andrew and D is
+current Andrew; A, B and E were ElevenLabs v3 Chris, Brian Creative and Eric. The user's top two match the screen's top
+two (0.740 and 0.642), so the screen and the listener agree on this passage. v3 with free premade voices loses here.
+
+The user did not give scores, so this doesn't yet show whether directed Andrew (C) is preferred over current Andrew (D).
+The pause problem came from the full episode, not this short passage.
