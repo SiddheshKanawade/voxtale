@@ -1,6 +1,6 @@
 ---
 name: youtube-thumbnails
-description: Design and render evidence-led YouTube thumbnails for the Pixels2Actions channel (project physical-ai-daily): one honest curiosity hook, a subject "face", and a tilted source "receipt" with the key claim highlighted, in the episode's design (blueprint / blueprint-light). Produces 3 variants for YouTube Test & Compare plus a 168x94 readability check. Use when the user asks for a thumbnail, thumbnail variants, packaging, or to improve click-through.
+description: Design and render evidence-led YouTube thumbnails for the Pixels2Actions channel (project physical-ai-daily): one honest curiosity hook, a subject "face", and a tilted source "receipt" with the key claim highlighted, in the episode's design (blueprint / blueprint-light). Researches current thumbnail guidance on the web first, renders 5-7 candidate thumbnails, scores them against a rubric and picks one (keeping the next two for YouTube Test & Compare). Use when the user asks for a thumbnail, thumbnail variants, packaging, or to improve click-through.
 ---
 
 # YouTube thumbnails (Pixels2Actions)
@@ -49,19 +49,82 @@ Renderer: `physical-ai-daily/tools/thumbnails.py`.
 
 ## Workflow
 
-1. **Find the promise.** What's the one surprising, true thing in the episode? Find where the video answers it (often
-   the reality-check beat).
-2. **Write 3 hooks, one per angle:** *tension* ("96% success / *but...*", answered by the reality check), *question*
-   ("Robot brain / *2× better?*", answered with the 30–100% range), *mystery* ("No battery. / *How?*", answered by the
-   mousetrap explainer).
-3. **Honesty check** (the channel's script rules apply): every number on the thumbnail is in the source receipt and the
-   video. Questions must not imply a false answer. No "shocking", no fake urgency, no implying a deployment that was a
-   pilot.
-4. **Pick the subject image:** a robot face or close-up beats a wide shot. Prefer CC BY figures (arXiv) or our own
-   art; press frames (company videos) are the user's call, since a thumbnail is promotional.
-5. **Pick the receipt:** the captured sentence or post that states the number. Crop tightly so the highlighted words are
-   large.
-6. Add the variants to `episode.json`:
+### 0. Research first, every time
+
+Thumbnail practice and YouTube's tools change, so don't rely only on the evidence above. Before designing:
+
+1. Run 2-3 web searches in one turn, for example: `YouTube thumbnail study <current year>`, `YouTube Test & Compare
+   thumbnail update`, `<topic> YouTube thumbnails what works` (e.g. robotics or AI explainers).
+2. Prefer data (coded samples, A/B results, YouTube's own docs) over opinion blogs. Note each source's strength the way
+   `docs/thumbnails.md` does.
+3. Compare with the evidence list above. **If something is new or contradicts it, append a dated row to
+   `docs/thumbnails.md`** and say how it changes this run (e.g. a new layout, more or less text).
+4. Tell the user in one or two lines what the research changed, or that it confirmed the current approach.
+
+### 1. Generate options: 5-7 candidates
+
+1. **Find the promise:** the one surprising, true thing in the episode, and where the video answers it (often the
+   reality-check beat).
+2. **Write 5-7 candidates that differ in idea, not just colour.** Cover several angles:
+   - *tension* ("96% success / *but...*", answered by the reality check)
+   - *question* ("Robot brain / *2× better?*", answered by the 30–100% range)
+   - *mystery* ("No battery. / *How?*", answered by the explainer)
+   - *stakes* (what changes for the viewer or the industry, if the video says so)
+   - *contrast* (old way vs new, using the `split` layout)
+   - *number* (the single most striking verified number, using the `stat` layout)
+
+   Vary the subject image and receipt too, where the episode has more than one good option. Any layout in
+   `Thumbnail.tsx` is allowed; `evidence` is the default.
+3. **Honesty check on every candidate** (the channel's script rules apply): every number on the thumbnail is in the
+   source receipt and the video. Questions must not imply a false answer. No "shocking", no fake urgency, no implying a
+   deployment that was a pilot. Drop any candidate that fails; don't fix it by blurring the claim.
+4. **Images:** a robot face or close-up beats a wide shot. Prefer CC BY figures (arXiv) or our own art; press frames
+   (company videos) are the user's call, since a thumbnail is promotional.
+5. **Receipt:** the captured sentence or post that states the number. Crop tightly so the highlighted words are large.
+
+### 2. Render all candidates
+
+Put every candidate in `episode.json` → `"thumbnails"`, then render them in the episode's design:
+
+```
+python3 tools/thumbnails.py episodes/<dir> <design>
+```
+
+This writes `out/thumb_<n>_<design>.png` plus `out/thumbs_preview.png` (each one beside its 168×94 sidebar size).
+
+### 3. Choose one: score, don't guess
+
+**Look at** `out/thumbs_preview.png` and each full-size PNG (Read them). Score every candidate 0-2 on each criterion,
+and show the table to the user:
+
+| Criterion | 2 = | Evidence |
+|---|---|---|
+| Readable at 168×94 | hook legible in the sidebar size | practitioner consensus |
+| One clear focal subject | face/robot big, not covered by text | vidIQ breakout study |
+| Honest curiosity gap | raises a question the video answers | information-gap theory, clickbait studies |
+| Visible proof | receipt shows the claim, number highlighted and legible at full size | source-cue experiments |
+| Complements the title | doesn't repeat the title's words | practitioner consensus |
+| Series consistency | design, brand mark top-left, bottom-right clear | brand rules (`docs/brand.md`) |
+| Distinct at a glance | the idea reads in about a second | practitioner consensus |
+
+Rules:
+- Any candidate that failed the honesty check is out, whatever it scores.
+- **Pick the highest total.** On a tie, prefer the one whose question the video answers earliest.
+- Keep the runners-up 2 and 3 for YouTube **Test & Compare** (it tests up to 3).
+- If every candidate scores 1 or less on readability or focal subject, revise crops (`crop`, `mark`, `focus`, `zoom`) or
+  hooks and render again, rather than picking the least bad.
+
+### 4. Deliver
+
+Copy the winner to `out/thumbnail.png` and the runners-up to `out/thumbnail_test_2.png` / `_3.png`. Report:
+- what the research changed
+- the score table
+- why the winner won
+- where the files are
+
+After Test & Compare results come in, record which angle won in `docs/thumbnails.md`, so future runs can weight it.
+
+### Example `episode.json` entry
 
 ```json
 "thumbnails": [
@@ -70,9 +133,3 @@ Renderer: `physical-ai-daily/tools/thumbnails.py`.
                "crop": {"x": 0, "y": 0, "w": 1, "h": 0.34}, "mark": {"x": 0.845, "y": 0.665, "w": 0.095, "h": 0.12}}}
 ]
 ```
-
-7. **Render:** `python3 tools/thumbnails.py episodes/<dir> blueprint blueprint-light` → `out/thumb_<n>_<design>.png`
-   and `out/thumbs_preview.png`.
-8. **Look at the preview** (Read the PNG): is the hook legible at 168 px? Is the receipt's highlighted number legible
-   at full size? Is the face clear of the text? Fix crops (`crop`, `mark`, `focus`, `zoom`) and re-render.
-9. Give the user the 3 for Test & Compare. Once results come in, note which angle won in `docs/thumbnails.md`.
