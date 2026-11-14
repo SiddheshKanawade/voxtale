@@ -1,11 +1,11 @@
-# Physical AI Daily
+# Pixels2Actions (physical-ai-daily)
 
-Pipeline for a daily YouTube explainer on physical-AI news, X posts and arXiv papers, aimed at a product-manager-level
+Pipeline for the Pixels2Actions YouTube channel: a daily explainer on physical-AI news, X posts and arXiv papers, aimed at a product-manager-level
 audience. It runs locally on a Mac.
 
 ```
 episode.json (script + visuals per beat)
-  -> tools/voice.py    narration per beat (edge-tts, optional per-phrase direction) -> audio + word timings -> props.json
+  -> tools/voice.py    narration per beat (ElevenLabs v3 Eric; edge-tts fallback) -> audio + word timings -> props.json
   -> video/ (Remotion) each beat's visual lasts as long as its audio; captions and cues follow the word timings
   -> tools/render.sh   QA stills + contact sheet, render, loudness-normalize to -14 LUFS
 ```

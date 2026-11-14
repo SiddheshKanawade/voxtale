@@ -4,7 +4,8 @@ export const C = {
   panel2: "#1d2432",
   ink: "#f2f4f8",
   dim: "#8b93a3",
-  accent: "#ffe14d",
+  accent: "#f0c945", // Pixels2Actions yellow
+  brand: "#f43f2e", // Pixels2Actions red
   good: "#4ade80",
   bad: "#f87171",
   warn: "#fbbf24",
@@ -47,3 +48,15 @@ export type Segment = {
   source?: string; sourceDate?: string; beats: Beat[]; duration: number;
 };
 export type EpisodeProps = { title: string; date: string; segments: Segment[] };
+
+// Segment start times in seconds, with the brand sting (stingS long) inserted after the cold-open title segment.
+export const timeline = (segments: Segment[], stingS: number) => {
+  let t = 0, sting = -1;
+  const starts = segments.map((s, i) => {
+    const at = t;
+    t += s.duration;
+    if (s.kind === "title" && sting < 0 && i < segments.length - 1) { sting = t; t += stingS; }
+    return at;
+  });
+  return { starts, sting, total: t };
+};

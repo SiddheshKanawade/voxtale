@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Easing, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, Media, STAGE, Visual, Word } from "./theme";
+import { Lockup } from "./brand";
 import { Kitting, Snap } from "./diagrams";
 
 type P = { v: Visual; dur: number; index: number; words: Word[] };
@@ -395,7 +396,7 @@ const End: React.FC<P> = ({ v, words }) => {
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", flexDirection: "column", gap: 40 }}>
       <div style={{ fontSize: 120, fontWeight: 900, letterSpacing: -3, opacity: s, transform: `scale(${0.8 + 0.2 * s})` }}>
-        <span style={{ color: C.accent }}>●</span> Physical AI Daily
+        <Lockup size={110} />
       </div>
       <div style={{ fontSize: 44, color: C.dim, fontWeight: 600, opacity: b }}>Sources linked in the description</div>
       <div style={{ background: "#ff0033", color: "#fff", fontSize: 50, fontWeight: 900, padding: "18px 48px", borderRadius: 50,

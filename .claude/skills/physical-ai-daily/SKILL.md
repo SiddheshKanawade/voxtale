@@ -1,9 +1,12 @@
 ---
 name: physical-ai-daily
-description: Produce an episode of the "Physical AI Daily" YouTube channel — discover the day's physical-AI stories (news, X posts, arXiv papers), verify each against its primary source, write a narration script, capture highlighted screenshots of the sources, synthesize voice, and render a 1080p video with Remotion on this Mac. Use when the user asks to make today's episode, a sample episode, add a story, re-render, or change the channel's video format.
+description: Produce an episode of the Pixels2Actions YouTube channel (project name physical-ai-daily) — discover the day's physical-AI stories (news, X posts, arXiv papers), verify each against its primary source, write a narration script, capture highlighted screenshots of the sources, synthesize voice, and render a 1080p video with Remotion on this Mac. Use when the user asks to make today's episode, a sample episode, add a story, re-render, or change the channel's video format.
 ---
 
-# Physical AI Daily
+# Pixels2Actions (project: physical-ai-daily)
+
+The channel is named **Pixels2Actions**, after the user's brand (pixelstoactions.com). The folder, skill and
+repo names stay `physical-ai-daily`.
 
 Project: `physical-ai-daily/` in the voxtale repo. Everything runs locally on the Mac.
 
@@ -12,15 +15,17 @@ sources.json                 accounts, arXiv categories, news queries (user-edit
 tools/discover.py            arXiv + X candidates -> JSON on stdout
 tools/capture.mjs            page / tweet / element / video-frame screenshots via installed Chrome, in-page highlight
 tools/crop.py                crop a figure panel (fractions) + write its metadata json
-tools/voice.py               episode.json -> audio/<seg>_<beat>.mp3 + props.json (word timings, punctuation, media metadata)
+tools/voice.py               episode.json -> audio/<seg>_<beat>.wav + props.json (word timings, punctuation, media metadata)
 tools/render.sh              voice -> QA contact sheet -> MP4 -> loudness-normalized final (-14 LUFS)
 video/src/Episode.tsx        chrome: top bar, chapter progress bar, story header, credit chip, captions
 video/src/scenes.tsx         scene catalog (below) + word-cue timing + hold-cap punch-in
 video/src/diagrams.tsx       custom animated explainers (kitting, snap-through)
+video/src/brand.tsx          Pixels2Actions logo mark, wordmark, lockup, and the sting after the cold open
 episodes/<date>[-slug]/      episode.json, assets/, audio/, qa/, out/
 ```
 
-**Reference episode: `episodes/2026-11-13-sample-v2/`** (2 stories, 3:54, 36 beats). Copy its `episode.json` shape.
+**Reference episode: `episodes/2026-11-14-sample-v5-brand/`** (2 stories, about 4:03, 36 beats; v2's script with the
+frozen voice and branding). Copy its `episode.json` shape, including the `tts`/`voice`/`model` keys.
 v1 (`2026-11-13-sample/`, one static screenshot per story) is obsolete: the user dropped off midway. Too little
 motion, and too technical.
 
@@ -93,7 +98,9 @@ The first sample's searches returned two plausible but false items: a "$500M Agi
 
 - Narration ≈ 150 words/min; a story is 150–280 words over 12–18 beats. Spell numbers as words ("ninety-six percent"), because the TTS reads digits unreliably. On-screen numbers use digits.
 - Story arc: hook (what happened) → plain-English explainer (analogy + diagram) → evidence (source visual, highlighted sentence) → why it matters → reality check. Don't use hype words like "shocking" or "changes everything".
-- The intro teases the stories with visuals in about 20 s. The outro points to the sources and cues Subscribe.
+- The intro teases the stories with visuals in about 20 s. The outro opens with "That's Pixels to Actions." (written
+  that way so the TTS says it naturally), points to the sources and cues Subscribe. Never mention the website or the
+  newsletter in the video: the brand is meant to be a subtle presence.
 
 ## Source access (tested 2026-11-13)
 
@@ -105,19 +112,32 @@ The first sample's searches returned two plausible but false items: a "$500M Agi
 | X account timelines | `syndication.twitter.com/srv/timeline-profile/...` | **Unreliable:** rate limit 30 per window (got 429s) and sometimes stale (one account returned posts that were months old). Treat as hints. For dependable discovery, use the user's logged-in Chrome (claude-in-chrome) or the paid X API. |
 | x.com directly | headless browser | Blank page without login |
 
-## Voice
+## Voice (frozen 2026-11-14)
 
-`edge-tts` with `en-US-AndrewNeural` (free Microsoft neural voice via an unofficial endpoint). It intermittently returns no audio, and `voice.py` retries up to 10×. If it's down, fall back to macOS `say`, which sounds robotic, or a paid TTS (ElevenLabs, Higgsfield `generate_audio`) once the user has a budget. Multilingual voices failed in testing.
+**ElevenLabs `eleven_v3`, voice Eric (`cjVigY5qzO86Huf0OWal`).** Set in episode.json as `"tts": "elevenlabs"`, `"voice"`,
+`"model"`. The user picked it twice in blind tests, as the most realistic voice, over Edge Andrew, directed Andrew and
+six Eleven v4 voices (`docs/voice-research.md` sections 7b–9).
+- Each beat is one call on its narration. Pauses come from punctuation; don't split beats into spliced phrases (the
+  user found the directed splices unnatural). An optional `eleven_text` can add v3 audio tags like `[short pause]`.
+- Word timings come from the API's character timestamps; `voice.py` aborts if they're missing.
+- `ELEVENLABS_API_KEY` lives in `physical-ai-daily/.env` (git-ignored; never print or commit it). Free tier:
+  10,000 characters a month. An episode is about 3,600. Beats are cached in `audio/*.el.*`, so edits re-voice only the
+  changed beats. Check quota with `GET /v1/user/subscription`.
+- Free accounts can't use Voice Library voices over the API; Eric is a built-in voice.
+- Fallback if ElevenLabs is unavailable: remove `tts` and set `"voice": "en-US-AndrewNeural"` (edge-tts, free).
 
 ## Synthetic images
 
 Higgsfield MCP has image models (Nano Banana Pro/2, GPT Image 2.6, FLUX), but the account had **0 credits** on 2026-11-13. Check `balance` first. Use synthetic images only for explainer diagrams or concepts with no source visual, and never for something that looks like a real event or product.
 
-## Format (current: v0.2, 16:9 long-form)
+## Format (current: v0.3, 16:9 long-form, branded 2026-11-14)
 
-Dark background with a drifting dot grid, yellow accent `#ffe14d` (also the highlight colour), top bar plus a chapter
-progress bar, label chip + headline + "STORY n/N", credit chip on every beat, punctuated word-synced captions grouped
-at clause breaks. A Short (9:16) version isn't built yet.
+Dark background with a drifting grid of faint square pixels. Brand colours: red `#f43f2e` for the label chips and the
+chapter progress bar, yellow `#f0c945` as the accent and caption highlight. The top bar holds the Pixels2Actions lockup
+plus the date, then the label chip + headline + "STORY n/N", a credit chip on every beat, and punctuated word-synced
+captions grouped at clause breaks. A 1.6 s silent logo sting plays after the cold open (`brand.tsx`, inserted by
+`timeline()` after the `title` segment). The end card shows the lockup, "Sources linked in the description" and
+Subscribe, with no URL. A Short (9:16) version isn't built yet.
 
 ## Copyright
 

@@ -1,11 +1,13 @@
 import React from "react";
 import { Composition } from "remotion";
 import { Episode, EpisodeProps } from "./Episode";
+import { STING_S } from "./brand";
+import { timeline } from "./theme";
 
 const FPS = 30;
 
 // Props come from episodes/<dir>/props.json (written by tools/voice.py), passed with --props.
-const placeholder: EpisodeProps = { title: "Physical AI Daily", date: "", segments: [] };
+const placeholder: EpisodeProps = { title: "Pixels2Actions", date: "", segments: [] };
 
 export const Root: React.FC = () => (
   <Composition
@@ -17,7 +19,7 @@ export const Root: React.FC = () => (
     durationInFrames={FPS}
     defaultProps={placeholder}
     calculateMetadata={({ props }) => ({
-      durationInFrames: Math.max(FPS, Math.ceil(props.segments.reduce((t, s) => t + s.duration, 0) * FPS)),
+      durationInFrames: Math.max(FPS, Math.ceil(timeline(props.segments, STING_S).total * FPS)),
     })}
   />
 );
