@@ -16,7 +16,7 @@ TEXT = ("Robots are leaving the lab, and this week we got two very different exa
         "The result? [short pause] A ninety-six percent success rate.")
 
 voice, out = sys.argv[1], sys.argv[2]
-body = {"text": TEXT, "model_id": "eleven_v3"}
+body = {"text": TEXT, "model_id": os.environ.get("EL_MODEL", "eleven_v3")}
 if len(sys.argv) > 3:
     body["voice_settings"] = {"stability": float(sys.argv[3])}
 req = urllib.request.Request(f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format=mp3_44100_128",

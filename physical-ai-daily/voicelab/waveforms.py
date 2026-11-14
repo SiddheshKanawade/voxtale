@@ -177,7 +177,7 @@ def blind_page(shortlist, name="blind", seed=20261114):
     order = shortlist[:]
     random.Random(seed).shuffle(order)
     key = {}
-    for letter, r in zip("ABCDEF", order):
+    for letter, r in zip("ABCDEFGHIJ", order):
         shutil.copy(SRC / f"{r['name']}.wav", BLIND / f"{letter}.wav")
         key[letter] = r["name"]
     (OUT / f"{name}_key.json").write_text(json.dumps(key, indent=1))
