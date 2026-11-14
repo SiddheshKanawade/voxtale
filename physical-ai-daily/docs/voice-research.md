@@ -183,6 +183,45 @@ question, caveat and aside. `VOICE_STRENGTH` scales the offsets and `PAUSE_SCALE
 - Strength 3 pushes rates well beyond what voicelab tested: punch −34%, hook +26%. WER stays fine, but **naturalness was
   not measured**. That's the main thing to listen for.
 
+## 7b. ElevenLabs v3, single pass (2026-11-14)
+
+**Why we tested it:** the user heard directed Andrew's pauses as unnatural. Each phrase is synthesized on its own and
+ends with sentence-final intonation, so the splices sound like full stops. v3 reads the whole passage in one call, and
+the pauses come from inline tags (`[short pause]`) and punctuation instead of splices.
+
+**Setup:**
+- `voicelab/gen_eleven.py`, model `eleven_v3`, on the free tier (10,000 characters a month). Each take costs about 383
+  characters; five takes used about 1,900.
+- The passage is the same as the others, plus two tags: `[excited]` before "snaps" and `[short pause]` after
+  "The result?".
+- Loudness-matched to -14 LUFS (within 0.2 dB) and scored with the screen from section 6.
+
+**Timestamps confirmed.** The `/with-timestamps` endpoint returns character-level start and end times on v3, so captions
+and cue words can come straight from the API. No Whisper alignment is needed. This was the open question in section 3.
+
+| Sample | Score | Phrase variety (st) | Emphasis on "snaps" | Emphasis on "96%" | Pause before 96 (s) | wpm | WER |
+|---|---|---|---|---|---|---|---|
+| directed Andrew (Edge, spliced) | 0.740 | 2.07 | 0.72 | 0.64 | 1.01 | 148 | 1.5% |
+| Andrew current (Edge) | 0.642 | 1.81 | 1.21 | 0.63 | 0.48 | 174 | 1.5% |
+| v3 Eric | 0.640 | 1.99 | 1.05 | 0.17 | 1.06 | 166 | 4.6% |
+| v3 Brian, Creative (stability 0) | 0.600 | 1.54 | 0.85 | 0.21 | 0.79 | 161 | 1.5% |
+| v3 Brian, take 2 | 0.596 | 1.11 | 0.95 | 0.14 | 0.78 | 154 | 1.5% |
+| v3 Brian, take 1 | 0.548 | 1.22 | 0.72 | 0.23 | 0.73 | 158 | 1.5% |
+| v3 Chris | 0.538 | 2.12 | 0.74 | 0.13 | 1.29 | 170 | 1.5% |
+
+The scores come from re-ranking all 24 samples, so the absolute numbers moved slightly from section 6.
+
+**Findings:**
+- **v3 does not win the objective screen.** Every v3 take puts almost no stress on "96%" (0.13–0.23, against 0.63 for
+  Andrew). It places the pause before the line but reads the number itself flatly, and that was consistent across all
+  five takes and three voices.
+- **Takes vary a lot.** Two Brian takes with identical settings scored 0.548 and 0.596, so one take is not a verdict.
+- **Voice matters more than settings.** Eric and Chris have Andrew-level melody (about 2 st); Brian is flatter
+  (1.1–1.5 st).
+- **The screen does not measure naturalness of pauses**, which is exactly the user's complaint. Section 6 also notes
+  that objective metrics are weakly validated, so blind round 2 (`voicelab/blind2.html`, key in
+  `analysis/blind2_key.json`) decides. It contains Andrew current, directed Andrew, and v3 Eric, Brian Creative and Chris.
+
 ## 8. Results of the listening test
 
 *(filled in once the user has listened: winner, runner-up, and what they noticed)*

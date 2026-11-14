@@ -34,7 +34,6 @@ from prosody import measure  # noqa: E402
 
 SRC = HERE / "leveled"
 OUT = HERE / "analysis"
-BLIND = HERE / "blind"
 TEXT = (HERE / "passage.txt").read_text().strip()
 WORDS = len(TEXT.split())
 ANCHOR = "edge_en-US-AndrewNeural"  # the current voice always goes in the shortlist, as the reference point
@@ -171,21 +170,22 @@ def figure(rows, out):
     plt.close(fig)
 
 
-def blind_page(shortlist):
+def blind_page(shortlist, name="blind", seed=20261114):
     """Shuffled, unnamed, loudness-matched samples A-F with 0-100 sliders (MUSHRA-style, no reference shown)."""
+    BLIND = HERE / name
     BLIND.mkdir(exist_ok=True)
     order = shortlist[:]
-    random.Random(20261114).shuffle(order)
+    random.Random(seed).shuffle(order)
     key = {}
     for letter, r in zip("ABCDEF", order):
         shutil.copy(SRC / f"{r['name']}.wav", BLIND / f"{letter}.wav")
         key[letter] = r["name"]
-    (OUT / "blind_key.json").write_text(json.dumps(key, indent=1))
+    (OUT / f"{name}_key.json").write_text(json.dumps(key, indent=1))
     cards = "".join(
-        f'<div class="s"><div class="n">Sample {L}</div><audio controls preload="auto" src="blind/{L}.wav"></audio>'
+        f'<div class="s"><div class="n">Sample {L}</div><audio controls preload="auto" src="{name}/{L}.wav"></audio>'
         f'<label>How engaging? <input type="range" min="0" max="100" value="50" data-l="{L}"> <b>50</b></label></div>'
         for L in key)
-    (HERE / "blind.html").write_text(f"""<!doctype html><meta charset="utf-8"><title>Blind voice test</title>
+    (HERE / f"{name}.html").write_text(f"""<!doctype html><meta charset="utf-8"><title>Blind voice test</title>
 <style>
 :root {{ --bg:#0b0e14; --panel:#151a24; --ink:#f2f4f8; --dim:#8b93a3; --accent:#ffe14d; }}
 body {{ background:var(--bg); color:var(--ink); font:16px -apple-system,Helvetica,sans-serif; max-width:820px; margin:32px auto; padding:0 16px; }}
@@ -196,8 +196,8 @@ pre {{ background:var(--panel); padding:12px; border-radius:8px; white-space:pre
 </style>
 <h1>Blind voice test</h1>
 <ol>
-<li>All six read the same passage and are matched to the same loudness. Names are hidden and the order is shuffled.</li>
-<li>Imagine each as the narrator of a 4-minute explainer. Listen to all six at least once before rating.</li>
+<li>All {len(key)} read the same passage and are matched to the same loudness. Names are hidden and the order is shuffled.</li>
+<li>Imagine each as the narrator of a 4-minute explainer. Listen to all of them at least once before rating.</li>
 <li>Rate how much you'd want to keep listening (0 = would click away, 100 = hooked). Replay as often as you like.</li>
 <li>Click the button and paste the result back to Claude, with a word or two on your top pick.</li>
 </ol>

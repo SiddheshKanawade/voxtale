@@ -8,7 +8,7 @@ episodes/*/qa/
 episodes/*/props.json
 voicelab/samples/
 voicelab/leveled/
-voicelab/blind/
+voicelab/blind*/
 voicelab/analysis/
 voicelab/*.html
 *.wav
