@@ -9,7 +9,14 @@ audio path, duration, word timings for captions, and inlined visual metadata).
 Direction (docs/voice-research.md): a beat may carry "direct": [[style, text, pause_after_s], ...]. Each phrase is
 voiced separately with that style's rate/pitch, trimmed to its words, and joined with the given pause. The phrase
 texts must join back into the narration exactly. Beats without "direct" are voiced as one "neutral" phrase.
+
+ElevenLabs: with "tts": "elevenlabs" in episode.json, "voice" is an ElevenLabs voice id and "model" defaults to eleven_v3
+(the blind-test winner, docs/voice-research.md section 8). Each beat is one call on its narration, so pauses come from
+punctuation, not splices. Word timings come from the API's character timestamps. ELEVENLABS_API_KEY is read from the
+environment or the project's .env. Audio is cached per beat in audio/, so re-runs don't spend characters.
 """
+import base64
+import hashlib
 import asyncio
 import json
 import os
@@ -17,6 +24,8 @@ import re
 import subprocess
 import sys
 import tempfile
+import urllib.error
+import urllib.request
 import wave
 from pathlib import Path
 
@@ -119,6 +128,61 @@ async def voice_beat(beat: dict, voice: str, out: Path) -> list[dict]:
     return words
 
 
+def api_key() -> str:
+    if "ELEVENLABS_API_KEY" in os.environ:
+        return os.environ["ELEVENLABS_API_KEY"]
+    env = Path(__file__).resolve().parent.parent / ".env"
+    for line in env.read_text().splitlines() if env.exists() else []:
+        if line.startswith("ELEVENLABS_API_KEY="):
+            return line.split("=", 1)[1].strip()
+    sys.exit("ELEVENLABS_API_KEY not set (put it in .env)")
+
+
+def eleven_words(alignment: dict) -> list[dict]:
+    """Group the API's per-character timings into words, skipping [audio tags]."""
+    words, cur, depth = [], None, 0
+    for ch, a, b in zip(alignment["characters"], alignment["character_start_times_seconds"],
+                        alignment["character_end_times_seconds"]):
+        depth += (ch == "[") - (ch == "]")
+        if ch.isspace() or depth or ch == "]":
+            cur = None
+            continue
+        if cur is None:
+            cur = {"text": "", "start": a, "end": b}
+            words.append(cur)
+        cur["text"] += ch
+        cur["end"] = b
+    return words
+
+
+def eleven_beat(beat: dict, voice: str, model: str, out: Path) -> list[dict]:
+    """Voice a beat in one ElevenLabs call (cached by voice, model and text); trim to its words; return word timings."""
+    text = beat.get("eleven_text", beat["narration"])  # optional variant with [audio tags]
+    key = hashlib.sha1(f"{voice}|{model}|{text}".encode()).hexdigest()[:16]
+    mp3, meta = out.with_suffix(".el.mp3"), out.with_suffix(".el.json")
+    if not (meta.exists() and json.loads(meta.read_text())["key"] == key):
+        req = urllib.request.Request(
+            f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format=mp3_44100_128",
+            data=json.dumps({"text": text, "model_id": model}).encode(),
+            headers={"xi-api-key": api_key(), "Content-Type": "application/json"})
+        try:
+            d = json.load(urllib.request.urlopen(req, timeout=120))
+        except urllib.error.HTTPError as e:
+            sys.exit(f"ElevenLabs HTTP {e.code}: {e.read().decode()[:300]}")
+        mp3.write_bytes(base64.b64decode(d["audio_base64"]))
+        meta.write_text(json.dumps({"key": key, "alignment": d["alignment"]}))
+    ws = eleven_words(json.loads(meta.read_text())["alignment"])
+    audio = decode(mp3)
+    a = max(0.0, ws[0]["start"] - LEAD)
+    b = min(len(audio) / SR, ws[-1]["end"] + LAST_TAIL)
+    with wave.open(str(out), "wb") as f:
+        f.setnchannels(1)
+        f.setsampwidth(2)
+        f.setframerate(SR)
+        f.writeframes(audio[int(a * SR):int(b * SR)].tobytes())
+    return [{**w, "start": round(w["start"] - a, 3), "end": round(w["end"] - a, 3)} for w in ws]
+
+
 def duration(path: Path) -> float:
     r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
                        capture_output=True, text=True, check=True)
@@ -166,7 +230,11 @@ async def main(ep_dir: Path) -> None:
     for seg in ep["segments"]:
         for i, beat in enumerate(seg["beats"]):
             out = ep_dir / "audio" / f"{seg['id']}_{i:02d}.wav"
-            beat["words"] = restore_punctuation(await voice_beat(beat, ep["voice"], out), beat["narration"])
+            if ep.get("tts") == "elevenlabs":
+                words = eleven_beat(beat, ep["voice"], ep.get("model", "eleven_v3"), out)
+            else:
+                words = await voice_beat(beat, ep["voice"], out)
+            beat["words"] = restore_punctuation(words, beat["narration"])
             beat["audio"] = f"audio/{out.name}"
             last = i == len(seg["beats"]) - 1
             beat["duration"] = round(duration(out) + (TAIL_PAD if last else BEAT_GAP), 3)

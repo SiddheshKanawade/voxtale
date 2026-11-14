@@ -243,3 +243,25 @@ listener and this narration style it did not carry over.
 **Current choice: ElevenLabs v3, voice Eric (`cjVigY5qzO86Huf0OWal`), one pass per beat, timestamps from the API.**
 - This passage is short, and v3 varies from take to take, so the next check is a full episode.
 - A full episode is 36 beats and about 3,600 characters, which fits the free tier about twice a month.
+
+## 9. ElevenLabs Eric (v3) in the pipeline (2026-11-14)
+
+**How it works:** `tools/voice.py` gained an ElevenLabs option. An episode sets `"tts": "elevenlabs"`, `"voice": <id>`
+and optionally `"model"` (defaults to eleven_v3).
+- Each beat is one API call on its plain narration, so pauses come from punctuation and there are no splices.
+- Word timings are grouped from the API's character timestamps. `[audio tags]` are skipped, and a beat can carry an
+  optional `eleven_text` with tags.
+- Audio is cached per beat (`audio/*.el.{mp3,json}`, keyed by voice, model and text), so re-renders cost nothing.
+
+**Episode:** `episodes/2026-11-14-sample-v4-eleven`. It has v2's script and visuals with Eric v3, and the narration
+runs 242 s. All 36 beats' word timings match the script word for word.
+
+| Whole episode | Phrase variety (st) | Pitch SD (st) | Pace (wpm) | Pauses |
+|---|---|---|---|---|
+| v2, Edge Andrew | 2.62 | 4.88 | 171 | 19.5% |
+| directed Andrew, strength 3 | 2.78 | 5.08 | 158 | 20.0% |
+| ElevenLabs v3 Eric | 2.24 | 4.45 | 165 | 19.4% |
+
+Eric measures as *less* melodically varied than either Andrew, yet the user picked Eric twice, blind, as the most
+realistic. That fits section 6: pitch variety is not the same thing as naturalness or listener preference. The user's
+review of the full episode decides.
