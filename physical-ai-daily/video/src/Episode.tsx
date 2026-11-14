@@ -31,7 +31,8 @@ export const Episode: React.FC<EpisodeProps> = ({ date, segments, design, review
             <Sequence key={`${seg.id}-${i}`} from={start} durationInFrames={shown}>
               <Audio src={staticFile(beat.audio)} />
               <Scene v={beat.visual} dur={shown} index={n} words={beat.words} />
-              {beat.section && <SectionChip section={beat.section} hideChip={SECTIONS[beat.section]?.toLowerCase() === beat.visual.title?.toLowerCase()} />}
+              {/* skip the chip when the scene's own title already names the section */}
+              {beat.section && SECTIONS[beat.section]?.toLowerCase() !== beat.visual.title?.toLowerCase() && <SectionChip section={beat.section} />}
               {seg.kind === "story" && <StoryHeader seg={seg} index={stories.indexOf(seg) + 1} total={stories.length} animate={start === segStart} />}
               {(beat.visual.credit || seg.source) && beat.visual.type !== "end" && (
                 <Credit text={beat.visual.credit ?? `Source: ${seg.source} · ${seg.sourceDate}`} />
@@ -65,11 +66,11 @@ const PIXEL_TILE_OF = (fill: string, opacity: number) => `url("data:image/svg+xm
 const PIXEL_TILE = PIXEL_TILE_OF("#fff", 0.05);
 
 const PAPER_TILE = PIXEL_TILE_OF("#1f2023", 0.06);
-const GRID = (step: number, a: number) =>
-  `linear-gradient(rgba(255,255,255,${a}) 1px, transparent 1px) 0 0 / ${step}px ${step}px, ` +
-  `linear-gradient(90deg, rgba(255,255,255,${a}) 1px, transparent 1px) 0 0 / ${step}px ${step}px`;
+const GRID = (step: number, a: number, rgb = "255,255,255") =>
+  `linear-gradient(rgba(${rgb},${a}) 1px, transparent 1px) 0 0 / ${step}px ${step}px, ` +
+  `linear-gradient(90deg, rgba(${rgb},${a}) 1px, transparent 1px) 0 0 / ${step}px ${step}px`;
 
-// Every backdrop moves slowly so even static scenes never sit perfectly still.
+// Backdrops. The pixel, signal and aurora candidates drift; blueprint, the chosen one, stays still (docs/attention.md).
 const Backdrop: React.FC<{ kind: Design["backdrop"] }> = ({ kind }) => {
   const frame = useCurrentFrame();
   const drift = `${frame * 0.3}px ${frame * 0.15}px`;
@@ -78,9 +79,13 @@ const Backdrop: React.FC<{ kind: Design["backdrop"] }> = ({ kind }) => {
       <AbsoluteFill style={{ backgroundImage: PAPER_TILE, backgroundSize: "44px 44px", backgroundPosition: drift }} />
     </AbsoluteFill>
   );
-  if (kind === "blueprint") return (
+  if (kind === "blueprint") return current.light ? (  // static grid: no drift (docs/attention.md)
+    <AbsoluteFill style={{ background: C.bg }}>
+      <AbsoluteFill style={{ background: `${GRID(240, 0.09, "31,32,35")}, ${GRID(48, 0.045, "31,32,35")}` }} />
+    </AbsoluteFill>
+  ) : (
     <AbsoluteFill style={{ background: `radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,0.5)), ${C.bg}` }}>
-      <AbsoluteFill style={{ background: `${GRID(240, 0.09)}, ${GRID(48, 0.05)}`, backgroundPosition: drift }} />
+      <AbsoluteFill style={{ background: `${GRID(240, 0.09)}, ${GRID(48, 0.05)}` }} />
     </AbsoluteFill>
   );
   if (kind === "signal") {
@@ -172,7 +177,8 @@ const StoryHeader: React.FC<{ seg: Segment; index: number; total: number; animat
   );
 };
 
-// Named sections recur in every story, so viewers learn the structure: each gets the same chip and tick sound.
+// Named sections recur in every story, so viewers learn the structure: each gets the same chip. Visual only: a tick
+// sound would overlap the narration, and sounds over speech hurt recall (docs/attention.md).
 export const SECTIONS: Record<string, string> = {
   plain: "In plain English", evidence: "The evidence", matters: "Why it matters", reality: "Reality check",
 };
@@ -180,28 +186,26 @@ export const SECTIONS: Record<string, string> = {
 const CHIP: Record<Design["chip"], (glow: number) => React.CSSProperties> = {
   outline: (g) => ({ background: "rgba(26,26,29,0.92)", border: `2px solid rgba(244,63,46,${0.35 + 0.65 * g})`, color: "#f5f4f2" }),
   solid: (g) => ({ background: BRAND.red, color: "#fff", boxShadow: `0 0 ${30 * g}px rgba(244,63,46,0.8)` }),
-  mono: () => ({ fontFamily: "'SF Mono', Menlo, monospace", fontWeight: 600, letterSpacing: 1, color: C.accent,
-    background: "rgba(10,10,11,0.85)", border: "1px solid rgba(255,255,255,0.22)", borderRadius: 4 }),
+  mono: () => ({ fontFamily: "'SF Mono', Menlo, monospace", fontWeight: 600, letterSpacing: 1, borderRadius: 4,
+    ...(current.light
+      ? { color: BRAND.red, background: "rgba(251,250,247,0.92)", border: "1px solid rgba(31,32,35,0.25)" }
+      : { color: C.accent, background: "rgba(10,10,11,0.85)", border: "1px solid rgba(255,255,255,0.22)" }) }),
   glass: (g) => ({ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(14px)", color: "#f5f4f2",
     border: `1px solid rgba(255,255,255,${0.18 + 0.4 * g})` }),
 };
 
-// hideChip: the scene already shows the section name as its title, so only the tick plays.
-const SectionChip: React.FC<{ section: string; hideChip?: boolean }> = ({ section, hideChip }) => {
+const SectionChip: React.FC<{ section: string }> = ({ section }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const s = spring({ frame, fps, config: { damping: 18 } });
   const glow = interpolate(frame, [0, 18], [1, 0], { extrapolateRight: "clamp" });
   return (
-    <>
-      <Audio src={staticFile("brand/tick.wav")} volume={0.35} />
-      {!hideChip && <div style={{ position: "absolute", top: 156, right: 64, display: "flex", alignItems: "center", gap: 12,
+    <div style={{ position: "absolute", top: 156, right: 64, display: "flex", alignItems: "center", gap: 12,
         padding: "8px 16px", fontSize: 22, fontWeight: 800, letterSpacing: 3, textTransform: "uppercase", borderRadius: 10,
         opacity: s, transform: `translateX(${(1 - s) * 60}px)`, ...CHIP[current.chip](glow) }}>
         {current.chip !== "mono" && <span style={{ width: 14, height: 14, borderRadius: 3, background: BRAND.yellow, display: "inline-block" }} />}
         {current.chip === "mono" ? `// ${SECTIONS[section] ?? section}` : SECTIONS[section] ?? section}
-      </div>}
-    </>
+    </div>
   );
 };
 

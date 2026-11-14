@@ -5,7 +5,6 @@ Usage: python3 tools/brand_audio.py <out-dir>
 Writes:
   sonic_logo.wav  1.6 s, timed to the sting in video/src/brand.tsx: four "pixel" blips rising up an A-major
                   arpeggio (one per pixel pop), a short rising whoosh as the arrow drives in, then a soft chord.
-  tick.wav        0.3 s two-note blip that marks a named story section (video/src/Episode.tsx SectionChip).
 Brand research behind it: docs/brand.md.
 """
 import sys
@@ -60,12 +59,7 @@ def main(out: Path) -> None:
     for semis in [-12, -5, 0, 4, 7]:  # resolving A-major chord as the arrow lands
         place(logo, note(A4 * 2 ** (semis / 12), 0.85, 0.32, 0.15), 0.76, 0.32)
     write(out / "sonic_logo.wav", logo, -3)
-
-    tick = np.zeros(int(SR * 0.3))
-    place(tick, note(A4 * 2 ** (19 / 12), 0.15, 0.04), 0.0, 0.6)
-    place(tick, note(A4 * 2 ** (24 / 12), 0.2, 0.05), 0.07, 0.6)
-    write(out / "tick.wav", tick, -6)
-    print("wrote", out / "sonic_logo.wav", out / "tick.wav")
+    print("wrote", out / "sonic_logo.wav")
 
 
 if __name__ == "__main__":

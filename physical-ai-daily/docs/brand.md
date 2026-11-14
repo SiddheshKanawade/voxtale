@@ -22,6 +22,9 @@ traceable source, so we ignore them.
 
 ## Proposed elements (in `episodes/2026-11-14-sample-v6-identity`)
 
+**Update:** the user picked the **Blueprint** design from five candidates, with **Blueprint Light** as the light
+alternative (`episodes/2026-11-14-sample-v7-*`). Attention rules that shaped it are in `docs/attention.md`.
+
 | Element | What it is | Where |
 |---|---|---|
 | Narrator | ElevenLabs v3 Eric (frozen) | every beat |
@@ -30,7 +33,7 @@ traceable source, so we ignore them.
 | Backdrop | Charcoal with a faint red glow top-left, a faint yellow glow bottom-right, a vignette, and a drifting grid of square "pixels" | `Episode.tsx` Backdrop |
 | Sonic logo | Original 1.6 s cue generated in code: four "pixel" blips rising an A-major arpeggio, a whoosh, then a soft chord. Plays with the sting after the cold open and on a 1.6 s end-card tail, never under the voice | `tools/brand_audio.py`, `Episode.tsx` |
 | Sting | 1.6 s after the cold open: pixels pop in, the arrow drives forward, the name wipes in | `brand.tsx` Sting |
-| Named sections | Every story uses the same four markers: IN PLAIN ENGLISH, THE EVIDENCE, WHY IT MATTERS, REALITY CHECK. Each gets a chip at top right and a soft two-note tick. Set per beat with `"section": "plain" / "evidence" / "matters" / "reality"` | `Episode.tsx` SectionChip |
+| Named sections | Every story uses the same four markers: IN PLAIN ENGLISH, THE EVIDENCE, WHY IT MATTERS, REALITY CHECK. Each gets a chip at top right. (A tick sound was tried and removed: it overlapped speech, see `docs/attention.md`.) Set per beat with `"section": "plain" / "evidence" / "matters" / "reality"` | `Episode.tsx` SectionChip |
 | Spoken cues | "Story one / Story two" opens each story, the caveat beat opens with "Reality check.", and the outro opens with "That's Pixels to Actions." | narration rules |
 | End card | Lockup, "Sources linked in the description" and Subscribe; no URL, no newsletter | `scenes.tsx` End |
 

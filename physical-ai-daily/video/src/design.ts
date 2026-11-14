@@ -6,6 +6,7 @@ export type Design = {
   colors: Partial<typeof C>;
   backdrop: "pixels" | "paper" | "blueprint" | "signal" | "aurora";
   chip: "outline" | "solid" | "mono" | "glass";
+  light?: boolean; // dark text on a light background
   headlineShadow: string;
 };
 
@@ -22,10 +23,17 @@ export const DESIGNS: Record<string, Design> = {
     colors: { bg: "#fbfaf7", bgRgb: "251,250,247", panel: "#efede8", panel2: "#e6e3dc", ink: "#1f2023", dim: "#6b6d73", accent: "#d9a400" },
     backdrop: "paper", chip: "solid", headlineShadow: "none",
   },
-  // Lab notebook: near-black with a fine engineering grid and monospaced section labels.
+  // Lab notebook: near-black with a fine, static engineering grid and monospaced section labels. The user's pick
+  // (2026-11-14). The grid doesn't move: constant background motion competes with the content (docs/attention.md).
   blueprint: {
     colors: { bg: "#0a0a0b", bgRgb: "10,10,11", panel: "#151517", panel2: "#1e1e21", ...DARK_TEXT },
     backdrop: "blueprint", chip: "mono", headlineShadow: "0 2px 12px rgba(0,0,0,0.6)",
+  },
+  // The same lab notebook on warm paper: ink grid, ink text, red section labels. Dark text on a light background reads
+  // better (positive-polarity advantage) and matches the mostly white source screenshots.
+  "blueprint-light": {
+    colors: { bg: "#fbfaf7", bgRgb: "251,250,247", panel: "#efede8", panel2: "#e6e3dc", ink: "#1f2023", dim: "#6b6d73", accent: "#c99a00" },
+    backdrop: "blueprint", chip: "mono", light: true, headlineShadow: "none",
   },
   // Bold: black with a brand-red edge and a red light sweep; solid red section labels.
   signal: {
