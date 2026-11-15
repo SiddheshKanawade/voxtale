@@ -25,3 +25,6 @@ news/
 episodes/*/candidates*.json
 episodes/*/triage/
 episodes/*/chatter/
+
+# Local speech-to-text model for chatter.py transcripts (downloaded, ~150 MB)
+models/

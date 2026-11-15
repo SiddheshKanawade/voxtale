@@ -147,7 +147,9 @@ python3 -I physical-ai-daily/tools/chatter.py "<story name>" --url <primary url>
 - **Hacker News:** all-time search; the comments are where experts push back.
 - **YouTube:** who has already covered it and with how many views (trend signal, and an angle to avoid repeating).
   For the top 3 videos: upload date, likes, the full description (channels often summarise the story there) and the
-  top 20 comments. Captions with `--transcripts` are best-effort (YouTube often answers caption downloads with 429).
+  top 20 comments. `--transcripts N` saves the N top videos' transcripts: captions when YouTube serves them, else a
+  local whisper.cpp transcription of the audio (YouTube rate-limits captions with 429; about 1 min per video). Read
+  them for how other channels explained the story and what they got wrong.
 - **Reddit and forums:** web search (`site:reddit.com <name>`, r/robotics, r/MachineLearning, r/singularity) and
   respected blogs or forums. Reddit blocks unauthenticated API reads.
 

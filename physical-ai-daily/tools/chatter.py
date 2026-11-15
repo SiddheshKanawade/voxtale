@@ -16,8 +16,11 @@ source, which catch the posts that don't name it.
 --details N (default 3) adds, for the N most-viewed videos, the upload date, likes, comment count, the full
 description (channels often summarise the story there) and the top 20 comments (where viewers push back). --transcripts
 N also saves the auto-captions of the N most-viewed videos to DIR as plain text, to read how other channels explained
-it. Captions are best-effort: YouTube often answers caption downloads with HTTP 429, and then the descriptions and
-comments are what's left. Reddit blocks unauthenticated API reads: search it with WebSearch
+it. YouTube rate-limits caption downloads (HTTP 429) after a burst of them, e.g. several stories' chatter run in
+parallel, and it can stick to one video for hours, so captions get one retry. Videos without usable captions (still
+429, or none) are transcribed locally from their audio with whisper.cpp when it's installed (`brew install
+whisper-cpp`, model in models/whisper/, see WHISPER_MODEL); otherwise the descriptions and comments are what's left.
+Reddit blocks unauthenticated API reads: search it with WebSearch
 (`site:reddit.com <query>`) instead.
 """
 from __future__ import annotations
@@ -25,8 +28,10 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
+import time
 import urllib.parse
 from pathlib import Path
 
@@ -89,20 +94,59 @@ def details(v: dict) -> None:
                                for c in sorted(d.get("comments") or [], key=lambda c: -(c.get("like_count") or 0))]})
 
 
+WHISPER_MODEL = Path(__file__).resolve().parent.parent / "models" / "whisper" / "ggml-base.en.bin"
+
+
+def _captions(url: str, stem: Path) -> Path | None:
+    for wait in (0, 20):  # the 429 often sticks to a video for hours; whisper is the real fallback
+        time.sleep(wait)
+        run = subprocess.run(["yt-dlp", "--skip-download", "--write-auto-subs", "--write-subs", "--sub-langs", "en",
+                              "--sub-format", "vtt", "--sleep-subtitles", "3", "-o", str(stem), url],
+                             capture_output=True, text=True)
+        vtt = next(iter(sorted(stem.parent.glob(stem.name + "*.vtt"))), None)
+        if vtt or "429" not in run.stderr:
+            return vtt
+        log(f"youtube: captions 429 for {url}, retrying")
+    return None
+
+
+def _whisper(url: str, stem: Path) -> str | None:
+    cli = shutil.which("whisper-cli")
+    if not cli or not WHISPER_MODEL.exists():
+        return None
+    audio = stem.with_suffix(".wav")
+    subprocess.run(["yt-dlp", "-f", "ba", "-x", "--audio-format", "wav", "--postprocessor-args",
+                    "ffmpeg:-ar 16000 -ac 1", "-o", str(stem.with_suffix(".%(ext)s")), url], capture_output=True)
+    if not audio.exists():
+        return None
+    subprocess.run([cli, "-m", str(WHISPER_MODEL), "-f", str(audio), "-otxt", "-of", str(stem), "-np"],
+                   capture_output=True)
+    audio.unlink()
+    txt = stem.with_suffix(".txt")
+    return " ".join(txt.read_text().split()) if txt.exists() else None
+
+
 def transcript(url: str, out: Path) -> Path | None:
     stem = out / re.sub(r"\W+", "_", url.rsplit("=", 1)[-1])
-    run = subprocess.run(["yt-dlp", "--skip-download", "--write-auto-subs", "--sub-langs", "en", "--sub-format", "vtt",
-                          "--sleep-subtitles", "3", "-o", str(stem), url], capture_output=True, text=True)
-    vtt = next(iter(sorted(out.glob(stem.name + "*.vtt"))), None)
-    if not vtt:  # YouTube often answers caption requests with 429 for a while; it's best-effort
-        log(f"youtube: no transcript for {url}: {(run.stderr.strip().splitlines() or ['?'])[-1]}")
-        return None
-    lines = [re.sub(r"<[^>]+>", "", l).strip() for l in vtt.read_text().splitlines()
-             if l.strip() and "-->" not in l and not l.startswith(("WEBVTT", "Kind:", "Language:"))]
-    text = " ".join(dict.fromkeys(lines))  # auto-captions repeat each line as it scrolls
     txt = stem.with_suffix(".txt")
+    if txt.exists():
+        return txt
+    vtt = _captions(url, stem)
+    if vtt:
+        lines = [re.sub(r"<[^>]+>", "", l).strip() for l in vtt.read_text().splitlines()
+                 if l.strip() and "-->" not in l and not l.startswith(("WEBVTT", "Kind:", "Language:"))]
+        text = " ".join(dict.fromkeys(lines))  # auto-captions repeat each line as it scrolls
+        for f in out.glob(stem.name + "*.vtt"):
+            f.unlink()
+        source = "captions"
+    else:
+        text, source = _whisper(url, stem), "whisper"
+    if not text:
+        log(f"youtube: no transcript for {url} (captions unavailable"
+            + ("" if shutil.which("whisper-cli") and WHISPER_MODEL.exists() else ", whisper.cpp not installed") + ")")
+        return None
     txt.write_text(text + "\n")
-    vtt.unlink()
+    log(f"youtube: transcript for {url} from {source}")
     return txt
 
 
