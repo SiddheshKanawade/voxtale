@@ -62,11 +62,11 @@
           }
         },
         {
-          "narration": "Five stories, in plain English.",
+          "narration": "This is Pixels to Actions. Every week, we go through what's new in robotics and physical AI.",
           "visual": {
             "type": "kinetic",
-            "text": "Five stories. Plain English.",
-            "sub": "October 25 – November 1, 2026"
+            "text": "Pixels2Actions",
+            "sub": "Every week: what's new in robotics and physical AI"
           }
         }
       ]

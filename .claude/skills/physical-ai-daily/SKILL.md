@@ -134,7 +134,9 @@ confirm on the primary source, with its date, at the time you script.
 
 - Narration ≈ 150 words/min; a story is 150–280 words over 12–18 beats. Spell numbers as words ("ninety-six percent"), because the TTS reads digits unreliably. On-screen numbers use digits.
 - Story arc: hook (what happened) → plain-English explainer (analogy + diagram) → evidence (source visual, highlighted sentence) → why it matters → reality check. Don't use hype words like "shocking" or "changes everything".
-- The intro teases the stories with visuals in about 20 s. The outro opens with "That's Pixels to Actions." (written
+- The intro teases the stories with visuals in about 20 s, then ends on the channel line, word for word: "This is
+  Pixels to Actions. Every week, we go through what's new in robotics and physical AI." (user, 2026-11-16: inform,
+  don't sell; no "biggest", no "explained in plain English" pitch). Research: `docs/research-channel-intro.md`. The outro opens with "That's Pixels to Actions." (written
   that way so the TTS says it naturally), points to the sources and cues Subscribe. Never mention the website or the
   digest in the video: the brand is meant to be a subtle presence.
 
