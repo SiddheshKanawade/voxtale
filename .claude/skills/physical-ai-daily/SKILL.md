@@ -33,8 +33,8 @@ Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-be
 `episodes/2026-11-14-sample-v7-blueprint-light/` is the same episode in the light design.
 
 **Remotion know-how:** Remotion's official agent skill `remotion-best-practices` (animation, timing, audio, fonts,
-captions, rendering, docs lookup) is installed at user level by `tools/install_remotion_skill.sh` (pinned commit; not
-vendored, because its license isn't open source). Load it when changing `video/src/`. Where it differs from this
+captions, rendering, docs lookup) is in the repo as a pinned git submodule (`vendor/remotion-skills`, not copied, because its
+license isn't open source); `tools/link_skills.sh` sets up every skill on a new machine (`docs/skills.md`). Load it when changing `video/src/`. Where it differs from this
 skill, **this skill wins**: render with `tools/render.sh` and its QA steps (it renders on our say-so, without opening
 Studio first), and the frozen v1.0 format rules stand.
 

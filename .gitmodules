@@ -1,0 +1,3 @@
+[submodule "vendor/remotion-skills"]
+	path = vendor/remotion-skills
+	url = https://github.com/remotion-dev/skills.git
