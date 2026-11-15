@@ -10,7 +10,9 @@ A card has four parts, each from a stored source:
   Signals          raw counts: harvest cluster size, X likes and engagement percentile, HN points, YouTube views
                    (only videos uploaded inside the window)
   What people say  verbatim X posts, HN titles and YouTube comments (5+ likes, no links) from <ep>/chatter/*.json,
-                   each with handle, followers and likes
+                   each with handle, followers, likes and URL
+  Links            every primary source and harvest item behind the story, so the agents that script and build the
+                   video start from the right pages (they still re-verify)
 No summaries, verdicts, ratings or "consensus" lines: an opinion appears only as someone's own words.
 
 stories.json entry (the only hand-written input; every field is a pointer or a filter, not prose):
@@ -38,6 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from discover import engagement  # noqa: E402
 
 MIN_COMMENT_LIKES = 5
+LINKS_SHOWN = 15
 
 
 def load(pattern: str) -> list:
@@ -105,11 +108,12 @@ def card(st: dict, ep: Path, ctx: dict) -> str:
     out.append("\n**What people say** (verbatim, attributed; most-liked first):")
     n = len(out)
     out += [f"- X @{t['handle']} ({t.get('followers') or 0:,} followers, {t.get('likes') or 0:,} likes, "
-            f"{t['published'][:10]}): \"{' '.join(t['text'].split())[:280]}\"" for t in xs[:4]]
-    out += [f"- Hacker News story \"{h['title']}\" ({h['points']} points, {h.get('comments')} comments)"
+            f"{t['published'][:10]}): \"{' '.join(t['text'].split())[:280]}\" {t['url']}" for t in xs[:4]]
+    out += [f"- Hacker News story \"{h['title']}\" ({h['points']} points, {h.get('comments')} comments) "
+            f"{h.get('discussion') or h.get('url')}"
             for h in sorted(hn, key=lambda h: -(h.get("points") or 0))[:2]]
     for v in sorted(yt, key=lambda v: -(v.get("views") or 0))[:3]:
-        out.append(f"- YouTube \"{v['title']}\" ({v.get('channel')}, {v.get('views') or 0:,} views)")
+        out.append(f"- YouTube \"{v['title']}\" ({v.get('channel')}, {v.get('views') or 0:,} views) {v['url']}")
         out += [f"  - comment ({c['likes']} likes): \"{' '.join(c['text'].split())[:200]}\""
                 for c in [c for c in v.get("top_comments") or []
                           if (c.get("likes") or 0) >= MIN_COMMENT_LIKES and "http" not in c["text"]][:2]]
@@ -117,6 +121,16 @@ def card(st: dict, ep: Path, ctx: dict) -> str:
         out.append("- No posts or comments found.")
 
     out.append("\n**Visuals listed by the verification step:** " + ("; ".join(visuals) if visuals else "none recorded"))
+    # every source behind the story, for the agents that script and build the video (they re-verify from these)
+    links = [v["primary_url"] for v in entries] + [q["url"] for v in entries for q in v.get("quotes") or []
+                                                   if isinstance(q, dict)]
+    links += [u for k in st.get("finds", []) for f in [pick(ctx["finds"], "event", k)] for u in [f["primary_url"]] + f.get("other_urls", [])]
+    links += [v["url"] for v in cluster]
+    links = list(dict.fromkeys(u for u in links if u))
+    out.append("\n**Links** (primary sources first, then the harvest items in this cluster):")
+    out += [f"- {u}" for u in links[:LINKS_SHOWN]]
+    if len(links) > LINKS_SHOWN:
+        out.append(f"- …and {len(links) - LINKS_SHOWN} more harvest items in <ep>/triage/verdicts_*.json")
     days = (Date.fromisoformat(ctx["today"]) - Date.fromisoformat(st["date"])).days
     out.append(f"\n**Primary date:** {st['date']} ({days} days before {ctx['today']})")
     return "\n".join(out)
