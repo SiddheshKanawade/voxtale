@@ -60,8 +60,11 @@ hint, not a score; untagged items can still be the week's biggest story.
 
 The channel teaches more than it reports. Every week at least **2 of the 5 stories are "learning" stories**: the core
 is a new capability, method or experiment with a result, something built or tested that the viewer wouldn't expect
-("a robot that runs on light"), from a lab, university or company alike. Funding, deals, listings, policy, executive
-moves, product sales and deployments without a reported experiment are "news": they can run, but a generic trend
+("a robot that runs on light"), from a lab, university or company alike. **Deployments are judged by what they
+show, not by happening:** a deployment is learning when it validates an experiment or tests a hypothesis in the real
+world, or reports a large measured impact on something critical (e.g. ~50% lower cost, failures or time, or a job
+that wasn't possible before); a robot simply replacing a worker, or a line running a bit faster, is news. Funding,
+deals, listings, policy, executive moves and product sales are "news": they can run, but a generic trend
 ("a company moves from commercial to personal sales") never crowds out the learning stories. Each story in
 `judge/stories.json` gets `"kind": "learning" | "news"` by this rule; the judges score `learning_value`; and
 `research_md.py` enforces the minimum, swapping the lowest-ranked news pick for the best-ranked learning story and

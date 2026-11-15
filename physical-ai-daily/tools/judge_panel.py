@@ -59,7 +59,9 @@ CRITERIA = {
                    "headline to show, and a concept that needs work; 5 = photos or figures, and a clear explanation; "
                    "8 = real footage or a demo, and an everyday analogy; 10 = striking footage that explains itself.",
     "learning_value": "Will the viewer learn something new and unexpected about what machines can do, or how: a new "
-                      "capability, method or experiment with a result. 1 = nothing to learn (a funding round, listing, "
+                      "capability, method or experiment with a result. A deployment counts by what it shows: a hypothesis tested in "
+                      "the real world, or a large measured impact on something critical (say half the cost, failures or "
+                      "time), not a robot simply replacing a worker or a line running a bit faster. 1 = nothing to learn (a funding round, listing, "
                       "deal, policy step or product sale, however big); 3 = a familiar trend reaches a new milestone; 5 = "
                       "a real result the field expected; 8 = a result most viewers wouldn't have guessed was possible "
                       "yet; 10 = it changes what they think machines can do.",
