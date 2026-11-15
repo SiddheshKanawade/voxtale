@@ -11,7 +11,7 @@ license, recent activity and whether it needs keys or outside services; read eve
 |---|---|---|
 | `physical-ai-research` | The week's research: harvest (arXiv, X, news), web discovery, triage, chatter, verification, cards, LLM judge panel, `research.md` | Rules: sourcing (no generated opinions), learning over knowing, YouTube calibration |
 | `physical-ai-daily` | Production: script (`episode.json`), capture, voice, render, hand-off | Frozen v1.0 identity (light default); acceptance checklist in `docs/video-requirements.md` |
-| `promo-shorts` | 2–3 promotional 9:16 Shorts per episode: hook on frame 0, payoff, one CTA to the episode; light and dark | Evidence: `docs/research-shorts-*.md`. Open: official press footage for media use |
+| `promo-shorts` | 2–3 promotional 9:16 Shorts per episode: hook on frame 0, payoff, one CTA to the episode; light and dark | Evidence: `docs/research-shorts-*.md`. Official press footage allowed (short, credited, muted) |
 | `youtube-thumbnails` | Evidence-led thumbnails: research, 5–7 candidates, rubric, pick plus two for Test & Compare | Open: whether news-site screenshots may appear in thumbnails |
 
 ## Third-party

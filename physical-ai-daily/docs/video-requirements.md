@@ -72,8 +72,8 @@ the tools; where they disagree, the skill wins and this file gets fixed.
   *Check:* Per-beat contact sheets
 - [ ] **4.4** `GUIDE` No empty stages, washed-out media, or colours that work only on one design; text readable at 1080p  
   *Check:* Light-mode QA: ~15 frames across the render, both designs
-- [ ] **4.5** `GUIDE` Synthetic images only for explainer concepts with no source visual, never for something that looks like a real event or product  
-  *Check:* Review any generated image
+- [ ] **4.5** `HARD` Anything we generate (Higgsfield images or video, Blender animation) is used rarely, only to explain an idea when no real footage or diagram can, is labelled on screen ("Illustration" / "AI-generated"), and is never shown or narrated as real footage of an event, product or person  
+  *Check:* Every generated asset has the label; the narration doesn't call it real
 
 ## 5. Captions and voice
 
@@ -99,8 +99,8 @@ the tools; where they disagree, the skill wins and this file gets fixed.
 
 - [ ] **7.1** `GUIDE` Each source shown only while the narration discusses it, with on-screen attribution (credit chip)  
   *Check:* Per-beat contact sheets
-- [ ] **7.2** `HARD` Video stills captured from source pages are fine; downloading or re-cutting another party's video clips is not (until the user decides otherwise)  
-  *Check:* `assets/` contains stills only
+- [ ] **7.2** `HARD` Video clips only from **official footage the company or lab itself published** with its announcement (its newsroom or press kit, its own page or channel): short (a few seconds per clip), credited on screen ("Video: Google DeepMind"), shown while the narration discusses it, the clip's own audio muted under our narration. Never clips from other creators, news outlets or aggregators (stills from any source page remain fine)  
+  *Check:* Each clip's source URL is the publisher's own page or channel; credit chip present
 - [ ] **7.3** `HARD` arXiv figures only when the abs page shows CC BY (or another reuse licence), credited  
   *Check:* License line on the abs page
 - [ ] **7.4** `GUIDE` Every source listed in the description  

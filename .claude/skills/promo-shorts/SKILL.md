@@ -62,9 +62,13 @@ word in `*asterisks*` for the accent colour) and `"cta"` (end-card line). One se
 `items[{to,suffix,label}]`), `split`/`panels` (two stacked images), `kinetic` (big words). Copy the assets you use
 from the episode's `assets/` into the Short's `assets/`.
 
-**Motion without other people's clips:** real robot footage wins in this topic, but the copyright rule (HARD 7.2)
-allows video *stills* from source pages, not clips. Get motion from consecutive stills (a sequence of beats), the
-push-in, counting stats, and a new visual every beat. (Open with the user: official press footage for media use.)
+**Motion: official press footage first.** Real robot footage wins in this topic (the three biggest reference
+multipliers). Use short clips of **official footage the company or lab itself published** with its announcement (its
+newsroom, press kit, own page or channel; checklist HARD 7.2): a few seconds each, credited, audio muted, and
+ideally the robot doing the thing in frame 0. Never clips from other creators or news outlets. When no official
+footage exists, get motion from consecutive stills, the push-in, counting stats and a new visual every beat.
+Generated video (Higgsfield, Blender) only rarely, to explain an idea, labelled "Illustration" / "AI-generated" and
+never presented as real (HARD 4.5).
 
 ## 3. Layout (in the renderer, don't fight it)
 

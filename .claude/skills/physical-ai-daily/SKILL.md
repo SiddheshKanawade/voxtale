@@ -101,7 +101,7 @@ Icons are Apple emoji, which render in Remotion on this Mac. Any static photo or
 frame at the clause break nearest its middle.
 **Checklist:** `physical-ai-daily/docs/video-requirements.md` is guidance for a good episode, each item with how to
 check it. `GUIDE` items are defaults: use judgement where one doesn't fit, and say in the hand-off what you did and
-why. `HARD` items are the user's firm rules (sourcing, copyright, identity, never upload): if one can't be met, ask.
+why. `HARD` items are the user's firm rules (sourcing, copyright and official-footage-only clips, nothing generated passed off as real, identity, never upload): if one can't be met, ask.
 
 7. **Hand off.** Report the final path, the duration, and a description block listing every source URL. Uploading is the user's action, so never upload.
 
@@ -158,9 +158,13 @@ six Eleven v4 voices (`docs/voice-research.md` sections 7b–9).
   (edge-tts, free; Microsoft's online service, not on-device). Used for the first three weekly episodes
   (2026-11-16) while ElevenLabs credits were short; re-voice with Eric before publishing if credits allow.
 
-## Synthetic images
+## Synthetic images and video (rare, labelled, never passed off as real)
 
-Higgsfield MCP has image models (Nano Banana Pro/2, GPT Image 2.6, FLUX), but the account had **0 credits** on 2026-11-13. Check `balance` first. Use synthetic images only for explainer diagrams or concepts with no source visual, and never for something that looks like a real event or product.
+Higgsfield MCP has image and video models (Nano Banana Pro/2, GPT Image 2.6, FLUX); Blender can animate. The
+account had **0 credits** on 2026-11-13, so check `balance` first. Not advised: use generated images or video only
+when an idea can't be explained with real footage, stills or our own diagrams, and then only to explain (a mechanism,
+a concept), never to depict a real event, product or person as if it happened. Always label it on screen
+("Illustration" or "AI-generated") and never narrate it as real (user, 2026-11-16; checklist HARD 4.5).
 
 ## Format (FROZEN 2026-11-14: v1.0, 16:9 long-form; the user approved it)
 
@@ -194,4 +198,11 @@ Don't change the identity without the user's say-so. The research behind it is i
 
 ## Copyright
 
-Screenshots of articles and posts with on-screen attribution, plus commentary, is the standard news-review practice, but it isn't a guarantee. Keep each source on screen only as long as the narration discusses it. Video *stills* captured from a source page are used like screenshots. Downloading and re-cutting another party's video clips still needs the user's explicit decision (not yet given). Always list sources in the description.
+Screenshots of articles and posts with on-screen attribution, plus commentary, is the standard news-review practice, but it isn't a guarantee. Keep each source on screen only as long as the narration discusses it. Video *stills* captured from a source page are used like screenshots.
+
+**Official press footage (allowed, user 2026-11-16):** short clips from footage the company or lab itself published
+with its announcement (its newsroom or press kit, its own page or YouTube channel) may be used: a few seconds per
+clip, credited on screen ("Video: Google DeepMind"), shown while the narration discusses it, the clip's audio muted
+under our narration. Note the clip's source URL and timestamps in the hand-off. Never clips from other creators,
+news outlets or aggregators. Get the file with yt-dlp from the publisher's own channel or page, cut it with ffmpeg
+(`-ss <start> -t <seconds> -an`) into `assets/`. Always list sources in the description.

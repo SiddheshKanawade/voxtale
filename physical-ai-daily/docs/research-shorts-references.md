@@ -46,7 +46,8 @@ doesn't publish "viewed vs swiped away" for other people's Shorts, so views rela
 6. **Real footage of a robot doing something wins in our topic** (the three biggest multipliers). Our copyright rule
    (`video-requirements.md` 7.2) doesn't allow other parties' clips, so our Shorts need another way to show motion:
    official stills with movement (Ken Burns, sequences), our own animated explainers, and the source's own words on
-   screen. **Open question for the user:** official company press footage for media use.
+   screen. **Resolved (user, 2026-11-16):** official footage the company or lab itself published may be used in short,
+   credited, muted clips (`video-requirements.md` 7.2); other parties' clips stay out.
 
 ## What we take into the Shorts skill
 
