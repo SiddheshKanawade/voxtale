@@ -56,6 +56,17 @@ and ~20 X accounts. They steer the harvest (accounts, X keywords, arXiv terms) a
 prompt names (pi0.7, GR00T, V-JEPA, UMI) is news even when the post is quiet. Every item's `topics` tags are a lexical
 hint, not a score; untagged items can still be the week's biggest story.
 
+## Learning over knowing (user, 2026-11-16)
+
+The channel teaches more than it reports. Every week at least **2 of the 5 stories are "learning" stories**: the core
+is a new capability, method or experiment with a result, something built or tested that the viewer wouldn't expect
+("a robot that runs on light"), from a lab, university or company alike. Funding, deals, listings, policy, executive
+moves, product sales and deployments without a reported experiment are "news": they can run, but a generic trend
+("a company moves from commercial to personal sales") never crowds out the learning stories. Each story in
+`judge/stories.json` gets `"kind": "learning" | "news"` by this rule; the judges score `learning_value`; and
+`research_md.py` enforces the minimum, swapping the lowest-ranked news pick for the best-ranked learning story and
+saying so in `research.md`. In discovery and triage, look as hard for experiments and new results as for news.
+
 ## Sourcing rule (applies to every step)
 
 **Never generate facts or opinions.** Every fact, number, reaction, criticism or expert view in `verify/`, the cards
@@ -262,7 +273,7 @@ concrete, high-impact news (Northwestern's newsroom study). So the ranking is a 
    `judge_panel.py settle <ep>/judge` re-orders those ranks by wins that held in both orders. Pairwise comparison
    tracks human preference better than scores do, which is why it decides the places that matter.
 6. **Apply the editorial rules yourself, after the panel** (they're facts about the lineup, not judgement):
-   at most 2 stories per company; at least one research story when one is ranked within 3 places of the 5th pick;
+   at least 2 learning stories (enforced by `research_md.py`, above); at most 2 stories per company; at least one research story when one is ranked within 3 places of the 5th pick;
    variety (not five humanoid funding rounds); at least one story the viewer couldn't have read on a mainstream front
    page. Moving a story for a rule: say which rule in `research.md`.
 

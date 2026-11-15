@@ -16,6 +16,8 @@ import json
 import re
 from pathlib import Path
 
+MIN_LEARNING = 2
+
 
 def section(card: str, name: str) -> list[str]:
     m = re.search(rf"\*\*{re.escape(name)}\*\*[^\n]*\n(.*?)(?=\n\*\*|\Z)", card, re.S)
@@ -35,21 +37,34 @@ def main() -> None:
     verify = [e for f in sorted(glob.glob(str(ep / "verify/*.json"))) for e in json.loads(Path(f).read_text())]
     judges = [json.loads(Path(p).read_text()) for p in sorted(glob.glob(str(J / "judge_*.json")))]
     reason = {(v["judge"], s["id"]): s["reasoning"] for v in judges for s in v["scores"]}
-    picks = panel[:args.picks]
+    # Editorial rule: at least MIN_LEARNING of the picks are "learning" stories (a new capability, method or
+    # experiment with a result). Short of that, the lowest-ranked news pick gives way to the best-ranked learning story.
+    kind = lambda r: stories[r["id"]].get("kind", "news")  # noqa: E731
+    picks, rest, moved = panel[:args.picks], panel[args.picks:], []
+    while sum(kind(r) == "learning" for r in picks) < MIN_LEARNING and any(kind(r) == "learning" for r in rest):
+        out_r = max((r for r in picks if kind(r) != "learning"), key=lambda r: r["rank"])
+        in_r = min((r for r in rest if kind(r) == "learning"), key=lambda r: r["rank"])
+        picks = [in_r if r is out_r else r for r in picks]
+        rest = [out_r if r is in_r else r for r in rest]
+        moved.append(f"{in_r['story']} (rank {in_r['rank']}, learning) replaces {out_r['story']} (rank {out_r['rank']}, news)")
+    picks.sort(key=lambda r: r["rank"])
+    rest.sort(key=lambda r: r["rank"])
 
     out = [f"# Research {ep.name} (window: {args.window.replace(':', ' → ')})", "",
            f"Ranked by the judge panel: {len(judges)} passes (Opus, Sonnet and Fable, two card orders each), cut line "
            f"settled pairwise in both orders. Cards: `judge/cards.md`. Everything below is quoted from stored sources; "
            f"summaries and explanations are written at the scripting step.", "",
            "## Shortlist", "",
-           "| # | Story | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |",
-           "|---|---|---|---|---|---|---|---|---|---|"]
+           "| # | Story | Kind | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |",
+           "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in picks:
         c, st = r["criteria"], stories[r["id"]]
         v = next(e for e in verify if e["story"].startswith(r["id"]))
-        out.append(f"| {r['rank']} | {r['story']} | {r['overall']} (spread {r['spread']}) | {c['significance']} | "
+        out.append(f"| {r['rank']} | {r['story']} | {kind(r)} | {r['overall']} (spread {r['spread']}) | {c['significance']} | "
                    f"{c['viewer_pull']} | {c['evidence']} | {c['showability']} | {c['momentum']} | "
                    f"{r['lineup_votes']}/{len(judges)} | {v['primary_url']} ({st['date']}) |")
+    out += ["", f"Editorial rule (at least {MIN_LEARNING} learning stories): "
+            + ("; ".join(moved) if moved else "already met, nothing moved") + "."]
     for r in picks:
         card = cards[r["id"]]["card"]
         v = next(e for e in verify if e["story"].startswith(r["id"]))
@@ -70,17 +85,19 @@ def main() -> None:
         out += ["", "**Links:**"] + section(card, "Links")
     out += ["", "## Reserves", ""]
     out += [f"- {r['rank']}. {r['story']}: panel {r['overall']}"
-            + (f", pairwise wins {r['pairwise_wins']}" if "pairwise_wins" in r else "") for r in panel[args.picks:args.picks + 3]]
+            + (f", pairwise wins {r['pairwise_wins']}" if "pairwise_wins" in r else "") for r in rest[:3]]
     out += ["", "## Not picked (judged)", ""]
-    out += [f"- {r['rank']}. {r['story']} ({r['overall']})" for r in panel[args.picks + 3:]]
+    out += [f"- {r['rank']}. {r['story']} ({r['overall']})" for r in rest[3:]]
     out += ["", "## Calibration", "", "Uncalibrated: the user's blind ranking for this week isn't recorded "
             "(`judge/calibration.json`)." if not (J / "calibration.json").exists() else
             "See `judge/calibration.json`."]
     (ep / "research.md").write_text("\n".join(out) + "\n")
-    rows = [{"story": r["story"], "type": r["type"], "picked": i < args.picks, "rank": r["rank"], "overall": r["overall"],
+    chosen = {r["id"] for r in picks}
+    rows = [{"story": r["story"], "type": r["type"], "kind": kind(r), "picked": r["id"] in chosen, "rank": r["rank"], "overall": r["overall"],
              "spread": r["spread"], "order_spread": r.get("order_spread"), "by_judge": r["by_judge"],
              "criteria": r["criteria"], "pairwise_wins": r.get("pairwise_wins"),
-             "segment": f"story-{i + 1}" if i < args.picks else None} for i, r in enumerate(panel)]
+             "segment": f"story-{[p['id'] for p in picks].index(r['id']) + 1}" if r["id"] in chosen else None}
+            for r in panel]
     (ep / "scores.json").write_text(json.dumps(rows, indent=1, ensure_ascii=False) + "\n")
     print(f"research.md: {len(picks)} picks, {len(panel) - len(picks)} others")
 

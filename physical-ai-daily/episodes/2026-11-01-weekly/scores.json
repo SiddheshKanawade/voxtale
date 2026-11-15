@@ -2,6 +2,7 @@
  {
   "story": "Google DeepMind: Genie 4 world model",
   "type": "release",
+  "kind": "learning",
   "picked": true,
   "rank": 1,
   "overall": 8.5,
@@ -28,6 +29,7 @@
  {
   "story": "Waymo and Toyota: robotaxi vehicle",
   "type": "deal",
+  "kind": "news",
   "picked": true,
   "rank": 2,
   "overall": 7.5,
@@ -54,6 +56,7 @@
  {
   "story": "Frontier AI models as robot policies: SenseNova test, LEXP, Luma ZAP",
   "type": "paper",
+  "kind": "learning",
   "picked": true,
   "rank": 3,
   "overall": 6.83,
@@ -80,6 +83,7 @@
  {
   "story": "Bedrock Robotics: Series C",
   "type": "funding",
+  "kind": "news",
   "picked": true,
   "rank": 4,
   "overall": 6.5,
@@ -106,6 +110,7 @@
  {
   "story": "Machenta: seed round and one-demonstration robot learning",
   "type": "funding",
+  "kind": "learning",
   "picked": true,
   "rank": 5,
   "overall": 6.83,
@@ -132,6 +137,7 @@
  {
   "story": "Kodiak and DTL: driverless truck agreement",
   "type": "deal",
+  "kind": "news",
   "picked": false,
   "rank": 6,
   "overall": 5.5,
@@ -158,6 +164,7 @@
  {
   "story": "Meta: humanoid prototype built with Fourier (The Information report)",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 7,
   "overall": 5.67,
@@ -184,6 +191,7 @@
  {
   "story": "GXO and Agility: Digit expansion",
   "type": "deployment",
+  "kind": "news",
   "picked": false,
   "rank": 8,
   "overall": 5.33,
@@ -210,6 +218,7 @@
  {
   "story": "NVIDIA: Metatron humanoid controller",
   "type": "paper",
+  "kind": "learning",
   "picked": false,
   "rank": 9,
   "overall": 5.33,
@@ -236,6 +245,7 @@
  {
   "story": "US: Section 232 proclamation on robot and machinery imports",
   "type": "policy",
+  "kind": "news",
   "picked": false,
   "rank": 10,
   "overall": 5.17,
@@ -262,6 +272,7 @@
  {
   "story": "AgiBot: Innovation Day (GO-3 model, Worken metric)",
   "type": "release",
+  "kind": "learning",
   "picked": false,
   "rank": 11,
   "overall": 4.83,
@@ -288,6 +299,7 @@
  {
   "story": "Monumental: robot-laid building in Almere",
   "type": "deployment",
+  "kind": "learning",
   "picked": false,
   "rank": 12,
   "overall": 4.5,
@@ -314,6 +326,7 @@
  {
   "story": "Foxconn: robot arms assembling NVIDIA GB300 test trays",
   "type": "deployment",
+  "kind": "news",
   "picked": false,
   "rank": 13,
   "overall": 4.5,
@@ -340,6 +353,7 @@
  {
   "story": "Unitree: Q3 results",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 14,
   "overall": 4.17,
@@ -366,6 +380,7 @@
  {
   "story": "NHTSA: proposed cyan lamps for automated vehicles",
   "type": "policy",
+  "kind": "news",
   "picked": false,
   "rank": 15,
   "overall": 3.83,
@@ -392,6 +407,7 @@
  {
   "story": "Boston Dynamics: Atlas supplier preparation (KED report)",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 16,
   "overall": 3.5,
@@ -418,6 +434,7 @@
  {
   "story": "KDDI: ELYZA Robotics",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 17,
   "overall": 3.33,
@@ -444,6 +461,7 @@
  {
   "story": "Physical Intelligence: funding talks (Bloomberg report)",
   "type": "funding",
+  "kind": "news",
   "picked": false,
   "rank": 18,
   "overall": 3.17,

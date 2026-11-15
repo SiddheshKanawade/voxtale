@@ -4,13 +4,15 @@ Ranked by the judge panel: 6 passes (Opus, Sonnet and Fable, two card orders eac
 
 ## Shortlist
 
-| # | Story | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | Google DeepMind: Genie 4 world model | 8.5 (spread 1) | 7.17 | 8.67 | 6.67 | 9.5 | 10 | 6/6 | https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/ (2026-10-27) |
-| 2 | Waymo and Toyota: robotaxi vehicle | 7.5 (spread 1) | 7 | 7.83 | 7.33 | 7 | 7.83 | 6/6 | https://global.toyota/en/newsroom/corporate/44960881.html (2026-10-30) |
-| 3 | Frontier AI models as robot policies: SenseNova test, LEXP, Luma ZAP | 6.83 (spread 0.5) | 6.17 | 6 | 7.33 | 6.33 | 3.5 | 5/6 | https://www.sensenova.ai/has-gpt-6-astra-achieved-embodied-intelligence (2026-10-30) |
-| 4 | Bedrock Robotics: Series C | 6.5 (spread 1) | 7 | 5.83 | 5.83 | 5.83 | 5 | 4/6 | https://techcrunch.com/2026/10/26/this-startups-self-driving-excavators-help-dig-up-600m-in-new-funding/ (2026-10-26) |
-| 5 | Machenta: seed round and one-demonstration robot learning | 6.83 (spread 0.5) | 5.5 | 6.17 | 5.83 | 8.17 | 6.67 | 5/6 | https://www.imperial.ac.uk/news/articles/2026/imperial-ai-spinout-machenta-raises-40-million-to-make-robots-instant-learners/ (2026-10-27) |
+| # | Story | Kind | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Google DeepMind: Genie 4 world model | learning | 8.5 (spread 1) | 7.17 | 8.67 | 6.67 | 9.5 | 10 | 6/6 | https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/ (2026-10-27) |
+| 2 | Waymo and Toyota: robotaxi vehicle | news | 7.5 (spread 1) | 7 | 7.83 | 7.33 | 7 | 7.83 | 6/6 | https://global.toyota/en/newsroom/corporate/44960881.html (2026-10-30) |
+| 3 | Frontier AI models as robot policies: SenseNova test, LEXP, Luma ZAP | learning | 6.83 (spread 0.5) | 6.17 | 6 | 7.33 | 6.33 | 3.5 | 5/6 | https://www.sensenova.ai/has-gpt-6-astra-achieved-embodied-intelligence (2026-10-30) |
+| 4 | Bedrock Robotics: Series C | news | 6.5 (spread 1) | 7 | 5.83 | 5.83 | 5.83 | 5 | 4/6 | https://techcrunch.com/2026/10/26/this-startups-self-driving-excavators-help-dig-up-600m-in-new-funding/ (2026-10-26) |
+| 5 | Machenta: seed round and one-demonstration robot learning | learning | 6.83 (spread 0.5) | 5.5 | 6.17 | 5.83 | 8.17 | 6.67 | 5/6 | https://www.imperial.ac.uk/news/articles/2026/imperial-ai-spinout-machenta-raises-40-million-to-make-robots-instant-learners/ (2026-10-27) |
+
+Editorial rule (at least 2 learning stories): already met, nothing moved.
 
 ### 1. Google DeepMind: Genie 4 world model
 

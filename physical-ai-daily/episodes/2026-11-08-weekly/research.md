@@ -4,13 +4,15 @@ Ranked by the judge panel: 6 passes (Opus, Sonnet and Fable, two card orders eac
 
 ## Shortlist
 
-| # | Story | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | Zipline: $1.5B raise; Walmart drone sites | 8.17 (spread 0.5) | 8 | 8 | 6.5 | 6 | 7.17 | 6/6 | https://www.zipline.com/newsroom/zipline-raises-1-5-billion-to-build-nationwide-drone-delivery-network (2026-11-05) |
-| 2 | Apple: HALO humanoid trained in simulation | 7.83 (spread 0.5) | 6.83 | 7.17 | 7 | 8.17 | 5.67 | 6/6 | https://arxiv.org/abs/2611.06908 (2026-11-04) |
-| 3 | Agility Robotics: Nasdaq listing (AGLT) | 7.17 (spread 0.5) | 7 | 6.67 | 7.83 | 5.83 | 6.17 | 5/6 | https://www.agilityrobotics.com/content/agility-becomes-first-u-s-publicly-listed-pure-play-humanoid-robotics-company-begins-trading-today-on-nasdaq-as-aglt (2026-11-05) |
-| 4 | China: SoftBank barred from buying ABB Robotics' China business | 7 (spread 0) | 7.67 | 5.33 | 8 | 4.17 | 5.67 | 5/6 | https://group.softbank/en/news/press/20261106 (2026-11-06) |
-| 5 | NHTSA: recall query on Waymo school-bus fix | 6.17 (spread 1.5) | 5.83 | 7 | 8 | 4.83 | 3.83 | 2/6 | https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf (2026-11-06) |
+| # | Story | Kind | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Zipline: $1.5B raise; Walmart drone sites | news | 8.17 (spread 0.5) | 8 | 8 | 6.5 | 6 | 7.17 | 6/6 | https://www.zipline.com/newsroom/zipline-raises-1-5-billion-to-build-nationwide-drone-delivery-network (2026-11-05) |
+| 2 | Apple: HALO humanoid trained in simulation | learning | 7.83 (spread 0.5) | 6.83 | 7.17 | 7 | 8.17 | 5.67 | 6/6 | https://arxiv.org/abs/2611.06908 (2026-11-04) |
+| 3 | Agility Robotics: Nasdaq listing (AGLT) | news | 7.17 (spread 0.5) | 7 | 6.67 | 7.83 | 5.83 | 6.17 | 5/6 | https://www.agilityrobotics.com/content/agility-becomes-first-u-s-publicly-listed-pure-play-humanoid-robotics-company-begins-trading-today-on-nasdaq-as-aglt (2026-11-05) |
+| 4 | China: SoftBank barred from buying ABB Robotics' China business | news | 7 (spread 0) | 7.67 | 5.33 | 8 | 4.17 | 5.67 | 5/6 | https://group.softbank/en/news/press/20261106 (2026-11-06) |
+| 6 | RoboColosseum: real-robot evaluation network | learning | 6.5 (spread 1) | 6.67 | 4.67 | 7.17 | 6 | 6.83 | 4/6 | https://arxiv.org/abs/2611.02497 (2026-11-02) |
+
+Editorial rule (at least 2 learning stories): RoboColosseum: real-robot evaluation network (rank 6, learning) replaces NHTSA: recall query on Waymo school-bus fix (rank 5, news).
 
 ### 1. Zipline: $1.5B raise; Walmart drone sites
 
@@ -208,57 +210,64 @@ Status: **confirmed**. Primary: https://group.softbank/en/news/press/20261106
 - https://x.com/lukas_m_ziegler/status/2118720061200597053
 - https://x.com/clankrmedia/status/2118293799906505165
 
-### 5. NHTSA: recall query on Waymo school-bus fix
+### 6. RoboColosseum: real-robot evaluation network
 
-Status: **confirmed**. Primary: https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf
+Status: **confirmed**. Primary: https://arxiv.org/abs/2611.02497
 
 **Source quotes:**
-- "RQ26006" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "11/06/2026" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "Effectiveness of recall remedy for Waymo AVs passing stopped" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "2,895" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "Waymo 5th Generation automated driving system (ADS)" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "The recall report indicated that the remedy for this defect, a software update, was completed for all affected" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "Of the total reported incidents identified during PE25013, a majority of the" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "ODI is opening this Recall Query (RQ) to assess the adequacy of the remedy for Recall 25E084 and to identify" (https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf)
-- "The agency wrote that this "calls into question the effectiveness of the recall remedy."" (https://stockanalysis.com/news/waymo-school-bus-recall-probe/)
-- "The independent school district in Austin, Texas, counted 19, including one where a car stopped for a moment and then drove on as a student crossed the street. Public schools in Atlanta counted six more." (https://stockanalysis.com/news/waymo-school-bus-recall-probe/)
+- "Our initial study evaluates five vision-language-action (VLA) policies and three frontier AI agents across four embodiments (SO-101, Franka, Bimanual-YAM, and G1 Humanoid)." (https://arxiv.org/abs/2611.02497)
+- "Across 5,699 pairwise Open Track comparisons at 124 sites, frontier agents rival specialized VLA policies, while all systems struggle to complete open-world tasks reliably." (https://arxiv.org/abs/2611.02497)
+- "After fine-tuning, GR00T N1.7 leads on SO-101 and pi0.5 leads on Franka and Bimanual-YAM." (https://arxiv.org/abs/2611.02497)
+- "Policy rankings show weak agreement across embodiment-specific task suites (Kendall W = 0.24)." (https://arxiv.org/abs/2611.02497)
+- "On the G1 Humanoid, no policy completes any of the five tasks, yet average progress ranges from 13.3% to 23.2% across policies." (https://arxiv.org/abs/2611.02497)
+- "three API-accessible frontier models: GPT-6 Astra, Claude Opus 5.5, and Grok 4.7." (https://arxiv.org/html/2611.02497v1)
+- "GPT-6 Astra achieves the highest DCR point estimate on DROID/Franka, whereas Claude Opus 5.5 leads on SO-101 and Bimanual-YAM." (https://arxiv.org/html/2611.02497v1)
+- "Claude Opus 5.5 and GPT-6 Astra achieve mean advantages of 12.1 and 11.0 percentage points, respectively, whereas Grok 4.7 trails its VLA counterparts by 7.5 points." (https://arxiv.org/html/2611.02497v1)
+- "Its founding members; NUS MAGIC Lab, Hugging Face, the Singapore Embodied AI Centre, and BitRobot are committed to advancing this effort" (https://arxiv.org/html/2611.02497v1)
+- "Every run from both kinds of evaluation, failures included, with its videos, in LeRobot format on Hugging Face ." (https://robocolosseum.ai/)
 
 **Not stated in the source:**
-- The NHTSA ODI resume lists 'Date Opened: 11/06/2026' and 'Population: 2,895' as table fields; the PDF layout splits some sentences across lines, so quotes above are line-level fragments of the document.
-- The ODI resume does not explain why the population (2,895) differs from the vehicle count of the original recall 25E084.
-- Incident counts in the ODI resume failure-report table are marked 'CONF' (confidential); 'Other' shows 8, described as 'Traffic Citations provided by Austin Independent School District'.
-- The 'calls into question the effectiveness of the recall remedy' wording is attributed by StockAnalysis to NHTSA; it does not appear in the RQ26006 resume (likely in the PE25013 closing document, which was not fetched).
-- nhtsa.gov/recalls?nhtsaId=RQ26006 returned HTTP 403; the PDF was fetched from static.nhtsa.gov.
-- No Waymo statement responding to the recall query is quoted on either page; StockAnalysis cites Waymo's December 2025 statement only.
-- StockAnalysis article is dated Nov 9, 2026 and notes it was drafted with AI help and edited by Kris Gunnars.
+- Frontier-model agents were evaluated only in the Open Track, not the Fine-tune Track ("frontier-model agents participate exclusively in this track").
+- The abstract does not give per-model success rates; results are reported as rankings (DCR) and progress scores.
+- The project page says "140+ scenes" and "hundreds of robots"; the paper's study reports 124 sites.
+- Hugging Face is a founding member and co-author affiliation; the paper does not describe an evaluation independent of the organizers.
 
 **What people say** (from the card):
-- X @Waymo (145,897 followers, 1,223 likes, 2026-11-03): "We recently announced our partnership with Toyota to begin initial operations testing and validating an autonomous Toyota bZ4X fleet in Japan starting in 2027. Take a look at this rendering of our custom-outfitted bZ4X, designed for comfort and greater accessibility. — 先日、トヨタ自動車と" https://x.com/Waymo/status/2117421503956332857
-- X @Waymo (145,897 followers, 209 likes, 2026-11-05): "What does Waymo do to fight winter weather? Here’s what you need to know. 👇 https://t.co/6InPZlw5RG" https://x.com/Waymo/status/2118481390677221407
-- YouTube "Waymo under investigation by NHTSA after cars continue to pass stopped school buses" (KVUE, 1,478 views) https://www.youtube.com/watch?v=uuvJEibYT_k
-- YouTube "NHTSA probes whether Waymo fixed robotaxis passing stopped school buses" (CBS Austin, 843 views) https://www.youtube.com/watch?v=-H2co3_kF1w
-- YouTube "NHTSA Questions Waymo School Bus Recall Fix, Opens Probe of 2,895 Vehicles" (Self Drive News, 13 views) https://www.youtube.com/watch?v=hFKFLq8SrT8
+- X @RoboColosseum (1,105 followers, 457 likes, 2026-11-04): "Introducing RoboColosseum An open robot eval initiative by @huggingface @BitRobotNetwork @eaic_sg @DJiafei Access: - 100+ robots (@UnitreeRobotics G1s, @LeRobotHF SO-101s, YAMs, Franka and more) - 140+ in-the-wild scenes - Open rollout data - 10,000 FREE eval hrs Thread ↓ https:/" https://x.com/RoboColosseum/status/2117982605274710483
+- X @UnitreeRobotics (160,480 followers, 230 likes, 2026-11-04): "Excited to support RoboColosseum, one of the largest in-the-wild real-world robotics benchmark project! Great to see Unitree G1s being used as the primary embodiment used in the humanoid benchmark category on RoboColosseum." https://x.com/UnitreeRobotics/status/2117996574584574130
+- X @TheHumanoidHub (118,574 followers, 125 likes, 2026-11-05): "Robotics finally has its real-world arena. RoboColosseum is a real-world benchmark that tests robot policies on hundreds of actual robots across 150+ scenes, not cherry-picked demos. You bring a model, they run it blind on real hardware and publish every rollout (failures include" https://x.com/TheHumanoidHub/status/2118206881399242791
+- X @LeRobotHF (21,956 followers, 91 likes, 2026-11-04): "The SO-101 you can build at home is now part of a 100+ robot real-world eval fleet, alongside G1s, YAMs and Frankas 🦾" https://x.com/LeRobotHF/status/2117983537949553078
+- YouTube "How Do the Latest VLAs Perform in the Real World? | RoboColosseum November '26 Latest Research An..." (엥지유니버스 | 로봇 엔지니어, 28,638 views) https://www.youtube.com/watch?v=QHSTIzFbwLY
+- YouTube "RoboColosseum: Evaluating Physical Intelligence at Scale In-The-Wild" (CosmoX, 9 views) https://www.youtube.com/watch?v=Vo-mKA8e5Z8
+- YouTube "RoboColosseum: Evaluating Physical Intelligence at Scale In-The-Wild" (CosmoX, 1 views) https://www.youtube.com/watch?v=cGG-mUMsiPs
 
 **What the judges wrote:**
-- A1: "NHTSA's own document opens a recall query on whether Waymo's software fix stopped its cars passing stopped school buses, covering 2,895 vehicles. School districts counted fresh incidents. It is a regulator questioning a deployed autonomy fix on a child-safety behaviour, so it matters and viewers will care. Incident counts are confidential and the X signals on the card are unrelated Waymo posts."
-- A2: "NHTSA opened a recall query (RQ26006) covering 2,895 Waymo vehicles. It asks whether the software fix for passing stopped school buses actually worked, and Austin ISD counted 19 incidents. The regulator document itself is the primary source. Some incident counts are confidential, and the 'calls into question' quote is secondhand. It matters for robotaxi safety and touches a worry viewers relate to. Visuals are mostly documents and news clips."
-- B1: "NHTSA primary document opens a recall query on 2,895 Waymo vehicles over school bus passing, with local reports of incidents. Some quotes come from a secondary site and incident counts are confidential. A regulator questioning a safety fix is significant, and viewers care about robotaxi safety, but visuals are documents only."
-- B2: "NHTSA opened a recall query on 2,895 Waymo vehicles over school-bus passing, primary document confirmed. The key quote is secondhand and incident counts are confidential; it is a follow-up to a known issue, with moderate significance and little footage."
-- C1: "NHTSA opening a recall query because Waymo's software fix for passing stopped school buses may not have worked, covering 2,895 vehicles with new incident counts from Austin and Atlanta schools, is a direct regulatory test of a production robotaxi fleet. The ODI resume is a primary government document, though incident counts are confidential and the 'calls into question' quote is attributed by a secondary site. The X posts on the card are unrelated Waymo marketing, so real momentum is low; local news footage exists, and school-bus safety is something viewers worry about."
-- C2: "A regulator's own investigation document with a specific population (2,895 vehicles) is strong primary evidence, though the sharpest quote ('calls into question the effectiveness of the recall remedy') is only attributed by a secondary outlet and incident counts are confidential. Significance is real but bounded: NHTSA is asking whether a software fix on a deployed robotaxi fleet actually worked, which matters for how AV recalls will be policed. Local TV footage exists and the school-bus setting needs no explanation; the X signals on the card are unrelated Waymo posts, so momentum is modest."
+- A1: "This is an open real-robot evaluation network: 5,699 blind pairwise comparisons across 124 sites and four kinds of robot, with every run published. It found frontier agents rival VLAs, rankings disagree across robots, and no policy completed any task on the G1 humanoid. The organizers ran their own evaluation, but the data is open and the numbers are specific. It is a sober reality check that sets context for the week's demos."
+- A2: "RoboColosseum is an open real-robot evaluation network: 5,699 pairwise comparisons at 124 sites. It finds frontier agents rival VLAs, rankings shift across robot types, and no policy completes any G1 humanoid task. It is useful as a reality check, though the organizers evaluate partly their own ecosystem. It got strong attention from the field and has blind A/B videos, but the benchmark concept needs work for a general viewer."
+- B1: "Paper with specific numbers: 5,699 comparisons at 124 sites across four robots, finding frontier agents rival specialized policies, while no policy completes any G1 humanoid task. Organizers are co-authors, so it is not fully independent. Strong field attention and Hugging Face and Unitree backing; a real-world benchmark is a significant shift, though the leaderboard concept needs explaining."
+- B2: "RoboColosseum is a large open real-robot evaluation (5,699 comparisons, 124 sites) finding frontier agents rival VLAs and no policy completes any G1 task. Organizers co-authored the paper, but it candidly shows how far robots remain from reliable, and it has broad field attention."
+- C1: "A shared real-robot evaluation network across 124 sites and four embodiments, with every rollout including failures published, addresses the field's cherry-picked-demo problem, and the first findings are notable: frontier LLM agents rival specialist VLAs and no policy completes a single task on the G1 humanoid. The paper is primary but the organizers ran the evaluation themselves and results are rankings rather than success rates. Good momentum among robotics accounts (457 likes, Unitree and Hugging Face amplifying, a 28k-view explainer), though the leaderboard-and-A/B-video format is more for practitioners than our viewer."
+- C2: "A 34-page paper with specific scale (5,699 pairwise comparisons, 124 sites, four embodiments) and every rollout published, though Hugging Face is both organizer and co-author and results are rankings rather than success rates. A standing real-world arena for robot policies, plus the findings that frontier chat models rival specialist VLAs and that no policy completes any humanoid task, is something the whole field will use and cite. Blind A/B comparison videos including failures are showable, and ten harvest items, Unitree and HumanoidHub coverage and a 28k-view video show real attention."
 
-**Visuals:** NHTSA ODI Resume PDF, 2 pages, with header table (Investigation RQ26006, Prompted By PE25013, Date Opened 11/06/2026), Manufacturer & Product Information table, and Failure Report Summary table.; StockAnalysis article with headline 'U.S. probes whether Waymo's school bus fix failed, covering 2,895 robotaxis' and an Unsplash photo credited to Aamy Dugiere.
+**Visuals:** Project page: leaderboard, evaluation viewer with synced blind A/B comparison videos, fine-tune dataset samples, published eval runs on Hugging Face (LeRobot format).; Paper (34 pages): DCR ranking figures per embodiment (Fig. 3), agent vs VLA progress comparison (Fig. 4), ranking-stability and active-matchmaking plots (Fig. 11).
 
 **Links:**
-- https://static.nhtsa.gov/odi/inv/2026/INOA-RQ26006-19477.pdf
-- https://stockanalysis.com/news/waymo-school-bus-recall-probe/
-- https://x.com/Waymo/status/2117421503956332857
-- https://x.com/Waymo/status/2118481390677221407
+- https://arxiv.org/abs/2611.02497
+- https://arxiv.org/html/2611.02497v1
+- https://robocolosseum.ai/
+- https://x.com/roboindexio/status/2118008910019993667
+- https://x.com/LeRobotHF/status/2117983537949553078
+- https://x.com/UnitreeRobotics/status/2117996574584574130
+- https://x.com/robotsdigest/status/2118032774158491835
+- https://x.com/LeRobotHF/status/2117257364160344121
+- https://x.com/XRoboHub/status/2118289323548447092
+- https://x.com/TheHumanoidHub/status/2118206881399242791
+- https://x.com/clankrmedia/status/2118093858340819182
+- https://x.com/HuggingPapers/status/2119223682514178301
 
 ## Reserves
 
-- 6. RoboColosseum: real-robot evaluation network: panel 6.5, pairwise wins 1
+- 5. NHTSA: recall query on Waymo school-bus fix: panel 6.17, pairwise wins 2
 - 7. Robocurve: video tampering attacks on robot-controlling AI models: panel 6.0, pairwise wins 0
 - 8. AI Robot Association: AIRoA-0 model: panel 5.5
 

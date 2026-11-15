@@ -2,6 +2,7 @@
  {
   "story": "Zipline: $1.5B raise; Walmart drone sites",
   "type": "funding",
+  "kind": "news",
   "picked": true,
   "rank": 1,
   "overall": 8.17,
@@ -28,6 +29,7 @@
  {
   "story": "Apple: HALO humanoid trained in simulation",
   "type": "paper",
+  "kind": "learning",
   "picked": true,
   "rank": 2,
   "overall": 7.83,
@@ -54,6 +56,7 @@
  {
   "story": "Agility Robotics: Nasdaq listing (AGLT)",
   "type": "corporate",
+  "kind": "news",
   "picked": true,
   "rank": 3,
   "overall": 7.17,
@@ -80,6 +83,7 @@
  {
   "story": "China: SoftBank barred from buying ABB Robotics' China business",
   "type": "policy",
+  "kind": "news",
   "picked": true,
   "rank": 4,
   "overall": 7,
@@ -106,7 +110,8 @@
  {
   "story": "NHTSA: recall query on Waymo school-bus fix",
   "type": "policy",
-  "picked": true,
+  "kind": "news",
+  "picked": false,
   "rank": 5,
   "overall": 6.17,
   "spread": 1.5,
@@ -127,12 +132,13 @@
    "momentum": 3.83
   },
   "pairwise_wins": 2,
-  "segment": "story-5"
+  "segment": null
  },
  {
   "story": "RoboColosseum: real-robot evaluation network",
   "type": "paper",
-  "picked": false,
+  "kind": "learning",
+  "picked": true,
   "rank": 6,
   "overall": 6.5,
   "spread": 1,
@@ -153,11 +159,12 @@
    "momentum": 6.83
   },
   "pairwise_wins": 1,
-  "segment": null
+  "segment": "story-5"
  },
  {
   "story": "Robocurve: video tampering attacks on robot-controlling AI models",
   "type": "paper",
+  "kind": "learning",
   "picked": false,
   "rank": 7,
   "overall": 6.0,
@@ -184,6 +191,7 @@
  {
   "story": "AI Robot Association: AIRoA-0 model",
   "type": "paper",
+  "kind": "learning",
   "picked": false,
   "rank": 8,
   "overall": 5.5,
@@ -210,6 +218,7 @@
  {
   "story": "Apple: AMP1 agentic manipulation policies",
   "type": "paper",
+  "kind": "learning",
   "picked": false,
   "rank": 9,
   "overall": 5.33,
@@ -236,6 +245,7 @@
  {
   "story": "Xiaomi: humanoids in its EV factory",
   "type": "deployment",
+  "kind": "news",
   "picked": false,
   "rank": 10,
   "overall": 5.17,
@@ -262,6 +272,7 @@
  {
   "story": "Theseus Robotics: supermarket restocking robots in Zurich",
   "type": "deployment",
+  "kind": "news",
   "picked": false,
   "rank": 11,
   "overall": 4.83,
@@ -288,6 +299,7 @@
  {
   "story": "Tesla: Robotaxi in Fort Worth; Cybertruck line to Cybercab",
   "type": "release",
+  "kind": "news",
   "picked": false,
   "rank": 12,
   "overall": 4.83,
@@ -314,6 +326,7 @@
  {
   "story": "Google DeepMind: MuJoCo 4.0 release",
   "type": "release",
+  "kind": "learning",
   "picked": false,
   "rank": 13,
   "overall": 4.5,
@@ -340,6 +353,7 @@
  {
   "story": "Toyota: Toyota Robotics unit",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 14,
   "overall": 4.0,
@@ -366,6 +380,7 @@
  {
   "story": "NVIDIA: Cosmos 3 Nano interactive world simulation models",
   "type": "release",
+  "kind": "learning",
   "picked": false,
   "rank": 15,
   "overall": 3.83,
@@ -392,6 +407,7 @@
  {
   "story": "Tutor Intelligence: Series B",
   "type": "funding",
+  "kind": "news",
   "picked": false,
   "rank": 16,
   "overall": 3.83,
@@ -418,6 +434,7 @@
  {
   "story": "Amazon: home robot team (CNBC report)",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 17,
   "overall": 3.0,
@@ -444,6 +461,7 @@
  {
   "story": "China MIIT: draft rules for robot ID codes",
   "type": "policy",
+  "kind": "news",
   "picked": false,
   "rank": 18,
   "overall": 2.67,
@@ -470,6 +488,7 @@
  {
   "story": "Meituan: Meituan-Robotics-0 model",
   "type": "paper",
+  "kind": "learning",
   "picked": false,
   "rank": 19,
   "overall": 2.5,
@@ -496,6 +515,7 @@
  {
   "story": "Schaeffler: European job cuts",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 20,
   "overall": 1.67,

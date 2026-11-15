@@ -4,13 +4,15 @@ Ranked by the judge panel: 6 passes (Opus, Sonnet and Fable, two card orders eac
 
 ## Shortlist
 
-| # | Story | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | NVIDIA: GR00T 2 robot model | 8.17 (spread 0.5) | 7.17 | 6 | 7.17 | 8 | 8 | 6/6 | https://research.nvidia.com/labs/gear/gr00t-2/ (2026-11-09) |
-| 2 | Tesla: Cybercab offered for personal purchase; Robotaxi hours and San Antonio launch | 8.17 (spread 1.0) | 7.33 | 9.33 | 6 | 6.83 | 9.33 | 6/6 | https://insideevs.com/news/815473/tesla-cybercab-pricing-sales-announced/ (2026-11-13) |
-| 3 | Google DeepMind: Gemini Robotics 2.5; Apptronik Apollo 2 pilot at Mercedes-Benz | 8 (spread 0) | 7.17 | 6.83 | 6.5 | 8 | 8 | 6/6 | https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/ (2026-11-10) |
-| 4 | UC Berkeley: SuperMimic humanoid control paper (CoRL 2026) | 7.0 (spread 1.0) | 6.67 | 4.5 | 7 | 7.83 | 6 | 6/6 | https://arxiv.org/abs/2610.28480 (2026-11-12) |
-| 5 | Anthropic: Claude Fable 5.2 robot-control results | 6.5 (spread 1) | 6.67 | 6.67 | 5 | 6.5 | 7.33 | 4/6 | https://www.anthropic.com/claude-fable-and-mythos-5-2 (2026-11-09) |
+| # | Story | Kind | Panel | Sig | Pull | Evid | Show | Mom | Judges' lineups | Primary source (date) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | NVIDIA: GR00T 2 robot model | learning | 8.17 (spread 0.5) | 7.17 | 6 | 7.17 | 8 | 8 | 6/6 | https://research.nvidia.com/labs/gear/gr00t-2/ (2026-11-09) |
+| 2 | Tesla: Cybercab offered for personal purchase; Robotaxi hours and San Antonio launch | news | 8.17 (spread 1.0) | 7.33 | 9.33 | 6 | 6.83 | 9.33 | 6/6 | https://insideevs.com/news/815473/tesla-cybercab-pricing-sales-announced/ (2026-11-13) |
+| 3 | Google DeepMind: Gemini Robotics 2.5; Apptronik Apollo 2 pilot at Mercedes-Benz | learning | 8 (spread 0) | 7.17 | 6.83 | 6.5 | 8 | 8 | 6/6 | https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/ (2026-11-10) |
+| 4 | UC Berkeley: SuperMimic humanoid control paper (CoRL 2026) | learning | 7.0 (spread 1.0) | 6.67 | 4.5 | 7 | 7.83 | 6 | 6/6 | https://arxiv.org/abs/2610.28480 (2026-11-12) |
+| 5 | Anthropic: Claude Fable 5.2 robot-control results | learning | 6.5 (spread 1) | 6.67 | 6.67 | 5 | 6.5 | 7.33 | 4/6 | https://www.anthropic.com/claude-fable-and-mythos-5-2 (2026-11-09) |
+
+Editorial rule (at least 2 learning stories): already met, nothing moved.
 
 ### 1. NVIDIA: GR00T 2 robot model
 

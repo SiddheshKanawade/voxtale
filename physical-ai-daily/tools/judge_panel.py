@@ -58,6 +58,11 @@ CRITERIA = {
     "showability": "Can we show and explain it in about 90 seconds. 1 = text only and hard to explain; 3 = a chart or "
                    "headline to show, and a concept that needs work; 5 = photos or figures, and a clear explanation; "
                    "8 = real footage or a demo, and an everyday analogy; 10 = striking footage that explains itself.",
+    "learning_value": "Will the viewer learn something new and unexpected about what machines can do, or how: a new "
+                      "capability, method or experiment with a result. 1 = nothing to learn (a funding round, listing, "
+                      "deal, policy step or product sale, however big); 3 = a familiar trend reaches a new milestone; 5 = "
+                      "a real result the field expected; 8 = a result most viewers wouldn't have guessed was possible "
+                      "yet; 10 = it changes what they think machines can do.",
     "momentum": "Is the field paying attention now, from the card's signals only (X likes and engagement percentile, "
                 "harvest cluster size, HN points, YouTube views of videos uploaded this week). 1 = nobody noticed; "
                 "3 = a few specialists posted; 5 = the field's main accounts or outlets covered it; 8 = widely "
@@ -68,9 +73,12 @@ BRIEF = """**The video.** A weekly YouTube roundup of physical AI (robots, human
 autonomy) for viewers with a slight technical background but little knowledge of the field. It covers {picks} stories.
 Each answers: what changed in machines that act in the physical world, and why it matters.
 
-**The goal.** A viewer who finishes the video knows the week's most important changes, and the video holds their
-attention. When the two pull apart:
-- Significance and evidence come first; viewer pull and showability decide between stories that are close on them.
+**The goal.** A viewer who finishes the video has learned something they didn't expect about what machines can now
+do, knows the week's most important changes, and stayed for it. The channel is about learning more than knowing: a
+new capability, method or experiment beats a generic trend (a company moving from commercial to personal sales, one
+more funding round), and at least two of the {picks} stories must be ones the viewer learns from. When goals pull
+apart:
+- Significance, learning value and evidence come first; viewer pull and showability decide between close stories.
 - Evidence is a floor, not a trade-off: buzz never rescues a weak claim. A story whose key claim is unconfirmed can
   make the video only if its significance is high and the video can say plainly what isn't known.
 - Momentum is a tie-breaker: YouTube runs on trends, but trending alone isn't a reason.
@@ -140,7 +148,8 @@ def aggregate(out: Path, picks: int) -> list[dict]:
                      "order_spread": round(max(max(x) - min(x) for x in per_model.values()), 2),
                      "borda": borda, "votes": sum(cid in v["top"][:picks] for v in verdicts),
                      "lineup_votes": sum(cid in (v.get("lineup") or {}).get("picks", []) for v in verdicts),
-                     "criteria": {k: round(statistics.mean(s[k] for s in got), 2) for k in CRITERIA},
+                     "criteria": {k: round(statistics.mean(s[k] for s in got), 2) for k in CRITERIA
+                                  if all(k in s for s in got)},  # panels judged before a criterion existed lack it
                      "by_judge": {v["judge"]: next((s["overall"] for s in v["scores"] if s["id"] == cid), None)
                                   for v in verdicts}})
     rows.sort(key=lambda r: (-r["overall"], -r["borda"]))

@@ -2,6 +2,7 @@
  {
   "story": "NVIDIA: GR00T 2 robot model",
   "type": "release",
+  "kind": "learning",
   "picked": true,
   "rank": 1,
   "overall": 8.17,
@@ -28,6 +29,7 @@
  {
   "story": "Tesla: Cybercab offered for personal purchase; Robotaxi hours and San Antonio launch",
   "type": "release",
+  "kind": "news",
   "picked": true,
   "rank": 2,
   "overall": 8.17,
@@ -54,6 +56,7 @@
  {
   "story": "Google DeepMind: Gemini Robotics 2.5; Apptronik Apollo 2 pilot at Mercedes-Benz",
   "type": "deployment",
+  "kind": "learning",
   "picked": true,
   "rank": 3,
   "overall": 8,
@@ -80,6 +83,7 @@
  {
   "story": "UC Berkeley: SuperMimic humanoid control paper (CoRL 2026)",
   "type": "paper",
+  "kind": "learning",
   "picked": true,
   "rank": 4,
   "overall": 7.0,
@@ -106,6 +110,7 @@
  {
   "story": "Anthropic: Claude Fable 5.2 robot-control results",
   "type": "release",
+  "kind": "learning",
   "picked": true,
   "rank": 5,
   "overall": 6.5,
@@ -132,6 +137,7 @@
  {
   "story": "NVIDIA: CEO Jensen Huang resigns",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 6,
   "overall": 5.67,
@@ -158,6 +164,7 @@
  {
   "story": "Boston Dynamics: Atlas on wheels research test",
   "type": "release",
+  "kind": "learning",
   "picked": false,
   "rank": 7,
   "overall": 6,
@@ -184,6 +191,7 @@
  {
   "story": "Runway: Praxis-1 open weights",
   "type": "release",
+  "kind": "learning",
   "picked": false,
   "rank": 8,
   "overall": 5.67,
@@ -210,6 +218,7 @@
  {
   "story": "OpenAI: robotics team reorganised into research and applied groups",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 9,
   "overall": 5.0,
@@ -236,6 +245,7 @@
  {
   "story": "Agile Robots: $500M Series F",
   "type": "funding",
+  "kind": "news",
   "picked": false,
   "rank": 10,
   "overall": 4.83,
@@ -262,6 +272,7 @@
  {
   "story": "Ant Group (Robbyant): LingBot-Touch tactile model",
   "type": "release",
+  "kind": "learning",
   "picked": false,
   "rank": 11,
   "overall": 4.33,
@@ -288,6 +299,7 @@
  {
   "story": "ASUS: Gallop humanoid",
   "type": "release",
+  "kind": "news",
   "picked": false,
   "rank": 12,
   "overall": 3.83,
@@ -314,6 +326,7 @@
  {
   "story": "Path Robotics: $300M Series E",
   "type": "funding",
+  "kind": "news",
   "picked": false,
   "rank": 13,
   "overall": 3.83,
@@ -340,6 +353,7 @@
  {
   "story": "GXO and Apptronik: letter of intent for up to 1,000 Apollo humanoids",
   "type": "deal",
+  "kind": "news",
   "picked": false,
   "rank": 14,
   "overall": 3.67,
@@ -366,6 +380,7 @@
  {
   "story": "El Salvador and Haiti: armed robot dogs used in stadium operation",
   "type": "deployment",
+  "kind": "news",
   "picked": false,
   "rank": 15,
   "overall": 3.67,
@@ -392,6 +407,7 @@
  {
   "story": "Smart Analytics Global: Q3 2026 humanoid shipment estimate",
   "type": "data",
+  "kind": "news",
   "picked": false,
   "rank": 16,
   "overall": 3.67,
@@ -418,6 +434,7 @@
  {
   "story": "Washington, D.C.: council committee vote on robotaxi bill",
   "type": "policy",
+  "kind": "news",
   "picked": false,
   "rank": 17,
   "overall": 3.5,
@@ -444,6 +461,7 @@
  {
   "story": "Embodied First Exam and LEASH: benchmarks of AI agents controlling robots",
   "type": "paper",
+  "kind": "learning",
   "picked": false,
   "rank": 18,
   "overall": 3.33,
@@ -470,6 +488,7 @@
  {
   "story": "Beijing, South Korea, Japan: government physical-AI plans",
   "type": "policy",
+  "kind": "news",
   "picked": false,
   "rank": 19,
   "overall": 2.83,
@@ -496,6 +515,7 @@
  {
   "story": "India: IT ministry consultation on in-home worker video for physical-AI training",
   "type": "policy",
+  "kind": "news",
   "picked": false,
   "rank": 20,
   "overall": 2.83,
@@ -522,6 +542,7 @@
  {
   "story": "Foundation (military humanoid startup): missed payroll; IDF sale talks",
   "type": "corporate",
+  "kind": "news",
   "picked": false,
   "rank": 21,
   "overall": 2.67,
