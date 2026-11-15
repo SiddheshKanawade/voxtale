@@ -1,0 +1,1075 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 15, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "segments": [
+    {
+      "id": "intro",
+      "kind": "title",
+      "headline": "Pixels2Actions",
+      "beats": [
+        {
+          "narration": "This week: a robot model from NVIDIA that learns from videos of people, Google's robots in a Mercedes-Benz factory, and a Berkeley humanoid controller trained in three hours on one GPU.",
+          "visual": {
+            "type": "panels",
+            "items": [
+              {
+                "src": "assets/g_vfilter_12s.png",
+                "label": "NVIDIA GR00T 2",
+                "cue": "NVIDIA"
+              },
+              {
+                "src": "assets/dm_merc_12s.png",
+                "label": "Gemini Robotics 2.5",
+                "cue": "Google's"
+              },
+              {
+                "src": "assets/m_vreal_6s.png",
+                "label": "SuperMimic",
+                "cue": "Berkeley"
+              }
+            ],
+            "credit": "NVIDIA · Google DeepMind · Liao et al."
+          }
+        },
+        {
+          "narration": "Plus, a general AI model that controls robot arms, and a driverless Cybercab you can now order, if Tesla invites you.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/c_v_1.5s.png",
+                "label": "Claude Fable 5.2",
+                "cue": "general"
+              },
+              {
+                "src": "assets/t_photo_nta.png",
+                "label": "Tesla Cybercab",
+                "cue": "car"
+              }
+            ],
+            "credit": "Anthropic · Not a Tesla App"
+          }
+        },
+        {
+          "narration": "Five stories, in plain English.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Five stories. Plain English.",
+            "sub": "November 8–15, 2026"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "NVIDIA's robot model learns from people",
+      "source": "research.nvidia.com · blogs.nvidia.com",
+      "sourceDate": "Nov 9, 2026",
+      "urls": [
+        "https://research.nvidia.com/labs/gear/gr00t-2/",
+        "https://blogs.nvidia.com/blog/robotics-simulation-advancements-corl/"
+      ],
+      "beats": [
+        {
+          "narration": "Story one. NVIDIA introduced Groot two, a new model for controlling robots.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_hero.png",
+            "credit": "research.nvidia.com (NVIDIA)"
+          }
+        },
+        {
+          "narration": "NVIDIA calls it a world action model.",
+          "visual": {
+            "type": "acronym",
+            "letters": [
+              {
+                "letter": "W",
+                "word": "World"
+              },
+              {
+                "letter": "A",
+                "word": "Action"
+              },
+              {
+                "letter": "M",
+                "word": "Model"
+              }
+            ]
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "It reads what its cameras just saw, imagines how the scene should change next, and plans its moves at the same time. A bit like picturing a move as you make it.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "👁️",
+                "label": "Watches",
+                "sub": "the last moment of video",
+                "cue": "reads"
+              },
+              {
+                "icon": "🔮",
+                "label": "Imagines",
+                "sub": "how the scene should change",
+                "cue": "imagines"
+              },
+              {
+                "icon": "🤲",
+                "label": "Acts",
+                "sub": "plans the movement too",
+                "cue": "plans"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "One model predicts the future video and the robot's actions together.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_q_arch.png",
+            "credit": "research.nvidia.com (NVIDIA)"
+          }
+        },
+        {
+          "narration": "It learned from four hundred two thousand, seven hundred thirty hours of video of people at work.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_q_data.png",
+            "credit": "research.nvidia.com (NVIDIA)"
+          }
+        },
+        {
+          "narration": "So a skill shown only by people can carry over to a robot that never practiced it.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/g_vfilter_3s.png",
+                "label": "Shown by a person",
+                "cue": "people"
+              },
+              {
+                "src": "assets/g_vfilter_12s.png",
+                "label": "Done by the robot",
+                "cue": "robot"
+              }
+            ],
+            "credit": "Video still: NVIDIA"
+          }
+        },
+        {
+          "narration": "NVIDIA tested it on fifty tasks the target robot had never done.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/g_vreel_3s.png",
+            "credit": "Video still: NVIDIA",
+            "fit": "contain"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "With no practice at all, it succeeded at least once on forty of them.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 40,
+                "suffix": " / 50",
+                "label": "tasks, zero-shot",
+                "cue": "forty"
+              }
+            ],
+            "side": "assets/g_q_zero.png"
+          }
+        },
+        {
+          "narration": "One demonstration per task lifted success to seventy-one percent. Five demonstrations, under three minutes of robot data, lifted it to ninety-five percent.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 71,
+                "suffix": "%",
+                "label": "with 1 demo",
+                "cue": "seventy"
+              },
+              {
+                "to": 95,
+                "suffix": "%",
+                "label": "with 5 demos",
+                "cue": "ninety"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Those are NVIDIA's own results, from its research page.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_q_shots.png",
+            "credit": "research.nvidia.com (NVIDIA)",
+            "stamp": "Self-reported"
+          }
+        },
+        {
+          "narration": "It can also take orders from a reasoning AI agent, which breaks a long job into steps.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/g_vplane_60s.png",
+            "credit": "Video still: NVIDIA"
+          }
+        },
+        {
+          "narration": "That way, it built a toy plane, a toy tractor and a Hot Wheels car in ninety-eight, ninety-seven and ninety-seven of one hundred trials.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 98,
+                "label": "of 100 · toy plane",
+                "cue": "ninety"
+              },
+              {
+                "to": 97,
+                "label": "of 100 · toy tractor"
+              },
+              {
+                "to": 97,
+                "label": "of 100 · Hot Wheels car"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Again, NVIDIA's own trials.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_q_agent.png",
+            "credit": "research.nvidia.com (NVIDIA)",
+            "stamp": "Self-reported"
+          }
+        },
+        {
+          "narration": "A smaller version, Groot two Turbo, runs on the Unitree G1 humanoid itself.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/g_vpop_20s.png",
+            "credit": "Video still: NVIDIA"
+          }
+        },
+        {
+          "narration": "Why it matters. Because it learned so much from human video, a new task needed only minutes of the robot's own data in these tests.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🧑‍🔧",
+              "title": "Learn from people",
+              "sub": "hours of human video",
+              "cue": "videos"
+            },
+            "right": {
+              "icon": "⏱️",
+              "title": "Adapt fast",
+              "sub": "5 demos, under 3 minutes",
+              "cue": "minutes"
+            }
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. These are NVIDIA's own tests. The code is listed as available in December, and no date or licence for the model weights is given.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Detailed results and videos",
+                "cue": "tests"
+              },
+              {
+                "status": "warn",
+                "text": "NVIDIA's own tests",
+                "cue": "NVIDIA's"
+              },
+              {
+                "status": "warn",
+                "text": "Code: \"Available in December\"",
+                "cue": "code"
+              },
+              {
+                "status": "no",
+                "text": "Weights: no date or licence given",
+                "cue": "weights"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Google's robot brain goes to the factory",
+      "source": "deepmind.google · x.com/GoogleDeepMind",
+      "sourceDate": "Nov 10, 2026",
+      "urls": [
+        "https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/",
+        "https://x.com/GoogleDeepMind/status/2120169796184478162"
+      ],
+      "beats": [
+        {
+          "narration": "Story two. Google DeepMind introduced Gemini Robotics two point five.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s1_hero.png",
+            "credit": "deepmind.google"
+          }
+        },
+        {
+          "narration": "DeepMind calls it its most capable V L A so far. Vision, language, action. It sees the scene, understands an everyday instruction, and turns that into movement.",
+          "visual": {
+            "type": "acronym",
+            "letters": [
+              {
+                "letter": "V",
+                "word": "Vision"
+              },
+              {
+                "letter": "L",
+                "word": "Language"
+              },
+              {
+                "letter": "A",
+                "word": "Action"
+              }
+            ]
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "It works with different robots, including Apptronik's Apollo 2 humanoid.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_hero_5s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "DeepMind evaluated it across two hundred distinct tasks.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/d_q_200.png",
+            "credit": "deepmind.google"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "Compared with its earlier models, success was thirty to one hundred percent higher, depending on the task, and tasks were done twenty to thirty percent faster.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 100,
+                "prefix": "+30–",
+                "suffix": "%",
+                "label": "higher success rate",
+                "cue": "thirty"
+              },
+              {
+                "from": 0,
+                "to": 30,
+                "prefix": "20–",
+                "suffix": "%",
+                "label": "faster",
+                "cue": "twenty"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Those are DeepMind's own numbers, measured against its own previous models.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s1_quote.png",
+            "credit": "deepmind.google",
+            "stamp": "Self-reported"
+          }
+        },
+        {
+          "narration": "Then came a test on a real factory floor.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Lab → Factory"
+          }
+        },
+        {
+          "narration": "In a proof of concept with Apptronik and Mercedes-Benz,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_2s.png",
+            "credit": "Video still: Google DeepMind",
+            "pan": "out"
+          }
+        },
+        {
+          "narration": "Apollo 2 humanoids worked on active production lines in Hungary and Germany.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_12s.png",
+            "credit": "Video still: Google DeepMind",
+            "tags": [
+              "Kecskemét, Hungary",
+              "Sindelfingen, Germany"
+            ]
+          }
+        },
+        {
+          "narration": "The job is called kitting. The robot sorts parts from bulk bins into trays, in the exact order each vehicle needs.",
+          "visual": {
+            "type": "kitting"
+          }
+        },
+        {
+          "narration": "In that pilot, it reached a ninety-six percent success rate.",
+          "visual": {
+            "type": "stat",
+            "side": "assets/s2_tweet.png",
+            "items": [
+              {
+                "to": 96,
+                "suffix": "%",
+                "label": "success in the pilot",
+                "cue": "ninety"
+              }
+            ],
+            "credit": "Google DeepMind on X"
+          }
+        },
+        {
+          "narration": "DeepMind calls that promising progress toward real-world industrial use.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/d_q_96.png",
+            "credit": "deepmind.google"
+          }
+        },
+        {
+          "narration": "Why it matters. Apptronik's CEO, Jeff Cardenas, says the models improved dramatically",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s1_ceo_quote.png",
+            "credit": "deepmind.google"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "in just a few weeks of post-training, and carried over to Mercedes-Benz production with very little drop-off.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_15s.png",
+            "credit": "Video still: Google DeepMind",
+            "pan": "right"
+          }
+        },
+        {
+          "narration": "Reality check. This was a proof of concept. DeepMind didn't publish the pilot's size or trial counts.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Real production lines",
+                "cue": "proof"
+              },
+              {
+                "status": "warn",
+                "text": "Proof of concept, not a rollout",
+                "cue": "concept"
+              },
+              {
+                "status": "no",
+                "text": "Pilot size and trial counts not published",
+                "cue": "publish"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "A humanoid trained in 3 hours on 1 GPU",
+      "source": "arXiv:2610.28480 · supermimic.github.io · corl.org",
+      "sourceDate": "v2 Nov 9, 2026 (v1 Oct 20)",
+      "urls": [
+        "https://arxiv.org/abs/2610.28480",
+        "https://supermimic.github.io",
+        "https://www.corl.org/program/awards"
+      ],
+      "beats": [
+        {
+          "narration": "Story three is a research paper from UC Berkeley, called SuperMimic.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/m_vhero_6s.png",
+            "credit": "Video still: Liao et al., supermimic.github.io",
+            "fit": "contain"
+          }
+        },
+        {
+          "narration": "It was first posted in October, and it's an award finalist at this year's Conference on Robot Learning.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_corl.png",
+            "credit": "corl.org",
+            "stamp": "Finalist"
+          }
+        },
+        {
+          "narration": "The goal is one controller that lets a humanoid copy almost any human movement, from walking to flips.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/m_vflip_1s.png",
+            "credit": "Video still: Liao et al., supermimic.github.io",
+            "fit": "contain"
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "The usual approach is trial and error in a physics simulator, run on a lot of computers at once.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Trial and error × huge compute"
+          }
+        },
+        {
+          "narration": "SuperMimic first learns a fast model of how the robot's body moves, then practices inside that model, which tells it exactly which way to adjust. Like rehearsing in your head, with a coach.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🖥️",
+                "label": "Simulate",
+                "sub": "collect real physics",
+                "cue": "learns"
+              },
+              {
+                "icon": "🧠",
+                "label": "World model",
+                "sub": "learns how the body moves",
+                "cue": "model"
+              },
+              {
+                "icon": "🔁",
+                "label": "Practice",
+                "sub": "inside the model",
+                "cue": "practices"
+              },
+              {
+                "icon": "🎯",
+                "label": "Adjust",
+                "sub": "exact direction to improve",
+                "cue": "adjust"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "The result. In three hours on a single GPU, it beat the score of a leading baseline that trained for seven days on one hundred twenty-eight GPUs.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🏭",
+              "title": "Baseline",
+              "sub": "7 days on 128 GPUs",
+              "cue": "baseline"
+            },
+            "right": {
+              "icon": "⚡",
+              "title": "SuperMimic",
+              "sub": "3 hours on 1 GPU",
+              "cue": "three"
+            }
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "That's the paper's own comparison, against the released version of that baseline, called SONIC.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_q_abs.png",
+            "credit": "arXiv:2610.28480"
+          }
+        },
+        {
+          "narration": "Out of one hundred twenty-nine thousand, five hundred fourteen motions, it failed on only twenty-five, versus one hundred seventy-nine for the baseline.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 25,
+                "label": "failed (SuperMimic)",
+                "cue": "only"
+              },
+              {
+                "to": 179,
+                "label": "failed (baseline)",
+                "cue": "versus"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "After nine point eight hours on two GPUs, it had zero failures.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_q_fail.png",
+            "credit": "arXiv:2610.28480"
+          }
+        },
+        {
+          "narration": "And the controller transfers to a real Unitree G1 humanoid, including acrobatic moves.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/m_vreal_6s.png",
+            "credit": "Video still: Liao et al., supermimic.github.io"
+          }
+        },
+        {
+          "narration": "Why it matters. The authors say this removes compute as the bottleneck for humanoid control.",
+          "visual": {
+            "type": "kinetic",
+            "text": "“Compute is no longer the bottleneck.”",
+            "sub": "The authors"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. The test motions were also training motions.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_q_cov.png",
+            "credit": "supermimic.github.io"
+          },
+          "section": "reality"
+        },
+        {
+          "narration": "So, as the authors note, the counts measure coverage, not generalization. And the baseline's figures are as they report them.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Accepted at CoRL 2026 (oral)"
+              },
+              {
+                "status": "warn",
+                "text": "Listed as an award finalist"
+              },
+              {
+                "status": "warn",
+                "text": "Measures coverage, not generalization",
+                "cue": "coverage"
+              },
+              {
+                "status": "warn",
+                "text": "Baseline figures as the authors report",
+                "cue": "baseline's"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "A general AI model controls robot arms",
+      "source": "anthropic.com",
+      "sourceDate": "Nov 9, 2026",
+      "urls": [
+        "https://www.anthropic.com/claude-fable-and-mythos-5-2"
+      ],
+      "beats": [
+        {
+          "narration": "Story four. Anthropic announced Claude Fable five point two, with robot-control results.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/c_hero.png",
+            "credit": "anthropic.com"
+          }
+        },
+        {
+          "narration": "Fable isn't built specifically for robots. It's a general model, the kind used for coding and reasoning.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🦾",
+              "title": "Robot-specific AI",
+              "sub": "built to control robots",
+              "cue": "specifically"
+            },
+            "right": {
+              "icon": "🧠",
+              "title": "General model",
+              "sub": "coding, reasoning, vision",
+              "cue": "general"
+            }
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Anthropic says it got substantially better at controlling physical robots than earlier Claude models.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/c_q_skill.png",
+            "credit": "anthropic.com"
+          }
+        },
+        {
+          "narration": "Its video shows robots controlled by Fable solving a puzzle cube, unscrewing a bottle cap, and drawing a picture of a robot.",
+          "visual": {
+            "type": "panels",
+            "items": [
+              {
+                "src": "assets/c_v_1.5s.png",
+                "label": "Puzzle cube",
+                "cue": "puzzle"
+              },
+              {
+                "src": "assets/c_v_2.5s.png",
+                "label": "Bottle cap",
+                "cue": "unscrewing"
+              },
+              {
+                "src": "assets/c_v_7s.png",
+                "label": "Drawing a robot",
+                "cue": "drawing"
+              }
+            ],
+            "credit": "Video still: Anthropic"
+          }
+        },
+        {
+          "narration": "The main number comes from a public benchmark called RoboDojo.",
+          "visual": {
+            "type": "kinetic",
+            "text": "RoboDojo",
+            "sub": "a public robot-control benchmark"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "It tests how well an AI can control a simulated two-arm robot from camera images.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/c_q_robo.png",
+            "credit": "anthropic.com"
+          }
+        },
+        {
+          "narration": "At its highest effort setting, Fable scored sixty-four point nine percent, more than double GPT six Astra, at twenty-nine point eight, and the previous Fable, at twenty-seven point six.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 9,
+                "prefix": "64.",
+                "suffix": "%",
+                "label": "Fable 5.2",
+                "cue": "sixty"
+              },
+              {
+                "to": 8,
+                "prefix": "29.",
+                "suffix": "%",
+                "label": "GPT-6 Astra",
+                "cue": "Astra"
+              },
+              {
+                "to": 6,
+                "prefix": "27.",
+                "suffix": "%",
+                "label": "Fable 5.1",
+                "cue": "previous"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Those scores are on Anthropic's launch page.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/c_q_score.png",
+            "credit": "anthropic.com"
+          }
+        },
+        {
+          "narration": "But they're Anthropic's own simulation tests, run internally, not an independent evaluation.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/c_q_internal.png",
+            "credit": "anthropic.com",
+            "stamp": "Self-reported"
+          }
+        },
+        {
+          "narration": "Why it matters. Anthropic argues that many of AI's benefits depend on acting in the physical world.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/c_q_why.png",
+            "credit": "anthropic.com"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. It's a simulated benchmark, run by Anthropic, with no trial counts published, and the robot-specific systems it says Fable beat aren't named.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "warn",
+                "text": "Simulated two-arm robot",
+                "cue": "simulated"
+              },
+              {
+                "status": "warn",
+                "text": "Anthropic's own internal runs",
+                "cue": "run"
+              },
+              {
+                "status": "no",
+                "text": "No trial counts published",
+                "cue": "trial"
+              },
+              {
+                "status": "no",
+                "text": "Robot-specific rivals not named",
+                "cue": "named"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Tesla opens Cybercab orders, by invite",
+      "source": "x.com/robotaxi · teslarati.com · notateslaapp.com",
+      "sourceDate": "Nov 13–14, 2026",
+      "urls": [
+        "https://x.com/robotaxi/status/2121384435241402737",
+        "https://www.teslarati.com/tesla-cybercab-arrives-steep-ownership-fine-print/",
+        "https://www.notateslaapp.com/news/4991/tesla-robotaxi-now-runs-247-in-every-city"
+      ],
+      "beats": [
+        {
+          "narration": "Story five is news. Tesla is inviting select customers to buy a Cybercab for personal use.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/t_photo_nta.png",
+            "credit": "Photo: Not a Tesla App"
+          }
+        },
+        {
+          "narration": "It's a two-seater with no steering wheel, and Tesla's Robotaxi account announced the invitations on X.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_tweet.png",
+            "credit": "x.com/robotaxi"
+          }
+        },
+        {
+          "narration": "In plain English, it's a car you can own, but it drives itself, and only where Tesla allows. A bit like a phone that only works on an active plan.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🚗",
+              "title": "Normal car",
+              "sub": "you drive it anywhere",
+              "cue": "own"
+            },
+            "right": {
+              "icon": "🤖",
+              "title": "Cybercab",
+              "sub": "drives itself, inside Tesla's zones",
+              "cue": "drives"
+            }
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Teslarati reports an estimated price of twenty-nine thousand, nine hundred ninety dollars before taxes, with a one thousand dollar non-refundable deposit.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 900,
+                "to": 990,
+                "prefix": "$29,",
+                "label": "estimated price",
+                "cue": "twenty"
+              },
+              {
+                "from": 1,
+                "to": 1,
+                "prefix": "$",
+                "suffix": ",000",
+                "label": "deposit",
+                "cue": "deposit"
+              }
+            ]
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "Delivery is estimated for December twenty twenty-six, in Austin, Texas.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_price.png",
+            "credit": "teslarati.com"
+          }
+        },
+        {
+          "narration": "You also need an Autonomy Subscription at two hundred ninety-nine dollars a month, with the first month included.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 299,
+                "prefix": "$",
+                "suffix": "/mo",
+                "label": "Autonomy Subscription",
+                "cue": "two"
+              }
+            ],
+            "side": "assets/t_q_sub.png"
+          }
+        },
+        {
+          "narration": "Without it, the car won't operate at all.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_sub2.png",
+            "credit": "teslarati.com"
+          }
+        },
+        {
+          "narration": "Per Teslarati, the fine print says personal use only.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_personal.png",
+            "credit": "teslarati.com"
+          }
+        },
+        {
+          "narration": "And it only runs inside Tesla's Robotaxi zones, which the company can expand or shrink.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_geo.png",
+            "credit": "teslarati.com"
+          }
+        },
+        {
+          "narration": "Teslarati also reports that Elon Musk said on X that the subscription price is too high.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_musk.png",
+            "credit": "teslarati.com"
+          }
+        },
+        {
+          "narration": "Why it matters. Until now, Cybercabs stayed in Tesla's own fleet. Now buyers can order one.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_fleet.png",
+            "credit": "teslarati.com"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Not a Tesla App reports Robotaxi now runs around the clock in all eight unsupervised markets.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_247.png",
+            "credit": "notateslaapp.com"
+          }
+        },
+        {
+          "narration": "Cybercab rides, though, are still limited to Austin.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/t_photo_nta.png",
+            "credit": "Photo: Not a Tesla App",
+            "pan": "right"
+          }
+        },
+        {
+          "narration": "Reality check. It's invite-only, the number of cars isn't stated, delivery is only an estimate, and the terms come from reporting on Tesla's order documents.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "warn",
+                "text": "Invite-only, select customers",
+                "cue": "invite"
+              },
+              {
+                "status": "no",
+                "text": "Number of cars not stated",
+                "cue": "number"
+              },
+              {
+                "status": "warn",
+                "text": "Delivery: an estimate, no fixed date",
+                "cue": "delivery"
+              },
+              {
+                "status": "warn",
+                "text": "Terms as reported by Teslarati",
+                "cue": "terms"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "kind": "title",
+      "headline": "Pixels2Actions",
+      "beats": [
+        {
+          "narration": "That's Pixels to Actions. Every source is linked in the description. If this was useful, subscribe, and I'll break down next week's stories the same way.",
+          "visual": {
+            "type": "end",
+            "subscribeCue": "subscribe"
+          }
+        }
+      ]
+    }
+  ]
+}

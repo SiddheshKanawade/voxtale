@@ -59,14 +59,16 @@ word in `*asterisks*` for the accent colour) and `"cta"` (end-card line). One se
 
 **Visual types** (renderer `video/src/shorts/Short.tsx`): `photo` (picture band with a slow push-in; `badge`,
 `stamp`, `credit`), `shot` (zooms to the `--find` highlight of a captured page), `stat` (counting number,
-`items[{to,suffix,label}]`), `split`/`panels` (two stacked images), `kinetic` (big words). Copy the assets you use
+`items[{to,suffix,label}]`), `split`/`panels` (two stacked images), `kinetic` (big words), `clip` (a few seconds of
+muted public footage filling the band, cut with `tools/clip.py`, credited from its metadata; see Motion below). Copy the assets you use
 from the episode's `assets/` into the Short's `assets/`.
 
 **Motion: official press footage first.** Real robot footage wins in this topic (the three biggest reference
 multipliers). Use short clips of **official footage the company or lab itself published** with its announcement (its
 newsroom, press kit, own page or channel), then other public footage (news, other creators) with proper citation
 when official footage doesn't show it (checklist HARD 7.2): a few seconds each, credited, audio muted, and ideally
-the robot doing the thing in frame 0. Wire-agency footage last (Content ID claims). When no official
+the robot doing the thing in frame 0. Wire-agency footage last (Content ID claims). Downloading the source needs the
+user's OK; cut it with `tools/clip.py` (same as episodes, see the physical-ai-daily skill). When no official
 footage exists, get motion from consecutive stills, the push-in, counting stats and a new visual every beat.
 Generated video (Higgsfield, Blender) only rarely, to explain an idea, labelled "Illustration" / "AI-generated" and
 never presented as real (HARD 4.5).

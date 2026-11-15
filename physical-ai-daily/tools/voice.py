@@ -38,6 +38,7 @@ TAIL_PAD = 0.6  # seconds of breathing room at the end of a segment
 BEAT_GAP = 0.25  # pause between beats inside a segment
 HOLD_CAP_S = 7  # longest a single static visual should hold (matches HOLD_CAP_S in video/src/scenes.tsx)
 STATIC_TYPES = {"photo", "shot", "kinetic"}
+CLIP_HOLD_S = 2  # a clip beat may outlast its footage by this much (the last frame holds); more reads as a freeze
 SR = 24000  # edge-tts output rate
 LEAD, TAIL, LAST_TAIL = 0.04, 0.12, 0.3  # seconds kept around each phrase's words when trimming
 # Per delivery style: (rate offset %, pitch offset %) relative to "neutral". Shapes come from the voicelab test
@@ -224,6 +225,18 @@ def inline_media(ep_dir: Path, visual: dict) -> dict:
     return visual
 
 
+def check_clip(seg_id: str, i: int, beat: dict) -> None:
+    """A clip is always credited on screen (checklist HARD 7.2); the credit comes from tools/clip.py's metadata."""
+    v = beat["visual"]
+    if v["type"] != "clip":
+        return
+    v.setdefault("credit", v["src"].get("credit"))
+    if not v.get("credit") or not v["src"].get("url"):
+        raise SystemExit(f"{seg_id}[{i}] clip {v['src']['src']} has no credit or url: cut it with tools/clip.py")
+    if beat["duration"] > v["src"]["duration"] + CLIP_HOLD_S:
+        print(f"  WARN {seg_id}[{i}] clip is {v['src']['duration']:.1f}s, beat {beat['duration']:.1f}s: split the beat or cut a longer clip")
+
+
 async def main(ep_dir: Path) -> None:
     ep = json.loads((ep_dir / "episode.json").read_text())
     (ep_dir / "audio").mkdir(exist_ok=True)
@@ -239,6 +252,7 @@ async def main(ep_dir: Path) -> None:
             last = i == len(seg["beats"]) - 1
             beat["duration"] = round(duration(out) + (TAIL_PAD if last else BEAT_GAP), 3)
             inline_media(ep_dir, beat["visual"])
+            check_clip(seg["id"], i, beat)
         seg["duration"] = round(sum(b["duration"] for b in seg["beats"]), 3)
         for i, b in enumerate(seg["beats"]):
             # Static visuals have no word-cued reveals; the compositor punch-cuts them past 7 s, but a new

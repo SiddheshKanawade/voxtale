@@ -17,7 +17,10 @@ export const FONT = "-apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, s
 // Stage: the area between the story header and the captions where scenes draw.
 export const STAGE = { x: 120, y: 190, w: 1680, h: 660 };
 
-export type Media = { src: string; width: number; height: number; highlight: null | { x: number; y: number; w: number; h: number } };
+export type Media = {
+  src: string; width: number; height: number; highlight: null | { x: number; y: number; w: number; h: number };
+  duration?: number; last?: string; credit?: string; url?: string; // clips only (tools/clip.py)
+};
 export type Word = { text: string; start: number; end: number };
 
 export type Visual = {

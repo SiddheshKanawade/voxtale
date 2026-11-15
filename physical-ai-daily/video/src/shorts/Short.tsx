@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Img, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Backdrop } from "../Episode";
 import { BRAND, Lockup } from "../brand";
 import { applyDesign, current } from "../design";
@@ -89,6 +89,7 @@ const ShortScene: React.FC<{ beat: Beat; first: boolean }> = ({ beat }) => {
   if (v.type === "kinetic") return <Kinetic text={v.text ?? ""} sub={v.sub} />;
   if (v.type === "stat") return <Stat items={v.items ?? []} />;
   if (v.type === "split" || v.type === "panels") return <Stack items={v.items ?? []} credit={v.credit} />;
+  if (v.type === "clip" && v.src) return <ClipBand m={v.src} credit={v.credit} stamp={v.stamp} />;
   if (v.src) return <Picture m={v.src} highlight={v.type === "shot"} credit={v.credit} stamp={v.stamp} badge={v.badge} />;
   return <Kinetic text={v.overlay ?? v.text ?? ""} />;
 };
@@ -121,6 +122,28 @@ const Picture: React.FC<{ m: Media; highlight?: boolean; credit?: string; stamp?
         fontSize: 54, padding: "10px 22px", borderRadius: 12 }}>{badge}</div>}
       {credit && <div style={{ position: "absolute", left: 24, bottom: 18, fontSize: 24, color: "#fff", background: "rgba(0,0,0,0.6)",
         padding: "4px 12px", borderRadius: 6 }}>{credit}</div>}
+    </div>
+  );
+};
+
+// A few seconds of muted public footage (tools/clip.py) filling the media band, always credited (checklist HARD 7.2).
+// Past the end of the footage the last frame holds with a slow push-in.
+const ClipBand: React.FC<{ m: Media; credit?: string; stamp?: string }> = ({ m, credit, stamp }) => {
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames } = useVideoConfig();
+  const clipF = Math.min(durationInFrames, Math.floor((m.duration ?? durationInFrames / fps) * fps));
+  const hold = interpolate(frame, [clipF, durationInFrames], [1, 1.06], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const media: React.CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" };
+  return (
+    <div style={{ position: "absolute", left: 0, top: MEDIA.top, width: W, height: MEDIA.height, overflow: "hidden", background: "#000" }}>
+      <Sequence durationInFrames={clipF} layout="none">
+        <OffthreadVideo src={staticFile(m.src)} muted style={media} />
+      </Sequence>
+      {frame >= clipF && m.last && <Img src={staticFile(m.last)} style={{ ...media, transform: `scale(${hold})` }} />}
+      {stamp && <div style={{ position: "absolute", right: 24, top: 22, background: "rgba(0,0,0,0.75)", color: BRAND.yellow,
+        fontWeight: 800, fontSize: 30, padding: "8px 16px", borderRadius: 8 }}>{stamp}</div>}
+      <div style={{ position: "absolute", left: 24, bottom: 18, fontSize: 24, color: "#fff", background: "rgba(0,0,0,0.6)",
+        padding: "4px 12px", borderRadius: 6 }}>{credit ?? m.credit}</div>
     </div>
   );
 };

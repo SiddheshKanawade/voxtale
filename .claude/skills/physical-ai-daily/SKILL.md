@@ -206,5 +206,9 @@ footage (news outlets, other creators) only when that doesn't show it. Every cli
 discussing it throughout (commentary, not re-publishing), its audio muted, credited on screen ("Video: Reuters") and
 listed in the description with its URL; never another creator's commentary or a whole segment. Wire-agency footage
 (AP, Reuters, Getty, Storyful) last: Content ID claims are likely and can take the revenue or block the video. Note
-each clip's URL, owner and timestamps in the hand-off. Get the file with yt-dlp, cut it with ffmpeg
-(`-ss <start> -t <seconds> -an`) into `assets/`. Always list sources in the description.
+each clip's URL, owner and timestamps in the hand-off. Downloading the source file needs the user's OK (name the file,
+source and size). Cut it with `tools/clip.py <ep> <source.mp4> <name> --start S --dur S --credit "Video: NVIDIA" --url
+<URL>` (muted, at most 10 s, writes the credit and URL beside it), then use the beat `{"type": "clip", "src":
+"assets/<name>.mp4"}` (optional `"fit": "cover"`; default shows the whole frame). `voice.py` refuses a clip without a
+credit or URL and warns when the narration outlasts the footage by more than 2 s (the last frame holds; split the beat
+instead). Always list sources in the description.

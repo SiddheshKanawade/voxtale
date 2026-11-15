@@ -1,0 +1,1110 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 8, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "segments": [
+    {
+      "id": "intro",
+      "kind": "title",
+      "headline": "Pixels2Actions",
+      "beats": [
+        {
+          "narration": "This week, Apple trained a humanoid robot entirely in simulated homes, and a new network put robot brains to the test on real hardware.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/halo_demo_8s.png",
+                "label": "Trained in simulation",
+                "cue": "Apple"
+              },
+              {
+                "src": "assets/rc_film_20s.png",
+                "label": "Tested on real robots",
+                "cue": "network"
+              }
+            ],
+            "credit": "Video stills: Apple HALO project page · robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "Plus a big raise for drone delivery, a humanoid maker on the stock market,",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/zip_photo.png",
+                "label": "Zipline raises $1.5B",
+                "cue": "drone"
+              },
+              {
+                "src": "assets/ag_aglt.png",
+                "label": "Agility lists on Nasdaq",
+                "cue": "humanoid"
+              }
+            ],
+            "credit": "Images: Zipline newsroom · Agility Robotics"
+          }
+        },
+        {
+          "narration": "and China blocking SoftBank's purchase of ABB's robotics business there.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/abb_arms_c.png",
+            "overlay": "China blocks a robotics deal",
+            "credit": "Photo: ABB Robotics, via The Robot Report"
+          }
+        },
+        {
+          "narration": "Five stories, in plain English.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Five stories. Plain English.",
+            "sub": "November 8, 2026"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "Apple's humanoid learned in simulation",
+      "source": "arXiv:2611.06908 · Apple",
+      "sourceDate": "Nov 4, 2026",
+      "urls": [
+        "https://arxiv.org/abs/2611.06908",
+        "https://arxiv.org/html/2611.06908v1",
+        "https://apple-aiml-research.github.io/ml-halo/",
+        "https://github.com/apple-aiml-research/ml-halo"
+      ],
+      "beats": [
+        {
+          "narration": "Story one. Apple researchers have published a paper on a humanoid robot system called HALO.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_demo_3s.png",
+            "credit": "Video still: Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "The robot sits on chairs, and steps sideways through half-open doors.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/halo_sit_3s.png",
+                "label": "Sit",
+                "cue": "sits"
+              },
+              {
+                "src": "assets/halo_door_3s.png",
+                "label": "Door",
+                "cue": "steps"
+              }
+            ],
+            "credit": "Video stills: Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "It crouches and crawls under tables, and pushes boxes.",
+          "visual": {
+            "type": "panels",
+            "items": [
+              {
+                "src": "assets/halo_crouch_3s.png",
+                "label": "Crouch",
+                "cue": "crouches"
+              },
+              {
+                "src": "assets/halo_crawl_3s.png",
+                "label": "Crawl",
+                "cue": "crawls"
+              },
+              {
+                "src": "assets/halo_push_3s.png",
+                "label": "Push",
+                "cue": "pushes"
+              }
+            ],
+            "credit": "Video stills: Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "Some robots learn from examples that people record by steering them by hand. HALO skipped that step.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🕹️",
+              "title": "Recorded by people",
+              "sub": "Humans steer the robot to make examples",
+              "cue": "steering"
+            },
+            "right": {
+              "icon": "🏠",
+              "title": "HALO",
+              "sub": "Practice in simulated homes",
+              "cue": "skipped"
+            }
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Instead, it practiced in a thousand computer-generated homes.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/halo_abs_homes.png",
+            "stamp": "Preprint"
+          }
+        },
+        {
+          "narration": "Think of a flight simulator, but for a robot.",
+          "visual": {
+            "type": "kinetic",
+            "text": "✈️ A flight simulator for robots"
+          }
+        },
+        {
+          "narration": "The computer builds a house, plans the robot's movements, and renders what its camera would see.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🏠",
+                "label": "Build a home",
+                "sub": "generated by computer",
+                "cue": "builds"
+              },
+              {
+                "icon": "🧍",
+                "label": "Plan the motion",
+                "sub": "whole-body moves",
+                "cue": "plans"
+              },
+              {
+                "icon": "📷",
+                "label": "Render the view",
+                "sub": "what the camera sees",
+                "cue": "renders"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Here's that training pipeline on Apple's project page.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_train_c.png",
+            "fit": "contain",
+            "credit": "Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "The real robot is a Unitree G1, with a camera on its head and a Mac mini in a backpack.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_robot_c.png",
+            "fit": "contain",
+            "credit": "Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "An off-the-shelf vision-language model, an A I that reads both images and text, does the planning.",
+          "visual": {
+            "type": "acronym",
+            "letters": [
+              {
+                "letter": "V",
+                "word": "Vision"
+              },
+              {
+                "letter": "L",
+                "word": "Language"
+              },
+              {
+                "letter": "M",
+                "word": "Model"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "It breaks a plain-language request into steps, like crouch under the table, then push the box.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_stack_c.png",
+            "fit": "contain",
+            "credit": "Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "Then the test. Six real homes it had never seen, which were never scanned or mapped.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_demo_28s.png",
+            "pan": "out",
+            "credit": "Video still: Apple, HALO project page"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "Across three hundred sixty real trials, it succeeded ninety-one percent of the time.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/halo_abs.png",
+            "stamp": "Preprint"
+          }
+        },
+        {
+          "narration": "Why it matters: training data made by computers scales with computing power, not with human hours.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "⏱️",
+              "title": "Human-recorded data",
+              "sub": "Limited by people's time",
+              "cue": "human"
+            },
+            "right": {
+              "icon": "🖥️",
+              "title": "Simulated data",
+              "sub": "Scales with compute",
+              "cue": "computing"
+            }
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "And Apple has released the code for making the data, training, and running it on the robot.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_demo_42s.png",
+            "credit": "Video still: Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "Reality check. That ninety-one percent is for single tasks, like walking to an object or sitting down.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/halo_single.png"
+          },
+          "section": "reality"
+        },
+        {
+          "narration": "Longer chains of tasks were tested in just one real home. And this is a preprint, with the team's own tests.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Trained only in simulated homes",
+                "cue": "Longer"
+              },
+              {
+                "status": "warn",
+                "text": "Multi-step tasks: 1 real home",
+                "cue": "one"
+              },
+              {
+                "status": "warn",
+                "text": "Preprint, the team's own tests",
+                "cue": "preprint"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "A real-world test arena for robot brains",
+      "source": "arXiv:2611.02497 · robocolosseum.ai",
+      "sourceDate": "Nov 2, 2026",
+      "urls": [
+        "https://arxiv.org/abs/2611.02497",
+        "https://arxiv.org/html/2611.02497v1",
+        "https://robocolosseum.ai/"
+      ],
+      "beats": [
+        {
+          "narration": "Story two opens with a line from its own trailer. Every robot looks good in a demo.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/rc_trailer_2s.png",
+            "fit": "contain",
+            "credit": "Video still: RoboColosseum trailer, robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "RoboColosseum is a network of real robots that tests robot software with the same rules everywhere.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/rc_film_1s.png",
+            "credit": "Video still: robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "It works like a blind taste test.",
+          "visual": {
+            "type": "kinetic",
+            "text": "🥤 A blind taste test"
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Two unnamed models try the same new instruction in the same scene. The evaluator picks the better run, or calls a tie.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "💬",
+                "label": "One instruction",
+                "sub": "new, same scene",
+                "cue": "instruction"
+              },
+              {
+                "icon": "🤖",
+                "label": "Two unnamed models",
+                "sub": "each try it",
+                "cue": "unnamed"
+              },
+              {
+                "icon": "⚖️",
+                "label": "Evaluator picks",
+                "sub": "better run, or a tie",
+                "cue": "picks"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "The contestants included five vision-language-action models. Robot brains that see, read an instruction, and act.",
+          "visual": {
+            "type": "acronym",
+            "letters": [
+              {
+                "letter": "V",
+                "word": "Vision"
+              },
+              {
+                "letter": "L",
+                "word": "Language"
+              },
+              {
+                "letter": "A",
+                "word": "Action"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Plus three frontier A I agents, tested across four kinds of robot.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/rc_embod.png",
+            "stamp": "Preprint"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "From a small SO-101 arm, to two-armed stations, to a Unitree G1 humanoid.",
+          "visual": {
+            "type": "panels",
+            "items": [
+              {
+                "src": "assets/rc_trailer_14s.png",
+                "label": "SO-101 arm",
+                "cue": "small"
+              },
+              {
+                "src": "assets/rc_trailer_6s.png",
+                "label": "Bimanual YAM",
+                "cue": "two"
+              },
+              {
+                "src": "assets/rc_film_8s.png",
+                "label": "Unitree G1",
+                "cue": "Unitree"
+              }
+            ],
+            "credit": "Video stills: robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "Across five thousand six hundred ninety-nine head-to-head comparisons at one hundred twenty-four sites,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/rc_trailer_24s.png",
+            "credit": "Video still: RoboColosseum trailer, robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "the general A I agents rivaled the specialized robot models.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/rc_abs.png",
+            "stamp": "Preprint"
+          }
+        },
+        {
+          "narration": "But every system struggled to finish open-world tasks reliably.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/rc_trailer_18s.png",
+            "credit": "Video still: RoboColosseum trailer, robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "The starkest result. On the G1 humanoid, no model completed any of the five tasks.",
+          "visual": {
+            "type": "kinetic",
+            "text": "0 of 5 humanoid tasks completed",
+            "sub": "Average progress: 13.3% to 23.2%"
+          }
+        },
+        {
+          "narration": "Average progress ranged from thirteen point three to twenty-three point two percent.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/rc_g1.png"
+          }
+        },
+        {
+          "narration": "Rankings also shifted from one kind of robot to another.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/rc_kendall.png"
+          }
+        },
+        {
+          "narration": "Why it matters: every run, failures included, is published on Hugging Face.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/rc_failures.png"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "So others can study the runs, or train on the data.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/rc_trailer_10s.png",
+            "credit": "Video still: RoboColosseum trailer, robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "Reality check. This is a preprint, and the organizers, including Hugging Face, ran the evaluation themselves. The results are rankings, not success rates.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Real robots, 124 sites, runs published",
+                "cue": "preprint"
+              },
+              {
+                "status": "warn",
+                "text": "Organizers ran the evaluation",
+                "cue": "organizers"
+              },
+              {
+                "status": "warn",
+                "text": "Rankings, not success rates",
+                "cue": "rankings"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Zipline raises $1.5B for drone delivery",
+      "source": "zipline.com newsroom",
+      "sourceDate": "Nov 5, 2026",
+      "urls": [
+        "https://www.zipline.com/newsroom/zipline-raises-1-5-billion-to-build-nationwide-drone-delivery-network",
+        "https://x.com/Keller/status/2118379917503000778"
+      ],
+      "beats": [
+        {
+          "narration": "Story three. Drone delivery company Zipline has raised one and a half billion dollars.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/zip_photo.png",
+            "credit": "Image: Zipline newsroom"
+          }
+        },
+        {
+          "narration": "That's at a valuation of twenty-one and a half billion dollars, according to Zipline's announcement.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/zip_raise.png",
+            "stamp": "Company announcement"
+          }
+        },
+        {
+          "narration": "Zipline's argument: ground delivery is held back by traffic and rising costs, and roads can't keep up.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🚗",
+              "title": "Ground delivery",
+              "sub": "Traffic, aging roads, rising costs",
+              "cue": "ground"
+            },
+            "right": {
+              "icon": "🛸",
+              "title": "Drone delivery",
+              "sub": "Autonomous aircraft fly over it",
+              "cue": "roads"
+            }
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "It says the money will expand its U.S. manufacturing and hiring, to build a nationwide network.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🏭",
+                "label": "Manufacturing",
+                "sub": "expand in the U.S.",
+                "cue": "manufacturing"
+              },
+              {
+                "icon": "🧑‍🔧",
+                "label": "Hiring",
+                "sub": "ramp up",
+                "cue": "hiring"
+              },
+              {
+                "icon": "🗺️",
+                "label": "Nationwide network",
+                "sub": "drone delivery",
+                "cue": "nationwide"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "The biggest piece. Walmart and Zipline are working together to launch three hundred more sites,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/zip_walmart.png"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "under a new national, multi-year agreement.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Walmart × Zipline",
+            "sub": "300 more sites · multi-year agreement"
+          }
+        },
+        {
+          "narration": "Zipline says that in October, its median order arrived nineteen minutes after checkout,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/zip_19.png",
+            "stamp": "Self-reported"
+          }
+        },
+        {
+          "narration": "compared with thirty-plus minutes for traditional delivery.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 19,
+                "suffix": " min",
+                "label": "Zipline median, October",
+                "cue": "compared"
+              },
+              {
+                "to": 30,
+                "suffix": "+ min",
+                "label": "Traditional delivery",
+                "cue": "thirty"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "And it reports more than one million deliveries in the Dallas-Fort Worth area alone this year.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/zip_dfw.png",
+            "stamp": "Self-reported"
+          }
+        },
+        {
+          "narration": "Zipline's Keller Cliffton wrote that when they started the company, flying autonomously in the U.S. was illegal.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/keller_tweet.png",
+            "fit": "contain",
+            "credit": "Post on X: @Keller, Nov 5, 2026"
+          }
+        },
+        {
+          "narration": "Why it matters: this is a robot system scaling up, with a national retail partner and a nationwide network as the stated goal.",
+          "visual": {
+            "type": "hub",
+            "center": {
+              "icon": "🛸",
+              "label": "Zipline"
+            },
+            "spokes": [
+              {
+                "icon": "🛒",
+                "label": "Walmart",
+                "sub": "300 more sites",
+                "cue": "retail"
+              },
+              {
+                "icon": "🗺️",
+                "label": "Nationwide",
+                "sub": "the stated goal",
+                "cue": "nationwide"
+              }
+            ]
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. These numbers come from Zipline itself. And there's no timeline yet for the three hundred Walmart sites.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "$1.5B raise, company announcement",
+                "cue": "numbers"
+              },
+              {
+                "status": "warn",
+                "text": "Delivery figures are self-reported",
+                "cue": "itself"
+              },
+              {
+                "status": "no",
+                "text": "No timeline for the 300 sites",
+                "cue": "timeline"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Humanoid maker Agility lists on Nasdaq",
+      "source": "agilityrobotics.com · therobotreport.com",
+      "sourceDate": "Nov 5, 2026",
+      "urls": [
+        "https://www.agilityrobotics.com/content/agility-becomes-first-u-s-publicly-listed-pure-play-humanoid-robotics-company-begins-trading-today-on-nasdaq-as-aglt",
+        "https://x.com/agilityrobotics/status/2118313713396793615",
+        "https://www.therobotreport.com/agility-robotics-begins-trading-on-nasdaq/",
+        "https://www.therobotreport.com/agility-robotics-shareholders-approve-25b-humanoid-spac/"
+      ],
+      "beats": [
+        {
+          "narration": "Story four. Agility Robotics, maker of the Digit humanoid, is now a public company.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/ag_digit.png",
+            "fit": "contain",
+            "credit": "Image: Agility Robotics, post on X, Nov 5, 2026"
+          }
+        },
+        {
+          "narration": "Its shares began trading on the Nasdaq this week, under the ticker A G L T.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/ag_ticker.png"
+          }
+        },
+        {
+          "narration": "It got there by merging with a SPAC. A special purpose acquisition company: a shell company that lists on the market first, then merges with a private one.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🔤",
+                "label": "SPAC",
+                "sub": "special purpose acquisition company",
+                "cue": "SPAC."
+              },
+              {
+                "icon": "🏢",
+                "label": "Lists first",
+                "sub": "a shell company on the market",
+                "cue": "lists"
+              },
+              {
+                "icon": "🤝",
+                "label": "Then merges",
+                "sub": "with a private company",
+                "cue": "merges"
+              }
+            ]
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "The deal and related financing raised about four hundred sixty-five million dollars, before expenses.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/ag_465.png"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "Agility says it has more than three hundred million dollars in committed multi-year orders for Digit 5,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/ag_300.png",
+            "stamp": "Company claim"
+          }
+        },
+        {
+          "narration": "subject to contractual milestones.",
+          "visual": {
+            "type": "kinetic",
+            "text": "$300M+ in Digit 5 orders",
+            "sub": "Subject to contractual milestones"
+          }
+        },
+        {
+          "narration": "Early customer access is expected in the first half of twenty twenty-seven,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/ag_2027.png"
+          }
+        },
+        {
+          "narration": "with general availability targeted for the end of that year.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🔑",
+                "label": "Early access",
+                "sub": "first half of 2027",
+                "cue": "with"
+              },
+              {
+                "icon": "📦",
+                "label": "General availability",
+                "sub": "end of 2027",
+                "cue": "end"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Its factory in Salem, Oregon, is designed to build up to ten thousand robots a year.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/ag_robofab.png"
+          }
+        },
+        {
+          "narration": "Why it matters: Agility calls itself the first publicly listed U.S. company focused only on humanoids.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/ag_headline.png",
+                "label": "Agility's headline",
+                "cue": "calls"
+              },
+              {
+                "src": "assets/ag_aglt.png",
+                "label": "Ticker: AGLT",
+                "cue": "humanoids"
+              }
+            ],
+            "credit": "Agility Robotics press release, Nov 5, 2026"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. The next numbers come from The Robot Report, not from Agility.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Source: The Robot Report",
+            "sub": "Not stated in Agility's release"
+          },
+          "section": "reality"
+        },
+        {
+          "narration": "Agility's revenue in twenty twenty-five was one point seven eight million dollars,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/trr_rev.png",
+            "stamp": "The Robot Report"
+          }
+        },
+        {
+          "narration": "with a net loss of one hundred thirty-eight point one million.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 1,
+                "to": 1,
+                "prefix": "$",
+                "suffix": ".78M",
+                "label": "2025 revenue",
+                "cue": "with"
+              },
+              {
+                "to": 138,
+                "prefix": "−$",
+                "suffix": ".1M",
+                "label": "2025 net loss",
+                "cue": "loss"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "It also says the original deal valued Agility at two and a half billion dollars.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/trr_val.png",
+            "stamp": "The Robot Report"
+          }
+        },
+        {
+          "narration": "Agility's own release gives no valuation.",
+          "visual": {
+            "type": "kinetic",
+            "text": "No valuation",
+            "sub": "in Agility's own release"
+          }
+        },
+        {
+          "narration": "So the orders depend on milestones, and Digit 5 isn't generally available until the end of twenty twenty-seven.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Listed on Nasdaq as AGLT",
+                "cue": "So"
+              },
+              {
+                "status": "warn",
+                "text": "$300M+ orders depend on milestones",
+                "cue": "milestones"
+              },
+              {
+                "status": "warn",
+                "text": "Digit 5 widely available end of 2027",
+                "cue": "available"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "China blocks SoftBank's ABB robot deal",
+      "source": "group.softbank · therobotreport.com",
+      "sourceDate": "Nov 6, 2026",
+      "urls": [
+        "https://group.softbank/en/news/press/20261106",
+        "https://www.therobotreport.com/chinese-regulators-block-softbanks-5-4b-acquisition-of-abb-robotics/"
+      ],
+      "beats": [
+        {
+          "narration": "Story five. In October twenty twenty-five, SoftBank agreed to buy ABB's robotics business.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/abb_arms_c.png",
+            "pan": "right",
+            "credit": "Photo: ABB Robotics, via The Robot Report"
+          }
+        },
+        {
+          "narration": "Now SoftBank confirms that China has prohibited the part of the deal inside China.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/sb_ban.png",
+            "stamp": "SoftBank release"
+          }
+        },
+        {
+          "narration": "In plain English: the buyer is Japan's SoftBank, the seller is Zurich-based ABB, and China's foreign investment security review said no.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🏦",
+                "label": "SoftBank",
+                "sub": "the buyer",
+                "cue": "buyer"
+              },
+              {
+                "icon": "🦾",
+                "label": "ABB Robotics",
+                "sub": "the business for sale",
+                "cue": "seller"
+              },
+              {
+                "icon": "🚫",
+                "label": "China review",
+                "sub": "prohibited in China",
+                "cue": "no"
+              }
+            ]
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "ABB confirmed to The Robot Report that the deal is now being blocked.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/trr_deal.png"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "The full deal: five point three seven five billion dollars.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 5,
+                "to": 5,
+                "prefix": "$",
+                "suffix": ".375B",
+                "label": "SoftBank–ABB Robotics deal",
+                "cue": "full"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Why? SoftBank gives no reason. The Robot Report cites the Financial Times.",
+          "visual": {
+            "type": "kinetic",
+            "text": "The reason?",
+            "sub": "Reported by the FT, via The Robot Report"
+          }
+        },
+        {
+          "narration": "Authorities were concerned about robot data going overseas and being used to train A I models.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/trr_ft.png",
+            "stamp": "Reported via the FT"
+          }
+        },
+        {
+          "narration": "It also reports that about ninety percent of ABB's machines for Chinese customers are built in China.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/trr_90.png",
+            "stamp": "The Robot Report"
+          }
+        },
+        {
+          "narration": "Why it matters: the reported concern isn't factories. It's data, the recordings robots produce, which can train A I models.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🏭",
+              "title": "Factories",
+              "sub": "Machines built locally",
+              "cue": "factories"
+            },
+            "right": {
+              "icon": "💾",
+              "title": "Robot data",
+              "sub": "Can train AI models",
+              "cue": "data"
+            }
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. SoftBank hasn't said what happens next.",
+          "visual": {
+            "type": "kinetic",
+            "text": "What happens next?",
+            "sub": "Not announced"
+          },
+          "section": "reality"
+        },
+        {
+          "narration": "It says both companies are working constructively on the transaction.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/sb_talk.png",
+            "stamp": "SoftBank release"
+          }
+        },
+        {
+          "narration": "And the data reason is reported, not confirmed by the companies.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Prohibition confirmed by SoftBank",
+                "cue": "And"
+              },
+              {
+                "status": "warn",
+                "text": "Data reason reported via the FT",
+                "cue": "reported"
+              },
+              {
+                "status": "warn",
+                "text": "Next steps not announced",
+                "cue": "confirmed"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "kind": "title",
+      "headline": "Pixels2Actions",
+      "beats": [
+        {
+          "narration": "That's Pixels to Actions. Every source is linked in the description. If this was useful, subscribe, and I'll break down next week's stories the same way.",
+          "visual": {
+            "type": "end",
+            "subscribeCue": "subscribe"
+          }
+        }
+      ]
+    }
+  ]
+}

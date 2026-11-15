@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Easing, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Easing, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, Media, STAGE, Visual, Word } from "./theme";
 import { Lockup } from "./brand";
 import { current } from "./design";
@@ -95,6 +95,32 @@ const Shot: React.FC<P> = ({ v, dur, words }) => {
           letterSpacing: 4, textTransform: "uppercase", background: "rgba(15,15,17,0.85)" }}>{v.stamp}</div>
       )}
     </>
+  );
+};
+
+// Clip: a few seconds of muted public footage (tools/clip.py), credited by the episode's Credit chip. Framed whole
+// ("contain") by default so the action isn't cropped; "cover" fills the stage. If the narration outlasts the
+// footage, the last frame holds with a slow push-in rather than looping (a loop reads as a glitch).
+const Clip: React.FC<P> = ({ v, dur }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const m = v.src!;
+  const clipF = Math.min(dur, Math.floor((m.duration ?? dur / fps) * fps));
+  const hold = interpolate(frame, [clipF, dur], [1, 1.05], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const enter = spring({ frame, fps, config: { damping: 18, mass: 0.6 } });
+  const cover = v.fit === "cover";
+  const fit = cover ? Math.max(STAGE.w / m.width, STAGE.h / m.height) : Math.min(STAGE.w / m.width, STAGE.h / m.height);
+  const w = cover ? STAGE.w : m.width * fit, h = cover ? STAGE.h : m.height * fit;
+  const media: React.CSSProperties = { width: "100%", height: "100%", objectFit: cover ? "cover" : "contain" };
+  return (
+    <div style={{ position: "absolute", left: STAGE.x + (STAGE.w - w) / 2, top: STAGE.y + (STAGE.h - h) / 2, width: w, height: h,
+      borderRadius: 14, overflow: "hidden", background: "#000", transform: `translateY(${(1 - enter) * 60}px)`,
+      boxShadow: current.light ? "0 18px 50px rgba(31,32,35,0.18), 0 0 0 1px rgba(31,32,35,0.08)" : "0 30px 80px rgba(0,0,0,0.55)" }}>
+      <Sequence durationInFrames={clipF} layout="none">
+        <OffthreadVideo src={staticFile(m.src)} muted style={media} />
+      </Sequence>
+      {frame >= clipF && m.last && <Img src={staticFile(m.last)} style={{ ...media, transform: `scale(${hold})` }} />}
+    </div>
   );
 };
 
@@ -425,6 +451,6 @@ const KittingScene: React.FC<P> = ({ dur, words }) => <Kitting dur={dur} words={
 const SnapScene: React.FC<P> = ({ dur, words }) => <Snap dur={dur} words={words} />;
 
 const SCENES: Record<string, React.FC<P>> = {
-  shot: Shot, photo: Photo, split: Split, panels: Panels, kinetic: Kinetic, acronym: Acronym, flow: Flow, hub: Hub,
+  shot: Shot, photo: Photo, clip: Clip, split: Split, panels: Panels, kinetic: Kinetic, acronym: Acronym, flow: Flow, hub: Hub,
   stat: Stat, versus: Versus, checklist: Checklist, end: End, kitting: KittingScene, snap: SnapScene,
 };
