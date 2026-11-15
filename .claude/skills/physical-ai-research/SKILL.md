@@ -348,6 +348,8 @@ verbatim on a capturable page, vendor-reported results labelled as such). On top
   "78%"); the subject of a result is the system that achieved it, not the benchmark.
 - **Qualifiers:** "first", "state-of-the-art" or "robust" only if the source says it, about the same claim.
 - **Copy names, versions and numbers character for character.**
+- **A blocked page is not a dead end.** Work down `physical-ai-daily/docs/blocked-sources.md` before marking a
+  quote unverifiable or dropping a fact; record which step got the source.
 - **Snippets:** news-API descriptions and search snippets often cut off mid-sentence. List useful ones in
   `research.md` under Snippets, marked *unverified*: knowing something was reported can shape the video. But a snippet
   is never a source for a fact or number in the narration until the full article confirms it, and a number whose unit

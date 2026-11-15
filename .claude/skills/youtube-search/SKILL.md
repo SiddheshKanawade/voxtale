@@ -239,7 +239,8 @@ Example pipeline (manual steps, not automated):
 - `jq` is at `/usr/bin/jq`; yt-dlp is installed with Homebrew here (`/opt/homebrew/bin/yt-dlp`), not uv.
 - **Pace requests.** On 2026-11-15 about 180 rapid per-video calls got this IP bot-checked by YouTube ("Sign in to
   confirm you're not a bot") for a while. Keep searches to a few per minute, sleep ~2 s between per-video calls,
-  and **never** pass browser cookies (`--cookies-from-browser`) to get around it.
+  and don't reach for cookies for a search. When a download for an episode is blocked, follow
+  `physical-ai-daily/docs/blocked-sources.md` (a secondary-account cookie file, not the main browser profile, unless the user says so).
 - For channel statistics (subscribers, upload cadence, recent views) list the channel's videos tab:
   `yt-dlp --flat-playlist -J --playlist-end 30 "https://www.youtube.com/@Handle/videos"` gives
   `channel_follower_count` and each entry's `view_count`; upload dates need a per-video call (paced).

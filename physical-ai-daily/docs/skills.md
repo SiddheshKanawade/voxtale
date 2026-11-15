@@ -18,7 +18,7 @@ license, recent activity and whether it needs keys or outside services; read eve
 
 | Skill | Source | License | How it's in the repo | Pinned at | Notes |
 |---|---|---|---|---|---|
-| `youtube-search` | [Mathews-Tom/armory](https://github.com/Mathews-Tom/armory) `skills/youtube-search` | MIT | Copied, with `LICENSE` | `169d5df25490` | yt-dlp locally, no key. Local notes added: pacing (YouTube bot-checks bursts), never use browser cookies, channel-stats command |
+| `youtube-search` | [Mathews-Tom/armory](https://github.com/Mathews-Tom/armory) `skills/youtube-search` | MIT | Copied, with `LICENSE` | `169d5df25490` | yt-dlp locally, no key. Local notes added: pacing (YouTube bot-checks bursts), cookies only per `blocked-sources.md`, channel-stats command |
 | `remotion-best-practices` | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion License (source-available, not open source) | **Git submodule** `vendor/remotion-skills`, symlinked from `.claude/skills/` | `7e541aa4d736` (v4.0.543) | Not copied: no open-source license, and the repo is public. Our `physical-ai-daily` rules win where it differs (render via `render.sh`; don't open Studio first) |
 | `youtube-stats` | [digitalsamba/claude-code-video-toolkit](https://github.com/digitalsamba/claude-code-video-toolkit) `.claude/skills/youtube-stats` | MIT | Copied, with `LICENSE` | `01e85f4bbf5b` | **Not runnable yet**: its scripts belong to that toolkit, and the YouTube Analytics setup isn't done. Adopt when the first episode is live (`youtube-feedback.md`) |
 

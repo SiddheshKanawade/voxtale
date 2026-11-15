@@ -44,8 +44,8 @@ Studio first), and the frozen v1.0 format rules stand.
 `yt-dlp` and `ffmpeg` to download and analyse YouTube or other videos (frames, scene cuts, timing; `whisper.cpp` for
 transcripts, see `tools/chatter.py`), the **Blender** MCP (3D scenes and renders) and the **Higgsfield** MCP (image and
 video generation). Decide yourself whether a story needs any of them; most episodes won't. The rules still apply:
-downloaded videos are for study or for credited, muted clips under HARD 7.2 (never cookies, never a workaround when a
-site blocks you); anything generated in Blender or Higgsfield is an explanatory illustration, labelled, never passed
+downloaded videos are for study or for credited, muted clips under HARD 7.2 (when a site blocks you, follow the ladder
+in `physical-ai-daily/docs/blocked-sources.md`); anything generated in Blender or Higgsfield is an explanatory illustration, labelled, never passed
 off as real (HARD 4.5, section "Synthetic images and video"). Higgsfield spends paid credits: check the balance first
 and say in the hand-off what you spent.
 
@@ -150,6 +150,10 @@ confirm on the primary source, with its date, at the time you script.
 | Single X post | `capture.mjs tweet <id>` (official embed); `cdn.syndication.twimg.com/tweet-result?id=` for JSON | Reliable without login |
 | X discovery | twitterapi.io `advanced_search` (`discover.py`, key `TWITTERAPI_IO_KEY`): batched `from:` queries plus keyword search with a likes floor | Paid per tweet. Without the key, falls back to `syndication.twitter.com` timelines: **unreliable** (30 per window, sometimes stale) |
 | x.com directly | headless browser | Blank page without login |
+
+**Blocked (403, bot check, consent wall)?** Don't drop the source yet: work down `physical-ai-daily/docs/blocked-sources.md`
+(retry, official mirror, archive/Firecrawl/your Chrome, browser user agent or a secondary-account cookie file, then find
+the same fact in another real source). Drop a fact only when every step fails, and say so in the hand-off.
 
 ## Voice (frozen 2026-11-14)
 
