@@ -1,6 +1,6 @@
 ---
 name: physical-ai-daily
-description: Produce an episode of the Pixels2Actions YouTube channel (project name physical-ai-daily) — discover the day's physical-AI stories (news, X posts, arXiv papers), verify each against its primary source, write a narration script, capture highlighted screenshots of the sources, synthesize voice, and render a 1080p video with Remotion on this Mac. Use when the user asks to make today's episode, a sample episode, add a story, re-render, or change the channel's video format.
+description: Produce the weekly episode of the Pixels2Actions YouTube channel (project name physical-ai-daily) — from the physical-ai-research shortlist (research.md), re-verify each story against its primary source, write a narration script, capture highlighted screenshots of the sources, synthesize voice, and render a 1080p video with Remotion on this Mac. Use when the user asks to make today's episode, a sample episode, add a story, re-render, or change the channel's video format.
 ---
 
 # Pixels2Actions (project: physical-ai-daily)
@@ -51,7 +51,8 @@ Studio first), and the frozen v1.0 format rules stand.
   This is a cap, not a fixed rhythm. Short beats are fine.
 - Prefer real source imagery (video stills from the announcement, paper figure panels) and animated explainers over
   page screenshots. Screenshots appear only for the headline and the highlighted proof sentence.
-- Length is driven by content. Aim for 3–5 stories at 60–110 s each. Don't pad toward a target length.
+- Length is driven by content. Weekly episodes: five stories at about 60–90 s each, so about 7–8 min in all (cap
+  ~9 min; set 2026-11-16 for the weekly format, revisit with YouTube retention). Don't pad toward a target length.
 - **Cadence (user plan, 2026-11-14):** one long-form video a week with the week's top 3–5 stories, explained as now.
   Shorts cut from it promote it. This is unlike the P2A digest, which is daily.
 
@@ -60,7 +61,10 @@ Studio first), and the frozen v1.0 format rules stand.
 1. **Research.** Run the `physical-ai-research` skill: credit check, harvest (`tools/discover.py`: arXiv, X,
    NewsData.io), subagent triage, web search, what people are saying, scoring, and verification. It writes `<ep>/candidates.json` and a scored shortlist in
    `<ep>/research.md`. Never pad to reach a story count.
-2. **Pick.** Take the shortlist's top 3–5. Show it to the user before scripting unless they said to run unattended.
+2. **Pick.** Take the five picks from `research.md` (the panel's ranking with the learning-stories rule applied). Show
+   them to the user before scripting unless they said to run unattended. **Order: learning stories first** (new
+   capabilities, methods, experiments), news after; the strongest learning story opens. `research.md` gives each
+   story's verified quotes, gaps, reactions and links: script only from those, then re-verify while capturing.
 3. **Re-check** each pick against the verification rules below while capturing; research doesn't replace them.
 4. **Write `episode.json`.** Segments (`kind` story/title, `label` NEWS / ON X / PAPER, `headline` ≤ 40 chars,
    `source`, `sourceDate`, `urls`), each holding `beats: [{narration, visual}]`. Split narration at sentence or clause
@@ -99,7 +103,10 @@ frame at the clause break nearest its middle.
 
 ## Verification rules (learned the hard way)
 
-The first sample's searches returned two plausible but false items: a "$500M Agile Robots Series F" that no primary source confirms, and Runway Praxis-1 presented as today's news when it was announced in September. Search summaries mix dates and companies (Agile Robots vs Agility Robotics).
+The first sample's searches returned two misleading items: a "$500M Agile Robots Series F" before any primary
+source had it (the company announced it on Nov 12, after the sample), and Runway Praxis-1 presented as today's news
+when it was announced in September. Search summaries mix dates and companies (Agile Robots vs Agility Robotics), so
+confirm on the primary source, with its date, at the time you script.
 
 - Every story needs a **primary source**: the company blog or press release, the paper, or the author's own post. Secondary coverage can lead you to a story but can't confirm it.
 - Check the **date on the primary source**. It has to fall within the episode window, or the script has to say it's older.
@@ -143,7 +150,9 @@ six Eleven v4 voices (`docs/voice-research.md` sections 7b–9).
   10,000 characters a month. An episode is about 3,600. Beats are cached in `audio/*.el.*`, so edits re-voice only the
   changed beats. Check quota with `GET /v1/user/subscription`.
 - Free accounts can't use Voice Library voices over the API; Eric is a built-in voice.
-- Fallback if ElevenLabs is unavailable: remove `tts` and set `"voice": "en-US-AndrewNeural"` (edge-tts, free).
+- Fallback if ElevenLabs is unavailable or out of credits: remove `tts` and set `"voice": "en-US-AndrewNeural"`
+  (edge-tts, free; Microsoft's online service, not on-device). Used for the first three weekly episodes
+  (2026-11-16) while ElevenLabs credits were short; re-voice with Eric before publishing if credits allow.
 
 ## Synthetic images
 
@@ -167,8 +176,8 @@ Don't change the identity without the user's say-so. The research behind it is i
 - **Every beat:** label chip + headline + "STORY n/N", credit chip, and **captions (required, the user's call)**:
   punctuated, word-synced, grouped at clause breaks.
 - **Attention rules** (`docs/attention.md`): no moving or decorative backgrounds; no music or effects under speech;
-  one focal element per beat; a new visual every 5–7 s; the first item on screen within 0.4 s; episodes under about
-  6 min.
+  one focal element per beat; a new visual every 5–7 s; the first item on screen within 0.4 s; weekly episodes about
+  7–8 min (cap ~9).
 - **End card:** lockup, "Sources linked in the description", Subscribe. Never the website, URL or digest. The outro
   narration opens "That's Pixels to Actions."
 - **Thumbnails:** use the `youtube-thumbnails` skill. It researches first, makes 5–7 candidates, rubric-scores them,
