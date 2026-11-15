@@ -1,5 +1,7 @@
 # Competitor and reference channels
 
+Full list with links: `channels.md`; faceless channels: `faceless-channels.md`.
+
 Snapshot of 2026-11-15. Method: 12 YouTube searches (20 results each, via the `youtube-search` skill's yt-dlp
 commands) across robotics news, physical-AI explainers, AI research explainers and weekly AI news; company and
 mainstream-news channels set aside (Tesla, Unitree, DeepMind, NVIDIA, CNBC, Bloomberg, BBC…); well-known AI
