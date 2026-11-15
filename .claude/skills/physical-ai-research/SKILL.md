@@ -20,6 +20,7 @@ The P2A digest (prazo5) is daily; this channel is weekly.
 | `sync_p2a_topics.py` | The topic sync on its own (discover.py calls it) |
 | `triage_batches.py` | Splits the harvest into reading batches for triage subagents |
 | `chatter.py` | What X, HN and YouTube (views, descriptions, top comments, transcripts) say about one story |
+| `build_cards.py` | Builds the judges' story cards from stored sources only (no hand-written card text) |
 | `judge_panel.py` | Prepares the LLM judge panel's files, aggregates their verdicts, settles the cut line pairwise |
 | `news_daily.sh`, `install_news_schedule.sh` | Twice-daily saved news pull (launchd), folded into the weekly harvest |
 
@@ -51,6 +52,18 @@ the physical world, and why it matters**.
 and ~20 X accounts. They steer the harvest (accounts, X keywords, arXiv terms) and triage: a new model in a line a
 prompt names (pi0.7, GR00T, V-JEPA, UMI) is news even when the post is quiet. Every item's `topics` tags are a lexical
 hint, not a score; untagged items can still be the week's biggest story.
+
+## Sourcing rule (applies to every step)
+
+**Never generate facts or opinions.** Every fact, number, reaction, criticism or expert view in `verify/`, the cards
+and `research.md` comes from a source and carries it (URL, or handle with followers and likes). That rules out:
+- summaries dressed as a source: "consensus is…", "critics say…", "pushback: …" when nobody said it
+- one comment promoted to a trend (a 0-like YouTube comment is not "unions will resist")
+- your own ratings or inferences on a card: "strong visuals", "biggest story of the week", "the angle is indirect"
+- framing labels from a subagent ("Robotics angle:", "framed as a retreat")
+What a source *doesn't* say is recorded as a gap ("Trial counts not stated"), not as a criticism. Your own words are
+allowed only where they are clearly ours: plain story labels, the explanation and analogy for the script, and the
+editorial rules applied after the panel.
 
 ## Workflow
 
@@ -184,8 +197,10 @@ python3 -I physical-ai-daily/tools/chatter.py "<story name>" --url <primary url>
 - **Reddit and forums:** web search (`site:reddit.com <name>`, r/robotics, r/MachineLearning, r/singularity) and
   respected blogs or forums. Reddit blocks unauthenticated API reads.
 
-Record per story: the consensus, the strongest pushback, expert takes worth quoting (attributed), and existing
-coverage. Pushback feeds the Reality-check beat. Hype doesn't count as evidence (Q stays as it is).
+The chatter JSON is the record: don't summarise it into a "consensus" or "pushback". Expert takes found in
+articles go into the verification record as verbatim quotes with their URL (step 6). A Reality-check beat in the
+script uses a criticism only when someone actually made it; otherwise it states the gap ("DeepMind hasn't said how
+many trials").
 
 ### 6. Rank with an LLM judge panel
 
@@ -195,31 +210,43 @@ it favours whatever it reads first or last, longer and more enthusiastic write-u
 can flip its top pick. LLMs also tend to overvalue technically novel but vaguely described work and undervalue
 concrete, high-impact news (Northwestern's newsroom study). So the ranking is a **panel**, built to cancel those biases:
 
-1. **Write one card per cluster** to `<ep>/judge/cards.json` (format in `judge_panel.py`), for every cluster that
-   survived triage and isn't gated out (below): typically 12–20. A card holds only verified facts, in the same shape
-   for every story, so length doesn't sway a judge:
-   - **What happened:** 2–3 sentences, numbers verbatim, epistemic status kept ("pilot", "plans to", "preprint").
-   - **Evidence:** the primary source, its date, what it shows (numbers, demo, footage), whether results are
-     vendor-reported, independent corroboration.
-   - **Signals:** best paper `prior`, best X post `eng_pct` and its account, number of independent sources, YouTube
-     coverage (videos, total views). Signals are evidence for the judges, not a score.
-   - **What people say:** consensus and the strongest pushback from step 5, attributed.
-   - **Visuals:** what footage, figures or demos exist; for papers, the best analogy you have.
-   - **Freshness:** days since the primary source's date, and anything older about it.
-2. **Prepare and run the judges.** `judge_panel.py prepare <ep>/judge/cards.json <ep>/judge` writes `judge_A.md`,
+1. **Verify every story that will get a card, before judging** (typically 12–20, every cluster that survived
+   triage and isn't gated out below), with verification subagents applying the rules in step 8. Each writes
+   `<ep>/verify/<group>.json` in this contract, and nothing else:
+   ```
+   [{"story": "<unique name>", "primary_url": "...", "primary_date": "YYYY-MM-DD",
+     "quotes": [{"text": "<exact words from the page, copied character for character>", "url": "..."}],
+     "gaps": ["<what the source doesn't state: 'Trial counts not stated'>"],
+     "visuals": ["<what exists, described, not rated: 'Launch video', 'Figure 2: harm examples'>"],
+     "status": "confirmed | corrected | unconfirmed", "corrections": ["<claim> is wrong: source says <quote>"]}]
+   ```
+   Tell them: quotes only, no paraphrase; no framing labels or commentary in any field; an expert's view counts only
+   as their quoted words with the URL; if a page can't be fetched, say so in `gaps`.
+2. **Build the cards with `tools/build_cards.py <ep>`, never by hand.** You write only `<ep>/judge/stories.json`:
+   per story a plain label ("Google DeepMind: Gemini Robotics 2.5", no adjectives, numbers or hooks), and pointers
+   to its verification entry, web finds, chatter files, relevance keywords and the primary date (format in the
+   tool's docstring). The tool assembles each card from those sources: verbatim facts, gaps, raw signals (harvest
+   count, X likes and engagement percentile, HN points, YouTube views counting only videos uploaded in the window)
+   and verbatim reactions (X posts, HN titles, YouTube comments with 5+ likes). Then **read every card**:
+   - a post or video that matched a keyword but is off-topic goes in that story's `exclude` with the reason (the
+     card shows it); never edit card text
+   - a card the tool flags as over twice the median length gets split into separate stories or fewer sources,
+     because judges favour longer cards
+   - a missing fact goes back to verification, not onto the card
+3. **Prepare and run the judges.** `judge_panel.py prepare <ep>/judge/cards.json <ep>/judge` writes `judge_A.md`,
    `judge_B.md` and `judge_C.md`: each with the cards in its own shuffled order and the rubric's criteria in their own
    order. Spawn three fresh subagents in one message, **each on a different model** (`opus`, `sonnet`, `fable`: different
    models have different biases), each told only to read its file and write the JSON it asks for. They score each
    story 1–10 on significance, viewer pull, evidence, showability and momentum, reasoning first, then give an overall
    score and their top 5. Don't show them your own ranking.
-3. **Aggregate:** `judge_panel.py aggregate <ep>/judge` ranks by mean overall (Borda points from the top-5 lists break
+4. **Aggregate:** `judge_panel.py aggregate <ep>/judge` ranks by mean overall (Borda points from the top-5 lists break
    ties) and flags stories where judges differ by 3+. Read the flagged stories' reasoning: a disagreement often means
-   a card is missing a fact, so fix the card and re-run rather than average it away.
-4. **Settle the cut line pairwise:** `judge_panel.py pairs <ep>/judge` writes every pair among ranks 3–7 in both
-   orders. One fresh subagent (a model not used in step 2's majority is fine; use `opus`) answers them;
+   a card is missing a fact, so add it to the verification record, rebuild and re-run rather than average it away.
+5. **Settle the cut line pairwise:** `judge_panel.py pairs <ep>/judge` writes every pair among ranks 3–7 in both
+   orders. One fresh subagent (`opus`) answers them;
    `judge_panel.py settle <ep>/judge` re-orders those ranks by wins that held in both orders. Pairwise comparison
    tracks human preference better than scores do, which is why it decides the places that matter.
-5. **Apply the editorial rules yourself, after the panel** (they're facts about the lineup, not judgement):
+6. **Apply the editorial rules yourself, after the panel** (they're facts about the lineup, not judgement):
    at most 2 stories per company; at least one research story when one is ranked within 3 places of the 5th pick;
    variety (not five humanoid funding rounds); at least one story the viewer couldn't have read on a mainstream front
    page. Moving a story for a rule: say which rule in `research.md`.
@@ -229,7 +256,7 @@ can't be shortlisted (mention it as unconfirmed at most). Buzz never rescues wea
 window with nothing new this week is out.
 
 **Show the panel** in `research.md`: each shortlisted story's mean overall, per-criterion means, each judge's overall
-and a one-line digest of their reasoning, so the user can argue with it.
+and a short quote from each judge's reasoning, so the user can argue with it.
 
 **Research stories need an explanation, but don't drop them easily.** A paper makes the video when it can be explained
 to the viewer: an everyday analogy, a figure or demo that shows the idea, and a clear why-it-matters. If none comes to
@@ -269,7 +296,7 @@ and may break; discover.py then logs fewer "on alphaXiv" papers, and the prior l
 The prior is a **reading order and a signal on the card**, not the decision. A paper with prior 0.2 can still be the week's best
 story.
 
-### 8. Verify (every story on the shortlist)
+### 8. Verification rules (applied in step 6 to every carded story)
 
 Apply the verification rules in the `physical-ai-daily` skill (primary source, date on the primary source, numbers
 verbatim on a capturable page, vendor-reported results labelled as such). On top of those, prazo5's faithfulness rules:
@@ -298,7 +325,9 @@ credits: <credits.py summary>, triage batches: N, judges: <models>
 Then for each story:
 - a 24–30 word summary (named subject first, the single most important number)
 - how we'll explain it: the analogy, figure or demo
-- what people are saying: consensus, strongest pushback, notable takes (attributed), existing YouTube coverage
+- what people say: verbatim posts and comments from the chatter record and expert quotes from the verification
+  record, each attributed; "none found" when there are none. No summaries of opinion
+- gaps: what the sources don't state
 - every URL in the cluster, and the exact sentence to highlight with capture.mjs --find
 
 ## Reserves

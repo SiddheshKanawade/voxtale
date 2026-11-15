@@ -13,7 +13,8 @@ source, which catch the posts that don't name it.
 | HN      | Algolia search over all time (comments are where experts push back)     | none               |
 | YouTube | yt-dlp "ytsearch": who has already covered it, and how many views       | none               |
 
---details N (default 3) adds, for the N most-viewed videos, the upload date, likes, comment count, the full
+Every video gets its upload date (build_cards.py counts only videos uploaded in the window).
+--details N (default 3) adds, for the N most-viewed videos, likes, comment count, the full
 description (channels often summarise the story there) and the top 20 comments (where viewers push back). --transcripts
 N also saves the auto-captions of the N most-viewed videos to DIR as plain text, to read how other channels explained
 it. YouTube rate-limits caption downloads (HTTP 429) after a burst of them, e.g. several stories' chatter run in
@@ -131,6 +132,20 @@ def _whisper(url: str, stem: Path) -> str | None:
     return " ".join(txt.read_text().split()) if txt.exists() else None
 
 
+def upload_date(url: str) -> str:
+    """YYYYMMDD, or "" when YouTube refuses; paced, because a burst of these gets the IP bot-checked."""
+    if "watch?v=" not in url and "/shorts/" not in url:
+        return ""
+    time.sleep(2)
+    try:
+        run = subprocess.run(["yt-dlp", "--skip-download", "--print", "%(upload_date)s", url],
+                             capture_output=True, text=True, timeout=45)
+    except subprocess.TimeoutExpired:
+        return ""
+    d = run.stdout.strip()
+    return d if d.isdigit() else ""
+
+
 def transcript(url: str, out: Path) -> Path | None:
     stem = out / re.sub(r"\W+", "_", url.rsplit("=", 1)[-1])
     txt = stem.with_suffix(".txt")
@@ -176,6 +191,8 @@ def main() -> None:
     }
     for v in result["youtube"][:args.details]:
         details(v)
+    for v in result["youtube"][args.details:]:  # upload date for the rest, so cards count only in-window views
+        v["uploaded"] = upload_date(v["url"])
     if args.transcripts and args.out:
         args.out.mkdir(parents=True, exist_ok=True)
         for v in result["youtube"][:args.transcripts]:

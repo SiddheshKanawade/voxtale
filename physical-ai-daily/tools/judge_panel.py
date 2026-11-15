@@ -9,7 +9,9 @@ Usage:
 
 cards.json is one card per story cluster, written by the skill after clustering, chatter and verification:
   [{"id": "s01", "story": "...", "type": "deployment|release|funding|paper|policy|opinion", "company": "...",
-    "card": "<markdown: verified facts, primary source and date, evidence, signals, what people say, visuals>"}]
+    "card": "<markdown built by tools/build_cards.py: source facts, gaps, signals, verbatim reactions, visuals>"}]
+Cards are generated from stored sources by tools/build_cards.py, never written by hand, so the judges see the
+sources' words and not the researcher's opinions.
 
 Why a panel and not one judge: a single LLM judge is biased by the order it reads candidates in and by the order of
 the rubric's criteria, and different models have different biases, so averaging independent judges dilutes them.
@@ -80,8 +82,12 @@ def prepare(cards_path: Path, out: Path, judges: int, picks: int) -> None:
             f"this week's Pixels2Actions video: a weekly YouTube roundup of physical AI (robots, humanoids, embodied "
             f"and world models, autonomy) for viewers with a slight technical background but little knowledge of the "
             f"field. The question every story answers: what changed in machines that act in the physical world, and "
-            f"why it matters.\n\nJudge only from the cards; the facts on them are verified. Card order is random and "
-            f"means nothing. Don't favour a card for being longer or more enthusiastic.\n\n## Criteria\n\n{rubric}\n\n"
+            f"why it matters.\n\nJudge only from the cards. Each card's facts were checked against the sources it "
+            f"cites, and what a source leaves out is listed under \"Not stated in the source\": treat a claim with a "
+            f"listed gap as unconfirmed. Every opinion on a card is quoted and attributed; a single post or comment is "
+            f"one person's view, not a consensus, and a company praising its own product is not evidence. Story labels "
+            f"are deliberately plain; judge the facts, not the label. Card order is random and means nothing. Don't "
+            f"favour a card for being longer or more enthusiastic.\n\n## Criteria\n\n{rubric}\n\n"
             f"## Output\n\n{CONTRACT.format(out=out / f'judge_{name}.json', name=name, fields=fields, picks=picks)}"
             f"\n\n# Cards ({len(order)})\n\n{body}\n")
         print(f"judge_{name}.md: {len(order)} cards, criteria order {', '.join(crit)}")
@@ -129,8 +135,9 @@ def pairs(out: Path, picks: int, width: int) -> None:
         f"# Pairwise judge\n\nThese stories sit around the cut line for this week's {picks}-story Pixels2Actions "
         f"video (weekly physical-AI roundup for viewers with a slight technical background). For each pair, decide "
         f"which story more deserves a place in the video: significance, viewer pull, evidence, showability and "
-        f"momentum, weighed together. Order within a pair is random and means nothing; some pairs repeat in the "
-        f"other order, judge each on its own.\n\nWrite JSON to {out / 'pairwise.json'}:\n"
+        f"momentum, weighed together. Judge only from the cards: their facts were checked against the cited sources, "
+        f"listed gaps mean unconfirmed, and every opinion is quoted and attributed (one post is one person's view). "
+        f"Order within a pair is random and means nothing; some pairs repeat in the other order, judge each on its own.\n\nWrite JSON to {out / 'pairwise.json'}:\n"
         f'[{{"pair": "p01", "reasoning": "<1-2 sentences first>", "winner": "first" | "second" | "tie"}}]\n\n'
         f"# Pairs ({len(asks)})\n\n{body}\n\n# Cards\n\n{card_text}\n")
     (out / "pairwise_index.json").write_text(json.dumps({f"p{i:02d}": [a, b] for i, (a, b) in enumerate(asks, 1)}))
