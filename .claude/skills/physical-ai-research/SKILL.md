@@ -269,7 +269,7 @@ concrete, high-impact news (Northwestern's newsroom study). So the ranking is a 
    Spawn six fresh subagents in one message: A1 and A2 on `opus`, B1 and B2 on `sonnet`, C1 and C2 on `fable`, each
    told only to read its file and write the JSON it asks for. The panel is all Anthropic models by the user's choice
    (2026-11-15): published panels gain most from models of *different* makers (PoLL, arXiv 2404.18796), so shared
-   blind spots are possible, and the user's blind ranking (item 7 below) is the check on them. Evidence for every design
+   blind spots are possible, and YouTube feedback (item 7 below) is the check on them. Evidence for every design
    choice: `physical-ai-daily/docs/judge-evidence.md`. They score each
    story 1–10 on significance, viewer pull, evidence, showability and momentum, reasoning first, then give an overall
    score and their top 5. Don't show them your own ranking.
@@ -286,11 +286,10 @@ concrete, high-impact news (Northwestern's newsroom study). So the ranking is a 
    variety (not five humanoid funding rounds); at least one story the viewer couldn't have read on a mainstream front
    page. Moving a story for a rule: say which rule in `research.md`.
 
-7. **Calibrate against the user.** Before showing the panel's picks, ask the user to rank the week's cards themselves
-   (`<ep>/judge/cards.md`), blind to the panel. Record both in `<ep>/judge/calibration.json` and report the overlap of
-   the two top-5s and the rank correlation. Across weeks this is the only evidence that the judges pick what the
-   channel would: published judges can agree with each other and still miss human picks (arXiv 2406.12624). If the
-   user skips a week, say the picks are uncalibrated.
+7. **Calibrate against viewers, not the user** (user, 2026-11-16). After each episode is published, fill
+   `<ep>/youtube.json` as described in `physical-ai-daily/docs/youtube-feedback.md` (segment retention, Shorts,
+   comments), so each story's judge scores in `scores.json` line up with how it performed. Act on corrections at
+   once; tune the rubric only after 6 episodes. Until then, say in `research.md` that the picks are uncalibrated.
 
 **Gates, before any card is written:** a story with no primary source or a credible tier-1 report with named sources
 can't be shortlisted (mention it as unconfirmed at most). Buzz never rescues weak evidence. Anything older than the

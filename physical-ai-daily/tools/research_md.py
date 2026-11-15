@@ -88,9 +88,9 @@ def main() -> None:
             + (f", pairwise wins {r['pairwise_wins']}" if "pairwise_wins" in r else "") for r in rest[:3]]
     out += ["", "## Not picked (judged)", ""]
     out += [f"- {r['rank']}. {r['story']} ({r['overall']})" for r in rest[3:]]
-    out += ["", "## Calibration", "", "Uncalibrated: the user's blind ranking for this week isn't recorded "
-            "(`judge/calibration.json`)." if not (J / "calibration.json").exists() else
-            "See `judge/calibration.json`."]
+    out += ["", "## Calibration", "", "Uncalibrated until the episode's YouTube feedback is in `youtube.json` "
+            "(see `docs/youtube-feedback.md`)." if not (ep / "youtube.json").exists() else
+            "YouTube feedback: `youtube.json`."]
     (ep / "research.md").write_text("\n".join(out) + "\n")
     chosen = {r["id"] for r in picks}
     rows = [{"story": r["story"], "type": r["type"], "kind": kind(r), "picked": r["id"] in chosen, "rank": r["rank"], "overall": r["overall"],

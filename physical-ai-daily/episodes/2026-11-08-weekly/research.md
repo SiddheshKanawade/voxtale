@@ -288,4 +288,4 @@ Status: **confirmed**. Primary: https://arxiv.org/abs/2611.02497
 
 ## Calibration
 
-Uncalibrated: the user's blind ranking for this week isn't recorded (`judge/calibration.json`).
+Uncalibrated until the episode's YouTube feedback is in `youtube.json` (see `docs/youtube-feedback.md`).

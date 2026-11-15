@@ -18,7 +18,9 @@ skill) has one row per judged story, picked or not:
 
 `segment` matches the episode's chapter, so it can be joined with YouTube Analytics later.
 
-## How to calibrate (after 4–6 published episodes)
+## How to calibrate (after 6 published episodes)
+
+What to collect per episode, and how to read it fairly: `youtube-feedback.md`. In short:
 
 1. **Get the numbers.** For each episode, export average percentage viewed per chapter (YouTube Studio → Analytics →
    the video → Audience retention; or the YouTube Analytics API with `elapsedVideoTimeRatio`, which needs the channel
@@ -39,3 +41,4 @@ skill) has one row per judged story, picked or not:
 |---|---|---|
 | 2026-11-14 | Fixed formula S = 100·D·(0.30·NV + 0.25·A + 0.20·C + 0.25·Q) | Research-guided defaults |
 | 2026-11-15 | Replaced by an LLM judge panel (3 models, shuffled cards and criteria, pairwise cut line) | Judgement calls need reading, not arithmetic; panel and both-order pairs cancel single-judge biases |
+| 2026-11-16 | Calibration by YouTube feedback, not the user's blind ranking (`youtube-feedback.md`) | Viewers are the target; the user's taste is a proxy |

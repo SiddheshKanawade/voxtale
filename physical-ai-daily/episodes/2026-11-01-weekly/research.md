@@ -298,4 +298,4 @@ Status: **confirmed**. Primary: https://www.imperial.ac.uk/news/articles/2026/im
 
 ## Calibration
 
-Uncalibrated: the user's blind ranking for this week isn't recorded (`judge/calibration.json`).
+Uncalibrated until the episode's YouTube feedback is in `youtube.json` (see `docs/youtube-feedback.md`).
