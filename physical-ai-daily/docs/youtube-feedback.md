@@ -73,6 +73,16 @@ or **criticism**. No summaries without the quotes, per the sourcing rule.
 through the YouTube Analytics API (needs the channel owner's OAuth; per-chapter retention via
 `elapsedVideoTimeRatio`). Corrections in comments are acted on at once; everything else waits for enough data.
 
+**Planned tool:** the `youtube-stats` skill from
+[digitalsamba/claude-code-video-toolkit](https://github.com/digitalsamba/claude-code-video-toolkit) (MIT), reviewed
+2026-11-16. It isn't standalone: it drives that toolkit's `youtube_stats.py` and reuses its uploader's OAuth token,
+so adopting it means bringing (or rewriting) that script and a one-time Google Cloud setup by the channel owner
+(enable the YouTube Analytics API, add the `yt-analytics.readonly` scope, sign in once). Adopt it once the first
+episode is live. Its reading notes, worth keeping: a Short's real score is average view percentage (over 100% means
+loops; under ~50% on a 60-90 s Short means the hook or middle lost people); for a long video, impressions × CTR ×
+view duration (low CTR is packaging, short duration is the opening); Analytics lags 1-2 days and a Short's first 48 h
+are the feed testing it, so judge after a week.
+
 ## How to read it fairly
 
 A segment's numbers depend on more than the story. Control for what we can:

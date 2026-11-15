@@ -32,6 +32,12 @@ episodes/<date>[-slug]/      episode.json, assets/, audio/, qa/, out/
 Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-beat `section`, and `thumbnails`.
 `episodes/2026-11-14-sample-v7-blueprint-light/` is the same episode in the light design.
 
+**Remotion know-how:** Remotion's official agent skill `remotion-best-practices` (animation, timing, audio, fonts,
+captions, rendering, docs lookup) is installed at user level by `tools/install_remotion_skill.sh` (pinned commit; not
+vendored, because its license isn't open source). Load it when changing `video/src/`. Where it differs from this
+skill, **this skill wins**: render with `tools/render.sh` and its QA steps (it renders on our say-so, without opening
+Studio first), and the frozen v1.0 format rules stand.
+
 **The tools are starting points, not limits.** If one doesn't fit the job, change it or write your own script; a missing tool or option is never a reason to stop. Keep the data formats between steps and the rules intact (`physical-ai-daily/docs/tools.md`).
 
 ## Audience and pacing (user feedback, 2026-11-13)
