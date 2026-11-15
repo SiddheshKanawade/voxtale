@@ -99,8 +99,8 @@ the tools; where they disagree, the skill wins and this file gets fixed.
 
 - [ ] **7.1** `GUIDE` Each source shown only while the narration discusses it, with on-screen attribution (credit chip)  
   *Check:* Per-beat contact sheets
-- [ ] **7.2** `HARD` Video clips only from **official footage the company or lab itself published** with its announcement (its newsroom or press kit, its own page or channel): short (a few seconds per clip), credited on screen ("Video: Google DeepMind"), shown while the narration discusses it, the clip's own audio muted under our narration. Never clips from other creators, news outlets or aggregators (stills from any source page remain fine)  
-  *Check:* Each clip's source URL is the publisher's own page or channel; credit chip present
+- [ ] **7.2** `HARD` Video clips from public sources are allowed **with proper citation**, preferring, in order: (1) official footage the company or lab itself published (newsroom, press kit, its own page or channel); (2) other public footage (news outlets, other creators), only when (1) doesn't show it. Every clip: a few seconds, our narration discussing it the whole time (commentary, not re-publishing), its own audio muted, credited on screen ("Video: Reuters") and listed in the description with its URL. Never re-use another creator's commentary or a whole segment. Wire-agency footage (AP, Reuters, Getty, Storyful) last, because Content ID claims are likely  
+  *Check:* Each clip's source URL and owner in the hand-off; credit chip present; clip length
 - [ ] **7.3** `HARD` arXiv figures only when the abs page shows CC BY (or another reuse licence), credited  
   *Check:* License line on the abs page
 - [ ] **7.4** `GUIDE` Every source listed in the description  

@@ -200,9 +200,11 @@ Don't change the identity without the user's say-so. The research behind it is i
 
 Screenshots of articles and posts with on-screen attribution, plus commentary, is the standard news-review practice, but it isn't a guarantee. Keep each source on screen only as long as the narration discusses it. Video *stills* captured from a source page are used like screenshots.
 
-**Official press footage (allowed, user 2026-11-16):** short clips from footage the company or lab itself published
-with its announcement (its newsroom or press kit, its own page or YouTube channel) may be used: a few seconds per
-clip, credited on screen ("Video: Google DeepMind"), shown while the narration discusses it, the clip's audio muted
-under our narration. Note the clip's source URL and timestamps in the hand-off. Never clips from other creators,
-news outlets or aggregators. Get the file with yt-dlp from the publisher's own channel or page, cut it with ffmpeg
+**Video clips from public sources (allowed with proper citation, user 2026-11-16; checklist HARD 7.2):** prefer
+official footage the company or lab itself published (newsroom, press kit, its own page or channel); use other public
+footage (news outlets, other creators) only when that doesn't show it. Every clip: a few seconds, our narration
+discussing it throughout (commentary, not re-publishing), its audio muted, credited on screen ("Video: Reuters") and
+listed in the description with its URL; never another creator's commentary or a whole segment. Wire-agency footage
+(AP, Reuters, Getty, Storyful) last: Content ID claims are likely and can take the revenue or block the video. Note
+each clip's URL, owner and timestamps in the hand-off. Get the file with yt-dlp, cut it with ffmpeg
 (`-ss <start> -t <seconds> -an`) into `assets/`. Always list sources in the description.
