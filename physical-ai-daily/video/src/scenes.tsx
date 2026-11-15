@@ -100,8 +100,9 @@ const Shot: React.FC<P> = ({ v, dur, words }) => {
 
 // Clip: a few seconds of muted public footage (tools/clip.py), credited by the episode's Credit chip. Framed whole
 // ("contain") by default so the action isn't cropped; "cover" fills the stage. If the narration outlasts the
-// footage, the last frame holds with a slow push-in rather than looping (a loop reads as a glitch).
-const Clip: React.FC<P> = ({ v, dur }) => {
+// footage, the last frame holds with a slow push-in rather than looping (a loop reads as a glitch). Optional "stamp"
+// (top right, e.g. "AI-generated" for generated footage, HARD 4.5) and "badge" (a number, popped on "badgeCue").
+const Clip: React.FC<P> = ({ v, dur, words }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const m = v.src!;
@@ -112,6 +113,7 @@ const Clip: React.FC<P> = ({ v, dur }) => {
   const fit = cover ? Math.max(STAGE.w / m.width, STAGE.h / m.height) : Math.min(STAGE.w / m.width, STAGE.h / m.height);
   const w = cover ? STAGE.w : m.width * fit, h = cover ? STAGE.h : m.height * fit;
   const media: React.CSSProperties = { width: "100%", height: "100%", objectFit: cover ? "cover" : "contain" };
+  const bd = pop(frame, cueFrame(words, (v as any).badgeCue, fps, Math.round(fps * 0.8)), fps);
   return (
     <div style={{ position: "absolute", left: STAGE.x + (STAGE.w - w) / 2, top: STAGE.y + (STAGE.h - h) / 2, width: w, height: h,
       borderRadius: 14, overflow: "hidden", background: "#000", transform: `translateY(${(1 - enter) * 60}px)`,
@@ -120,6 +122,14 @@ const Clip: React.FC<P> = ({ v, dur }) => {
         <OffthreadVideo src={staticFile(m.src)} muted style={media} />
       </Sequence>
       {frame >= clipF && m.last && <Img src={staticFile(m.last)} style={{ ...media, transform: `scale(${hold})` }} />}
+      {v.stamp && (
+        <div style={{ position: "absolute", right: 22, top: 20, background: "rgba(0,0,0,0.75)", color: "#f5c518", fontWeight: 800,
+          fontSize: 34, padding: "8px 18px", borderRadius: 10, letterSpacing: 1 }}>{v.stamp}</div>
+      )}
+      {v.badge && (
+        <div style={{ position: "absolute", right: 22, bottom: 22, background: C.accent, color: "#111", fontWeight: 900, fontSize: 52,
+          padding: "12px 26px", borderRadius: 14, transform: `scale(${bd})`, boxShadow: "0 20px 50px rgba(0,0,0,0.5)" }}>{v.badge}</div>
+      )}
     </div>
   );
 };

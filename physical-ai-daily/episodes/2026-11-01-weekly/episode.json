@@ -1,7 +1,7 @@
 {
   "title": "Pixels2Actions",
   "date": "November 1, 2026",
-  "design": "blueprint",
+  "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
   "segments": [
     {
@@ -119,18 +119,15 @@
         {
           "narration": "Think of a video game with no game engine. The AI itself draws what happens next.",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_g3_4s.png",
-            "pan": "right",
-            "credit": "Video still: Google DeepMind"
+            "type": "clip",
+            "src": "assets/g_clip_world.mp4"
           }
         },
         {
           "narration": "In DeepMind's recordings, people steer with keyboard controls, and use text prompts to change the scene as it evolves.",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_g6_6s.png",
-            "credit": "Video still: Google DeepMind"
+            "type": "clip",
+            "src": "assets/g_clip_steer.mp4"
           }
         },
         {
@@ -178,9 +175,8 @@
         {
           "narration": "On the announcement page, a simulated robot arm holds a pipette and dispenses liquid into a lab plate.",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_g12_9s.png",
-            "credit": "Video still: Google DeepMind"
+            "type": "clip",
+            "src": "assets/g_clip_pipette.mp4"
           }
         },
         {
@@ -377,12 +373,8 @@
         {
           "narration": "On real robots, simple pick-and-place worked: seventeen of eighteen trials.",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_s5_12s.png",
-            "fit": "contain",
-            "badge": "17/18 pick-and-place",
-            "badgeCue": "seventeen",
-            "credit": "Video still: SenseNova et al. project page"
+            "type": "clip",
+            "src": "assets/s_clip_pnp.mp4"
           }
         },
         {
@@ -488,9 +480,8 @@
         {
           "narration": "The second, ZAP from Luma AI, teaches a small open model its motion skills entirely in simulation,",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_z15_4s.png",
-            "credit": "Video still: ZAP project page (Luma AI)"
+            "type": "clip",
+            "src": "assets/z_clip_sim.mp4"
           }
         },
         {
@@ -504,11 +495,8 @@
         {
           "narration": "On a real two-armed robot, it succeeded on twenty-nine of thirty trials,",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_z0_10s.png",
-            "badge": "29/30 real trials",
-            "badgeCue": "twenty",
-            "credit": "Video still: ZAP project page (Luma AI)"
+            "type": "clip",
+            "src": "assets/z_clip_real.mp4"
           }
         },
         {
@@ -623,18 +611,15 @@
         {
           "narration": "In its videos, a person demonstrates once, on objects the robot has never seen,",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_m0_8s.png",
-            "credit": "Video still: Machenta"
+            "type": "clip",
+            "src": "assets/m_clip_demo.mp4"
           }
         },
         {
           "narration": "then rearranges them and steps back, and the robot does the task on its own.",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_m0_18s.png",
-            "pan": "out",
-            "credit": "Video still: Machenta"
+            "type": "clip",
+            "src": "assets/m_clip_auto.mp4"
           }
         },
         {
@@ -675,9 +660,8 @@
         {
           "narration": "Here, several of them work a line together, in a one-person factory demo.",
           "visual": {
-            "type": "photo",
-            "src": "assets/v_m6_20s.png",
-            "credit": "Video still: Machenta"
+            "type": "clip",
+            "src": "assets/m_clip_factory.mp4"
           }
         },
         {
@@ -807,9 +791,8 @@
         {
           "narration": "Toyota will build an autonomous version of its bZ4X for Waymo's ride-hailing service.",
           "visual": {
-            "type": "photo",
-            "src": "assets/t_car.png",
-            "credit": "Photo: Toyota Motor Corporation"
+            "type": "clip",
+            "src": "assets/t_clip_car.mp4"
           }
         },
         {

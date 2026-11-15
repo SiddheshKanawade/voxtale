@@ -77,9 +77,8 @@
         {
           "narration": "Story one. NVIDIA introduced Groot two, a new model for controlling robots.",
           "visual": {
-            "type": "shot",
-            "src": "assets/g_hero.png",
-            "credit": "research.nvidia.com (NVIDIA)"
+            "type": "clip",
+            "src": "assets/clip_g_hero.mp4"
           }
         },
         {
@@ -148,29 +147,15 @@
         {
           "narration": "So a skill shown only by people can carry over to a robot that never practiced it.",
           "visual": {
-            "type": "split",
-            "items": [
-              {
-                "src": "assets/g_vfilter_3s.png",
-                "label": "Shown by a person",
-                "cue": "people"
-              },
-              {
-                "src": "assets/g_vfilter_12s.png",
-                "label": "Done by the robot",
-                "cue": "robot"
-              }
-            ],
-            "credit": "Video still: NVIDIA"
+            "type": "clip",
+            "src": "assets/clip_g_filter.mp4"
           }
         },
         {
           "narration": "NVIDIA tested it on fifty tasks the target robot had never done.",
           "visual": {
-            "type": "photo",
-            "src": "assets/g_vreel_3s.png",
-            "credit": "Video still: NVIDIA",
-            "fit": "contain"
+            "type": "clip",
+            "src": "assets/clip_g_reel.mp4"
           },
           "section": "evidence"
         },
@@ -259,9 +244,8 @@
         {
           "narration": "A smaller version, Groot two Turbo, runs on the Unitree G1 humanoid itself.",
           "visual": {
-            "type": "photo",
-            "src": "assets/g_vpop_20s.png",
-            "credit": "Video still: NVIDIA"
+            "type": "clip",
+            "src": "assets/clip_g_pop.mp4"
           }
         },
         {
@@ -416,22 +400,15 @@
         {
           "narration": "In a proof of concept with Apptronik and Mercedes-Benz,",
           "visual": {
-            "type": "photo",
-            "src": "assets/dm_merc_2s.png",
-            "credit": "Video still: Google DeepMind",
-            "pan": "out"
+            "type": "clip",
+            "src": "assets/clip_dm_merc_a.mp4"
           }
         },
         {
           "narration": "Apollo 2 humanoids worked on active production lines in Hungary and Germany.",
           "visual": {
-            "type": "photo",
-            "src": "assets/dm_merc_12s.png",
-            "credit": "Video still: Google DeepMind",
-            "tags": [
-              "Kecskemét, Hungary",
-              "Sindelfingen, Germany"
-            ]
+            "type": "clip",
+            "src": "assets/clip_dm_merc_b.mp4"
           }
         },
         {
@@ -476,10 +453,8 @@
         {
           "narration": "in just a few weeks of post-training, and carried over to Mercedes-Benz production with very little drop-off.",
           "visual": {
-            "type": "photo",
-            "src": "assets/dm_merc_15s.png",
-            "credit": "Video still: Google DeepMind",
-            "pan": "right"
+            "type": "clip",
+            "src": "assets/clip_dm_merc_c.mp4"
           }
         },
         {
@@ -525,10 +500,8 @@
         {
           "narration": "Story three is a research paper from UC Berkeley, called SuperMimic.",
           "visual": {
-            "type": "photo",
-            "src": "assets/m_vhero_6s.png",
-            "credit": "Video still: Liao et al., supermimic.github.io",
-            "fit": "contain"
+            "type": "clip",
+            "src": "assets/clip_m_hero.mp4"
           }
         },
         {
@@ -543,10 +516,8 @@
         {
           "narration": "The goal is one controller that lets a humanoid copy almost any human movement, from walking to flips.",
           "visual": {
-            "type": "photo",
-            "src": "assets/m_vflip_1s.png",
-            "credit": "Video still: Liao et al., supermimic.github.io",
-            "fit": "contain"
+            "type": "clip",
+            "src": "assets/clip_m_flips.mp4"
           },
           "section": "plain"
         },
@@ -645,9 +616,8 @@
         {
           "narration": "And the controller transfers to a real Unitree G1 humanoid, including acrobatic moves.",
           "visual": {
-            "type": "photo",
-            "src": "assets/m_vreal_6s.png",
-            "credit": "Video still: Liao et al., supermimic.github.io"
+            "type": "clip",
+            "src": "assets/clip_m_bay.mp4"
           }
         },
         {
@@ -746,25 +716,8 @@
         {
           "narration": "Its video shows robots controlled by Fable solving a puzzle cube, unscrewing a bottle cap, and drawing a picture of a robot.",
           "visual": {
-            "type": "panels",
-            "items": [
-              {
-                "src": "assets/c_v_1.5s.png",
-                "label": "Puzzle cube",
-                "cue": "puzzle"
-              },
-              {
-                "src": "assets/c_v_2.5s.png",
-                "label": "Bottle cap",
-                "cue": "unscrewing"
-              },
-              {
-                "src": "assets/c_v_7s.png",
-                "label": "Drawing a robot",
-                "cue": "drawing"
-              }
-            ],
-            "credit": "Video still: Anthropic"
+            "type": "clip",
+            "src": "assets/clip_c_robot.mp4"
           }
         },
         {

@@ -83,52 +83,22 @@
         {
           "narration": "Story one. Apple researchers have published a paper on a humanoid robot system called HALO.",
           "visual": {
-            "type": "photo",
-            "src": "assets/halo_demo_3s.png",
-            "credit": "Video still: Apple, HALO project page"
+            "type": "clip",
+            "src": "assets/halo_clip_intro.mp4"
           }
         },
         {
           "narration": "The robot sits on chairs, and steps sideways through half-open doors.",
           "visual": {
-            "type": "split",
-            "items": [
-              {
-                "src": "assets/halo_sit_3s.png",
-                "label": "Sit",
-                "cue": "sits"
-              },
-              {
-                "src": "assets/halo_door_3s.png",
-                "label": "Door",
-                "cue": "steps"
-              }
-            ],
-            "credit": "Video stills: Apple, HALO project page"
+            "type": "clip",
+            "src": "assets/halo_clip_sitdoor.mp4"
           }
         },
         {
           "narration": "It crouches and crawls under tables, and pushes boxes.",
           "visual": {
-            "type": "panels",
-            "items": [
-              {
-                "src": "assets/halo_crouch_3s.png",
-                "label": "Crouch",
-                "cue": "crouches"
-              },
-              {
-                "src": "assets/halo_crawl_3s.png",
-                "label": "Crawl",
-                "cue": "crawls"
-              },
-              {
-                "src": "assets/halo_push_3s.png",
-                "label": "Push",
-                "cue": "pushes"
-              }
-            ],
-            "credit": "Video stills: Apple, HALO project page"
+            "type": "clip",
+            "src": "assets/halo_clip_crawlpush.mp4"
           }
         },
         {
@@ -232,19 +202,15 @@
         {
           "narration": "It breaks a plain-language request into steps, like crouch under the table, then push the box.",
           "visual": {
-            "type": "photo",
-            "src": "assets/halo_stack_c.png",
-            "fit": "contain",
-            "credit": "Apple, HALO project page"
+            "type": "clip",
+            "src": "assets/halo_clip_steps.mp4"
           }
         },
         {
           "narration": "Then the test. Six real homes it had never seen, which were never scanned or mapped.",
           "visual": {
-            "type": "photo",
-            "src": "assets/halo_demo_28s.png",
-            "pan": "out",
-            "credit": "Video still: Apple, HALO project page"
+            "type": "clip",
+            "src": "assets/halo_clip_realhome.mp4"
           },
           "section": "evidence"
         },
@@ -342,9 +308,8 @@
         {
           "narration": "RoboColosseum is a network of real robots that tests robot software with the same rules everywhere.",
           "visual": {
-            "type": "photo",
-            "src": "assets/rc_film_1s.png",
-            "credit": "Video still: robocolosseum.ai"
+            "type": "clip",
+            "src": "assets/rc_clip_network.mp4"
           }
         },
         {
@@ -413,33 +378,15 @@
         {
           "narration": "From a small SO-101 arm, to two-armed stations, to a Unitree G1 humanoid.",
           "visual": {
-            "type": "panels",
-            "items": [
-              {
-                "src": "assets/rc_trailer_14s.png",
-                "label": "SO-101 arm",
-                "cue": "small"
-              },
-              {
-                "src": "assets/rc_trailer_6s.png",
-                "label": "Bimanual YAM",
-                "cue": "two"
-              },
-              {
-                "src": "assets/rc_film_8s.png",
-                "label": "Unitree G1",
-                "cue": "Unitree"
-              }
-            ],
-            "credit": "Video stills: robocolosseum.ai"
+            "type": "clip",
+            "src": "assets/rc_clip_fleet.mp4"
           }
         },
         {
           "narration": "Across five thousand six hundred ninety-nine head-to-head comparisons at one hundred twenty-four sites,",
           "visual": {
-            "type": "photo",
-            "src": "assets/rc_trailer_24s.png",
-            "credit": "Video still: RoboColosseum trailer, robocolosseum.ai"
+            "type": "clip",
+            "src": "assets/rc_clip_sites.mp4"
           }
         },
         {
@@ -491,9 +438,8 @@
         {
           "narration": "So others can study the runs, or train on the data.",
           "visual": {
-            "type": "photo",
-            "src": "assets/rc_trailer_10s.png",
-            "credit": "Video still: RoboColosseum trailer, robocolosseum.ai"
+            "type": "clip",
+            "src": "assets/rc_clip_runs.mp4"
           }
         },
         {
@@ -726,10 +672,8 @@
         {
           "narration": "Story four. Agility Robotics, maker of the Digit humanoid, is now a public company.",
           "visual": {
-            "type": "photo",
-            "src": "assets/ag_digit.png",
-            "fit": "contain",
-            "credit": "Image: Agility Robotics, post on X, Nov 5, 2026"
+            "type": "clip",
+            "src": "assets/ag_clip_digit5.mp4"
           }
         },
         {
@@ -941,10 +885,8 @@
         {
           "narration": "Story five. In October twenty twenty-five, SoftBank agreed to buy ABB's robotics business.",
           "visual": {
-            "type": "photo",
-            "src": "assets/abb_arms_c.png",
-            "pan": "right",
-            "credit": "Photo: ABB Robotics, via The Robot Report"
+            "type": "clip",
+            "src": "assets/abb_clip_rebar.mp4"
           }
         },
         {
