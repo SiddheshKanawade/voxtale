@@ -30,7 +30,7 @@ episodes/<date>[-slug]/      episode.json, assets/, audio/, qa/, out/
 
 **Reference episode: `episodes/2026-11-14-sample-v7-blueprint/`** (frozen 2026-11-14: 2 stories, 4:04, 36 beats).
 Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-beat `section`, and `thumbnails`.
-`episodes/2026-11-14-sample-v7-blueprint-light/` is the same episode in the light design.
+`episodes/2026-11-14-sample-v7-blueprint-light/` is the same episode in the light design, now the default.
 
 **Remotion know-how:** Remotion's official agent skill `remotion-best-practices` (animation, timing, audio, fonts,
 captions, rendering, docs lookup) is in the repo as a pinned git submodule (`vendor/remotion-skills`, not copied, because its
@@ -163,8 +163,9 @@ Higgsfield MCP has image models (Nano Banana Pro/2, GPT Image 2.6, FLUX), but th
 Don't change the identity without the user's say-so. The research behind it is in `docs/brand.md` (identity),
 `docs/attention.md` (what holds attention) and `docs/thumbnails.md`.
 
-- **Design:** `"design": "blueprint"` (default): near-black `#0a0a0b` with a fine **static** engineering grid.
-  `"blueprint-light"` is the approved alternative: warm paper `#fbfaf7`, ink grid and text; photos become framed cards.
+- **Design:** `"design": "blueprint-light"` is the **default** (user, 2026-11-16): warm paper `#fbfaf7` with a fine
+  **static** ink engineering grid; photos become framed cards. `"blueprint"` (near-black `#0a0a0b`, same grid) is the
+  approved dark alternative. Run the light-mode QA below on every render.
   The other candidates in `video/src/design.ts` (charcoal, paper, signal, aurora) are unused.
 - **Brand:** top bar = Pixels2Actions lockup (logo mark + wordmark, `brand.tsx`) + date. Red `#f43f2e` for label chips
   and the chapter progress bar; yellow `#f0c945` for accents and the spoken-word caption highlight.
