@@ -99,6 +99,9 @@ Studio first), and the frozen v1.0 format rules stand.
 
 Icons are Apple emoji, which render in Remotion on this Mac. Any static photo or shot past 7 s punch-cuts to a tighter
 frame at the clause break nearest its middle.
+**Acceptance checklist:** `physical-ai-daily/docs/video-requirements.md` lists every condition an episode must meet
+(MUST/SHOULD, each with how to check it). Run through it before hand-off and report any item not met.
+
 7. **Hand off.** Report the final path, the duration, and a description block listing every source URL. Uploading is the user's action, so never upload.
 
 ## Verification rules (learned the hard way)

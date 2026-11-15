@@ -10,7 +10,7 @@ license, recent activity and whether it needs keys or outside services; read eve
 | Skill | Does | Notes |
 |---|---|---|
 | `physical-ai-research` | The week's research: harvest (arXiv, X, news), web discovery, triage, chatter, verification, cards, LLM judge panel, `research.md` | Rules: sourcing (no generated opinions), learning over knowing, YouTube calibration |
-| `physical-ai-daily` | Production: script (`episode.json`), capture, voice, render, hand-off | Frozen v1.0 identity. Needs the weekly-format update before the next episode |
+| `physical-ai-daily` | Production: script (`episode.json`), capture, voice, render, hand-off | Frozen v1.0 identity (light default); acceptance checklist in `docs/video-requirements.md` |
 | `youtube-thumbnails` | Evidence-led thumbnails: research, 5–7 candidates, rubric, pick plus two for Test & Compare | Open: whether news-site screenshots may appear in thumbnails |
 
 ## Third-party
