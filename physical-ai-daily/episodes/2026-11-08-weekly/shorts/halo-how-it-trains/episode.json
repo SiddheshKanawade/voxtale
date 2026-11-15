@@ -1,0 +1,83 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 8, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "This robot learned in *1,000* homes that don't exist. How?",
+  "cta": "The catch with longer tasks: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "How Apple's humanoid trained in simulation",
+      "source": "arxiv.org · Apple",
+      "sourceDate": "Nov 4, 2026",
+      "beats": [
+        {
+          "narration": "Apple's humanoid learned this in a thousand homes that don't exist. How?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/hz_clip_crawl.mp4",
+            "stamp": "Real robot"
+          }
+        },
+        {
+          "narration": "No one steered it by hand. Its skills were learned only in simulation.",
+          "visual": {
+            "type": "kinetic",
+            "text": "No one steered it",
+            "sub": "no teleoperation · trained only in simulation"
+          }
+        },
+        {
+          "narration": "First, a computer plans its moves: walk forward, turn around, sit on the chair.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_pipe_motion.png",
+            "credit": "Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "Then it places them in one of a thousand generated homes,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_pipe_homes.png",
+            "credit": "Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "and renders what the robot's camera would see. A flight simulator, for a robot.",
+          "visual": {
+            "type": "kinetic",
+            "text": "A flight simulator for robots",
+            "sub": "it renders what the robot's camera would see"
+          }
+        },
+        {
+          "narration": "An off-the-shelf AI model splits each request into steps: crouch under the table, push the box.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/halo_clip_steps.mp4"
+          }
+        },
+        {
+          "narration": "Six real homes it had never seen: ninety-one percent on single tasks, in a preprint.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/hz_clip_sit.mp4",
+            "stamp": "Preprint · the team's own tests"
+          }
+        },
+        {
+          "narration": "The catch with longer tasks is in the full episode. Link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          }
+        }
+      ]
+    }
+  ]
+}

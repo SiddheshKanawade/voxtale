@@ -1,0 +1,93 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 8, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "Robot brains vs. a real *humanoid*. How many tasks did they finish?",
+  "cta": "How the blind test works, and how AI agents did: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "A real-world test arena for robot brains",
+      "source": "arxiv.org · robocolosseum.ai",
+      "sourceDate": "Nov 2, 2026",
+      "beats": [
+        {
+          "narration": "Hugging Face and partners tested robot brains on real robots. On the humanoid, how many tasks did they finish?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/rc_clip_network.mp4"
+          }
+        },
+        {
+          "narration": "RoboColosseum tested at one hundred twenty-four sites, on four kinds of robot.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/rc_clip_fleet.mp4"
+          }
+        },
+        {
+          "narration": "Like a blind taste test, two unnamed models try the same instruction, and the evaluator picks the better run.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/rc_clip_sites.mp4"
+          }
+        },
+        {
+          "narration": "The answer: no model completed any of the five humanoid tasks.",
+          "visual": {
+            "type": "kinetic",
+            "text": "0 of 5 humanoid tasks completed",
+            "sub": "by any model"
+          }
+        },
+        {
+          "narration": "Average progress: thirteen point three to twenty-three point two percent.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 13.3,
+                "decimals": 1,
+                "suffix": "%",
+                "label": "lowest average progress"
+              },
+              {
+                "to": 23.2,
+                "decimals": 1,
+                "suffix": "%",
+                "label": "highest average progress"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Reality check: a preprint, and the organizers ran the tests themselves.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Preprint, run by its organizers",
+            "sub": "Hugging Face among them · arxiv.org"
+          }
+        },
+        {
+          "narration": "How the blind test works, and how AI agents did,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/rc_film_20s.png",
+            "credit": "Video still: RoboColosseum, robocolosseum.ai"
+          }
+        },
+        {
+          "narration": "is in this week's full episode. Tap the link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          }
+        }
+      ]
+    }
+  ]
+}

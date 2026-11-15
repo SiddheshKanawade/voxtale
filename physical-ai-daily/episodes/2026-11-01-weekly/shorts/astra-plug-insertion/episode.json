@@ -1,0 +1,148 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 1, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "GPT-6 Astra aced simulation. Why can't it *plug this in*?",
+  "cta": "Two new papers that try to close the gap: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "What frontier models still can't do",
+      "source": "SenseNova et al. · arXiv",
+      "sourceDate": "Oct 15–19, 2026",
+      "beats": [
+        {
+          "narration": "This robot is run by GPT-6 Astra, a frontier AI model. Why can't it plug this in?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/s_clip_plug.mp4"
+          },
+          "direct": [
+            [
+              "hook",
+              "This robot is run by GPT-6 Astra, a frontier AI model. Why can't it plug this in?",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "A team led by SenseNova tested it on eight real robots, in a report from earlier in October.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/s_clip_pnp4.mp4"
+          },
+          "direct": [
+            [
+              "hook",
+              "A team led by SenseNova tested it on eight real robots, in a report from earlier in October.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "In simulation, it scored ninety-nine to one hundred percent on six benchmark suites,",
+          "visual": {
+            "type": "kinetic",
+            "text": "99–100% in simulation",
+            "sub": "6 benchmark suites · with in-context help"
+          },
+          "direct": [
+            [
+              "hook",
+              "In simulation, it scored ninety-nine to one hundred percent on six benchmark suites,",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "but with help: it could learn from each benchmark's training set.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_10x.png",
+            "credit": "Source: sensenova.ai"
+          },
+          "direct": [
+            [
+              "hook",
+              "but with help: it could learn from each benchmark's training set.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "On real robots, pick-and-place worked seventeen of eighteen times. Plug insertion: zero for eleven.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 17,
+                "suffix": "/18",
+                "label": "pick-and-place trials"
+              },
+              {
+                "to": 0,
+                "suffix": "/11",
+                "label": "plug insertions, 3 robots"
+              }
+            ]
+          },
+          "direct": [
+            [
+              "hook",
+              "On real robots, pick-and-place worked seventeen of eighteen times. Plug insertion: zero for eleven.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Why? The report says the task sets the limit. Precise contact, like a plug, stays markedly harder.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/s_plug_cards.png",
+            "credit": "Video still: SenseNova"
+          },
+          "direct": [
+            [
+              "hook",
+              "Why? The report says the task sets the limit. Precise contact, like a plug, stays markedly harder.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Its verdict: competent, but not yet practical. And it's a preprint, with small trial counts.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Competent. Not yet practical.",
+            "sub": "The report's verdict · preprint"
+          },
+          "direct": [
+            [
+              "hook",
+              "Its verdict: competent, but not yet practical. And it's a preprint, with small trial counts.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Two new papers try to close that gap: this week's full episode. Link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          },
+          "direct": [
+            [
+              "hook",
+              "Two new papers try to close that gap: this week's full episode. Link below.",
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

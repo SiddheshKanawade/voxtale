@@ -1,0 +1,159 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 1, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "Trained *only in simulation*. Can it run a real robot?",
+  "cta": "Where these models still fail, and a second fix: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "Can AI models run real robots?",
+      "source": "SenseNova et al. · arXiv",
+      "sourceDate": "Oct 15–30, 2026",
+      "beats": [
+        {
+          "narration": "This robot learned to move only in simulation. Can it work for real?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/z_clip_yam_real.mp4"
+          },
+          "direct": [
+            [
+              "hook",
+              "This robot learned to move only in simulation. Can it work for real?",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Frontier AI models, like GPT-6 Astra, can now control robots directly.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/s_clip_pnp4.mp4"
+          },
+          "direct": [
+            [
+              "hook",
+              "Frontier AI models, like GPT-6 Astra, can now control robots directly.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "In SenseNova's real-robot tests, pick-and-place worked seventeen of eighteen times. Plug insertion: zero for eleven.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 17,
+                "suffix": "/18",
+                "label": "pick-and-place trials"
+              },
+              {
+                "to": 0,
+                "suffix": "/11",
+                "label": "plug insertions"
+              }
+            ]
+          },
+          "direct": [
+            [
+              "hook",
+              "In SenseNova's real-robot tests, pick-and-place worked seventeen of eighteen times. Plug insertion: zero for eleven.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "The ZAP team at Luma AI says a small open model already understands robot tasks, and mainly lacks motion control.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Understands the task. Lacks the motion.",
+            "sub": "ZAP authors, Luma AI"
+          },
+          "direct": [
+            [
+              "hook",
+              "The ZAP team at Luma AI says a small open model already understands robot tasks, and mainly lacks motion control.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "So ZAP teaches that skill entirely in simulation.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/z_clip_sim.mp4",
+            "stamp": "Simulation"
+          },
+          "direct": [
+            [
+              "hook",
+              "So ZAP teaches that skill entirely in simulation.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "The answer: on a real two-armed robot, twenty-nine of thirty trials, matching GPT-6 Astra on the same control software.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 29,
+                "suffix": "/30",
+                "label": "ZAP, real two-armed robot"
+              },
+              {
+                "to": 29,
+                "suffix": "/30",
+                "label": "GPT-6 Astra, same software"
+              }
+            ]
+          },
+          "direct": [
+            [
+              "hook",
+              "The answer: on a real two-armed robot, twenty-nine of thirty trials, matching GPT-6 Astra on the same control software.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Reality check: these are preprints, with small trial counts, and a match, not a win.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/z_2930.png",
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)",
+            "stamp": "Preprint"
+          },
+          "direct": [
+            [
+              "hook",
+              "Reality check: these are preprints, with small trial counts, and a match, not a win.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Where they still fail: this week's full episode. Link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          },
+          "direct": [
+            [
+              "hook",
+              "Where they still fail: this week's full episode. Link below.",
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

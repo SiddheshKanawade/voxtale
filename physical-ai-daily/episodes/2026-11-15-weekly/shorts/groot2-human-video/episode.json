@@ -1,0 +1,133 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 15, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "NVIDIA's robot learned from people. How much *robot* practice did it need?",
+  "cta": "How it imagines the future, and what's still unknown: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "NVIDIA's robot model learns from people",
+      "source": "research.nvidia.com",
+      "sourceDate": "Nov 9, 2026",
+      "beats": [
+        {
+          "narration": "NVIDIA's new robot model, Groot two, learned from videos of people at work. So how much real robot practice did it need?",
+          "direct": [
+            [
+              "hook",
+              "NVIDIA's new robot model, Groot two, learned from videos of people at work. So how much real robot practice did it need?",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_g_pop_crop.mp4",
+            "stamp": "Autonomous · per NVIDIA"
+          }
+        },
+        {
+          "narration": "Its training mix includes over four hundred thousand hours of video of people at work.",
+          "direct": [
+            [
+              "hook",
+              "Its training mix includes over four hundred thousand hours of video of people at work.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "402,730 hours",
+            "sub": "of video of people at work · research.nvidia.com"
+          }
+        },
+        {
+          "narration": "One model imagines what happens next and plans the robot's moves together, so skills shown by people carry over.",
+          "direct": [
+            [
+              "hook",
+              "One model imagines what happens next and plans the robot's moves together, so skills shown by people carry over.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_g_filter.mp4"
+          }
+        },
+        {
+          "narration": "On fifty tasks this robot had never done, with no demonstrations, it succeeded at least once on forty.",
+          "direct": [
+            [
+              "hook",
+              "On fifty tasks this robot had never done, with no demonstrations, it succeeded at least once on forty.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_g_reel.mp4"
+          }
+        },
+        {
+          "narration": "One demonstration per task: seventy-one percent success. Five, under three minutes of robot data: ninety-five percent.",
+          "direct": [
+            [
+              "hook",
+              "One demonstration per task: seventy-one percent success. Five, under three minutes of robot data: ninety-five percent.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 71,
+                "suffix": "%",
+                "label": "success · 1 demo per task"
+              },
+              {
+                "to": 95,
+                "suffix": "%",
+                "label": "success · 5 demos, < 3 min of robot data"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Reality check: these are NVIDIA's own tests, and the code is listed for December.",
+          "direct": [
+            [
+              "hook",
+              "Reality check: these are NVIDIA's own tests, and the code is listed for December.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "NVIDIA's own tests",
+            "sub": "code listed for December · no weights date"
+          }
+        },
+        {
+          "narration": "How it imagines the future, and what's still unknown, is in this week's full episode. Link below.",
+          "direct": [
+            [
+              "hook",
+              "How it imagines the future, and what's still unknown, is in this week's full episode. Link below.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          }
+        }
+      ]
+    }
+  ]
+}

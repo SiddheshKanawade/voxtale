@@ -1,0 +1,95 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 8, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "Apple's humanoid never saw a *real* home in training. Did it work?",
+  "cta": "How it learned in simulation, and the catch: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "Apple's humanoid learned in simulation",
+      "source": "arxiv.org · Apple",
+      "sourceDate": "Nov 4, 2026",
+      "beats": [
+        {
+          "narration": "Apple's humanoid never saw a real home during training. So does it work in one?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/halo_clip_intro.mp4",
+            "stamp": "Real robot · fully autonomous"
+          }
+        },
+        {
+          "narration": "It sits on chairs, and steps sideways through half-open doors.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/halo_clip_sitdoor.mp4"
+          }
+        },
+        {
+          "narration": "It crawls under tables, all learned in a thousand computer-generated homes.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/halo_clip_crawlpush.mp4"
+          }
+        },
+        {
+          "narration": "Think of a flight simulator, but for a robot.",
+          "visual": {
+            "type": "kinetic",
+            "text": "A flight simulator for robots",
+            "sub": "1,000 computer-generated homes"
+          }
+        },
+        {
+          "narration": "Then the test. Six real homes it had never seen, never scanned or mapped.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/halo_clip_realhome.mp4",
+            "stamp": "Real robot · fully autonomous"
+          }
+        },
+        {
+          "narration": "Ninety-one percent success, across three hundred sixty real trials.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 91,
+                "suffix": "%",
+                "label": "success over 360 real trials"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Reality check. That's for single tasks, in a preprint, with the team's own tests.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Single tasks only",
+            "sub": "Preprint · the team's own tests"
+          }
+        },
+        {
+          "narration": "How it learned in simulation, and the catch with longer tasks,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/halo_demo_42s.png",
+            "credit": "Video still: Apple, HALO project page"
+          }
+        },
+        {
+          "narration": "is in this week's full episode. Tap the link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          }
+        }
+      ]
+    }
+  ]
+}

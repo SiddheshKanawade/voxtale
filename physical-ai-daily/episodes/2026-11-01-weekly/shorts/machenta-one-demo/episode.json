@@ -1,0 +1,184 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 1, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "Shown a job *once*. Can these robots do it alone?",
+  "cta": "How it learns to learn, and the $40M seed behind it: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Robots that learn from one demo",
+      "source": "machenta.com · x.com/Ed__Johns",
+      "sourceDate": "Oct 27, 2026",
+      "beats": [
+        {
+          "narration": "These robots were shown a packing job just once, on objects they'd never seen. Can they do it alone?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_factory.mp4"
+          },
+          "direct": [
+            [
+              "hook",
+              "These robots were shown a packing job just once, on objects they'd never seen. Can they do it alone?",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Teaching looks like this: a person shows the task once. That's it.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_demo.mp4"
+          },
+          "direct": [
+            [
+              "hook",
+              "Teaching looks like this: a person shows the task once. That's it.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Normally, says the startup Machenta, it takes hours or days of demos and training.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Hours or days of demos. Then training.",
+            "sub": "The usual way, per Machenta"
+          },
+          "direct": [
+            [
+              "hook",
+              "Normally, says the startup Machenta, it takes hours or days of demos and training.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "But Machenta says its model was trained entirely in simulation, without a single pixel of real-world data.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_sim.png",
+            "credit": "Source: machenta.com"
+          },
+          "direct": [
+            [
+              "hook",
+              "But Machenta says its model was trained entirely in simulation, without a single pixel of real-world data.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "And the same model runs on six different robots.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_six.png",
+            "credit": "Source: machenta.com"
+          },
+          "direct": [
+            [
+              "hook",
+              "And the same model runs on six different robots.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "In hour-long stress tests: seventy-four of seventy-four block placements, seventy-eight of seventy-eight handovers,",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 74,
+                "suffix": "/74",
+                "label": "block placements"
+              },
+              {
+                "to": 78,
+                "suffix": "/78",
+                "label": "screwdriver handovers"
+              }
+            ]
+          },
+          "direct": [
+            [
+              "hook",
+              "In hour-long stress tests: seventy-four of seventy-four block placements, seventy-eight of seventy-eight handovers,",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "and ninety-seven of ninety-nine bottle stand-ups.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 97,
+                "suffix": "/99",
+                "label": "bottle stand-ups"
+              }
+            ]
+          },
+          "direct": [
+            [
+              "hook",
+              "and ninety-seven of ninety-nine bottle stand-ups.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "Reality check: Machenta's own numbers, on tasks it calls relatively simple.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_simple.png",
+            "credit": "Source: machenta.com",
+            "stamp": "Self-reported"
+          },
+          "direct": [
+            [
+              "hook",
+              "Reality check: Machenta's own numbers, on tasks it calls relatively simple.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "No paper or independent evaluation yet.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_m0_25s.png",
+            "credit": "Video still: Machenta"
+          },
+          "direct": [
+            [
+              "hook",
+              "No paper or independent evaluation yet.",
+              0
+            ]
+          ]
+        },
+        {
+          "narration": "How it learns to learn: this week's full episode. Link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          },
+          "direct": [
+            [
+              "hook",
+              "How it learns to learn: this week's full episode. Link below.",
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 15, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "*3 hours* on one GPU beat 7 days on 128. How?",
+  "cta": "How it rehearses, and the real-robot test: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "A humanoid trained in 3 hours on 1 GPU",
+      "source": "arXiv:2610.28480 · supermimic.github.io",
+      "sourceDate": "v2 Nov 9, 2026",
+      "beats": [
+        {
+          "narration": "A humanoid controller trained in three hours on one GPU beat the score of one trained for seven days on a hundred twenty-eight. How?",
+          "direct": [
+            [
+              "hook",
+              "A humanoid controller trained in three hours on one GPU beat the score of one trained for seven days on a hundred twenty-eight. How?",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_m_bay_track.mp4",
+            "stamp": "Real Unitree G1"
+          }
+        },
+        {
+          "narration": "It's SuperMimic, a Berkeley paper: one controller for a huge library of human motions, flips included.",
+          "direct": [
+            [
+              "hook",
+              "It's SuperMimic, a Berkeley paper: one controller for a huge library of human motions, flips included.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_m_flips.mp4",
+            "stamp": "Simulation"
+          }
+        },
+        {
+          "narration": "The usual way is trial and error in a physics simulator, on lots of GPUs.",
+          "direct": [
+            [
+              "hook",
+              "The usual way is trial and error in a physics simulator, on lots of GPUs.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "Trial and error",
+            "sub": "the usual way · baseline SONIC: 128 GPUs, 7 days"
+          }
+        },
+        {
+          "narration": "SuperMimic learns a model of its own body, then practices inside it. The model shows exactly how to adjust.",
+          "direct": [
+            [
+              "hook",
+              "SuperMimic learns a model of its own body, then practices inside it. The model shows exactly how to adjust.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "Rehearse in its head",
+            "sub": "inside a learned model of its own body"
+          }
+        },
+        {
+          "narration": "The result: twenty-five failed motions out of about a hundred thirty thousand, against one hundred seventy-nine for the baseline, SONIC.",
+          "direct": [
+            [
+              "hook",
+              "The result: twenty-five failed motions out of about a hundred thirty thousand, against one hundred seventy-nine for the baseline, SONIC.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 25,
+                "label": "failed of 129,514 · SuperMimic, 3 h on 1 GPU"
+              },
+              {
+                "to": 179,
+                "label": "failed · SONIC, released checkpoint"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Reality check: these are the authors' own numbers, and the test motions were training motions. Coverage, not generalization.",
+          "direct": [
+            [
+              "hook",
+              "Reality check: these are the authors' own numbers, and the test motions were training motions. Coverage, not generalization.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "Coverage, not generalization",
+            "sub": "authors' numbers · test motions were training motions"
+          }
+        },
+        {
+          "narration": "How the rehearsal works, and the real-robot test, are in this week's full episode. Link below.",
+          "direct": [
+            [
+              "hook",
+              "How the rehearsal works, and the real-robot test, are in this week's full episode. Link below.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          }
+        }
+      ]
+    }
+  ]
+}

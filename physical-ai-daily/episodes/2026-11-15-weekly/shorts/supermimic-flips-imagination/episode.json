@@ -1,0 +1,151 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 15, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "A leading controller failed *all 44 flips*. This one, none. How?",
+  "cta": "How one GPU beat 128, and the reality check: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "How a humanoid learned flips in its head",
+      "source": "arXiv:2610.28480 · supermimic.github.io",
+      "sourceDate": "v2 Nov 9, 2026",
+      "beats": [
+        {
+          "narration": "On the authors' benchmark, a leading controller, SONIC, fails all forty-four flips. SuperMimic fails none. How?",
+          "direct": [
+            [
+              "hook",
+              "On the authors' benchmark, a leading controller, SONIC, fails all forty-four flips. SuperMimic fails none. How?",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_m_bay_flip.mp4",
+            "stamp": "Real Unitree G1"
+          }
+        },
+        {
+          "narration": "It's SuperMimic, one Berkeley controller for over a hundred twenty-nine thousand motions.",
+          "direct": [
+            [
+              "hook",
+              "It's SuperMimic, one Berkeley controller for over a hundred twenty-nine thousand motions.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_m_flips.mp4",
+            "stamp": "Simulation"
+          }
+        },
+        {
+          "narration": "First, it learns a model of how the robot's body moves, from simulator data.",
+          "direct": [
+            [
+              "hook",
+              "First, it learns a model of how the robot's body moves, from simulator data.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "clip",
+            "src": "assets/clip_m_hero.mp4",
+            "stamp": "Simulation"
+          }
+        },
+        {
+          "narration": "Then it practices inside that model, like rehearsing in your head, and the model shows exactly which way to adjust.",
+          "direct": [
+            [
+              "hook",
+              "Then it practices inside that model, like rehearsing in your head, and the model shows exactly which way to adjust.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "Rehearse in its head",
+            "sub": "short imagined runs inside the learned model"
+          }
+        },
+        {
+          "narration": "The result: after nine point eight hours on two GPUs, zero flips failed.",
+          "direct": [
+            [
+              "hook",
+              "The result: after nine point eight hours on two GPUs, zero flips failed.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 0,
+                "suffix": " / 44",
+                "label": "flips failed · SuperMimic, 2 GPUs × 9.8 h"
+              },
+              {
+                "to": 44,
+                "suffix": " / 44",
+                "label": "flips failed · SONIC, released checkpoint"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "In the authors' words: trained in imagination, zero-shot to reality, on a real Unitree G1.",
+          "direct": [
+            [
+              "hook",
+              "In the authors' words: trained in imagination, zero-shot to reality, on a real Unitree G1.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "photo",
+            "src": "assets/m_real_stand.png",
+            "credit": "Video still: Liao et al., supermimic.github.io",
+            "stamp": "Real Unitree G1"
+          }
+        },
+        {
+          "narration": "Reality check: the authors' numbers, on training motions. Coverage, not generalization.",
+          "direct": [
+            [
+              "hook",
+              "Reality check: the authors' numbers, on training motions. Coverage, not generalization.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "Authors' own numbers",
+            "sub": "test motions were training motions · coverage, not generalization"
+          }
+        },
+        {
+          "narration": "How one GPU beat a hundred twenty-eight is in this week's full episode. Link below.",
+          "direct": [
+            [
+              "hook",
+              "How one GPU beat a hundred twenty-eight is in this week's full episode. Link below.",
+              0
+            ]
+          ],
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          }
+        }
+      ]
+    }
+  ]
+}
