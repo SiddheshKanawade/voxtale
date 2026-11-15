@@ -1,6 +1,6 @@
 ---
 name: promo-shorts
-description: Make 9:16 promotional YouTube Shorts for a finished Pixels2Actions episode (project physical-ai-daily) — make 3–5 Shorts from the strongest stories (a strong story may get two), write a fresh 20–45 s script per Short (hook on frame 0, one open question, the payoff, one call to action to the full episode), reuse the episode's verified facts and captured visuals, voice and render with tools/render_short.sh in light and dark, and hand off titles, descriptions and the Related-video setting. Use when the user asks for Shorts, promos or vertical cuts of an episode.
+description: Make 9:16 promotional YouTube Shorts for a finished Pixels2Actions episode (project physical-ai-daily) — make 3–5 Shorts from the strongest stories (a strong story may get two), write a fresh 30–45 s script per Short that explains one idea to a complete newcomer (two-sentence plain opening: background + question; what they did; the result; why it matters as the source says; one caveat; one call to action to the full episode), reuse the episode's verified facts and captured visuals, voice and render with tools/render_short.sh in light and dark, and hand off titles, descriptions and the Related-video setting. Use when the user asks for Shorts, promos or vertical cuts of an episode.
 ---
 
 # Promotional Shorts (Pixels2Actions)
@@ -41,25 +41,40 @@ One story per Short (two Shorts may share a story; one Short never covers two). 
 
 ## 2. Write the script (`shorts/<slug>/episode.json`)
 
-**Length:** 20–45 s to start (research: about 20–40 s, then let our own engaged-views data decide; YouTube: "to
-what length do you need to tell your story?"). About 5–7 beats, ~150–190 words/min, fast and enthusiastic (edX:
-faster, enthusiastic speech held learners).
+**Who it's for (user, 2026-11-16):** someone who has never heard of physical AI. A Short explains **one idea** so
+that person understands it, then points to the full episode for everything else. Spend the words on explaining, not
+on detail: the result and why it matters, nothing more from the paper.
 
-**Shape (Hormozi's Hook → Retain → Reward, mapped to the value equation):**
+**Length:** 30–45 s, about 6–8 beats, plain spoken English (Andrew voice at its normal pace; speed it up only if it
+runs long).
 
-| Part | Beats | What it does | Rules |
+**Shape (approved by the user, 2026-11-16):**
+
+| # | Part | What it says | Rules |
 |---|---|---|---|
-| **Hook** | 1 | The question or surprising result, over the story's most striking concrete visual. The same line is on screen from frame 0 (`hook`), so it's also the cover in the Shorts grid | Use at least two of Hormozi's headline components: recency, relevancy, celebrity (a name viewers know), proximity, conflict, unusual, ongoing. Specific and answerable (Loewenstein: curiosity needs a gap that looks closable). Never the ask, never a logo or title card |
-| **Retain** | 2–4 | Build toward the answer: who, what it does, how, in plain words with one analogy | One idea per beat; a new visual each beat; every term defined |
-| **Reward** | 1–2 | Pay off the hook fully: the answer, the number, the demo. Then the reality check (pilot, preprint, self-reported) | "Give away the information, sell the implementation": the Short gives the *what* completely. The epistemic status survives compression: if the hook's number came from a pilot, say "pilot" |
-| **CTA** | 1 | One call to action, spoken and shown: what the episode adds (the *how*, *why it matters*, *what we still don't know*) and where (the link below) | "Clear, not clever"; only one CTA; after the payoff, never before (references: "WATCH THE FULL TALK" from frame one lost) |
+| 1 | **Opening** (1 beat, two simple sentences) | Sentence 1: the background, from something the viewer already knows ("Plugging in a cable is easy for us, but it takes a precise touch, and that is hard for robots."). Sentence 2: the question the Short answers ("So what happened when one of today's most advanced AI models took control of a real robot and tried it?") | Must make sense with zero background. No jargon (simulation, GPU, policy, controller, benchmark), no names viewers don't know (model names, startups, papers); Apple, Google, Tesla, NVIDIA are fine. Over the most concrete footage. The on-screen `hook` is a short version of the question (≤ ~12 words) |
+| 2 | **What they did** (1 beat) | One plain sentence: who tried what | Say "researchers" or "the company" if the name adds nothing |
+| 3 | **The result** (1–2 beats) | The answer, in words a newcomer gets ("mostly worked", "failed every single time") | **At most one number** in the whole Short |
+| 4 | **Why it matters** (1–2 beats) | The impact, **as the source or episode states it** ("The researchers' verdict: competent, but not yet practical") | Never our own opinion (sourcing rule). If no source states the impact, say what changed in plain words instead |
+| 5 | **Honest caveat** (≤1 beat) | One short line: company's own numbers / early test / preprint | Keep the epistemic status; one line is enough |
+| 6 | **CTA** (1 beat) | What the episode adds and where: "How researchers are trying to close that gap is in this week's full episode. Link below." | One CTA, at the end, true of the episode |
+
+**Leave out** (they belong in the episode): method details, extra numbers, benchmark or model names, trial counts,
+author lists, secondary results.
+
+**Sample (approved):** astra-plug-insertion: opening as above over the robot at a power strip → "Researchers gave
+the AI direct control of real robot arms and asked it to do everyday tasks." → "Picking things up and putting them
+somewhere else mostly worked." → "But plugging in the cable failed every single time." → "The researchers' verdict:
+these AI models are competent, but not yet practical for real robots." → "Their report says precise, hands-on tasks
+like this are still much harder." → CTA.
 
 **Sourcing (HARD):** every fact and number comes from the episode's `research.md` quotes or its captured pages,
 nothing generated. Numbers spelled as words in narration, digits on screen. The CTA's promise must be true of the
 episode ("what we still don't know" only if the episode covers it).
 
 **Voice:** edge-tts `en-US-AndrewNeural` (user, 2026-11-15: "Andrew's voice is good for this"). If a script runs long,
-voice it faster with `"direct": [["hook", narration, 0]]` and `VOICE_STRENGTH=2` rather than cutting the payoff.
+cut detail first (see "Leave out"); only then voice it faster with `"direct": [["hook", narration, 0]]` and
+`VOICE_STRENGTH=2`.
 
 **Fields:** copy the episode's `design`, `voice`/`tts`, `date`. Add top-level `"hook"` (≤ ~12 words; wrap one key
 word in `*asterisks*` for the accent colour) and `"cta"` (end-card line). One segment `{"id": "short", "kind":
@@ -101,7 +116,10 @@ Check, every Short:
 - [ ] Nothing important in the bottom ~430 px or right ~150 px
 - [ ] Captions on every spoken word; no beat without a visual
 - [ ] Every number on screen matches its source; epistemic status said
-- [ ] 20–45 s (or a written reason); one CTA, at the end
+- [ ] **Newcomer test:** read the script as someone who has never heard of physical AI. Every sentence makes sense
+      without background; no jargon, no unknown names; at most one number
+- [ ] "Why it matters" is the source's or episode's own statement, not ours
+- [ ] 30–45 s (or a written reason); one CTA, at the end
 
 ## 5. Hand off (never upload)
 
