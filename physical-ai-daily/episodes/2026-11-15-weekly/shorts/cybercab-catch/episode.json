@@ -3,26 +3,19 @@
   "date": "November 15, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "A $29,990 car with *no steering wheel*. What's the catch?",
-  "cta": "Musk on the subscription, and where Robotaxi runs: full episode, link below",
+  "hook": "A car with *no steering wheel*. What do you really own?",
+  "cta": "What Musk said about the price: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "NEWS",
       "headline": "Tesla opens Cybercab orders, by invite",
-      "source": "x.com/robotaxi · teslarati.com · insideevs.com · notateslaapp.com",
+      "source": "x.com/robotaxi · teslarati.com · notateslaapp.com",
       "sourceDate": "Nov 13–14, 2026",
       "beats": [
         {
-          "narration": "Tesla is inviting select customers to buy a Cybercab, with no steering wheel.",
-          "direct": [
-            [
-              "hook",
-              "Tesla is inviting select customers to buy a Cybercab, with no steering wheel.",
-              0
-            ]
-          ],
+          "narration": "When you buy a car, you can drive it anywhere you like. So what do you get with Tesla's car that has no steering wheel?",
           "visual": {
             "type": "photo",
             "src": "assets/t_photo_nta.png",
@@ -30,14 +23,15 @@
           }
         },
         {
-          "narration": "The estimated price: twenty-nine thousand, nine hundred ninety dollars. So what's the catch?",
-          "direct": [
-            [
-              "hook",
-              "The estimated price: twenty-nine thousand, nine hundred ninety dollars. So what's the catch?",
-              0
-            ]
-          ],
+          "narration": "Until now, Tesla kept its self-driving Cybercab in its own fleet. Now it's inviting select buyers.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_tweet.png",
+            "credit": "x.com/robotaxi"
+          }
+        },
+        {
+          "narration": "The estimated price is just under thirty thousand dollars.",
           "visual": {
             "type": "stat",
             "items": [
@@ -50,95 +44,48 @@
           }
         },
         {
-          "narration": "Catch one: a two hundred ninety-nine dollar monthly Autonomy Subscription, first month included.",
-          "direct": [
-            [
-              "hook",
-              "Catch one: a two hundred ninety-nine dollar monthly Autonomy Subscription, first month included.",
-              0
-            ]
-          ],
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "to": 299,
-                "prefix": "$",
-                "label": "a month · Autonomy Subscription, first month included"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "Without it, Teslarati reports, the car won't operate at all.",
-          "direct": [
-            [
-              "hook",
-              "Without it, Teslarati reports, the car won't operate at all.",
-              0
-            ]
-          ],
-          "visual": {
-            "type": "kinetic",
-            "text": "Won't operate without it",
-            "sub": "“the vehicle needs an active subscription to operate at all” · Teslarati"
-          }
-        },
-        {
-          "narration": "Catch two: Tesla's post says personal use. Ride-hailing or renting it out needs Tesla's written authorization.",
-          "direct": [
-            [
-              "hook",
-              "Catch two: Tesla's post says personal use. Ride-hailing or renting it out needs Tesla's written authorization.",
-              0
-            ]
-          ],
+          "narration": "But without a paid monthly subscription, it won't operate at all.",
           "visual": {
             "type": "shot",
-            "src": "assets/t_tweet.png",
-            "credit": "x.com/robotaxi"
+            "src": "assets/t_q_sub2.png",
+            "credit": "Source: teslarati.com"
           }
         },
         {
-          "narration": "Catch three: it only runs inside Tesla's Robotaxi zones, which Tesla can expand or shrink.",
-          "direct": [
-            [
-              "hook",
-              "Catch three: it only runs inside Tesla's Robotaxi zones, which Tesla can expand or shrink.",
-              0
-            ]
-          ],
+          "narration": "And it only drives in areas Tesla allows.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_geo.png",
+            "credit": "Source: teslarati.com"
+          }
+        },
+        {
+          "narration": "A bit like a phone that only works on an active plan.",
           "visual": {
             "type": "kinetic",
-            "text": "Robotaxi zones only",
-            "sub": "zones Tesla can expand or shrink · Teslarati"
+            "text": "Like a phone on a plan",
+            "sub": "you own it · it drives only where, and while, Tesla allows"
           }
         },
         {
-          "narration": "Reality check: it's invite-only, the number of cars isn't stated, and delivery is only an estimate.",
-          "direct": [
-            [
-              "hook",
-              "Reality check: it's invite-only, the number of cars isn't stated, and delivery is only an estimate.",
-              0
-            ]
-          ],
+          "narration": "Teslarati says the fine print redefines what owning a car means.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_q_fleet.png",
+            "credit": "Source: teslarati.com"
+          }
+        },
+        {
+          "narration": "It's invite-only, and delivery is only an estimate.",
           "visual": {
             "type": "photo",
             "src": "assets/t_photo_nta.png",
             "credit": "Photo: Not a Tesla App",
-            "stamp": "Invite-only · est. Dec 2026, Austin"
+            "stamp": "Invite-only · delivery estimated"
           }
         },
         {
-          "narration": "What Elon Musk said about the subscription, and where Robotaxi runs now: in this week's full episode. Link below.",
-          "direct": [
-            [
-              "hook",
-              "What Elon Musk said about the subscription, and where Robotaxi runs now: in this week's full episode. Link below.",
-              0
-            ]
-          ],
+          "narration": "What Elon Musk said about the price is in this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",

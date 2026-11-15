@@ -3,87 +3,72 @@
   "date": "November 8, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "A humanoid maker just went *public*. What did it earn last year?",
-  "cta": "What the orders depend on, and the factory plan: full episode, link below",
+  "hook": "A humanoid robot company went public. What are its *sales*?",
+  "cta": "How much it raised, and its factory plans: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "NEWS",
-      "headline": "Humanoid maker Agility lists on Nasdaq",
+      "headline": "A humanoid robot company goes public",
       "source": "agilityrobotics.com · The Robot Report",
       "sourceDate": "Nov 5, 2026",
       "beats": [
         {
-          "narration": "Agility Robotics, maker of the Digit humanoid, just listed on the Nasdaq. What did it earn last year?",
+          "narration": "Anyone can buy shares of companies like Apple on the stock market. So when a company that only makes humanoid robots joins them, how much is it selling?",
           "visual": {
             "type": "clip",
             "src": "assets/ag_clip_digit5.mp4"
           }
         },
         {
-          "narration": "Agility calls itself the first publicly listed U.S. company focused only on humanoids.",
+          "narration": "This robot's maker started trading on the U.S. stock market in November.",
           "visual": {
             "type": "clip",
-            "src": "assets/ag_clip_digit5b.mp4",
-            "stamp": "Agility's own description"
+            "src": "assets/ag_clip_digit5b.mp4"
           }
         },
         {
-          "narration": "It says it has more than three hundred million dollars in Digit 5 orders, subject to milestones.",
+          "narration": "Its sales last year: one point seven eight million dollars, per the trade site The Robot Report.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 1.78,
+                "decimals": 2,
+                "prefix": "$",
+                "suffix": "M",
+                "label": "sales last year · The Robot Report"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "It says it has big orders for its next robot, tied to contract milestones.",
           "visual": {
             "type": "kinetic",
-            "text": "$300M+ in Digit 5 orders",
+            "text": "Big orders, it says",
             "sub": "Company claim · subject to contractual milestones"
           }
         },
         {
-          "narration": "The answer, per The Robot Report: one point seven eight million dollars in revenue in twenty twenty-five.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "to": 1.78,
-                "decimals": 2,
-                "prefix": "$",
-                "suffix": "M",
-                "label": "2025 revenue · The Robot Report"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "And a net loss of one hundred thirty-eight point one million. Not from Agility's own release.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "to": 1.78,
-                "decimals": 2,
-                "prefix": "$",
-                "suffix": "M",
-                "label": "2025 revenue · The Robot Report"
-              },
-              {
-                "to": 138.1,
-                "decimals": 1,
-                "prefix": "−$",
-                "suffix": "M",
-                "label": "2025 net loss · The Robot Report"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "And Digit 5's general availability is targeted for the end of twenty twenty-seven.",
+          "narration": "Why it matters: it calls itself the first U.S. public company focused only on humanoids.",
           "visual": {
             "type": "clip",
             "src": "assets/ag_clip_digit5c.mp4",
-            "stamp": "Target: end of 2027"
+            "stamp": "The company's own description"
           }
         },
         {
-          "narration": "What those orders depend on is in this week's full episode. Tap the link below.",
+          "narration": "The orders are its own claim, and that sales figure isn't from the company itself.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Orders: the company's claim",
+            "sub": "Sales figure: The Robot Report, not the company"
+          }
+        },
+        {
+          "narration": "How much it raised, and its factory plans: this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",

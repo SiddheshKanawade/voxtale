@@ -3,26 +3,19 @@
   "date": "November 15, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "A leading controller failed *all 44 flips*. This one, none. How?",
-  "cta": "How one GPU beat 128, and the reality check: full episode, link below",
+  "hook": "Can a robot learn flips by *imagining* them?",
+  "cta": "How fast it learned: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "PAPER",
-      "headline": "How a humanoid learned flips in its head",
+      "headline": "A robot that rehearses flips in its head",
       "source": "arXiv:2610.28480 · supermimic.github.io",
       "sourceDate": "v2 Nov 9, 2026",
       "beats": [
         {
-          "narration": "On the authors' benchmark, a leading controller, SONIC, fails all forty-four flips. SuperMimic fails none. How?",
-          "direct": [
-            [
-              "hook",
-              "On the authors' benchmark, a leading controller, SONIC, fails all forty-four flips. SuperMimic fails none. How?",
-              0
-            ]
-          ],
+          "narration": "Before trying a tricky move, people often picture it in their head first. So can a robot learn flips the same way?",
           "visual": {
             "type": "clip",
             "src": "assets/clip_m_bay_flip.mp4",
@@ -30,29 +23,7 @@
           }
         },
         {
-          "narration": "It's SuperMimic, one Berkeley controller for over a hundred twenty-nine thousand motions.",
-          "direct": [
-            [
-              "hook",
-              "It's SuperMimic, one Berkeley controller for over a hundred twenty-nine thousand motions.",
-              0
-            ]
-          ],
-          "visual": {
-            "type": "clip",
-            "src": "assets/clip_m_flips.mp4",
-            "stamp": "Simulation"
-          }
-        },
-        {
-          "narration": "First, it learns a model of how the robot's body moves, from simulator data.",
-          "direct": [
-            [
-              "hook",
-              "First, it learns a model of how the robot's body moves, from simulator data.",
-              0
-            ]
-          ],
+          "narration": "Researchers at UC Berkeley first taught their robot's AI how its own body moves.",
           "visual": {
             "type": "clip",
             "src": "assets/clip_m_hero.mp4",
@@ -60,54 +31,23 @@
           }
         },
         {
-          "narration": "Then it practices inside that model, like rehearsing in your head, and the model shows exactly which way to adjust.",
-          "direct": [
-            [
-              "hook",
-              "Then it practices inside that model, like rehearsing in your head, and the model shows exactly which way to adjust.",
-              0
-            ]
-          ],
+          "narration": "Then it practiced every move inside that picture of itself, like rehearsing in your head.",
           "visual": {
             "type": "kinetic",
             "text": "Rehearse in its head",
-            "sub": "short imagined runs inside the learned model"
+            "sub": "practice runs inside its learned picture of its own body"
           }
         },
         {
-          "narration": "The result: after nine point eight hours on two GPUs, zero flips failed.",
-          "direct": [
-            [
-              "hook",
-              "The result: after nine point eight hours on two GPUs, zero flips failed.",
-              0
-            ]
-          ],
+          "narration": "In the authors' tests, a leading rival failed every single flip. This one failed none.",
           "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "to": 0,
-                "suffix": " / 44",
-                "label": "flips failed · SuperMimic, 2 GPUs × 9.8 h"
-              },
-              {
-                "to": 44,
-                "suffix": " / 44",
-                "label": "flips failed · SONIC, released checkpoint"
-              }
-            ]
+            "type": "clip",
+            "src": "assets/clip_m_flips.mp4",
+            "stamp": "Simulation"
           }
         },
         {
-          "narration": "In the authors' words: trained in imagination, zero-shot to reality, on a real Unitree G1.",
-          "direct": [
-            [
-              "hook",
-              "In the authors' words: trained in imagination, zero-shot to reality, on a real Unitree G1.",
-              0
-            ]
-          ],
+          "narration": "And the moves it learned in its head worked on a real robot.",
           "visual": {
             "type": "photo",
             "src": "assets/m_real_stand.png",
@@ -116,29 +56,23 @@
           }
         },
         {
-          "narration": "Reality check: the authors' numbers, on training motions. Coverage, not generalization.",
-          "direct": [
-            [
-              "hook",
-              "Reality check: the authors' numbers, on training motions. Coverage, not generalization.",
-              0
-            ]
-          ],
+          "narration": "The authors sum it up: trained in imagination, then straight to the real world.",
           "visual": {
             "type": "kinetic",
-            "text": "Authors' own numbers",
-            "sub": "test motions were training motions · coverage, not generalization"
+            "text": "Imagination → reality",
+            "sub": "“Trained in imagination.” · the authors"
           }
         },
         {
-          "narration": "How one GPU beat a hundred twenty-eight is in this week's full episode. Link below.",
-          "direct": [
-            [
-              "hook",
-              "How one GPU beat a hundred twenty-eight is in this week's full episode. Link below.",
-              0
-            ]
-          ],
+          "narration": "These are the authors' own tests, on moves it had already practiced.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Authors' own tests",
+            "sub": "research paper · tested on moves it trained on"
+          }
+        },
+        {
+          "narration": "How fast it learned is in this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",

@@ -3,26 +3,19 @@
   "date": "November 15, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "*3 hours* on one GPU beat 7 days on 128. How?",
-  "cta": "How it rehearses, and the real-robot test: full episode, link below",
+  "hook": "Can a robot learn to move on a *single* chip?",
+  "cta": "How it practices in its own head: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "PAPER",
-      "headline": "A humanoid trained in 3 hours on 1 GPU",
+      "headline": "A robot brain trained fast on one chip",
       "source": "arXiv:2610.28480 · supermimic.github.io",
       "sourceDate": "v2 Nov 9, 2026",
       "beats": [
         {
-          "narration": "A humanoid controller trained in three hours on one GPU beat the score of one trained for seven days on a hundred twenty-eight. How?",
-          "direct": [
-            [
-              "hook",
-              "A humanoid controller trained in three hours on one GPU beat the score of one trained for seven days on a hundred twenty-eight. How?",
-              0
-            ]
-          ],
+          "narration": "Teaching a robot to move like us usually takes lots of computers, running for days. So can it be done on a single chip?",
           "visual": {
             "type": "clip",
             "src": "assets/clip_m_bay_track.mp4",
@@ -30,14 +23,7 @@
           }
         },
         {
-          "narration": "It's SuperMimic, a Berkeley paper: one controller for a huge library of human motions, flips included.",
-          "direct": [
-            [
-              "hook",
-              "It's SuperMimic, a Berkeley paper: one controller for a huge library of human motions, flips included.",
-              0
-            ]
-          ],
+          "narration": "A UC Berkeley team built one robot brain that copies almost any human movement, even flips.",
           "visual": {
             "type": "clip",
             "src": "assets/clip_m_flips.mp4",
@@ -45,82 +31,45 @@
           }
         },
         {
-          "narration": "The usual way is trial and error in a physics simulator, on lots of GPUs.",
-          "direct": [
-            [
-              "hook",
-              "The usual way is trial and error in a physics simulator, on lots of GPUs.",
-              0
-            ]
-          ],
-          "visual": {
-            "type": "kinetic",
-            "text": "Trial and error",
-            "sub": "the usual way · baseline SONIC: 128 GPUs, 7 days"
-          }
-        },
-        {
-          "narration": "SuperMimic learns a model of its own body, then practices inside it. The model shows exactly how to adjust.",
-          "direct": [
-            [
-              "hook",
-              "SuperMimic learns a model of its own body, then practices inside it. The model shows exactly how to adjust.",
-              0
-            ]
-          ],
-          "visual": {
-            "type": "kinetic",
-            "text": "Rehearse in its head",
-            "sub": "inside a learned model of its own body"
-          }
-        },
-        {
-          "narration": "The result: twenty-five failed motions out of about a hundred thirty thousand, against one hundred seventy-nine for the baseline, SONIC.",
-          "direct": [
-            [
-              "hook",
-              "The result: twenty-five failed motions out of about a hundred thirty thousand, against one hundred seventy-nine for the baseline, SONIC.",
-              0
-            ]
-          ],
+          "narration": "After just three hours on a single chip, it beat a top rival trained for days on a huge bank of chips.",
           "visual": {
             "type": "stat",
             "items": [
               {
-                "to": 25,
-                "label": "failed of 129,514 · SuperMimic, 3 h on 1 GPU"
-              },
-              {
-                "to": 179,
-                "label": "failed · SONIC, released checkpoint"
+                "to": 3,
+                "suffix": " hours",
+                "label": "on a single chip · beat a rival trained for days on many"
               }
             ]
           }
         },
         {
-          "narration": "Reality check: these are the authors' own numbers, and the test motions were training motions. Coverage, not generalization.",
-          "direct": [
-            [
-              "hook",
-              "Reality check: these are the authors' own numbers, and the test motions were training motions. Coverage, not generalization.",
-              0
-            ]
-          ],
+          "narration": "And it worked on a real humanoid robot, acrobatic moves included.",
           "visual": {
-            "type": "kinetic",
-            "text": "Coverage, not generalization",
-            "sub": "authors' numbers · test motions were training motions"
+            "type": "photo",
+            "src": "assets/m_real_stand.png",
+            "credit": "Video still: Liao et al., supermimic.github.io",
+            "stamp": "Real Unitree G1"
           }
         },
         {
-          "narration": "How the rehearsal works, and the real-robot test, are in this week's full episode. Link below.",
-          "direct": [
-            [
-              "hook",
-              "How the rehearsal works, and the real-robot test, are in this week's full episode. Link below.",
-              0
-            ]
-          ],
+          "narration": "The authors' verdict: computing power is no longer the bottleneck.",
+          "visual": {
+            "type": "kinetic",
+            "text": "No longer the bottleneck",
+            "sub": "“Compute is no longer the bottleneck.” · the authors"
+          }
+        },
+        {
+          "narration": "That's their own comparison, on moves it had already practiced.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Authors' own numbers",
+            "sub": "research paper · tested on moves it trained on"
+          }
+        },
+        {
+          "narration": "How it practices inside its own head is in this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",

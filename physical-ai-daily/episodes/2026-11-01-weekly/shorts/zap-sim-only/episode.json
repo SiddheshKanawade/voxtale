@@ -3,155 +3,76 @@
   "date": "November 1, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "Trained *only in simulation*. Can it run a real robot?",
-  "cta": "Where these models still fail, and a second fix: full episode, link below",
+  "hook": "Practiced only inside a *computer*. Can it work for real?",
+  "cta": "Where AI-run robots still fail: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "PAPER",
-      "headline": "Can AI models run real robots?",
-      "source": "SenseNova et al. · arXiv",
-      "sourceDate": "Oct 15–30, 2026",
+      "headline": "Practice in a computer, work for real",
+      "source": "Research paper · arXiv",
+      "sourceDate": "Oct 26, 2026",
       "beats": [
         {
-          "narration": "This robot learned to move only in simulation. Can it work for real?",
+          "narration": "Robots usually learn a new skill from recordings of real robots doing it. So can a robot that practiced only inside a computer work in the real world?",
           "visual": {
             "type": "clip",
             "src": "assets/z_clip_yam_real.mp4"
-          },
-          "direct": [
-            [
-              "hook",
-              "This robot learned to move only in simulation. Can it work for real?",
-              0
-            ]
-          ]
+          }
         },
         {
-          "narration": "Frontier AI models, like GPT-6 Astra, can now control robots directly.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/s_clip_pnp4.mp4"
-          },
-          "direct": [
-            [
-              "hook",
-              "Frontier AI models, like GPT-6 Astra, can now control robots directly.",
-              0
-            ]
-          ]
-        },
-        {
-          "narration": "In SenseNova's real-robot tests, pick-and-place worked seventeen of eighteen times. Plug insertion: zero for eleven.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "to": 17,
-                "suffix": "/18",
-                "label": "pick-and-place trials"
-              },
-              {
-                "to": 0,
-                "suffix": "/11",
-                "label": "plug insertions"
-              }
-            ]
-          },
-          "direct": [
-            [
-              "hook",
-              "In SenseNova's real-robot tests, pick-and-place worked seventeen of eighteen times. Plug insertion: zero for eleven.",
-              0
-            ]
-          ]
-        },
-        {
-          "narration": "The ZAP team at Luma AI says a small open model already understands robot tasks, and mainly lacks motion control.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Understands the task. Lacks the motion.",
-            "sub": "ZAP authors, Luma AI"
-          },
-          "direct": [
-            [
-              "hook",
-              "The ZAP team at Luma AI says a small open model already understands robot tasks, and mainly lacks motion control.",
-              0
-            ]
-          ]
-        },
-        {
-          "narration": "So ZAP teaches that skill entirely in simulation.",
+          "narration": "Researchers let a small AI practice moving robot arms only inside a computer.",
           "visual": {
             "type": "clip",
             "src": "assets/z_clip_sim.mp4",
             "stamp": "Simulation"
-          },
-          "direct": [
-            [
-              "hook",
-              "So ZAP teaches that skill entirely in simulation.",
-              0
-            ]
-          ]
+          }
         },
         {
-          "narration": "The answer: on a real two-armed robot, twenty-nine of thirty trials, matching GPT-6 Astra on the same control software.",
+          "narration": "Then they tested it on a real robot, on tasks it had never practiced.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/z_clip_real_crop.mp4"
+          }
+        },
+        {
+          "narration": "It succeeded twenty-nine times out of thirty, as well as a much bigger AI tested the same way.",
           "visual": {
             "type": "stat",
             "items": [
               {
                 "to": 29,
                 "suffix": "/30",
-                "label": "ZAP, real two-armed robot"
-              },
-              {
-                "to": 29,
-                "suffix": "/30",
-                "label": "GPT-6 Astra, same software"
+                "label": "tries on a real robot"
               }
             ]
-          },
-          "direct": [
-            [
-              "hook",
-              "The answer: on a real two-armed robot, twenty-nine of thirty trials, matching GPT-6 Astra on the same control software.",
-              0
-            ]
-          ]
+          }
         },
         {
-          "narration": "Reality check: these are preprints, with small trial counts, and a match, not a win.",
+          "narration": "The researchers' point: a new skill means new practice in the computer, not new robot recordings.",
+          "visual": {
+            "type": "kinetic",
+            "text": "New skill? Practice it in the computer.",
+            "sub": "Not new robot recordings · the researchers"
+          }
+        },
+        {
+          "narration": "It's an early research paper, with small tests.",
           "visual": {
             "type": "shot",
             "src": "assets/z_2930.png",
             "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)",
             "stamp": "Preprint"
-          },
-          "direct": [
-            [
-              "hook",
-              "Reality check: these are preprints, with small trial counts, and a match, not a win.",
-              0
-            ]
-          ]
+          }
         },
         {
-          "narration": "Where they still fail: this week's full episode. Link below.",
+          "narration": "Where AI-run robots still fail is in this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",
             "sub": "Link below ↓"
-          },
-          "direct": [
-            [
-              "hook",
-              "Where they still fail: this week's full episode. Link below.",
-              0
-            ]
-          ]
+          }
         }
       ]
     }

@@ -3,84 +3,72 @@
   "date": "November 8, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "Robot brains vs. a real *humanoid*. How many tasks did they finish?",
-  "cta": "How the blind test works, and how AI agents did: full episode, link below",
+  "hook": "Robot AI, tested fairly on real robots. How did it *do*?",
+  "cta": "How all-purpose AI stacked up against robot AI: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "PAPER",
-      "headline": "A real-world test arena for robot brains",
+      "headline": "A fair test for robot AI",
       "source": "arxiv.org · robocolosseum.ai",
       "sourceDate": "Nov 2, 2026",
       "beats": [
         {
-          "narration": "Hugging Face and partners tested robot brains on real robots. On the humanoid, how many tasks did they finish?",
+          "narration": "In a demo video, every robot looks good. So how does robot AI do in a fair test on real robots?",
           "visual": {
             "type": "clip",
             "src": "assets/rc_clip_network.mp4"
           }
         },
         {
-          "narration": "RoboColosseum tested at one hundred twenty-four sites, on four kinds of robot.",
+          "narration": "Labs and companies ran blind tests on real robots in many places.",
           "visual": {
             "type": "clip",
             "src": "assets/rc_clip_fleet.mp4"
           }
         },
         {
-          "narration": "Like a blind taste test, two unnamed models try the same instruction, and the evaluator picks the better run.",
+          "narration": "Like a taste test: two unnamed AIs try the same task, and a judge picks the better one.",
           "visual": {
             "type": "clip",
             "src": "assets/rc_clip_sites.mp4"
           }
         },
         {
-          "narration": "The answer: no model completed any of the five humanoid tasks.",
+          "narration": "The finding: every system struggled to finish real-world tasks reliably.",
           "visual": {
             "type": "kinetic",
-            "text": "0 of 5 humanoid tasks completed",
-            "sub": "by any model"
+            "text": "Every system struggled",
+            "sub": "to finish real-world tasks reliably · the paper"
           }
         },
         {
-          "narration": "Average progress: thirteen point three to twenty-three point two percent.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "to": 13.3,
-                "decimals": 1,
-                "suffix": "%",
-                "label": "lowest average progress"
-              },
-              {
-                "to": 23.2,
-                "decimals": 1,
-                "suffix": "%",
-                "label": "highest average progress"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "Reality check: a preprint, and the organizers ran the tests themselves.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Preprint, run by its organizers",
-            "sub": "Hugging Face among them · arxiv.org"
-          }
-        },
-        {
-          "narration": "How the blind test works, and how AI agents did,",
+          "narration": "On the humanoid robot, no AI finished a single task.",
           "visual": {
             "type": "photo",
-            "src": "assets/rc_film_20s.png",
+            "src": "assets/rc_film_8s.png",
+            "badge": "No task finished",
             "credit": "Video still: RoboColosseum, robocolosseum.ai"
           }
         },
         {
-          "narration": "is in this week's full episode. Tap the link below.",
+          "narration": "Why it matters: every run, failures included, is published for others to study.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/rc_clip_runs.mp4"
+          }
+        },
+        {
+          "narration": "But it's an early paper, and the organizers ran the tests.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Early paper, run by its organizers",
+            "sub": "Preprint · arxiv.org"
+          }
+        },
+        {
+          "narration": "How all-purpose AI stacked up: this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",

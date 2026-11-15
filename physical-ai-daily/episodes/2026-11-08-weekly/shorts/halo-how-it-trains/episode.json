@@ -3,35 +3,34 @@
   "date": "November 8, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "This robot learned in *1,000* homes that don't exist. How?",
+  "hook": "How do you train a robot with *nobody* steering it?",
   "cta": "The catch with longer tasks: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "PAPER",
-      "headline": "How Apple's humanoid trained in simulation",
+      "headline": "How Apple's robot practiced in pretend homes",
       "source": "arxiv.org · Apple",
       "sourceDate": "Nov 4, 2026",
       "beats": [
         {
-          "narration": "Apple's humanoid learned this in a thousand homes that don't exist. How?",
+          "narration": "Many robots learn by copying a person who steers them, and that takes lots of people's time. So how do you train one with nobody steering?",
           "visual": {
             "type": "clip",
-            "src": "assets/hz_clip_crawl.mp4",
-            "stamp": "Real robot"
+            "src": "assets/hz_clip_crawl.mp4"
           }
         },
         {
-          "narration": "No one steered it by hand. Its skills were learned only in simulation.",
+          "narration": "Apple researchers built a kind of flight simulator for robots.",
           "visual": {
             "type": "kinetic",
-            "text": "No one steered it",
-            "sub": "no teleoperation · trained only in simulation"
+            "text": "A flight simulator for robots",
+            "sub": "Apple researchers"
           }
         },
         {
-          "narration": "First, a computer plans its moves: walk forward, turn around, sit on the chair.",
+          "narration": "A computer makes up a home and plans the robot's moves,",
           "visual": {
             "type": "photo",
             "src": "assets/halo_pipe_motion.png",
@@ -39,7 +38,7 @@
           }
         },
         {
-          "narration": "Then it places them in one of a thousand generated homes,",
+          "narration": "then draws what its camera would see, home after home.",
           "visual": {
             "type": "photo",
             "src": "assets/halo_pipe_homes.png",
@@ -47,30 +46,31 @@
           }
         },
         {
-          "narration": "and renders what the robot's camera would see. A flight simulator, for a robot.",
+          "narration": "And in real homes it had never seen, it got most simple tasks right.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/halo_clip_realhome.mp4",
+            "stamp": "Real-robot run, fully autonomous"
+          }
+        },
+        {
+          "narration": "The paper's point: this practice grows with computing power, not people's time.",
           "visual": {
             "type": "kinetic",
-            "text": "A flight simulator for robots",
-            "sub": "it renders what the robot's camera would see"
+            "text": "More computers, not more people's time",
+            "sub": "The paper: data “scales with compute rather than human labor”"
           }
         },
         {
-          "narration": "An off-the-shelf AI model splits each request into steps: crouch under the table, push the box.",
+          "narration": "But it's an early paper, with the team's own tests.",
           "visual": {
-            "type": "clip",
-            "src": "assets/halo_clip_steps.mp4"
+            "type": "kinetic",
+            "text": "Early paper, the team's own tests",
+            "sub": "Preprint · arxiv.org"
           }
         },
         {
-          "narration": "Six real homes it had never seen: ninety-one percent on single tasks, in a preprint.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/hz_clip_sit.mp4",
-            "stamp": "Preprint · the team's own tests"
-          }
-        },
-        {
-          "narration": "The catch with longer tasks is in the full episode. Link below.",
+          "narration": "The catch with longer tasks is in this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",

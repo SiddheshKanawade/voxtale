@@ -3,103 +3,77 @@
   "date": "November 15, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "Google's robot AI on a real *Mercedes* line. How often did it succeed?",
-  "cta": "How it did on 200 tasks, and what we still don't know: full episode, link below",
+  "hook": "Can a humanoid robot do a real job on a *Mercedes* line?",
+  "cta": "How it did on many other tasks: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "NEWS",
-      "headline": "Google's robot brain goes to the factory",
+      "headline": "Google's robot AI on a Mercedes-Benz line",
       "source": "deepmind.google",
       "sourceDate": "Nov 10, 2026",
       "beats": [
         {
-          "narration": "Google DeepMind put Apptronik's Apollo humanoids on real Mercedes-Benz production lines. How often did they get the job right?",
-          "direct": [
-            [
-              "hook",
-              "Google DeepMind put Apptronik's Apollo humanoids on real Mercedes-Benz production lines. How often did they get the job right?",
-              0
-            ]
-          ],
+          "narration": "Car factories need the right parts, in the right order, for every car. So can a humanoid robot do that job?",
           "visual": {
             "type": "clip",
             "src": "assets/clip_dm_merc_c.mp4"
           }
         },
         {
-          "narration": "Its brain: Gemini Robotics two point five. It sees, takes instructions, and acts.",
-          "direct": [
-            [
-              "hook",
-              "Its brain: Gemini Robotics two point five. It sees, takes instructions, and acts.",
-              0
-            ]
-          ],
+          "narration": "Google put its robot AI into humanoid robots on real Mercedes-Benz lines.",
           "visual": {
             "type": "clip",
-            "src": "assets/clip_dm_merc_a.mp4"
+            "src": "assets/clip_dm_merc_b.mp4"
           }
         },
         {
-          "narration": "The job is kitting: sorting parts from bulk bins into trays, in the exact order each vehicle needs.",
-          "direct": [
-            [
-              "hook",
-              "The job is kitting: sorting parts from bulk bins into trays, in the exact order each vehicle needs.",
-              0
-            ]
-          ],
+          "narration": "Their job: sorting parts from bins into trays, in each car's exact order.",
           "visual": {
             "type": "clip",
             "src": "assets/clip_dm_merc_kit.mp4"
           }
         },
         {
-          "narration": "The answer: a ninety-six percent success rate.",
-          "direct": [
-            [
-              "hook",
-              "The answer: a ninety-six percent success rate.",
-              0
-            ]
-          ],
+          "narration": "The result: they got it right ninety-six percent of the time.",
           "visual": {
             "type": "stat",
             "items": [
               {
                 "to": 96,
                 "suffix": "%",
-                "label": "success rate in the Mercedes-Benz pilot"
+                "label": "success rate · Mercedes-Benz trial · DeepMind"
               }
             ]
           }
         },
         {
-          "narration": "Reality check: that's DeepMind's own number, from a proof of concept, and the pilot's size wasn't published.",
-          "direct": [
-            [
-              "hook",
-              "Reality check: that's DeepMind's own number, from a proof of concept, and the pilot's size wasn't published.",
-              0
-            ]
-          ],
+          "narration": "DeepMind calls that promising progress toward real-world use in factories.",
           "visual": {
-            "type": "kinetic",
-            "text": "Proof of concept",
-            "sub": "DeepMind's own number · pilot size not published"
+            "type": "shot",
+            "src": "assets/d_q_96.png",
+            "credit": "Source: deepmind.google"
           }
         },
         {
-          "narration": "How it did across two hundred tasks, and what we still don't know, is in this week's full episode. Link below.",
-          "direct": [
-            [
-              "hook",
-              "How it did across two hundred tasks, and what we still don't know, is in this week's full episode. Link below.",
-              0
-            ]
-          ],
+          "narration": "Handing off this repetitive work, it says, frees technicians for more complex jobs.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_12s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "That's DeepMind's own number, from a trial run whose size wasn't published.",
+          "visual": {
+            "type": "kinetic",
+            "text": "DeepMind's own number",
+            "sub": "proof of concept · size not published"
+          }
+        },
+        {
+          "narration": "How it did on many other tasks is in this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",

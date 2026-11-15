@@ -3,86 +3,71 @@
   "date": "November 8, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "hook": "Apple's humanoid never saw a *real* home in training. Did it work?",
-  "cta": "How it learned in simulation, and the catch: full episode, link below",
+  "hook": "Trained only in pretend homes. Can it handle a *real* one?",
+  "cta": "How it trained, and the catch with longer tasks: full episode, link below",
   "segments": [
     {
       "id": "short",
       "kind": "story",
       "label": "PAPER",
-      "headline": "Apple's humanoid learned in simulation",
+      "headline": "Apple's robot, tested in real homes",
       "source": "arxiv.org · Apple",
       "sourceDate": "Nov 4, 2026",
       "beats": [
         {
-          "narration": "Apple's humanoid never saw a real home during training. So does it work in one?",
+          "narration": "You learned your way around a home by living in one. So can a robot that only practiced in computer-made homes handle a real one?",
           "visual": {
             "type": "clip",
             "src": "assets/halo_clip_intro.mp4",
-            "stamp": "Real robot · fully autonomous"
+            "stamp": "Real-robot run, fully autonomous"
           }
         },
         {
-          "narration": "It sits on chairs, and steps sideways through half-open doors.",
+          "narration": "Apple researchers trained it only in homes built by a computer, then sent it into real homes it had never seen.",
           "visual": {
             "type": "clip",
-            "src": "assets/halo_clip_sitdoor.mp4"
+            "src": "assets/halo_clip_realhome.mp4",
+            "stamp": "Real-robot run, fully autonomous"
           }
         },
         {
-          "narration": "It crawls under tables, all learned in a thousand computer-generated homes.",
+          "narration": "It sat on chairs, slipped through doors, and crawled under tables.",
           "visual": {
             "type": "clip",
             "src": "assets/halo_clip_crawlpush.mp4"
           }
         },
         {
-          "narration": "Think of a flight simulator, but for a robot.",
-          "visual": {
-            "type": "kinetic",
-            "text": "A flight simulator for robots",
-            "sub": "1,000 computer-generated homes"
-          }
-        },
-        {
-          "narration": "Then the test. Six real homes it had never seen, never scanned or mapped.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/halo_clip_realhome.mp4",
-            "stamp": "Real robot · fully autonomous"
-          }
-        },
-        {
-          "narration": "Ninety-one percent success, across three hundred sixty real trials.",
+          "narration": "On simple tasks, it succeeded ninety-one percent of the time.",
           "visual": {
             "type": "stat",
             "items": [
               {
                 "to": 91,
                 "suffix": "%",
-                "label": "success over 360 real trials"
+                "label": "single tasks, in real homes it never saw"
               }
             ]
           }
         },
         {
-          "narration": "Reality check. That's for single tasks, in a preprint, with the team's own tests.",
+          "narration": "Why it matters, says the paper: this practice grows with computing power, not people's time.",
           "visual": {
             "type": "kinetic",
-            "text": "Single tasks only",
-            "sub": "Preprint · the team's own tests"
+            "text": "More computers, not more people's time",
+            "sub": "The paper: data “scales with compute rather than human labor”"
           }
         },
         {
-          "narration": "How it learned in simulation, and the catch with longer tasks,",
+          "narration": "But it's an early paper, with the team's own tests.",
           "visual": {
-            "type": "photo",
-            "src": "assets/halo_demo_42s.png",
-            "credit": "Video still: Apple, HALO project page"
+            "type": "kinetic",
+            "text": "Early paper, the team's own tests",
+            "sub": "Preprint · arxiv.org"
           }
         },
         {
-          "narration": "is in this week's full episode. Tap the link below.",
+          "narration": "How it trained, and the catch with longer tasks: this week's full episode. Link below.",
           "visual": {
             "type": "kinetic",
             "text": "This week's full episode",
