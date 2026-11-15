@@ -24,6 +24,8 @@ The P2A digest (prazo5) is daily; this channel is weekly.
 | `judge_panel.py` | Prepares the LLM judge panel's files, aggregates their verdicts, settles the cut line pairwise |
 | `news_daily.sh`, `install_news_schedule.sh` | Twice-daily saved news pull (launchd), folded into the weekly harvest |
 
+**The tools are starting points, not limits.** If one doesn't fit the job, change it or write your own script; a missing tool or option is never a reason to stop. Keep the data formats between steps and the rules intact (`physical-ai-daily/docs/tools.md`).
+
 Config: `physical-ai-daily/sources.json` (our accounts, arXiv terms, news queries, org tiers). Digest topics:
 `physical-ai-daily/p2a_topics.json` (git-ignored; the repo is public and the prompts are the digest's edge).
 

@@ -104,7 +104,7 @@ def load_topics(sync: bool) -> list[dict]:
 
 # --- arXiv -----------------------------------------------------------------------------------------------------------
 
-def arxiv(cfg: dict, topics: list[dict], since: datetime, cap: int = 3000) -> list[dict]:
+def arxiv(cfg: dict, topics: list[dict], since: datetime, until: datetime, cap: int = 3000) -> list[dict]:
     # Exhaustive on purpose: cs.RO in full, plus papers from the broader ML categories whose title or abstract names
     # an embodied topic (world models, VLAs and robot learning are often filed under cs.LG or cs.CV only). The terms
     # are ours plus every digest keyword, in chunks so each query URL stays short. Newest first, paged past the window.
@@ -117,7 +117,8 @@ def arxiv(cfg: dict, topics: list[dict], since: datetime, cap: int = 3000) -> li
                             for t in terms[i:i + 12])
         queries.append(f"%28{other}%29+AND+%28{chunk}%29")
     out, seen = [], set()
-    for q in queries:
+    span = f"+AND+submittedDate:%5B{since:%Y%m%d%H%M}+TO+{until:%Y%m%d%H%M}%5D"  # arXiv's own date filter
+    for q in (f"%28{q}%29{span}" for q in queries):
         for start in range(0, cap, 500):
             feed = ET.fromstring(get(f"https://export.arxiv.org/api/query?search_query={q}&sortBy=submittedDate"
                                      f"&sortOrder=descending&start={start}&max_results=500"))
@@ -125,7 +126,7 @@ def arxiv(cfg: dict, topics: list[dict], since: datetime, cap: int = 3000) -> li
             for e in entries:
                 published = datetime.fromisoformat(e.findtext(f"{ATOM}published").replace("Z", "+00:00"))
                 pid = e.findtext(f"{ATOM}id").rsplit("/", 1)[-1].split("v")[0]
-                if published < since or pid in seen:
+                if published < since or published > until or pid in seen:
                     continue
                 seen.add(pid)
                 out.append({
@@ -296,8 +297,8 @@ def x_accounts(cfg: dict, topics: list[dict]) -> list[str]:
     return out
 
 
-def x_paid(cfg: dict, topics: list[dict], since: datetime, api_key: str) -> list[dict]:
-    window = f"since_time:{int(since.timestamp())}"
+def x_paid(cfg: dict, topics: list[dict], since: datetime, until: datetime, api_key: str) -> list[dict]:
+    window = f"since_time:{int(since.timestamp())} until_time:{int(until.timestamp())}"
     handles = x_accounts(cfg, topics)
     out = []
     for i in range(0, len(handles), 10):  # 10 handles per query, as prazo5 does: one call instead of ten
@@ -386,11 +387,11 @@ def news(cfg: dict, since: datetime, pool: list[str]) -> list[dict]:
 
 # --- Hacker News (Algolia) -------------------------------------------------------------------------------------------
 
-def hn(cfg: dict, since: datetime) -> list[dict]:
+def hn(cfg: dict, since: datetime, until: datetime) -> list[dict]:
     out = []
     for q in cfg.get("hn_queries", []):
         params = {"query": q, "tags": "story", "hitsPerPage": 100,
-                  "numericFilters": f"created_at_i>{int(since.timestamp())},points>{cfg.get('hn_min_points', 10)}"}
+                  "numericFilters": f"created_at_i>{int(since.timestamp())},created_at_i<{int(until.timestamp())},points>{cfg.get('hn_min_points', 10)}"}
         payload = json.loads(get("https://hn.algolia.com/api/v1/search_by_date?" + urllib.parse.urlencode(params)))
         for h in payload.get("hits") or []:
             discussion = f"https://news.ycombinator.com/item?id={h['objectID']}"
@@ -515,13 +516,13 @@ def merge(items: list[dict], topics: list[dict], cfg: dict) -> list[dict]:
     return sorted(by_url.values(), key=lambda i: i["published"], reverse=True)
 
 
-def saved_news(since: datetime) -> list[dict]:
+def saved_news(since: datetime, until: datetime) -> list[dict]:
     # The scheduled pull (tools/news_daily.sh, twice a day) saves news/news-<stamp>.json, because NewsData's free plan
     # only reaches back ~36 h. A weekly harvest folds in every saved item inside its window; merge() dedupes them.
     out, files = [], sorted((ROOT / "news").glob("news-*.json"))
     for f in files:
         try:
-            out += [it for it in json.loads(f.read_text()) if datetime.fromisoformat(it["published"]) >= since]
+            out += [it for it in json.loads(f.read_text()) if since <= datetime.fromisoformat(it["published"]) <= until]
         except (ValueError, KeyError) as ex:
             log(f"news: skipped {f.name}: {ex}")
     if files:
@@ -534,7 +535,8 @@ def saved_news(since: datetime) -> list[dict]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--days", type=float, default=7, help="window, counted back from now (one episode per week)")
+    ap.add_argument("--days", type=float, default=7, help="window length, counted back from --until (one episode per week)")
+    ap.add_argument("--until", help="end of the window, YYYY-MM-DD (default now): re-runs a past week")
     ap.add_argument("--only", default="arxiv,x,news", help="comma list from arxiv,x,news,hn")
     ap.add_argument("--merge", nargs="+", metavar="JSON", help="merge earlier harvests instead of fetching")
     ap.add_argument("--no-sync", action="store_true", help="skip the topic sync (only for the scheduled news pull)")
@@ -546,21 +548,28 @@ def main() -> None:
         items = [it for f in args.merge for it in json.loads(Path(f).read_text())]
     else:
         from concurrent.futures import ThreadPoolExecutor
-        since = datetime.now(timezone.utc) - timedelta(days=args.days)
+        until = (datetime.fromisoformat(args.until).replace(tzinfo=timezone.utc) + timedelta(days=1)
+                 if args.until else datetime.now(timezone.utc))
+        until = min(until, datetime.now(timezone.utc))
+        since = until - timedelta(days=args.days)
+        past = datetime.now(timezone.utc) - until > timedelta(hours=36)
+        log(f"window: {since:%Y-%m-%d %H:%M} to {until:%Y-%m-%d %H:%M} UTC")
         only = set(args.only.split(","))
 
         def papers() -> list[dict]:
-            got = arxiv(cfg, topics, since)
+            got = arxiv(cfg, topics, since, until)
             paper_signals(got)
             return got
 
         runs = {
             "arxiv": papers,
-            "x": lambda: x_paid(cfg, topics, since, k) if (k := key("TWITTERAPI_IO_KEY")) else (log("x: no "
+            "x": lambda: x_paid(cfg, topics, since, until, k) if (k := key("TWITTERAPI_IO_KEY")) else (log("x: no "
                          "TWITTERAPI_IO_KEY, falling back to the public timeline (unreliable)") or x_public(cfg, topics, since)),
-            "news": lambda: news(cfg, since, pool) if (pool := keys("NEWSDATAIO")) else (log("news: no NEWSDATAIO "
+            "news": lambda: (log("news: the NewsData free plan reaches back ~36 h, so a past week has no live news; "
+                                 "saved pulls and web search cover it") or []) if past else
+                            news(cfg, since, pool) if (pool := keys("NEWSDATAIO")) else (log("news: no NEWSDATAIO "
                             "key, skipped; cover news with web search") or []),
-            "hn": lambda: hn(cfg, since),
+            "hn": lambda: hn(cfg, since, until),
         }
 
         def safe(name: str) -> list[dict]:
@@ -575,7 +584,7 @@ def main() -> None:
         with ThreadPoolExecutor(len(runs)) as pool_:
             items = [it for got in pool_.map(safe, [n for n in runs if n in only]) for it in got]
         if "news" in only and not args.no_sync:  # the scheduled pull itself saves only what it fetched
-            items += saved_news(since)
+            items += saved_news(since, until)
     merged = merge(items, topics, cfg)
     log(f"total: {len(merged)} after dedup, {sum(1 for i in merged if i['mentions'])} with cross-source mentions, "
         f"{sum(1 for i in merged if i['topics'])} tagged with a digest topic")

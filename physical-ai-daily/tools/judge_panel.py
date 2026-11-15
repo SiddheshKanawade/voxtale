@@ -36,32 +36,64 @@ import statistics
 import string
 from pathlib import Path
 
+# Each criterion has anchors at 1, 3, 5, 8 and 10, so judges share one scale instead of each inventing their own
+# (anchored only at the ends, 11 of 19 stories bunched between 2.7 and 6 in the first run).
 CRITERIA = {
-    "significance": "How much changed for machines that act in the physical world: a capability jump, a deployment "
-                    "at real scale, serious money, a first, an exit or reversal. 1 = incremental; 10 = the field will "
-                    "still talk about it in a year. Reward concrete, specific change; a technically novel but vaguely "
-                    "described claim scores lower than a concrete, high-impact one.",
-    "viewer_pull": "Would our viewer (slight technical background, little knowledge of the field) care and click: it "
-                   "touches what they could see, buy, use or worry about, involves an actor they know, or surprises. "
-                   "1 = only specialists care; 10 = they'd tell a friend.",
-    "evidence": "Strength of the best primary evidence on the card: an official source with concrete numbers or a "
-                "demo scores high; vendor-only claims, vague announcements, 'in talks' or unconfirmed reports score "
-                "low. 1 = rumour; 10 = primary source, specific numbers, independently corroborated.",
-    "showability": "Can we show and explain it in about 90 seconds: real footage, a figure or demo, an everyday "
-                   "analogy for the idea. 1 = text only and hard to explain; 10 = striking footage and a clear "
-                   "analogy.",
-    "momentum": "Is the field paying attention right now, from the card's signals (X engagement, paper prior, "
-                "independent sources, YouTube coverage and views). YouTube runs on trends. 1 = nobody noticed; "
-                "10 = everyone is talking about it.",
+    "significance": "How much changed for machines that act in the physical world. 1 = nothing new (a re-announcement, "
+                    "a minor update); 3 = an incremental step (a modest funding round, a benchmark gain of a few "
+                    "points, a small pilot); 5 = a real step for one company or one research line (a new model "
+                    "version with clear gains, a first deployment at one site); 8 = a step the whole field notices (a "
+                    "deployment at production scale, a capability few thought close, a major lab entering or leaving "
+                    "robotics, $500M+); 10 = the field will still talk about it in a year. Reward concrete, specific "
+                    "change: a technically novel but vaguely described claim scores below a concrete, high-impact one.",
+    "viewer_pull": "Would our viewer (slight technical background, little knowledge of the field) care and click. "
+                   "1 = only specialists care; 3 = interesting to tech-curious people who follow AI; 5 = touches "
+                   "something the viewer knows (a big brand, a product category, their job); 8 = touches what they "
+                   "could see, buy, use or worry about soon; 10 = they'd tell a friend. Shock or outrage alone isn't "
+                   "pull: a story must also tell them something true and new.",
+    "evidence": "Strength of the evidence on the card. 1 = rumour or a single unverified post; 3 = press reports with "
+                "unnamed sources, or 'in talks'; 5 = an official announcement, but vague or with self-reported "
+                "numbers only; 8 = an official primary source with specific numbers or a demo, gaps stated; 10 = "
+                "primary source, specific numbers, and independent confirmation (third-party test, regulator, filing).",
+    "showability": "Can we show and explain it in about 90 seconds. 1 = text only and hard to explain; 3 = a chart or "
+                   "headline to show, and a concept that needs work; 5 = photos or figures, and a clear explanation; "
+                   "8 = real footage or a demo, and an everyday analogy; 10 = striking footage that explains itself.",
+    "momentum": "Is the field paying attention now, from the card's signals only (X likes and engagement percentile, "
+                "harvest cluster size, HN points, YouTube views of videos uploaded this week). 1 = nobody noticed; "
+                "3 = a few specialists posted; 5 = the field's main accounts or outlets covered it; 8 = widely "
+                "shared beyond robotics (thousands of likes, mainstream coverage); 10 = everyone is talking about it.",
 }
+
+BRIEF = """**The video.** A weekly YouTube roundup of physical AI (robots, humanoids, embodied and world models,
+autonomy) for viewers with a slight technical background but little knowledge of the field. It covers {picks} stories.
+Each answers: what changed in machines that act in the physical world, and why it matters.
+
+**The goal.** A viewer who finishes the video knows the week's most important changes, and the video holds their
+attention. When the two pull apart:
+- Significance and evidence come first; viewer pull and showability decide between stories that are close on them.
+- Evidence is a floor, not a trade-off: buzz never rescues a weak claim. A story whose key claim is unconfirmed can
+  make the video only if its significance is high and the video can say plainly what isn't known.
+- Momentum is a tie-breaker: YouTube runs on trends, but trending alone isn't a reason.
+- Sensitive stories (weapons, deaths, crime, scandal) are judged like any other, on what is known and why it matters
+  for physical AI; shock value counts for nothing.
+
+**The cards.** Judge only from the cards. Each card's facts were checked against the sources it cites, and what a
+source leaves out is listed under "Not stated in the source": treat a claim with a listed gap as unconfirmed. Every
+opinion on a card is quoted and attributed; a single post or comment is one person's view, not a consensus, and a
+company praising its own product is not evidence. Story labels are deliberately plain: judge the facts, not the
+label. Card order is random and means nothing. Don't favour a card for being longer or more enthusiastic."""
 
 CONTRACT = """Write your verdicts as JSON to {out}:
 {{"judge": "{name}",
  "scores": [{{"id": "s01", "reasoning": "<2-4 sentences, written BEFORE the numbers>",
              {fields}, "overall": <1-10>}}],
- "top": ["<id>", ... your {picks} picks for the video, best first]}}
-Score every card. "overall" is not an average: it is how strongly this story should be one of the week's {picks},
-weighing everything above. Use the full 1-10 range, and give different stories different scores where you can."""
+ "top": ["<id>", ... your {picks} picks for the video, best first],
+ "lineup": {{"picks": ["<id>", ...], "reserves": ["<id>", "<id>"],
+            "why": "<2-3 sentences: why this set works together - variety of topics and companies, at least one
+                    research result when a strong one exists, nothing the viewer has already seen everywhere>"}}}}
+Score every card. "overall" is how strongly this story should be one of the week's {picks}, following the goal above;
+it is not an average. Use the anchors, and the full range. "top" ranks stories one by one; "lineup" is the set you
+would actually publish, which may differ (two near-identical stories shouldn't both run)."""
 
 
 def prepare(cards_path: Path, out: Path, judges: int, picks: int) -> None:
@@ -79,15 +111,7 @@ def prepare(cards_path: Path, out: Path, judges: int, picks: int) -> None:
         fields = ", ".join(f'"{c}": <1-10>' for c in crit)
         (out / f"judge_{name}.md").write_text(
             f"# Story judge {name}\n\nYou are one of {judges} independent judges choosing the {picks} stories for "
-            f"this week's Pixels2Actions video: a weekly YouTube roundup of physical AI (robots, humanoids, embodied "
-            f"and world models, autonomy) for viewers with a slight technical background but little knowledge of the "
-            f"field. The question every story answers: what changed in machines that act in the physical world, and "
-            f"why it matters.\n\nJudge only from the cards. Each card's facts were checked against the sources it "
-            f"cites, and what a source leaves out is listed under \"Not stated in the source\": treat a claim with a "
-            f"listed gap as unconfirmed. Every opinion on a card is quoted and attributed; a single post or comment is "
-            f"one person's view, not a consensus, and a company praising its own product is not evidence. Story labels "
-            f"are deliberately plain; judge the facts, not the label. Card order is random and means nothing. Don't "
-            f"favour a card for being longer or more enthusiastic.\n\n## Criteria\n\n{rubric}\n\n"
+            f"this week's Pixels2Actions video.\n\n{BRIEF.format(picks=picks)}\n\n## Criteria\n\n{rubric}\n\n"
             f"## Output\n\n{CONTRACT.format(out=out / f'judge_{name}.json', name=name, fields=fields, picks=picks)}"
             f"\n\n# Cards ({len(order)})\n\n{body}\n")
         print(f"judge_{name}.md: {len(order)} cards, criteria order {', '.join(crit)}")
@@ -106,6 +130,7 @@ def aggregate(out: Path, picks: int) -> list[dict]:
         rows.append({"id": cid, "story": c["story"], "type": c["type"], "company": c.get("company"),
                      "overall": round(statistics.mean(overall), 2), "spread": max(overall) - min(overall),
                      "borda": borda, "votes": sum(cid in v["top"][:picks] for v in verdicts),
+                     "lineup_votes": sum(cid in (v.get("lineup") or {}).get("picks", []) for v in verdicts),
                      "criteria": {k: round(statistics.mean(s[k] for s in got), 2) for k in CRITERIA},
                      "by_judge": {v["judge"]: next((s["overall"] for s in v["scores"] if s["id"] == cid), None)
                                   for v in verdicts}})
@@ -114,9 +139,13 @@ def aggregate(out: Path, picks: int) -> list[dict]:
         r["rank"] = i
     (out / "panel.json").write_text(json.dumps(rows, indent=1) + "\n")
     print(f"{len(verdicts)} judges, {len(rows)} stories")
+    for v in verdicts:
+        lu = v.get("lineup") or {}
+        print(f"  judge {v['judge']} lineup: {', '.join(lu.get('picks', []))} (reserves {', '.join(lu.get('reserves', []))})"
+              f": {lu.get('why', '')[:200]}")
     for r in rows:
         flag = "  <- judges disagree" if r["spread"] >= 3 else ""
-        print(f"{r['rank']:>2}. {r['overall']:>5} (borda {r['borda']:>2}, votes {r['votes']}) {r['story']}"
+        print(f"{r['rank']:>2}. {r['overall']:>5} (borda {r['borda']:>2}, votes {r['votes']}, in lineups {r['lineup_votes']}) {r['story']}"
               f"  {r['by_judge']}{flag}")
     return rows
 
@@ -132,12 +161,11 @@ def pairs(out: Path, picks: int, width: int) -> None:
                        for i, (a, b) in enumerate(asks, 1))
     card_text = "\n\n".join(f"## {cid}: {cards[cid]['story']}\n{cards[cid]['card']}" for cid in sorted(r["id"] for r in band))
     (out / "pairwise.md").write_text(
-        f"# Pairwise judge\n\nThese stories sit around the cut line for this week's {picks}-story Pixels2Actions "
-        f"video (weekly physical-AI roundup for viewers with a slight technical background). For each pair, decide "
-        f"which story more deserves a place in the video: significance, viewer pull, evidence, showability and "
-        f"momentum, weighed together. Judge only from the cards: their facts were checked against the cited sources, "
-        f"listed gaps mean unconfirmed, and every opinion is quoted and attributed (one post is one person's view). "
-        f"Order within a pair is random and means nothing; some pairs repeat in the other order, judge each on its own.\n\nWrite JSON to {out / 'pairwise.json'}:\n"
+        f"# Pairwise judge\n\nThese stories sit around the cut line for this week's Pixels2Actions video. For each "
+        f"pair, decide which story more deserves a place in the video.\n\n{BRIEF.format(picks=picks)}\n\n## Criteria\n\n"
+        + "\n".join(f"- **{c}**: {d}" for c, d in CRITERIA.items()) +
+        f"\n\nOrder within a pair is random and means nothing; some pairs repeat in the other order: judge each on its "
+        f"own.\n\nWrite JSON to {out / 'pairwise.json'}:\n"
         f'[{{"pair": "p01", "reasoning": "<1-2 sentences first>", "winner": "first" | "second" | "tie"}}]\n\n'
         f"# Pairs ({len(asks)})\n\n{body}\n\n# Cards\n\n{card_text}\n")
     (out / "pairwise_index.json").write_text(json.dumps({f"p{i:02d}": [a, b] for i, (a, b) in enumerate(asks, 1)}))

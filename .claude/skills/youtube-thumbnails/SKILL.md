@@ -47,6 +47,8 @@ Renderer: `physical-ai-daily/tools/thumbnails.py`.
   source ("GOOGLE DEEPMIND", "ARXIV PAPER"). If the capture has no highlight, add `mark` (fractions of the crop).
 - **Design** follows the episode: `blueprint` (dark) or `blueprint-light`.
 
+**The tools are starting points, not limits.** If one doesn't fit the job, change it or write your own script; a missing tool or option is never a reason to stop. Keep the data formats between steps and the rules intact (`physical-ai-daily/docs/tools.md`).
+
 ## Workflow
 
 ### 0. Research first, every time

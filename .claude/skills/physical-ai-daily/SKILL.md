@@ -32,6 +32,8 @@ episodes/<date>[-slug]/      episode.json, assets/, audio/, qa/, out/
 Copy its `episode.json` shape, including `design`, `tts`/`voice`/`model`, per-beat `section`, and `thumbnails`.
 `episodes/2026-11-14-sample-v7-blueprint-light/` is the same episode in the light design.
 
+**The tools are starting points, not limits.** If one doesn't fit the job, change it or write your own script; a missing tool or option is never a reason to stop. Keep the data formats between steps and the rules intact (`physical-ai-daily/docs/tools.md`).
+
 ## Audience and pacing (user feedback, 2026-11-13)
 
 - **The viewer has a slight technical background but little knowledge of the field** (updated 2026-11-14; was "a
