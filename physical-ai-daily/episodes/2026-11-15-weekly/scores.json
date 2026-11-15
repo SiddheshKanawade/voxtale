@@ -1,418 +1,546 @@
 [
  {
-  "story": "Gemini Robotics 2.5: humanoids sort car parts on Mercedes-Benz lines at 96%",
-  "type": "deployment",
+  "story": "NVIDIA: GR00T 2 robot model",
+  "type": "release",
   "picked": true,
   "rank": 1,
-  "overall": 9.33,
-  "spread": 1,
+  "overall": 8.17,
+  "spread": 0.5,
+  "order_spread": 1,
   "by_judge": {
-   "A": 9,
-   "B": 10,
-   "C": 9
+   "A1": 8,
+   "A2": 9,
+   "B1": 8,
+   "B2": 8,
+   "C1": 8,
+   "C2": 8
   },
   "criteria": {
-   "significance": 8.33,
-   "viewer_pull": 8,
-   "evidence": 7,
-   "showability": 9,
+   "significance": 7.17,
+   "viewer_pull": 6,
+   "evidence": 7.17,
+   "showability": 8,
    "momentum": 8
   },
   "pairwise_wins": null,
   "segment": "story-1"
  },
  {
-  "story": "Tesla starts selling Cybercab to individuals ($29,990 + $299/month); Robotaxi goes 24/7",
+  "story": "Tesla: Cybercab offered for personal purchase; Robotaxi hours and San Antonio launch",
   "type": "release",
   "picked": true,
   "rank": 2,
-  "overall": 8.33,
-  "spread": 1,
+  "overall": 8.17,
+  "spread": 1.0,
+  "order_spread": 1,
   "by_judge": {
-   "A": 8,
-   "B": 9,
-   "C": 8
+   "A1": 8,
+   "A2": 9,
+   "B1": 9,
+   "B2": 8,
+   "C1": 8,
+   "C2": 7
   },
   "criteria": {
-   "significance": 7.67,
-   "viewer_pull": 10,
-   "evidence": 5.33,
-   "showability": 8,
+   "significance": 7.33,
+   "viewer_pull": 9.33,
+   "evidence": 6,
+   "showability": 6.83,
    "momentum": 9.33
   },
   "pairwise_wins": null,
   "segment": "story-2"
  },
  {
-  "story": "General AI models start driving robots: OpenAI folds its robotics team; Claude Fable 5.2 doubles a robot benchmark",
-  "type": "release",
+  "story": "Google DeepMind: Gemini Robotics 2.5; Apptronik Apollo 2 pilot at Mercedes-Benz",
+  "type": "deployment",
   "picked": true,
   "rank": 3,
   "overall": 8,
-  "spread": 2,
+  "spread": 0,
+  "order_spread": 0,
   "by_judge": {
-   "A": 9,
-   "B": 8,
-   "C": 7
+   "A1": 8,
+   "A2": 8,
+   "B1": 8,
+   "B2": 8,
+   "C1": 8,
+   "C2": 8
   },
   "criteria": {
-   "significance": 7.67,
-   "viewer_pull": 8.33,
-   "evidence": 6,
-   "showability": 6.33,
+   "significance": 7.17,
+   "viewer_pull": 6.83,
+   "evidence": 6.5,
+   "showability": 8,
    "momentum": 8
   },
   "pairwise_wins": null,
   "segment": "story-3"
  },
  {
-  "story": "NVIDIA GR00T 2: an open robot model that learns from watching people",
-  "type": "release",
+  "story": "UC Berkeley: SuperMimic humanoid control paper (CoRL 2026)",
+  "type": "paper",
   "picked": true,
   "rank": 4,
-  "overall": 7,
-  "spread": 2,
+  "overall": 7.0,
+  "spread": 1.0,
+  "order_spread": 1,
   "by_judge": {
-   "A": 8,
-   "B": 7,
-   "C": 6
+   "A1": 7,
+   "A2": 8,
+   "B1": 7,
+   "B2": 7,
+   "C1": 7,
+   "C2": 6
   },
   "criteria": {
-   "significance": 7.67,
-   "viewer_pull": 6.33,
-   "evidence": 6,
-   "showability": 7.33,
-   "momentum": 7
+   "significance": 6.67,
+   "viewer_pull": 4.5,
+   "evidence": 7,
+   "showability": 7.83,
+   "momentum": 6
   },
   "pairwise_wins": 3,
   "segment": "story-4"
  },
  {
-  "story": "SuperMimic: training a humanoid's whole-body skills on one GPU in 3 hours",
-  "type": "paper",
+  "story": "Anthropic: Claude Fable 5.2 robot-control results",
+  "type": "release",
   "picked": true,
   "rank": 5,
-  "overall": 6,
-  "spread": 2,
+  "overall": 6.5,
+  "spread": 1,
+  "order_spread": 2,
   "by_judge": {
-   "A": 7,
-   "B": 5,
-   "C": 6
+   "A1": 8,
+   "A2": 6,
+   "B1": 7,
+   "B2": 6,
+   "C1": 7,
+   "C2": 5
   },
   "criteria": {
-   "significance": 6.33,
-   "viewer_pull": 5.33,
-   "evidence": 5.67,
-   "showability": 8.67,
-   "momentum": 6.67
+   "significance": 6.67,
+   "viewer_pull": 6.67,
+   "evidence": 5,
+   "showability": 6.5,
+   "momentum": 7.33
   },
   "pairwise_wins": 2,
   "segment": "story-5"
  },
  {
-  "story": "Armed robot dogs help retake a gang-held stadium in Haiti",
-  "type": "deployment",
+  "story": "NVIDIA: CEO Jensen Huang resigns",
+  "type": "corporate",
   "picked": false,
   "rank": 6,
-  "overall": 6.67,
-  "spread": 1,
+  "overall": 5.67,
+  "spread": 2,
+  "order_spread": 0,
   "by_judge": {
-   "A": 6,
-   "B": 7,
-   "C": 7
+   "A1": 5,
+   "A2": 5,
+   "B1": 5,
+   "B2": 5,
+   "C1": 7,
+   "C2": 7
   },
   "criteria": {
-   "significance": 6.33,
-   "viewer_pull": 9,
-   "evidence": 3.67,
-   "showability": 7.67,
-   "momentum": 8
+   "significance": 5.17,
+   "viewer_pull": 8.33,
+   "evidence": 9.17,
+   "showability": 3.17,
+   "momentum": 10
   },
   "pairwise_wins": 1,
   "segment": null
  },
  {
-  "story": "NVIDIA CEO Jensen Huang resigns",
-  "type": "corporate",
+  "story": "Boston Dynamics: Atlas on wheels research test",
+  "type": "release",
   "picked": false,
   "rank": 7,
-  "overall": 5.33,
-  "spread": 3,
+  "overall": 6,
+  "spread": 0,
+  "order_spread": 0,
   "by_judge": {
-   "A": 5,
-   "B": 4,
-   "C": 7
+   "A1": 6,
+   "A2": 6,
+   "B1": 6,
+   "B2": 6,
+   "C1": 6,
+   "C2": 6
   },
   "criteria": {
-   "significance": 5,
-   "viewer_pull": 8.67,
-   "evidence": 9,
-   "showability": 3.33,
-   "momentum": 10
+   "significance": 4,
+   "viewer_pull": 7.33,
+   "evidence": 6.83,
+   "showability": 9.83,
+   "momentum": 8.17
   },
   "pairwise_wins": 0,
   "segment": null
  },
  {
-  "story": "Agile Robots raises $500M at $8.5B to build humanoids in Germany",
-  "type": "funding",
+  "story": "Runway: Praxis-1 open weights",
+  "type": "release",
   "picked": false,
   "rank": 8,
-  "overall": 5.33,
-  "spread": 2,
+  "overall": 5.67,
+  "spread": 1,
+  "order_spread": 0,
   "by_judge": {
-   "A": 4,
-   "B": 6,
-   "C": 6
+   "A1": 5,
+   "A2": 5,
+   "B1": 6,
+   "B2": 6,
+   "C1": 6,
+   "C2": 6
   },
   "criteria": {
-   "significance": 6.67,
-   "viewer_pull": 5.33,
-   "evidence": 6.67,
-   "showability": 5.33,
-   "momentum": 4.33
+   "significance": 5.83,
+   "viewer_pull": 4,
+   "evidence": 6.33,
+   "showability": 6.67,
+   "momentum": 5.67
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "Boston Dynamics puts Atlas on wheels; a spin jump learned in simulation works first try",
-  "type": "release",
+  "story": "OpenAI: robotics team reorganised into research and applied groups",
+  "type": "corporate",
   "picked": false,
   "rank": 9,
-  "overall": 5.33,
-  "spread": 1,
+  "overall": 5.0,
+  "spread": 1.0,
+  "order_spread": 3,
   "by_judge": {
-   "A": 5,
-   "B": 6,
-   "C": 5
-  },
-  "criteria": {
-   "significance": 4.33,
-   "viewer_pull": 7.33,
-   "evidence": 8,
-   "showability": 9.33,
-   "momentum": 4.33
-  },
-  "pairwise_wins": null,
-  "segment": null
- },
- {
-  "story": "LingBot-Touch: one open model gives robots a sense of touch across sensor types",
-  "type": "release",
-  "picked": false,
-  "rank": 10,
-  "overall": 5,
-  "spread": 0,
-  "by_judge": {
-   "A": 5,
-   "B": 5,
-   "C": 5
+   "A1": 7,
+   "A2": 4,
+   "B1": 6,
+   "B2": 4,
+   "C1": 5,
+   "C2": 4
   },
   "criteria": {
    "significance": 6,
-   "viewer_pull": 4.67,
-   "evidence": 6.67,
-   "showability": 6,
-   "momentum": 5
+   "viewer_pull": 5.83,
+   "evidence": 4.67,
+   "showability": 2.67,
+   "momentum": 4.5
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "Runway's Praxis-1: a video-generation company releases an open robot brain",
+  "story": "Agile Robots: $500M Series F",
+  "type": "funding",
+  "picked": false,
+  "rank": 10,
+  "overall": 4.83,
+  "spread": 1.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 5,
+   "A2": 5,
+   "B1": 5,
+   "B2": 6,
+   "C1": 4,
+   "C2": 4
+  },
+  "criteria": {
+   "significance": 6.17,
+   "viewer_pull": 3.67,
+   "evidence": 6.33,
+   "showability": 4,
+   "momentum": 3.83
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Ant Group (Robbyant): LingBot-Touch tactile model",
   "type": "release",
   "picked": false,
   "rank": 11,
   "overall": 4.33,
-  "spread": 1,
+  "spread": 0.5,
+  "order_spread": 1,
   "by_judge": {
-   "A": 4,
-   "B": 5,
-   "C": 4
-  },
-  "criteria": {
-   "significance": 5.33,
-   "viewer_pull": 5,
-   "evidence": 5.67,
-   "showability": 5.67,
-   "momentum": 4.67
-  },
-  "pairwise_wins": null,
-  "segment": null
- },
- {
-  "story": "Humanoid shipments quadruple: 16,500 robots in Q3, 97% from Chinese makers",
-  "type": "data",
-  "picked": false,
-  "rank": 12,
-  "overall": 4.33,
-  "spread": 1,
-  "by_judge": {
-   "A": 4,
-   "B": 5,
-   "C": 4
-  },
-  "criteria": {
-   "significance": 5.67,
-   "viewer_pull": 5.67,
-   "evidence": 3.67,
-   "showability": 4,
-   "momentum": 2.33
-  },
-  "pairwise_wins": null,
-  "segment": null
- },
- {
-  "story": "GXO plans up to 1,000 Apptronik humanoids in its warehouses",
-  "type": "deal",
-  "picked": false,
-  "rank": 13,
-  "overall": 3.67,
-  "spread": 1,
-  "by_judge": {
-   "A": 3,
-   "B": 4,
-   "C": 4
+   "A1": 4,
+   "A2": 4,
+   "B1": 5,
+   "B2": 4,
+   "C1": 5,
+   "C2": 4
   },
   "criteria": {
    "significance": 5,
-   "viewer_pull": 5,
-   "evidence": 5.33,
-   "showability": 4.67,
-   "momentum": 2.33
+   "viewer_pull": 3.67,
+   "evidence": 4.83,
+   "showability": 4,
+   "momentum": 5.67
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "Path Robotics raises $300M for welding robots, including a welding robot dog",
-  "type": "funding",
+  "story": "ASUS: Gallop humanoid",
+  "type": "release",
   "picked": false,
-  "rank": 14,
-  "overall": 3.67,
-  "spread": 1,
+  "rank": 12,
+  "overall": 3.83,
+  "spread": 0.5,
+  "order_spread": 1,
   "by_judge": {
-   "A": 3,
-   "B": 4,
-   "C": 4
+   "A1": 4,
+   "A2": 4,
+   "B1": 4,
+   "B2": 3,
+   "C1": 4,
+   "C2": 4
   },
   "criteria": {
-   "significance": 5.33,
-   "viewer_pull": 4.33,
-   "evidence": 6,
-   "showability": 5.33,
-   "momentum": 3
+   "significance": 3.5,
+   "viewer_pull": 4.83,
+   "evidence": 5,
+   "showability": 5.5,
+   "momentum": 4.17
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "Foundation, the Eric Trump-backed military humanoid startup, misses payroll while pitching robots to Israel's army",
-  "type": "corporate",
+  "story": "Path Robotics: $300M Series E",
+  "type": "funding",
   "picked": false,
-  "rank": 15,
-  "overall": 3.33,
-  "spread": 1,
+  "rank": 13,
+  "overall": 3.83,
+  "spread": 0.5,
+  "order_spread": 1,
   "by_judge": {
-   "A": 3,
-   "B": 4,
-   "C": 3
+   "A1": 4,
+   "A2": 4,
+   "B1": 4,
+   "B2": 4,
+   "C1": 4,
+   "C2": 3
   },
   "criteria": {
    "significance": 4.33,
-   "viewer_pull": 6,
-   "evidence": 4.33,
-   "showability": 3,
-   "momentum": 2.67
+   "viewer_pull": 3.67,
+   "evidence": 6,
+   "showability": 4.5,
+   "momentum": 4.17
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "ASUS builds its first humanoid, Gallop, already packing parts in its own factory",
-  "type": "release",
+  "story": "GXO and Apptronik: letter of intent for up to 1,000 Apollo humanoids",
+  "type": "deal",
   "picked": false,
-  "rank": 16,
-  "overall": 2.67,
-  "spread": 1,
+  "rank": 14,
+  "overall": 3.67,
+  "spread": 1.5,
+  "order_spread": 1,
   "by_judge": {
-   "A": 2,
-   "B": 3,
-   "C": 3
+   "A1": 3,
+   "A2": 3,
+   "B1": 4,
+   "B2": 5,
+   "C1": 4,
+   "C2": 3
   },
   "criteria": {
-   "significance": 3.67,
+   "significance": 4.5,
    "viewer_pull": 4.33,
-   "evidence": 5,
-   "showability": 3,
-   "momentum": 2
+   "evidence": 5.67,
+   "showability": 2.67,
+   "momentum": 2.5
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "Washington D.C. council committee blocks robotaxis (3-3 vote)",
+  "story": "El Salvador and Haiti: armed robot dogs used in stadium operation",
+  "type": "deployment",
+  "picked": false,
+  "rank": 15,
+  "overall": 3.67,
+  "spread": 1,
+  "order_spread": 2,
+  "by_judge": {
+   "A1": 5,
+   "A2": 3,
+   "B1": 3,
+   "B2": 3,
+   "C1": 5,
+   "C2": 3
+  },
+  "criteria": {
+   "significance": 4.5,
+   "viewer_pull": 6.33,
+   "evidence": 3.5,
+   "showability": 7.17,
+   "momentum": 5.83
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Smart Analytics Global: Q3 2026 humanoid shipment estimate",
+  "type": "data",
+  "picked": false,
+  "rank": 16,
+  "overall": 3.67,
+  "spread": 1.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 4,
+   "A2": 3,
+   "B1": 5,
+   "B2": 4,
+   "C1": 3,
+   "C2": 3
+  },
+  "criteria": {
+   "significance": 5.17,
+   "viewer_pull": 4.83,
+   "evidence": 3.83,
+   "showability": 4,
+   "momentum": 1
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Washington, D.C.: council committee vote on robotaxi bill",
   "type": "policy",
   "picked": false,
   "rank": 17,
-  "overall": 2.67,
+  "overall": 3.5,
   "spread": 1,
+  "order_spread": 1,
   "by_judge": {
-   "A": 2,
-   "B": 3,
-   "C": 3
+   "A1": 4,
+   "A2": 4,
+   "B1": 3,
+   "B2": 3,
+   "C1": 4,
+   "C2": 3
   },
   "criteria": {
    "significance": 3.67,
-   "viewer_pull": 5,
-   "evidence": 3.67,
-   "showability": 4,
-   "momentum": 2.67
+   "viewer_pull": 4.83,
+   "evidence": 6.67,
+   "showability": 3.17,
+   "momentum": 3.33
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "Governments push physical AI: Beijing sets 2028 humanoid targets; Korea and Japan move",
-  "type": "policy",
+  "story": "Embodied First Exam and LEASH: benchmarks of AI agents controlling robots",
+  "type": "paper",
   "picked": false,
   "rank": 18,
-  "overall": 2.67,
-  "spread": 1,
+  "overall": 3.33,
+  "spread": 1.5,
+  "order_spread": 1,
   "by_judge": {
-   "A": 2,
-   "B": 3,
-   "C": 3
+   "A1": 4,
+   "A2": 3,
+   "B1": 4,
+   "B2": 4,
+   "C1": 3,
+   "C2": 2
   },
   "criteria": {
-   "significance": 5,
+   "significance": 4.17,
    "viewer_pull": 3.33,
-   "evidence": 5.33,
-   "showability": 3,
-   "momentum": 2
+   "evidence": 5.5,
+   "showability": 2.67,
+   "momentum": 3.33
   },
   "pairwise_wins": null,
   "segment": null
  },
  {
-  "story": "India questions home-help apps filming inside homes to train robots",
+  "story": "Beijing, South Korea, Japan: government physical-AI plans",
   "type": "policy",
   "picked": false,
   "rank": 19,
-  "overall": 1.67,
-  "spread": 1,
+  "overall": 2.83,
+  "spread": 1.5,
+  "order_spread": 2,
   "by_judge": {
-   "A": 1,
-   "B": 2,
-   "C": 2
+   "A1": 3,
+   "A2": 3,
+   "B1": 3,
+   "B2": 4,
+   "C1": 3,
+   "C2": 1
   },
   "criteria": {
-   "significance": 3,
-   "viewer_pull": 4.33,
-   "evidence": 4.33,
-   "showability": 2,
+   "significance": 4.5,
+   "viewer_pull": 3,
+   "evidence": 5,
+   "showability": 2.33,
    "momentum": 1
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "India: IT ministry consultation on in-home worker video for physical-AI training",
+  "type": "policy",
+  "picked": false,
+  "rank": 20,
+  "overall": 2.83,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 3,
+   "A2": 3,
+   "B1": 3,
+   "B2": 3,
+   "C1": 3,
+   "C2": 2
+  },
+  "criteria": {
+   "significance": 3.5,
+   "viewer_pull": 4.83,
+   "evidence": 3.67,
+   "showability": 2.5,
+   "momentum": 1
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Foundation (military humanoid startup): missed payroll; IDF sale talks",
+  "type": "corporate",
+  "picked": false,
+  "rank": 21,
+  "overall": 2.67,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 3,
+   "A2": 2,
+   "B1": 3,
+   "B2": 3,
+   "C1": 3,
+   "C2": 2
+  },
+  "criteria": {
+   "significance": 3.5,
+   "viewer_pull": 4.83,
+   "evidence": 3,
+   "showability": 4.33,
+   "momentum": 4.33
   },
   "pairwise_wins": null,
   "segment": null

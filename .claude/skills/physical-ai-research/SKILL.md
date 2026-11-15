@@ -21,6 +21,7 @@ The P2A digest (prazo5) is daily; this channel is weekly.
 | `triage_batches.py` | Splits the harvest into reading batches for triage subagents |
 | `chatter.py` | What X, HN and YouTube (views, descriptions, top comments, transcripts) say about one story |
 | `build_cards.py` | Builds the judges' story cards from stored sources only (no hand-written card text) |
+| `research_md.py` | Writes `research.md` and `scores.json` from the panel, verification and cards |
 | `judge_panel.py` | Prepares the LLM judge panel's files, aggregates their verdicts, settles the cut line pairwise |
 | `news_daily.sh`, `install_news_schedule.sh` | Twice-daily saved news pull (launchd), folded into the weekly harvest |
 
@@ -334,6 +335,10 @@ verbatim on a capturable page, vendor-reported results labelled as such). On top
   or context was cut off is never used.
 
 ### 9. Write `research.md`
+
+`python3 -I physical-ai-daily/tools/research_md.py <ep> --window FROM:TO` writes `research.md` and `scores.json` from the
+panel, the verification records and the cards, so nothing in it is in your own words. Add by hand only the notes
+below the generated part (degraded sources, keeps you didn't card and why, notes for the next run).
 
 ```
 # Research <date> (window: <from> → <to>)

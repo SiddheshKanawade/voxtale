@@ -1,0 +1,470 @@
+[
+ {
+  "story": "Google DeepMind: Genie 4 world model",
+  "type": "release",
+  "picked": true,
+  "rank": 1,
+  "overall": 8.5,
+  "spread": 1,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 9,
+   "A2": 9,
+   "B1": 9,
+   "B2": 8,
+   "C1": 8,
+   "C2": 8
+  },
+  "criteria": {
+   "significance": 7.17,
+   "viewer_pull": 8.67,
+   "evidence": 6.67,
+   "showability": 9.5,
+   "momentum": 10
+  },
+  "pairwise_wins": null,
+  "segment": "story-1"
+ },
+ {
+  "story": "Waymo and Toyota: robotaxi vehicle",
+  "type": "deal",
+  "picked": true,
+  "rank": 2,
+  "overall": 7.5,
+  "spread": 1,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 8,
+   "A2": 8,
+   "B1": 8,
+   "B2": 7,
+   "C1": 7,
+   "C2": 7
+  },
+  "criteria": {
+   "significance": 7,
+   "viewer_pull": 7.83,
+   "evidence": 7.33,
+   "showability": 7,
+   "momentum": 7.83
+  },
+  "pairwise_wins": null,
+  "segment": "story-2"
+ },
+ {
+  "story": "Frontier AI models as robot policies: SenseNova test, LEXP, Luma ZAP",
+  "type": "paper",
+  "picked": true,
+  "rank": 3,
+  "overall": 6.83,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 7,
+   "A2": 7,
+   "B1": 7,
+   "B2": 7,
+   "C1": 6,
+   "C2": 7
+  },
+  "criteria": {
+   "significance": 6.17,
+   "viewer_pull": 6,
+   "evidence": 7.33,
+   "showability": 6.33,
+   "momentum": 3.5
+  },
+  "pairwise_wins": null,
+  "segment": "story-3"
+ },
+ {
+  "story": "Bedrock Robotics: Series C",
+  "type": "funding",
+  "picked": true,
+  "rank": 4,
+  "overall": 6.5,
+  "spread": 1,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 7,
+   "A2": 7,
+   "B1": 6,
+   "B2": 7,
+   "C1": 6,
+   "C2": 6
+  },
+  "criteria": {
+   "significance": 7,
+   "viewer_pull": 5.83,
+   "evidence": 5.83,
+   "showability": 5.83,
+   "momentum": 5
+  },
+  "pairwise_wins": 3,
+  "segment": "story-4"
+ },
+ {
+  "story": "Machenta: seed round and one-demonstration robot learning",
+  "type": "funding",
+  "picked": true,
+  "rank": 5,
+  "overall": 6.83,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 7,
+   "A2": 7,
+   "B1": 7,
+   "B2": 6,
+   "C1": 7,
+   "C2": 7
+  },
+  "criteria": {
+   "significance": 5.5,
+   "viewer_pull": 6.17,
+   "evidence": 5.83,
+   "showability": 8.17,
+   "momentum": 6.67
+  },
+  "pairwise_wins": 2,
+  "segment": "story-5"
+ },
+ {
+  "story": "Kodiak and DTL: driverless truck agreement",
+  "type": "deal",
+  "picked": false,
+  "rank": 6,
+  "overall": 5.5,
+  "spread": 1,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 6,
+   "A2": 6,
+   "B1": 5,
+   "B2": 6,
+   "C1": 5,
+   "C2": 5
+  },
+  "criteria": {
+   "significance": 5.83,
+   "viewer_pull": 5.83,
+   "evidence": 6.5,
+   "showability": 5.17,
+   "momentum": 2.67
+  },
+  "pairwise_wins": 1,
+  "segment": null
+ },
+ {
+  "story": "Meta: humanoid prototype built with Fourier (The Information report)",
+  "type": "corporate",
+  "picked": false,
+  "rank": 7,
+  "overall": 5.67,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 6,
+   "A2": 6,
+   "B1": 5,
+   "B2": 6,
+   "C1": 5,
+   "C2": 6
+  },
+  "criteria": {
+   "significance": 6.83,
+   "viewer_pull": 7.83,
+   "evidence": 3.5,
+   "showability": 3,
+   "momentum": 7
+  },
+  "pairwise_wins": 0,
+  "segment": null
+ },
+ {
+  "story": "GXO and Agility: Digit expansion",
+  "type": "deployment",
+  "picked": false,
+  "rank": 8,
+  "overall": 5.33,
+  "spread": 1,
+  "order_spread": 0,
+  "by_judge": {
+   "A1": 5,
+   "A2": 5,
+   "B1": 6,
+   "B2": 6,
+   "C1": 5,
+   "C2": 5
+  },
+  "criteria": {
+   "significance": 5,
+   "viewer_pull": 5.33,
+   "evidence": 6.5,
+   "showability": 4.5,
+   "momentum": 4.67
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "NVIDIA: Metatron humanoid controller",
+  "type": "paper",
+  "picked": false,
+  "rank": 9,
+  "overall": 5.33,
+  "spread": 0.5,
+  "order_spread": 2,
+  "by_judge": {
+   "A1": 5,
+   "A2": 6,
+   "B1": 4,
+   "B2": 6,
+   "C1": 6,
+   "C2": 5
+  },
+  "criteria": {
+   "significance": 5,
+   "viewer_pull": 4.33,
+   "evidence": 6.83,
+   "showability": 7.5,
+   "momentum": 2.83
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "US: Section 232 proclamation on robot and machinery imports",
+  "type": "policy",
+  "picked": false,
+  "rank": 10,
+  "overall": 5.17,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 5,
+   "A2": 5,
+   "B1": 5,
+   "B2": 5,
+   "C1": 6,
+   "C2": 5
+  },
+  "criteria": {
+   "significance": 5.83,
+   "viewer_pull": 5.33,
+   "evidence": 7.83,
+   "showability": 2.5,
+   "momentum": 4.17
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "AgiBot: Innovation Day (GO-3 model, Worken metric)",
+  "type": "release",
+  "picked": false,
+  "rank": 11,
+  "overall": 4.83,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 4,
+   "A2": 5,
+   "B1": 5,
+   "B2": 5,
+   "C1": 5,
+   "C2": 5
+  },
+  "criteria": {
+   "significance": 4.83,
+   "viewer_pull": 5,
+   "evidence": 4.33,
+   "showability": 6.5,
+   "momentum": 6.5
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Monumental: robot-laid building in Almere",
+  "type": "deployment",
+  "picked": false,
+  "rank": 12,
+  "overall": 4.5,
+  "spread": 1,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 4,
+   "A2": 5,
+   "B1": 4,
+   "B2": 4,
+   "C1": 5,
+   "C2": 5
+  },
+  "criteria": {
+   "significance": 4.67,
+   "viewer_pull": 6.67,
+   "evidence": 3.5,
+   "showability": 7,
+   "momentum": 2.17
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Foxconn: robot arms assembling NVIDIA GB300 test trays",
+  "type": "deployment",
+  "picked": false,
+  "rank": 13,
+  "overall": 4.5,
+  "spread": 1,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 5,
+   "A2": 5,
+   "B1": 5,
+   "B2": 4,
+   "C1": 4,
+   "C2": 4
+  },
+  "criteria": {
+   "significance": 4.5,
+   "viewer_pull": 4.83,
+   "evidence": 7.17,
+   "showability": 6.83,
+   "momentum": 3.33
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Unitree: Q3 results",
+  "type": "corporate",
+  "picked": false,
+  "rank": 14,
+  "overall": 4.17,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 4,
+   "A2": 4,
+   "B1": 4,
+   "B2": 5,
+   "C1": 4,
+   "C2": 4
+  },
+  "criteria": {
+   "significance": 4.67,
+   "viewer_pull": 4.33,
+   "evidence": 8,
+   "showability": 2.83,
+   "momentum": 3.67
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "NHTSA: proposed cyan lamps for automated vehicles",
+  "type": "policy",
+  "picked": false,
+  "rank": 15,
+  "overall": 3.83,
+  "spread": 1.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 5,
+   "A2": 4,
+   "B1": 3,
+   "B2": 3,
+   "C1": 4,
+   "C2": 4
+  },
+  "criteria": {
+   "significance": 3.33,
+   "viewer_pull": 5.67,
+   "evidence": 8.67,
+   "showability": 4.17,
+   "momentum": 2.33
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Boston Dynamics: Atlas supplier preparation (KED report)",
+  "type": "corporate",
+  "picked": false,
+  "rank": 16,
+  "overall": 3.5,
+  "spread": 1,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 3,
+   "A2": 3,
+   "B1": 4,
+   "B2": 4,
+   "C1": 3,
+   "C2": 4
+  },
+  "criteria": {
+   "significance": 5.83,
+   "viewer_pull": 6,
+   "evidence": 2.5,
+   "showability": 4.17,
+   "momentum": 3
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "KDDI: ELYZA Robotics",
+  "type": "corporate",
+  "picked": false,
+  "rank": 17,
+  "overall": 3.33,
+  "spread": 1,
+  "order_spread": 0,
+  "by_judge": {
+   "A1": 4,
+   "A2": 4,
+   "B1": 3,
+   "B2": 3,
+   "C1": 3,
+   "C2": 3
+  },
+  "criteria": {
+   "significance": 4.17,
+   "viewer_pull": 3.5,
+   "evidence": 6.83,
+   "showability": 3.5,
+   "momentum": 3.33
+  },
+  "pairwise_wins": null,
+  "segment": null
+ },
+ {
+  "story": "Physical Intelligence: funding talks (Bloomberg report)",
+  "type": "funding",
+  "picked": false,
+  "rank": 18,
+  "overall": 3.17,
+  "spread": 0.5,
+  "order_spread": 1,
+  "by_judge": {
+   "A1": 3,
+   "A2": 4,
+   "B1": 3,
+   "B2": 3,
+   "C1": 3,
+   "C2": 3
+  },
+  "criteria": {
+   "significance": 5.33,
+   "viewer_pull": 3.83,
+   "evidence": 3,
+   "showability": 2.17,
+   "momentum": 2.67
+  },
+  "pairwise_wins": null,
+  "segment": null
+ }
+]
