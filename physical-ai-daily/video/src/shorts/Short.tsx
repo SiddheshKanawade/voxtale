@@ -132,7 +132,7 @@ const ClipBand: React.FC<{ m: Media; credit?: string; stamp?: string }> = ({ m, 
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const clipF = Math.min(durationInFrames, Math.floor((m.duration ?? durationInFrames / fps) * fps));
-  const hold = interpolate(frame, [clipF, durationInFrames], [1, 1.06], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const hold = interpolate(frame, [clipF, Math.max(clipF + 1, durationInFrames)], [1, 1.06], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const media: React.CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" };
   return (
     <div style={{ position: "absolute", left: 0, top: MEDIA.top, width: W, height: MEDIA.height, overflow: "hidden", background: "#000" }}>

@@ -106,7 +106,7 @@ const Clip: React.FC<P> = ({ v, dur }) => {
   const { fps } = useVideoConfig();
   const m = v.src!;
   const clipF = Math.min(dur, Math.floor((m.duration ?? dur / fps) * fps));
-  const hold = interpolate(frame, [clipF, dur], [1, 1.05], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const hold = interpolate(frame, [clipF, Math.max(clipF + 1, dur)], [1, 1.05], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const enter = spring({ frame, fps, config: { damping: 18, mass: 0.6 } });
   const cover = v.fit === "cover";
   const fit = cover ? Math.max(STAGE.w / m.width, STAGE.h / m.height) : Math.min(STAGE.w / m.width, STAGE.h / m.height);
