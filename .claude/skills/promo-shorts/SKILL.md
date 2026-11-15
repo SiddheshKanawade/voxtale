@@ -16,6 +16,10 @@ Shorts studied). Where they say "unverified" (the "3 seconds", loops), this skil
 **The tools are starting points, not limits** (`physical-ai-daily/docs/tools.md`). Shorts follow the channel's
 **sourcing rule** and the HARD items of `docs/video-requirements.md` exactly like episodes.
 
+**Other tools in the harness (optional, rarely needed):** `yt-dlp`/`ffmpeg` to download and analyse videos (reference
+Shorts for private study, deleted after; official footage for credited clips), the Blender and Higgsfield MCPs for an
+explanatory illustration. Same rules and limits as episodes (physical-ai-daily skill, "Other tools in the harness").
+
 ## What YouTube measures (official)
 
 Shorts are ranked on **% of viewers who chose to view** ("Stayed to watch": stayed past the initial seconds),

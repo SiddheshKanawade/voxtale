@@ -40,6 +40,15 @@ Studio first), and the frozen v1.0 format rules stand.
 
 **The tools are starting points, not limits.** If one doesn't fit the job, change it or write your own script; a missing tool or option is never a reason to stop. Keep the data formats between steps and the rules intact (`physical-ai-daily/docs/tools.md`).
 
+**Other tools in the harness (optional; expect to use them rarely).** Besides the pipeline above you have:
+`yt-dlp` and `ffmpeg` to download and analyse YouTube or other videos (frames, scene cuts, timing; `whisper.cpp` for
+transcripts, see `tools/chatter.py`), the **Blender** MCP (3D scenes and renders) and the **Higgsfield** MCP (image and
+video generation). Decide yourself whether a story needs any of them; most episodes won't. The rules still apply:
+downloaded videos are for study or for credited, muted clips under HARD 7.2 (never cookies, never a workaround when a
+site blocks you); anything generated in Blender or Higgsfield is an explanatory illustration, labelled, never passed
+off as real (HARD 4.5, section "Synthetic images and video"). Higgsfield spends paid credits: check the balance first
+and say in the hand-off what you spent.
+
 ## Audience and pacing (user feedback, 2026-11-13)
 
 - **The viewer has a slight technical background but little knowledge of the field** (updated 2026-11-14; was "a
