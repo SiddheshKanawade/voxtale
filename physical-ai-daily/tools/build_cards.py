@@ -81,20 +81,23 @@ def card(st: dict, ep: Path, ctx: dict) -> str:
         xs += [t for t in d["x"] if lo <= t["published"][:10] <= hi and rel(t["text"])]
         hn += [h for h in d["hn"] if lo <= (h.get("created") or "")[:10] <= hi and rel(h.get("title"))]
         yt += [v for v in d["youtube"] if rel(v.get("title"))]
+    cluster = [v for v in ctx["verdicts"] if v["verdict"] in ("keep", "maybe")
+               and any(k in v["event"].lower() for k in st.get("cluster", []))]
+    # the story's own harvested posts count too: chatter's search can miss the post that broke the story
+    xs += [ctx["harvest"][v["url"]] for v in cluster if ctx["harvest"].get(v["url"], {}).get("type") == "x"
+           and lo <= ctx["harvest"][v["url"]]["published"][:10] <= hi]
     seen: set = set()
     xs = [t for t in sorted(xs, key=lambda t: -(t.get("likes") or 0)) if not (t["url"] in seen or seen.add(t["url"]))]
     excl = st.get("exclude", {})
     dropped, xs = [t for t in xs if t["url"] in excl], [t for t in xs if t["url"] not in excl]
     undated = [v for v in yt if not str(v.get("uploaded") or "").isdigit()]
     yt = [v for v in yt if str(v.get("uploaded") or "").isdigit() and lo.replace("-", "") <= v["uploaded"]]
-    cluster = [v for v in ctx["verdicts"] if v["verdict"] in ("keep", "maybe")
-               and any(k in v["event"].lower() for k in st.get("cluster", []))]
 
     out.append(f"\n**Signals** (raw counts; window {lo} to {hi}):")
     out.append(f"- Harvest items in this cluster (kept or maybe at triage): {len(cluster)}")
-    if st.get("chatter"):
+    if st.get("chatter") or xs:
         best = max([ctx["pct"](t) for t in xs] or [0])
-        out.append(f"- X posts found by chatter search: {len(xs)}; most likes: {xs[0]['likes'] if xs else 0}; "
+        out.append(f"- X posts (chatter search plus this cluster's harvested posts): {len(xs)}; most likes: {xs[0]['likes'] if xs else 0}; "
                    f"best engagement percentile vs the week's harvest: {best:.2f}")
         out.append(f"- Hacker News stories: {len(hn)}; most points: {max([h['points'] or 0 for h in hn] or [0])}")
         out.append(f"- YouTube videos with the story in the title, uploaded in the window: {len(yt)}; total views: "
@@ -145,7 +148,7 @@ def main() -> None:
     harvest = json.load(open(ep / "candidates.json"))
     xeng = sorted(engagement(t) for t in harvest if t["type"] == "x")
     lo = (Date.fromisoformat(args.today) - timedelta(days=7)).isoformat()
-    ctx = {"verify": load(str(ep / "verify/*.json")), "finds": load(str(ep / "web/finds_*.json")),
+    ctx = {"harvest": {i["url"]: i for i in harvest}, "verify": load(str(ep / "verify/*.json")), "finds": load(str(ep / "web/finds_*.json")),
            "verdicts": load(str(ep / "triage/verdicts_*.json")), "today": args.today, "window": (lo, args.today),
            "pct": lambda t: bisect.bisect_left(xeng, engagement(t)) / len(xeng)}
     stories = json.load(open(ep / "judge" / "stories.json"))
