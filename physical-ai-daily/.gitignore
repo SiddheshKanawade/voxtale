@@ -33,3 +33,4 @@ models/
 episodes/*/web/
 episodes/*/verify/
 episodes/*/judge/
+episodes/*/verify_old/
