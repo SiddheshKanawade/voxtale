@@ -63,7 +63,12 @@ def card(st: dict, ep: Path, ctx: dict) -> str:
     for v in entries:
         out.append(f"- From {v['primary_url']} ({v.get('primary_date')}):")
         for q in v.get("quotes") or v.get("facts") or []:  # "facts" is the pre-2026-11-16 contract
-            out.append(f"  - {q['text'] + ' (' + q['url'] + ')' if isinstance(q, dict) else q}")
+            if isinstance(q, dict):
+                mark = {True: "", False: " [NOT FOUND on the page by check_quotes.py]",
+                        None: " [page could not be machine-checked]"}.get(q.get("matched"), " [not yet checked]")
+                out.append(f"  - \"{q['text']}\" ({q['url']}){mark}")
+            else:
+                out.append(f"  - {q}")
         visuals += v.get("visuals") or []
         gaps += v.get("gaps") or []
     for k in st.get("finds", []):

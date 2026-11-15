@@ -20,6 +20,7 @@ The P2A digest (prazo5) is daily; this channel is weekly.
 | `sync_p2a_topics.py` | The topic sync on its own (discover.py calls it) |
 | `triage_batches.py` | Splits the harvest into reading batches for triage subagents |
 | `chatter.py` | What X, HN and YouTube (views, descriptions, top comments, transcripts) say about one story |
+| `check_quotes.py` | Confirms every verification quote appears on its page |
 | `build_cards.py` | Builds the judges' story cards from stored sources only (no hand-written card text) |
 | `research_md.py` | Writes `research.md` and `scores.json` from the panel, verification and cards |
 | `judge_panel.py` | Prepares the LLM judge panel's files, aggregates their verdicts, settles the cut line pairwise |
@@ -246,6 +247,11 @@ concrete, high-impact news (Northwestern's newsroom study). So the ranking is a 
    ```
    Tell them: quotes only, no paraphrase; no framing labels or commentary in any field; an expert's view counts only
    as their quoted words with the URL; if a page can't be fetched, say so in `gaps`.
+   Then run `python3 -I physical-ai-daily/tools/check_quotes.py <ep>`. It downloads each quoted page once (HTML,
+   gzip, PDFs via pdftotext, script-embedded and double-escaped text) and marks every quote found, not found, or
+   unchecked (the page refused it). A quote **not found** goes back to verification: fix it or drop it. Cards show
+   unchecked quotes as such. First run (3 weeks, 547 quotes): 512 found (49 only after ignoring punctuation and
+   spacing), 0 not found, 35 unchecked on 6 sites that block automated readers.
 2. **Build the cards with `tools/build_cards.py <ep>`, never by hand.** You write only `<ep>/judge/stories.json`:
    per story a plain label ("Google DeepMind: Gemini Robotics 2.5", no adjectives, numbers or hooks), and pointers
    to its verification entry, web finds, chatter files, relevance keywords and the primary date (format in the
