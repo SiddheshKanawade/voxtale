@@ -34,3 +34,10 @@ episodes/*/web/
 episodes/*/verify/
 episodes/*/judge/
 episodes/*/verify_old/
+
+# Shorts: media, audio and renders stay local, like episodes
+episodes/*/shorts/*/assets/
+episodes/*/shorts/*/audio/
+episodes/*/shorts/*/out/
+episodes/*/shorts/*/qa/
+episodes/*/shorts/*/props.json

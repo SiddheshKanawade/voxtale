@@ -1,0 +1,106 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 13, 2026",
+  "design": "blueprint-light",
+  "voice": "en-US-AndrewNeural",
+  "hook": "A humanoid on a real *Mercedes* line. How often did it get it right?",
+  "cta": "How one robot brain learns new jobs, and the catch: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Google's robot brain goes to the factory",
+      "source": "deepmind.google",
+      "sourceDate": "Nov 10, 2026",
+      "beats": [
+        {
+          "narration": "Google DeepMind put a humanoid on a real Mercedes-Benz production line. How often did it get the job right?",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_12s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "The robot is Apptronik's Apollo.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_2s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "Its brain is Gemini Robotics 2.5, one model that can drive many different robots.",
+          "visual": {
+            "type": "kinetic",
+            "text": "One brain, many robots",
+            "sub": "Gemini Robotics 2.5"
+          }
+        },
+        {
+          "narration": "The job is called kitting. Parts arrive mixed together in big bins,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_5s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "and the robot picks the right ones and lays them into trays.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_17s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "The answer? A ninety-six percent success rate.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 96,
+                "suffix": "%",
+                "label": "success rate in the pilot"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Reality check. That's Google's own number, from a proof of concept,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_8s.png",
+            "credit": "Video still: Google DeepMind",
+            "stamp": "Proof of concept"
+          }
+        },
+        {
+          "narration": "not a fleet of robots working the line every day.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_28s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "Why one general robot brain matters, and what we still don't know,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/dm_merc_45s.png",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "is in this week's full episode. Tap the link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          }
+        }
+      ]
+    }
+  ]
+}

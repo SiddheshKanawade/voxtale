@@ -189,7 +189,8 @@ Don't change the identity without the user's say-so. The research behind it is i
   picks one, and keeps two runners-up for Test & Compare.
 - **Light-mode QA:** after any visual change, sample about 15 frames across the render (dark and light) and look for
   empty stages, washed-out media and colours that only work on dark.
-- A Short (9:16) version isn't built yet.
+- Shorts (9:16): the `promo-shorts` skill makes 2–3 promotional Shorts per finished episode (`tools/render_short.sh`,
+  `video/src/shorts/`).
 
 ## Copyright
 
