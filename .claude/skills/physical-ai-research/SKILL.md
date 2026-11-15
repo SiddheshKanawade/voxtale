@@ -171,11 +171,18 @@ stop turning up new stories. Usual blind spots, as reminders and not a checklist
 newsrooms, funding and filings, deployments and safety or regulator actions, China's humanoid ecosystem, and anything
 the digest prompts name that didn't show up. Add finds with their URL and the date shown on the page.
 
-### 4. Cluster
+### 4. Cluster and choose what gets a card
 
 The same event seen as a post, a press release, a paper and an article is one story. Merge by the subagents' `event`
 names, keep every URL, and count independent sources (different outlets or accounts, not the company re-posting
 itself); the count goes on the story's card in step 6.
+
+**Which clusters get a card (typically 18–21):** every cluster with a triage *keep* or a web find, minus the gates
+(no primary source, or primary date outside the window), merged when they are the same event or the same claim
+(several papers making one point, e.g. "frontier models as robot policies", go on one card). This is the one step
+where your own judgement picks candidates, so keep it inclusive: when in doubt, give it a card and let the panel
+decide. Never leave a story out because you think it would lose. In `research.md`, list the keeps you did *not* card,
+each with its reason.
 
 ### 5. What people are saying (for the ~8–12 strongest clusters)
 
@@ -235,14 +242,19 @@ concrete, high-impact news (Northwestern's newsroom study). So the ranking is a 
    - a card the tool flags as over twice the median length gets split into separate stories or fewer sources,
      because judges favour longer cards
    - a missing fact goes back to verification, not onto the card
-3. **Prepare and run the judges.** `judge_panel.py prepare <ep>/judge/cards.json <ep>/judge` writes `judge_A.md`,
-   `judge_B.md` and `judge_C.md`: each with the cards in its own shuffled order and the rubric's criteria in their own
-   order. Spawn three fresh subagents in one message, **each on a different model** (`opus`, `sonnet`, `fable`: different
-   models have different biases), each told only to read its file and write the JSON it asks for. They score each
+3. **Prepare and run the judges.** `judge_panel.py prepare <ep>/judge/cards.json <ep>/judge` writes six files,
+   `judge_A1.md` … `judge_C2.md`: three models, each in two orderings, every file with its own shuffle of the cards
+   and of the rubric's criteria (several orderings combined cut order bias in list judgments, arXiv 2310.07712).
+   Spawn six fresh subagents in one message: A1 and A2 on `opus`, B1 and B2 on `sonnet`, C1 and C2 on `fable`, each
+   told only to read its file and write the JSON it asks for. The panel is all Anthropic models by the user's choice
+   (2026-11-15): published panels gain most from models of *different* makers (PoLL, arXiv 2404.18796), so shared
+   blind spots are possible, and the user's blind ranking (item 7 below) is the check on them. Evidence for every design
+   choice: `physical-ai-daily/docs/judge-evidence.md`. They score each
    story 1–10 on significance, viewer pull, evidence, showability and momentum, reasoning first, then give an overall
    score and their top 5. Don't show them your own ranking.
-4. **Aggregate:** `judge_panel.py aggregate <ep>/judge` ranks by mean overall (Borda points from the top-5 lists break
-   ties) and flags stories where judges differ by 3+. Read the flagged stories' reasoning: a disagreement often means
+4. **Aggregate:** `judge_panel.py aggregate <ep>/judge` averages each model's two orderings, then ranks by the mean
+   over models (Borda points from the top-5 lists break ties). It flags stories where models differ by 3+, and reports
+   `order_spread`, how far one model moved between its two orderings (a large one means the card reads ambiguously). Read the flagged stories' reasoning: a disagreement often means
    a card is missing a fact, so add it to the verification record, rebuild and re-run rather than average it away.
 5. **Settle the cut line pairwise:** `judge_panel.py pairs <ep>/judge` writes every pair among ranks 3–7 in both
    orders. One fresh subagent (`opus`) answers them;
@@ -252,6 +264,12 @@ concrete, high-impact news (Northwestern's newsroom study). So the ranking is a 
    at most 2 stories per company; at least one research story when one is ranked within 3 places of the 5th pick;
    variety (not five humanoid funding rounds); at least one story the viewer couldn't have read on a mainstream front
    page. Moving a story for a rule: say which rule in `research.md`.
+
+7. **Calibrate against the user.** Before showing the panel's picks, ask the user to rank the week's cards themselves
+   (`<ep>/judge/cards.md`), blind to the panel. Record both in `<ep>/judge/calibration.json` and report the overlap of
+   the two top-5s and the rank correlation. Across weeks this is the only evidence that the judges pick what the
+   channel would: published judges can agree with each other and still miss human picks (arXiv 2406.12624). If the
+   user skips a week, say the picks are uncalibrated.
 
 **Gates, before any card is written:** a story with no primary source or a credible tier-1 report with named sources
 can't be shortlisted (mention it as unconfirmed at most). Buzz never rescues weak evidence. Anything older than the

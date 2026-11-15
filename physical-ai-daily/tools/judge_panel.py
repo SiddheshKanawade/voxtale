@@ -96,10 +96,12 @@ it is not an average. Use the anchors, and the full range. "top" ranks stories o
 would actually publish, which may differ (two near-identical stories shouldn't both run)."""
 
 
-def prepare(cards_path: Path, out: Path, judges: int, picks: int) -> None:
+def prepare(cards_path: Path, out: Path, judges: int, picks: int, orders: int = 2) -> None:
     cards = json.loads(cards_path.read_text())
     out.mkdir(parents=True, exist_ok=True)
-    for name in string.ascii_uppercase[:judges]:
+    # Each model judges the cards in `orders` different shuffles (A1, A2, …), each by a separate subagent: order
+    # bias in list judgments shrinks when several orderings are combined (Tang et al., arXiv 2310.07712).
+    for name in (f"{m}{o}" for m in string.ascii_uppercase[:judges] for o in range(1, orders + 1)):
         rng = random.Random(f"{cards_path.parent}-{name}")
         order = cards[:]
         rng.shuffle(order)
@@ -120,15 +122,22 @@ def prepare(cards_path: Path, out: Path, judges: int, picks: int) -> None:
 def aggregate(out: Path, picks: int) -> list[dict]:
     cards = {c["id"]: c for c in json.loads((out / "cards.json").read_text())}
     verdicts = [json.loads(p.read_text()) for p in sorted(out.glob("judge_*.json"))]
+    model = lambda v: v["judge"][0]  # noqa: E731  judge "A2" is model A's second ordering
     rows = []
     for cid, c in cards.items():
         got = [s for v in verdicts for s in v["scores"] if s["id"] == cid]
         if not got:
             continue
-        overall = [s["overall"] for s in got]
+        per_model: dict = {}
+        for v in verdicts:
+            for sc in v["scores"]:
+                if sc["id"] == cid:
+                    per_model.setdefault(model(v), []).append(sc["overall"])
+        overall = [statistics.mean(x) for x in per_model.values()]  # one number per model, so orders don't outvote
         borda = sum(picks - v["top"].index(cid) for v in verdicts if cid in v["top"][:picks])
         rows.append({"id": cid, "story": c["story"], "type": c["type"], "company": c.get("company"),
-                     "overall": round(statistics.mean(overall), 2), "spread": max(overall) - min(overall),
+                     "overall": round(statistics.mean(overall), 2), "spread": round(max(overall) - min(overall), 2),
+                     "order_spread": round(max(max(x) - min(x) for x in per_model.values()), 2),
                      "borda": borda, "votes": sum(cid in v["top"][:picks] for v in verdicts),
                      "lineup_votes": sum(cid in (v.get("lineup") or {}).get("picks", []) for v in verdicts),
                      "criteria": {k: round(statistics.mean(s[k] for s in got), 2) for k in CRITERIA},
@@ -209,11 +218,12 @@ def main() -> None:
     ap.add_argument("cmd", choices=["prepare", "aggregate", "pairs", "settle"])
     ap.add_argument("paths", nargs="+", type=Path)
     ap.add_argument("--judges", type=int, default=3)
+    ap.add_argument("--orders", type=int, default=2, help="shuffled orderings per judge model")
     ap.add_argument("--picks", type=int, default=5)
     ap.add_argument("--width", type=int, default=2)
     args = ap.parse_args()
     if args.cmd == "prepare":
-        prepare(args.paths[0], args.paths[1], args.judges, args.picks)
+        prepare(args.paths[0], args.paths[1], args.judges, args.picks, args.orders)
     elif args.cmd == "aggregate":
         aggregate(args.paths[0], args.picks)
     elif args.cmd == "pairs":
