@@ -114,6 +114,11 @@ def _whisper(url: str, stem: Path) -> str | None:
     cli = shutil.which("whisper-cli")
     if not cli or not WHISPER_MODEL.exists():
         return None
+    lang = subprocess.run(["yt-dlp", "--skip-download", "--print", "%(language)s", url],
+                          capture_output=True, text=True).stdout.strip()
+    if lang not in ("", "NA", "None") and not lang.startswith("en"):  # the model is English-only; other audio comes out as garbage
+        log(f"youtube: {url} is in '{lang}', not transcribing")
+        return None
     audio = stem.with_suffix(".wav")
     subprocess.run(["yt-dlp", "-f", "ba", "-x", "--audio-format", "wav", "--postprocessor-args",
                     "ffmpeg:-ar 16000 -ac 1", "-o", str(stem.with_suffix(".%(ext)s")), url], capture_output=True)

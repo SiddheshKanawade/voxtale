@@ -28,3 +28,8 @@ episodes/*/chatter/
 
 # Local speech-to-text model for chatter.py transcripts (downloaded, ~150 MB)
 models/
+
+# Research working files (scores.json and research.md are the record)
+episodes/*/web/
+episodes/*/verify/
+episodes/*/judge/
