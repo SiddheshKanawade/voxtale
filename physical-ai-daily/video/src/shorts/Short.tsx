@@ -172,36 +172,46 @@ const Stack: React.FC<{ items: { src: Media; label?: string }[]; credit?: string
   );
 };
 
+// Text cards fill the media band, centred, so a text beat never leaves a big empty stage (QA of the first Shorts).
+const Band: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
+  <div style={{ position: "absolute", left: SAFE.left, right: SAFE.right, top: MEDIA.top, height: MEDIA.height, display: "flex",
+    flexDirection: "column", justifyContent: "center", ...style }}>{children}</div>
+);
+
 const Kinetic: React.FC<{ text: string; sub?: string }> = ({ text, sub }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const inn = spring({ frame, fps, config: { damping: 14 } });
+  const size = text.length <= 18 ? 132 : text.length <= 32 ? 112 : text.length <= 48 ? 96 : 82;
   return (
-    <div style={{ position: "absolute", left: SAFE.left, right: SAFE.right, top: MEDIA.top + 120, transform: `scale(${0.9 + 0.1 * inn})`, opacity: inn }}>
-      <div style={{ fontSize: 96, fontWeight: 900, lineHeight: 1.02, letterSpacing: -2 }}>{text}</div>
-      {sub && <div style={{ fontSize: 44, marginTop: 26, color: C.dim, fontWeight: 600 }}>{sub}</div>}
-    </div>
+    <Band style={{ transform: `scale(${0.92 + 0.08 * inn})`, opacity: inn }}>
+      <div style={{ width: 120, height: 14, borderRadius: 7, background: current.light ? BRAND.red : BRAND.yellow, marginBottom: 40 }} />
+      <div style={{ fontSize: size, fontWeight: 900, lineHeight: 1.02, letterSpacing: -2 }}>{text}</div>
+      {sub && <div style={{ fontSize: 52, marginTop: 34, color: C.dim, fontWeight: 600, lineHeight: 1.2 }}>{sub}</div>}
+    </Band>
   );
 };
 
+// Numbers appear at their final value with a pop: a count-up shows wrong in-between values (e.g. "$0.00M"), which
+// a viewer can screenshot or misread.
 const Stat: React.FC<{ items: { to: number; prefix?: string; suffix?: string; label: string; decimals?: number }[] }> = ({ items }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const two = items.length > 1;
   return (
-    <div style={{ position: "absolute", left: SAFE.left, right: SAFE.right, top: MEDIA.top + 60, display: "flex", flexDirection: "column", gap: 54 }}>
+    <Band style={{ gap: two ? 90 : 0 }}>
       {items.slice(0, 2).map((it, i) => {
-        const p = spring({ frame: frame - i * 12, fps, config: { damping: 20 }, durationInFrames: 30 });
-        const val = (it.to * p).toFixed(it.decimals ?? 0);
+        const p = spring({ frame: frame - i * 12, fps, config: { damping: 12, mass: 0.6 } });
         return (
-          <div key={i}>
-            <div style={{ fontSize: 170, fontWeight: 900, letterSpacing: -4, color: current.light ? BRAND.red : BRAND.yellow, lineHeight: 1 }}>
-              {it.prefix ?? ""}{val}{it.suffix ?? ""}
+          <div key={i} style={{ opacity: Math.min(1, p * 1.5), transform: `scale(${0.85 + 0.15 * p})`, transformOrigin: "left center" }}>
+            <div style={{ fontSize: two ? 190 : 250, fontWeight: 900, letterSpacing: -5, color: current.light ? BRAND.red : BRAND.yellow, lineHeight: 1 }}>
+              {it.prefix ?? ""}{it.to.toFixed(it.decimals ?? 0)}{it.suffix ?? ""}
             </div>
-            <div style={{ fontSize: 44, fontWeight: 700, marginTop: 8 }}>{it.label}</div>
+            <div style={{ fontSize: 52, fontWeight: 700, marginTop: 14, lineHeight: 1.2 }}>{it.label}</div>
           </div>
         );
       })}
-    </div>
+    </Band>
   );
 };
 
@@ -225,8 +235,12 @@ const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
     <div style={{ position: "absolute", left: SAFE.left, right: SAFE.right, top: MEDIA.top + MEDIA.height + 22, display: "flex", justifyContent: "center" }}>
       <div style={{ background: "rgba(0,0,0,0.82)", borderRadius: 16, padding: "14px 26px", fontSize: 62, fontWeight: 800,
         letterSpacing: -0.5, textAlign: "center", lineHeight: 1.15 }}>
-        {chunk.map((i) => (
-          <span key={i} style={{ color: i === active ? BRAND.yellow : "#f5f4f2", marginRight: 14 }}>{words[i].text}</span>
+        {/* Real spaces between words (not margins), so a long group can wrap inside the safe area. */}
+        {chunk.map((i, k) => (
+          <React.Fragment key={i}>
+            {k > 0 && " "}
+            <span style={{ color: i === active ? BRAND.yellow : "#f5f4f2" }}>{words[i].text}</span>
+          </React.Fragment>
         ))}
       </div>
     </div>

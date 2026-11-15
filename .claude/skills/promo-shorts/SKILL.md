@@ -1,6 +1,6 @@
 ---
 name: promo-shorts
-description: Make 9:16 promotional YouTube Shorts for a finished Pixels2Actions episode (project physical-ai-daily) — pick the 2–3 strongest stories, write a fresh 20–45 s script per Short (hook on frame 0, one open question, the payoff, one call to action to the full episode), reuse the episode's verified facts and captured visuals, voice and render with tools/render_short.sh in light and dark, and hand off titles, descriptions and the Related-video setting. Use when the user asks for Shorts, promos or vertical cuts of an episode.
+description: Make 9:16 promotional YouTube Shorts for a finished Pixels2Actions episode (project physical-ai-daily) — make 3–5 Shorts from the strongest stories (a strong story may get two), write a fresh 20–45 s script per Short (hook on frame 0, one open question, the payoff, one call to action to the full episode), reuse the episode's verified facts and captured visuals, voice and render with tools/render_short.sh in light and dark, and hand off titles, descriptions and the Related-video setting. Use when the user asks for Shorts, promos or vertical cuts of an episode.
 ---
 
 # Promotional Shorts (Pixels2Actions)
@@ -28,15 +28,16 @@ clickable path to the episode is the **Related video** link under the channel ha
 descriptions and comments aren't clickable). So: hook for Stayed-to-watch, retain for view duration, reward and one
 CTA for Related-video clicks.
 
-## 1. Pick 2–3 stories (user's choice: top 2–3 per episode)
+## 1. Pick 3–5 Shorts (user, 2026-11-15: more posting helps)
 
-From the episode's five, pick the stories with:
+Make 3–5 Shorts per episode. A story worth it may get **two** Shorts, each with its own hook and angle (e.g. the
+result, and how it works), never the same script twice. From the episode's stories, favour those with:
 1. a **concrete first frame**: a robot doing the thing, a striking image, a number. Real subjects beat screenshots
    and title cards (references: every winner opened on the payoff; screenshots and title slides were losers);
 2. a **visible puzzle**: a question the viewer can see and that the story answers;
 3. at least one **learning** story (the channel's rule: learning over knowing).
 
-One story per Short. Never a roundup ("so many updates this week…" was among the worst references).
+One story per Short (two Shorts may share a story; one Short never covers two). Never a roundup ("so many updates this week…" was among the worst references).
 
 ## 2. Write the script (`shorts/<slug>/episode.json`)
 
@@ -56,6 +57,9 @@ faster, enthusiastic speech held learners).
 **Sourcing (HARD):** every fact and number comes from the episode's `research.md` quotes or its captured pages,
 nothing generated. Numbers spelled as words in narration, digits on screen. The CTA's promise must be true of the
 episode ("what we still don't know" only if the episode covers it).
+
+**Voice:** edge-tts `en-US-AndrewNeural` (user, 2026-11-15: "Andrew's voice is good for this"). If a script runs long,
+voice it faster with `"direct": [["hook", narration, 0]]` and `VOICE_STRENGTH=2` rather than cutting the payoff.
 
 **Fields:** copy the episode's `design`, `voice`/`tts`, `date`. Add top-level `"hook"` (≤ ~12 words; wrap one key
 word in `*asterisks*` for the accent colour) and `"cta"` (end-card line). One segment `{"id": "short", "kind":
