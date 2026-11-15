@@ -24,6 +24,7 @@ echo "contact sheet: $EP/qa/contact_sheet.png"
 
 npx remotion render src/index.ts Episode "$EP/out/$NAME.raw.mp4" --props="$EP/props.json" --public-dir="$EP" --concurrency=4
 # YouTube normalizes to about -14 LUFS; master there so narration isn't turned up with added noise.
-ffmpeg -v error -y -i "$EP/out/$NAME.raw.mp4" -c:v copy -af "loudnorm=I=-14:TP=-1.5:LRA=11" -c:a aac -b:a 192k "$EP/out/$NAME.mp4"
+# TP -2 (not -1.5): AAC encoding adds ~0.2-0.5 dB of true peak after loudnorm, and the target is <= -1.5 dBTP.
+ffmpeg -v error -y -i "$EP/out/$NAME.raw.mp4" -c:v copy -af "loudnorm=I=-14:TP=-2:LRA=11" -c:a aac -b:a 192k "$EP/out/$NAME.mp4"
 rm "$EP/out/$NAME.raw.mp4"
 echo "final: $EP/out/$NAME.mp4"

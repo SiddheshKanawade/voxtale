@@ -66,15 +66,17 @@ def prosody_args(style: str) -> tuple[str, str]:
     return f"{BASE_RATE + STRENGTH * rate:+.0f}%", f"{STRENGTH * pitch * VOICE_F0 / 100:+.0f}Hz"
 
 
-async def synth(text: str, voice: str, out: Path, rate: str = "+0%", pitch: str = "+0Hz", attempts: int = 10) -> list[dict]:
-    # The edge-tts service intermittently returns no audio; retry with backoff.
+async def synth(text: str, voice: str, out: Path, rate: str = "+0%", pitch: str = "+0Hz", attempts: int = 40) -> list[dict]:
+    # The edge-tts service intermittently returns no audio or stalls (worse with several episodes voicing at once);
+    # time out and retry with capped backoff.
     for i in range(attempts):
         try:
-            return await synth_once(text, voice, out, rate, pitch)
-        except edge_tts.exceptions.NoAudioReceived:
+            return await asyncio.wait_for(synth_once(text, voice, out, rate, pitch), timeout=60)
+        except (edge_tts.exceptions.NoAudioReceived, asyncio.TimeoutError):
             if i == attempts - 1:
                 raise
-            await asyncio.sleep(3 + 2 * i)
+            print(f"  retry {i + 1}: {text[:40]}", flush=True)
+            await asyncio.sleep(min(4 + 2 * i, 20))
 
 
 async def synth_once(text: str, voice: str, out: Path, rate: str, pitch: str) -> list[dict]:
@@ -246,7 +248,15 @@ async def main(ep_dir: Path) -> None:
             if ep.get("tts") == "elevenlabs":
                 words = eleven_beat(beat, ep["voice"], ep.get("model", "eleven_v3"), out)
             else:
-                words = await voice_beat(beat, ep["voice"], out)
+                # Cache edge beats by voice and text, so a rerun only re-voices edited or failed beats.
+                key = hashlib.sha1(f"{ep['voice']}|{json.dumps(beat.get('direct'))}|{beat['narration']}".encode()).hexdigest()[:16]
+                cw, cj = ep_dir / "audio" / f".edge_{key}.wav", ep_dir / "audio" / f".edge_{key}.json"
+                if cw.exists() and cj.exists():
+                    words = json.loads(cj.read_text())
+                else:
+                    words = await voice_beat(beat, ep["voice"], cw)
+                    cj.write_text(json.dumps(words))
+                out.write_bytes(cw.read_bytes())
             beat["words"] = restore_punctuation(words, beat["narration"])
             beat["audio"] = f"audio/{out.name}"
             last = i == len(seg["beats"]) - 1
