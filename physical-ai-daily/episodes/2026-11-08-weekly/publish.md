@@ -6,10 +6,10 @@ Chapter times come from props.json, using the `timeline()` in video/src/theme.ts
 
 ## Episode
 
-**Title** (64 chars)
+**Title** (44 chars)
 
 ```
-Robotics this week: Apple's HALO humanoid, Zipline, Agility, ABB
+Apple's HALO humanoid, Zipline, Agility, ABB
 ```
 
 **Description**
@@ -77,7 +77,7 @@ Agility Robotics, which makes the Digit humanoid, began trading on the Nasdaq. T
 Sources: https://www.agilityrobotics.com/content/agility-becomes-first-u-s-publicly-listed-pure-play-humanoid-robotics-company-begins-trading-today-on-nasdaq-as-aglt · https://www.therobotreport.com/agility-robotics-begins-trading-on-nasdaq/
 Video: Agility Robotics, https://www.youtube.com/watch?v=oyq9BOwK5XI
 ```
-Set Related video → Robotics this week: Apple's HALO humanoid, Zipline, Agility, ABB
+Set Related video → Apple's HALO humanoid, Zipline, Agility, ABB
 
 ### halo-how-it-trains
 
@@ -89,7 +89,7 @@ Apple researchers trained a humanoid in computer-generated homes, with nobody st
 Sources: https://arxiv.org/abs/2611.06908 · https://apple-aiml-research.github.io/ml-halo/
 Video: Apple, https://apple-aiml-research.github.io/ml-halo/
 ```
-Set Related video → Robotics this week: Apple's HALO humanoid, Zipline, Agility, ABB
+Set Related video → Apple's HALO humanoid, Zipline, Agility, ABB
 
 ### halo-sim-homes
 
@@ -101,7 +101,7 @@ Apple's HALO humanoid practiced only in computer-made homes, then succeeded on 9
 Sources: https://arxiv.org/abs/2611.06908 · https://apple-aiml-research.github.io/ml-halo/
 Video: Apple, https://apple-aiml-research.github.io/ml-halo/
 ```
-Set Related video → Robotics this week: Apple's HALO humanoid, Zipline, Agility, ABB
+Set Related video → Apple's HALO humanoid, Zipline, Agility, ABB
 
 ### robocolosseum-humanoid
 
@@ -113,4 +113,4 @@ RoboColosseum ran blind head-to-head tests of robot AI on real robots at many si
 Sources: https://arxiv.org/abs/2611.02497 · https://robocolosseum.ai/
 Video: RoboColosseum, https://robocolosseum.ai/
 ```
-Set Related video → Robotics this week: Apple's HALO humanoid, Zipline, Agility, ABB
+Set Related video → Apple's HALO humanoid, Zipline, Agility, ABB

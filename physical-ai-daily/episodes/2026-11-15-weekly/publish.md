@@ -6,10 +6,10 @@ Chapter times come from props.json, using the `timeline()` in video/src/theme.ts
 
 ## Episode
 
-**Title** (70 chars)
+**Title** (50 chars)
 
 ```
-Robotics this week: NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
+NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
 ```
 
 **Description**
@@ -74,7 +74,7 @@ NVIDIA's GR00T 2 learned from a large collection of videos of people at work. Sh
 Sources: https://research.nvidia.com/labs/gear/gr00t-2/ · https://x.com/nvidia/status/2121319866712076769
 Video: NVIDIA, https://research.nvidia.com/labs/gear/gr00t-2/
 ```
-Set Related video → Robotics this week: NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
+Set Related video → NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
 
 ### gemini-mercedes-line
 
@@ -86,7 +86,7 @@ In a proof of concept, Google DeepMind's robot AI ran Apptronik humanoids that s
 Source: https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/
 Video: Google DeepMind, https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/
 ```
-Set Related video → Robotics this week: NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
+Set Related video → NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
 
 ### supermimic-flips-imagination
 
@@ -98,7 +98,7 @@ UC Berkeley's SuperMimic first learns how the robot's body moves, then practices
 Sources: https://arxiv.org/abs/2610.28480 · https://supermimic.github.io
 Video: Liao et al., https://supermimic.github.io
 ```
-Set Related video → Robotics this week: NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
+Set Related video → NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
 
 ### supermimic-one-gpu
 
@@ -110,7 +110,7 @@ After three hours on a single GPU, UC Berkeley's SuperMimic beat a leading contr
 Sources: https://arxiv.org/abs/2610.28480 · https://supermimic.github.io
 Video: Liao et al., https://supermimic.github.io
 ```
-Set Related video → Robotics this week: NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
+Set Related video → NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
 
 ### cybercab-catch
 
@@ -122,4 +122,4 @@ Tesla is inviting select buyers to order a Cybercab. Teslarati reports it won't 
 Sources: https://x.com/robotaxi/status/2121384435241402737 · https://www.teslarati.com/tesla-cybercab-arrives-steep-ownership-fine-print/
 Photo: Not a Tesla App, https://www.notateslaapp.com/news/4991/tesla-robotaxi-now-runs-247-in-every-city
 ```
-Set Related video → Robotics this week: NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
+Set Related video → NVIDIA GR00T 2, Google at Mercedes, Tesla Cybercab
