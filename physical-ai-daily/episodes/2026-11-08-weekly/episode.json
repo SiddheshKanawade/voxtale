@@ -1048,5 +1048,167 @@
         }
       ]
     }
+  ],
+  "thumbnails": [
+    {
+      "layout": "evidence",
+      "lines": [
+        "Never saw a",
+        "*real home*"
+      ],
+      "image": "assets/halo_sit_3s.png",
+      "focus": "60% 15%",
+      "receipt": {
+        "src": "assets/halo_abs.png",
+        "source": "APPLE (ARXIV PAPER)",
+        "width": 560,
+        "crop": {
+          "x": 0.2044,
+          "y": 0.4363,
+          "w": 0.3,
+          "h": 0.0977
+        },
+        "mark": {
+          "x": 0.4486,
+          "y": 0.5276,
+          "w": 0.3694,
+          "h": 0.2959
+        }
+      },
+      "zoom": 1.1
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Taught in",
+        "*fake homes*"
+      ],
+      "image": "assets/halo_push_3s.png",
+      "focus": "22% 40%",
+      "receipt": {
+        "src": "assets/halo_abs_homes.png",
+        "source": "APPLE (ARXIV PAPER)",
+        "width": 600,
+        "crop": {
+          "x": 0.2423,
+          "y": 0.4706,
+          "w": 0.36,
+          "h": 0.0611
+        },
+        "mark": {
+          "x": 0.1147,
+          "y": 0.2942,
+          "w": 0.7706,
+          "h": 0.4115
+        }
+      },
+      "zoom": 1.2
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Humanoid test:",
+        "*0 of 5 done*"
+      ],
+      "image": "assets/rc_trailer_10s.png",
+      "focus": "45% 15%",
+      "receipt": {
+        "src": "assets/rc_g1.png",
+        "source": "ROBOCOLOSSEUM (ARXIV)",
+        "width": 600,
+        "crop": {
+          "x": 0.1032,
+          "y": 0.4706,
+          "w": 0.38,
+          "h": 0.0977
+        },
+        "mark": {
+          "x": 0.1266,
+          "y": 0.1765,
+          "w": 0.7467,
+          "h": 0.2959
+        }
+      },
+      "zoom": 1.35
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "$1.5 billion",
+        "*for drones*"
+      ],
+      "image": "assets/zip_photo.png",
+      "focus": "50% 50%",
+      "receipt": {
+        "src": "assets/zip_raise.png",
+        "source": "ZIPLINE",
+        "width": 560,
+        "crop": {
+          "x": 0.5343,
+          "y": 0.4536,
+          "w": 0.3,
+          "h": 0.0878
+        },
+        "mark": {
+          "x": 0.3818,
+          "y": 0.1987,
+          "w": 0.2365,
+          "h": 0.3054
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "China blocks",
+        "*a robot deal*"
+      ],
+      "image": "assets/abb_arms.png",
+      "focus": "50% 10%",
+      "receipt": {
+        "src": "assets/sb_ban.png",
+        "source": "SOFTBANK",
+        "width": 560,
+        "crop": {
+          "x": 0.3247,
+          "y": 0.5441,
+          "w": 0.3,
+          "h": 0.0568
+        },
+        "mark": {
+          "x": 0.2982,
+          "y": 0.318,
+          "w": 0.4036,
+          "h": 0.3639
+        }
+      },
+      "zoom": 1.2
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Humanoid maker",
+        "*goes public*"
+      ],
+      "image": "assets/ag_digit.png",
+      "focus": "50% 30%",
+      "receipt": {
+        "src": "assets/ag_ticker.png",
+        "source": "AGILITY ROBOTICS",
+        "width": 560,
+        "crop": {
+          "x": 0.386,
+          "y": 0.4718,
+          "w": 0.3,
+          "h": 0.0952
+        },
+        "mark": {
+          "x": 0.1898,
+          "y": 0.1817,
+          "w": 0.6204,
+          "h": 0.311
+        }
+      }
+    }
   ]
 }

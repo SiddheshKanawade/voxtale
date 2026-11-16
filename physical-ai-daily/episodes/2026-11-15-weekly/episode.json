@@ -1024,5 +1024,164 @@
         }
       ]
     }
+  ],
+  "thumbnails": [
+    {
+      "layout": "evidence",
+      "lines": [
+        "Learns by",
+        "*watching us*"
+      ],
+      "image": "assets/g_vpop_20s.png",
+      "focus": "80% 40%",
+      "receipt": {
+        "src": "assets/g_q_data.png",
+        "source": "NVIDIA RESEARCH",
+        "width": 560,
+        "crop": {
+          "x": 0.5028,
+          "y": 0.4586,
+          "w": 0.29,
+          "h": 0.0879
+        },
+        "mark": {
+          "x": 0.1365,
+          "y": 0.1984,
+          "w": 0.727,
+          "h": 0.28
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Car factory test",
+        "*96% success*"
+      ],
+      "image": "assets/dm_merc_36s.png",
+      "focus": "55% 35%",
+      "receipt": {
+        "src": "assets/d_q_poc.png",
+        "source": "GOOGLE DEEPMIND",
+        "width": 560,
+        "crop": {
+          "x": 0.4239,
+          "y": 0.4586,
+          "w": 0.22,
+          "h": 0.1136
+        },
+        "mark": {
+          "x": 0.3028,
+          "y": 0.6517,
+          "w": 0.3945,
+          "h": 0.1993
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "$299 a month",
+        "*or it won't go*"
+      ],
+      "image": "assets/t_photo_nta.png",
+      "focus": "30% 50%",
+      "receipt": {
+        "src": "assets/t_q_sub2.png",
+        "source": "TESLARATI",
+        "width": 560,
+        "crop": {
+          "x": 0.3113,
+          "y": 0.4175,
+          "w": 0.24,
+          "h": 0.1134
+        },
+        "mark": {
+          "x": 0.3471,
+          "y": 0.1493,
+          "w": 0.3058,
+          "h": 0.2455
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Coding AI",
+        "*runs robots?*"
+      ],
+      "image": "assets/c_v_1.5s.png",
+      "focus": "55% 50%",
+      "receipt": {
+        "src": "assets/c_q_skill.png",
+        "source": "ANTHROPIC",
+        "width": 560,
+        "crop": {
+          "x": 0.2659,
+          "y": 0.4563,
+          "w": 0.24,
+          "h": 0.0927
+        },
+        "mark": {
+          "x": 0.2244,
+          "y": 0.5215,
+          "w": 0.5512,
+          "h": 0.2913
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "7 days →",
+        "*3 hours*"
+      ],
+      "image": "assets/m_vhero_6s.png",
+      "focus": "50% 45%",
+      "zoom": 1.15,
+      "receipt": {
+        "src": "assets/m_q_abs.png",
+        "source": "UC BERKELEY PAPER",
+        "width": 560,
+        "crop": {
+          "x": 0.1614,
+          "y": 0.4497,
+          "w": 0.28,
+          "h": 0.103
+        },
+        "mark": {
+          "x": 0.2711,
+          "y": 0.5169,
+          "w": 0.4579,
+          "h": 0.3167
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Humanoid at",
+        "*Mercedes?*"
+      ],
+      "image": "assets/dm_merc_12s.png",
+      "focus": "35% 40%",
+      "receipt": {
+        "src": "assets/d_q_96.png",
+        "source": "GOOGLE DEEPMIND",
+        "width": 560,
+        "crop": {
+          "x": 0.3661,
+          "y": 0.4586,
+          "w": 0.22,
+          "h": 0.0879
+        },
+        "mark": {
+          "x": 0.3097,
+          "y": 0.1984,
+          "w": 0.3805,
+          "h": 0.28
+        }
+      }
+    }
   ]
 }

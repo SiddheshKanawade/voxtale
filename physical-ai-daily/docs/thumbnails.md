@@ -58,3 +58,24 @@ More research:
 curiosity gap the video closes (the "call to watch"), and a tilted **receipt**: a crop of the source stating the claim,
 with the number highlighted and a "SOURCE: ..." tag. Round-1 layouts stay in the code but are no longer the default.
 The working rules live in the `youtube-thumbnails` skill (`.claude/skills/youtube-thumbnails/SKILL.md`).
+
+## Round 3: weekly episodes 2026-11-01, -08, -15 (2026-11-16)
+
+Research re-run before designing. New or sharper findings:
+
+| Finding | Source | Strength | Effect on this run |
+|---|---|---|---|
+| YouTube Help: the Studio feature is now "A/B test titles & thumbnails": up to 3 options, thumbnail-only, title-only or both; the winner is picked on **watch time**, and with no clear winner the **first** uploaded option stays. Desktop only; if any thumbnail is under 1280×720 all are downscaled to 480p; changing the title mid-test stops it | [YouTube Help](https://support.google.com/youtube/answer/13861714) | Official docs | Upload the pick first; all variants rendered at 1280×720 |
+| Misleading thumbnails drew ~14% more clicks than accurate ones (2,843 videos, 8 countries), framed by the authors as eroding trust | [ThumbnailTruth, arXiv:2509.04714](https://arxiv.org/abs/2509.04714) | Detection paper, not a trust experiment | Confirms the honesty rule: a click lift exists, so the rule has to be enforced, not assumed |
+| No rigorous evidence that short text hurts CTR; vendor claims go both ways, and "mystery" videos may do better with less text | [thumbnailtest](https://thumbnailtest.com/guides/text-on-youtube-thumbnail/), vendor blogs | Weak | Keep 2 short lines; no change |
+| Faces stay the most consistent claim across 2026 vendor data; percentage lifts disagree and are mostly unverifiable | [Mark Studios review](https://www.markstudios.com/research/video-thumbnail-and-ctr-statistics) | Weak / correlational | No change |
+
+**Audience rule (user, 2026-11-16):** viewers have little or no physical-AI background. Hooks use plain words
+(no model names, "VLA", "GPU", "zero-shot"), inform rather than sell (the round-2 "96%... BUT?" teaser was rephrased to
+"Car factory test / 96% success"), and the receipt shows the source sentence, including the caveat when it is the
+highlighted part (e.g. "proof-of-concept").
+
+**Tooling changes:** `Thumbnail.tsx` gained `stamp` (a label on the subject image; required for generated footage such as
+Genie 4, e.g. "AI-GENERATED (GENIE 4)") and `receipt.width` (wider card for tight crops). Receipt crops were computed
+from macOS Vision OCR of each capture: a window of ~0.25-0.4 page widths centred on the key phrase, with a `mark` box
+around the number, so the words read at full size (the full-width crops of round 2 came out at ~14 px text).

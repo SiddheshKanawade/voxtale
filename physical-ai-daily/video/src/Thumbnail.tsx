@@ -23,18 +23,21 @@ export type ThumbProps = {
   stat?: string;          // the big number, for "stat"
   label?: string;         // small chip above the words, e.g. "NEWS"
   receipt?: Receipt;      // "evidence" layout: the proof card
+  stamp?: string;         // label on the subject image, e.g. "AI-GENERATED": required when the image is generated footage
 };
 
 // A crop of a captured source page. Fractions are of the full image; mark (optional) is a highlighter box, in fractions
 // of the crop, for pages captured without one. aspect = image height / width (tools/thumbnails.py fills it in).
 export type Receipt = {
   src: string; source: string; aspect?: number;
+  width?: number; // card width in px (default 560): a wider card makes a tight crop's words bigger
   crop: { x: number; y: number; w: number; h: number };
   mark?: { x: number; y: number; w: number; h: number };
 };
 
-const RECEIPT_W = 560;
+const RECEIPT_DEFAULT_W = 560;
 const ReceiptCard: React.FC<{ r: Receipt; light?: boolean }> = ({ r, light }) => {
+  const RECEIPT_W = r.width ?? RECEIPT_DEFAULT_W;
   const imgW = RECEIPT_W / r.crop.w;
   const imgH = imgW * (r.aspect ?? 0.5625);
   const h = r.crop.h * imgH;
@@ -57,7 +60,7 @@ const words = (line: string, accent: string) =>
   line.split(/(\*[^*]+\*)/).map((part, i) =>
     part.startsWith("*") ? <span key={i} style={{ color: accent }}>{part.slice(1, -1)}</span> : <span key={i}>{part}</span>);
 
-export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, image2, focus = "50% 50%", zoom = 1, stat, label, receipt }) => {
+export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, image2, focus = "50% 50%", zoom = 1, stat, label, receipt, stamp }) => {
   const look = applyDesign(design);
   const ink = look.light ? C.ink : "#ffffff";
   const accent = look.light ? BRAND.red : BRAND.yellow;
@@ -121,6 +124,9 @@ export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, 
           <div style={{ position: "absolute", left: 112, right: 40, top: 40 }}>{text(fit(104, 1120))}</div>
         </>
       )}
+      {/* a stamp on the subject (top-right, clear of the duration) so generated footage is never passed off as real */}
+      {stamp && <div style={{ position: "absolute", right: 28, top: 28, background: "rgba(20,20,22,0.82)", color: "#fff", fontFamily: FONT,
+        fontWeight: 800, fontSize: 30, letterSpacing: 2, padding: "8px 16px", borderRadius: 8, border: `3px solid ${BRAND.yellow}` }}>{stamp}</div>}
       {/* top-left: YouTube draws the duration over the bottom-right corner */}
       <div style={{ position: "absolute", left: 28, top: 28 }}><LogoMark size={56} /></div>
     </AbsoluteFill>

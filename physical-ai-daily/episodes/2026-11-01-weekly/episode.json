@@ -1107,5 +1107,166 @@
         }
       ]
     }
+  ],
+  "thumbnails": [
+    {
+      "layout": "evidence",
+      "lines": [
+        "Robot practice",
+        "*in AI worlds?*"
+      ],
+      "image": "assets/g_apollo_sim.png",
+      "focus": "50% 40%",
+      "stamp": "AI-GENERATED (GENIE 4)",
+      "receipt": {
+        "src": "assets/g_robots.png",
+        "source": "GOOGLE DEEPMIND",
+        "width": 560,
+        "crop": {
+          "x": 0.4758,
+          "y": 0.4302,
+          "w": 0.26,
+          "h": 0.1162
+        },
+        "mark": {
+          "x": 0.247,
+          "y": 0.3896,
+          "w": 0.506,
+          "h": 0.2216
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Pick up: 17/18",
+        "*Plug in: 0/11*"
+      ],
+      "image": "assets/s_clip_pnp_last.png",
+      "focus": "85% 70%",
+      "zoom": 1.3,
+      "receipt": {
+        "src": "assets/s_plug.png",
+        "source": "ARXIV PAPER",
+        "width": 580,
+        "crop": {
+          "x": 0.4182,
+          "y": 0.5028,
+          "w": 0.3,
+          "h": 0.0875
+        },
+        "mark": {
+          "x": 0.3563,
+          "y": 0.524,
+          "w": 0.2875,
+          "h": 0.2766
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Shown once.",
+        "*Learned it?*"
+      ],
+      "image": "assets/v_m0_18s.png",
+      "focus": "55% 50%",
+      "receipt": {
+        "src": "assets/m_one.png",
+        "source": "MACHENTA",
+        "width": 620,
+        "crop": {
+          "x": 0.3452,
+          "y": 0.4407,
+          "w": 0.4,
+          "h": 0.1268
+        },
+        "mark": {
+          "x": 0.0621,
+          "y": 0.3767,
+          "w": 0.8758,
+          "h": 0.2648
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Toyota to build",
+        "*Waymo robotaxis*"
+      ],
+      "image": "assets/t_car.png",
+      "focus": "40% 55%",
+      "receipt": {
+        "src": "assets/t_takaoka.png",
+        "source": "TOYOTA",
+        "width": 560,
+        "crop": {
+          "x": 0.1101,
+          "y": 0.4586,
+          "w": 0.3,
+          "h": 0.0879
+        },
+        "mark": {
+          "x": 0.034,
+          "y": 0.5249,
+          "w": 0.2244,
+          "h": 0.2766
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Diggers that",
+        "*drive themselves*"
+      ],
+      "image": "assets/b_photo.png",
+      "focus": "60% 50%",
+      "receipt": {
+        "src": "assets/b_kit.png",
+        "source": "TECHCRUNCH",
+        "width": 560,
+        "crop": {
+          "x": 0.2574,
+          "y": 0.518,
+          "w": 0.3,
+          "h": 0.0878
+        },
+        "mark": {
+          "x": 0.3539,
+          "y": 0.1987,
+          "w": 0.2923,
+          "h": 0.2803
+        }
+      }
+    },
+    {
+      "layout": "evidence",
+      "lines": [
+        "Not filmed.",
+        "*Drawn by AI.*"
+      ],
+      "image": "assets/v_g0_3s.png",
+      "focus": "55% 50%",
+      "stamp": "AI-GENERATED (GENIE 4)",
+      "receipt": {
+        "src": "assets/g_robots.png",
+        "source": "GOOGLE DEEPMIND",
+        "width": 560,
+        "crop": {
+          "x": 0.4506,
+          "y": 0.4302,
+          "w": 0.3,
+          "h": 0.1162
+        },
+        "mark": {
+          "x": 0.243,
+          "y": 0.1452,
+          "w": 0.514,
+          "h": 0.1975
+        }
+      }
+    }
   ]
 }
