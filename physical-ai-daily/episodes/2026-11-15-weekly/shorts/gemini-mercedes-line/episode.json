@@ -83,5 +83,6 @@
       ]
     }
   ],
-  "speed": 1.175
+  "speed": 1.175,
+  "episodeThumb": "assets/episode_thumb.png"
 }

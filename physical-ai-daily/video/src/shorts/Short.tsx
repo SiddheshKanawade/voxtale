@@ -11,6 +11,7 @@ import { Beat, C, FONT, Media, Word } from "../theme";
 // the right edge (buttons) and the bottom ~22% (title, channel, related-video link). See the promo-shorts skill.
 export type ShortProps = {
   date: string; design?: string; hook: string; cta?: string; headline?: string; label?: string;
+  episodeThumb?: string; // the full episode's YouTube thumbnail: shown during the spoken CTA and on the end card
   segments: { id: string; beats: Beat[]; duration: number }[];
 };
 
@@ -19,7 +20,7 @@ const SAFE = { left: 64, right: 150, top: 150, bottom: 430 }; // px kept clear o
 const MEDIA = { top: 440, height: 940 }; // the picture band (ends at 1380; captions under it, clear of the bottom UI)
 export const END_S = 2.2; // end card hold after the last word
 
-export const Short: React.FC<ShortProps> = ({ hook, cta, headline, label, segments, design }) => {
+export const Short: React.FC<ShortProps> = ({ hook, cta, headline, label, segments, design, episodeThumb }) => {
   applyDesign(design);
   const { fps } = useVideoConfig();
   const beats = segments.flatMap((s) => s.beats);
@@ -31,13 +32,13 @@ export const Short: React.FC<ShortProps> = ({ hook, cta, headline, label, segmen
       <Backdrop kind="blueprint" />
       {beats.map((b, i) => (
         <Sequence key={i} from={Math.round(starts[i] * fps)} durationInFrames={Math.round(b.duration * fps)}>
-          <ShortScene beat={b} first={i === 0} />
+          {episodeThumb && i === beats.length - 1 ? <EpisodeCard src={episodeThumb} /> : <ShortScene beat={b} first={i === 0} />}
           <Audio src={staticFile(b.audio)} />
           <Captions words={b.words} />
         </Sequence>
       ))}
       <Sequence from={Math.round(total * fps)}>
-        <EndCard cta={cta ?? "The full story is in this week's episode: tap the link below"} />
+        <EndCard cta={cta ?? "The full story is in this week's episode: tap the link below"} thumb={episodeThumb} />
       </Sequence>
       <TopBar headline={headline} label={label} totalS={total + END_S} />
       <Hook text={hook} untilS={hookUntil(beats, starts, total)} />
@@ -262,10 +263,47 @@ const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
   );
 };
 
-const EndCard: React.FC<{ cta: string }> = ({ cta }) => {
+// The full episode's thumbnail, big and slightly tilted, so viewers recognise what the Related-video link (under the
+// channel name, the only tappable path) leads to. Used for the spoken CTA beat and the end card.
+const EpisodeThumb: React.FC<{ src: string; top: number }> = ({ src, top }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const inn = spring({ frame, fps, config: { damping: 14 } });
+  const w = W - SAFE.left - 40, h = Math.round(w * 9 / 16);
+  return (
+    <div style={{ position: "absolute", left: SAFE.left, top, width: w, height: h, borderRadius: 18, overflow: "hidden",
+      transform: `rotate(-2deg) scale(${0.92 + 0.08 * inn})`, opacity: inn, background: "#fff",
+      boxShadow: current.light ? "0 22px 50px rgba(31,32,35,0.25), 0 0 0 6px #fff" : "0 26px 60px rgba(0,0,0,0.65), 0 0 0 6px #fff" }}>
+      <Img src={staticFile(src)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+    </div>
+  );
+};
+
+const FullEpisode: React.FC<{ top: number }> = ({ top }) => (
+  <div style={{ position: "absolute", left: SAFE.left, right: SAFE.right, top, display: "flex", alignItems: "center", gap: 20 }}>
+    <span style={{ background: BRAND.red, color: "#fff", fontWeight: 900, fontSize: 46, padding: "10px 22px", borderRadius: 12 }}>FULL EPISODE</span>
+    <span style={{ fontSize: 64, fontWeight: 900, color: current.light ? BRAND.red : BRAND.yellow }}>↓</span>
+  </div>
+);
+
+const EpisodeCard: React.FC<{ src: string }> = ({ src }) => (
+  <>
+    <FullEpisode top={MEDIA.top + 40} />
+    <EpisodeThumb src={src} top={MEDIA.top + 170} />
+  </>
+);
+
+const EndCard: React.FC<{ cta: string; thumb?: string }> = ({ cta, thumb }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const inn = spring({ frame, fps, config: { damping: 14 } });
+  if (thumb) return (
+    <AbsoluteFill style={{ opacity: inn }}>
+      <div style={{ position: "absolute", top: MEDIA.top + 780, left: SAFE.left, right: SAFE.right, fontSize: 50, fontWeight: 800, lineHeight: 1.15 }}>{cta}</div>
+      <FullEpisode top={MEDIA.top + 40} />
+      <EpisodeThumb src={thumb} top={MEDIA.top + 170} />
+    </AbsoluteFill>
+  );
   return (
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", opacity: inn }}>
       <div style={{ position: "absolute", top: 560, left: SAFE.left, right: SAFE.right, display: "flex", flexDirection: "column", alignItems: "center", gap: 40 }}>
