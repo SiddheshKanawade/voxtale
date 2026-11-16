@@ -44,6 +44,8 @@ license isn't open source); `tools/link_skills.sh` sets up every skill on a new 
 skill, **this skill wins**: render with `tools/render.sh` and its QA steps (it renders on our say-so, without opening
 Studio first), and the frozen v1.0 format rules stand.
 
+**Read `physical-ai-daily/docs/feedback.md` first:** the user's open review notes that the next video must address.
+
 **The tools are starting points, not limits.** If one doesn't fit the job, change it or write your own script; a missing tool or option is never a reason to stop. Keep the data formats between steps and the rules intact (`physical-ai-daily/docs/tools.md`).
 
 **Other tools in the harness (optional; expect to use them rarely).** Besides the pipeline above you have:
