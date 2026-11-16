@@ -45,3 +45,6 @@ episodes/*/shorts/*/props.json
 # Shared render lock (tools/render_both.sh) and the compiled OCR helper (built from tools/ocr.swift)
 .render.lock/
 tools/ocr
+brand/thumbs/
+brand/banner_props.json
+brand/ChannelBanner.png

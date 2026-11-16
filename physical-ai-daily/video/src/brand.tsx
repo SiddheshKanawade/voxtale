@@ -21,6 +21,18 @@ export const LogoMark: React.FC<{ size: number; pixels?: number[]; arrow?: numbe
   </svg>
 );
 
+// Channel profile picture: YouTube crops it to a circle, so the tile's red fills the whole square and the pixels and
+// arrow sit centred (their bounding box is right of centre in the 64-unit tile) with room inside the circle.
+export const ChannelIcon: React.FC = () => (
+  <svg width="100%" height="100%" viewBox="0 0 64 64" style={{ display: "block" }}>
+    <rect width="64" height="64" fill={BRAND.red} />
+    <g transform="translate(32 32) scale(0.82) translate(-33.75 -32)">
+      {PIXELS.map((p, i) => <rect key={i} x={p.x} y={p.y} width="11" height="11" rx="2.2" fill={p.fill} />)}
+      <path d="M40 15.5 L56.5 32 L40 48.5 Z" fill="#fff" />
+    </g>
+  </svg>
+);
+
 export const Wordmark: React.FC<{ size: number; style?: React.CSSProperties }> = ({ size, style }) => (
   <span style={{ fontFamily: WORDMARK_FONT, fontWeight: 700, fontSize: size, letterSpacing: -size * 0.03, color: C.ink, ...style }}>
     {BRAND.name[0]}<span style={{ color: BRAND.red }}>{BRAND.name[1]}</span>{BRAND.name[2]}
