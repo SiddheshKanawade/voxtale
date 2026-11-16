@@ -14,6 +14,9 @@ ElevenLabs: with "tts": "elevenlabs" in episode.json, "voice" is an ElevenLabs v
 (the blind-test winner, docs/voice-research.md section 8). Each beat is one call on its narration, so pauses come from
 punctuation, not splices. Word timings come from the API's character timestamps. ELEVENLABS_API_KEY is read from the
 environment or the project's .env. Audio is cached per beat in audio/, so re-runs don't spend characters.
+
+Speed: an optional top-level "speed" (e.g. 1.175 for Shorts) time-stretches every beat after synthesis, with pitch
+kept and word timings scaled. It costs no TTS characters.
 """
 import base64
 import hashlib
@@ -227,6 +230,17 @@ def inline_media(ep_dir: Path, visual: dict) -> dict:
     return visual
 
 
+def speed_up(wav: Path, words: list[dict], factor: float) -> list[dict]:
+    """Time-stretch a voiced beat by `factor` (pitch kept, ffmpeg atempo) and scale its word timings to match.
+    Applied after synthesis, so it costs no TTS credits and the per-beat caches keep the original-speed audio."""
+    if abs(factor - 1) < 1e-3:
+        return words
+    tmp = wav.with_suffix(".speed.wav")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-af", f"atempo={factor}", str(tmp)], check=True)
+    tmp.replace(wav)
+    return [{**w, "start": round(w["start"] / factor, 3), "end": round(w["end"] / factor, 3)} for w in words]
+
+
 def check_clip(seg_id: str, i: int, beat: dict) -> None:
     """A clip is always credited on screen (checklist HARD 7.2); the credit comes from tools/clip.py's metadata."""
     v = beat["visual"]
@@ -257,6 +271,7 @@ async def main(ep_dir: Path) -> None:
                     words = await voice_beat(beat, ep["voice"], cw)
                     cj.write_text(json.dumps(words))
                 out.write_bytes(cw.read_bytes())
+            words = speed_up(out, words, float(ep.get("speed", 1)))
             beat["words"] = restore_punctuation(words, beat["narration"])
             beat["audio"] = f"audio/{out.name}"
             last = i == len(seg["beats"]) - 1

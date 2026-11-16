@@ -1,0 +1,98 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 1, 2026",
+  "design": "blueprint-light",
+  "voice": "cjVigY5qzO86Huf0OWal",
+  "hook": "Can a robot learn a new job from *one* demo?",
+  "cta": "How it learned this inside a computer: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Robots that learn from one demo",
+      "source": "machenta.com",
+      "sourceDate": "Oct 27, 2026",
+      "beats": [
+        {
+          "narration": "A new coworker can learn a task from seeing it once, but robots usually need hours or days of examples.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_demo.mp4"
+          },
+          "eleven_text": "[curious] A new coworker can learn a task from seeing it once, but robots usually need hours or days of examples."
+        },
+        {
+          "narration": "So can a robot learn a new job from just one demonstration?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_factory.mp4"
+          },
+          "eleven_text": "[excited] So can a robot learn a new job from just one demonstration?"
+        },
+        {
+          "narration": "A new company says yes: a person shows the robot a task once, then steps back.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_one.png",
+            "credit": "Source: machenta.com"
+          },
+          "eleven_text": "[excited] A new company says yes: a person shows the robot a task once, then steps back."
+        },
+        {
+          "narration": "And the robot does it on its own, with objects it has never seen.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_auto.mp4"
+          },
+          "eleven_text": "[excited] And the robot does it on its own, with objects it has never seen."
+        },
+        {
+          "narration": "In an hour-long test, its robots placed a block seventy-four times out of seventy-four.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "to": 74,
+                "suffix": "/74",
+                "label": "block placements in an hour"
+              }
+            ]
+          },
+          "eleven_text": "[excited] In an hour-long test, its robots placed a block seventy-four times out of seventy-four."
+        },
+        {
+          "narration": "If that holds up, teaching a robot becomes as quick as showing it once.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Teach a robot by showing it once",
+            "sub": "If it holds up · the company's claim"
+          },
+          "eleven_text": "[excited] If that holds up, teaching a robot becomes as quick as showing it once."
+        },
+        {
+          "narration": "These are the company's own numbers, on tasks it calls simple, and there's no paper yet.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_simple.png",
+            "credit": "Source: machenta.com",
+            "stamp": "Self-reported"
+          },
+          "eleven_text": "[thoughtful] These are the company's own numbers, on tasks it calls simple, and there's no paper yet."
+        },
+        {
+          "narration": "How it learned this inside a computer is in the full episode. Link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          },
+          "eleven_text": "[excited] How it learned this inside a computer is in the full episode. Link below."
+        }
+      ]
+    }
+  ],
+  "tts": "elevenlabs",
+  "model": "eleven_v3",
+  "speed": 1.175
+}
