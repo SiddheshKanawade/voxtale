@@ -60,8 +60,8 @@ and say in the hand-off what you spent.
   This is a cap, not a fixed rhythm. Short beats are fine.
 - Prefer real source imagery (video stills from the announcement, paper figure panels) and animated explainers over
   page screenshots. Screenshots appear only for the headline and the highlighted proof sentence.
-- Length is driven by content. Weekly episodes: five stories at about 60–90 s each, so about 7–8 min in all (cap
-  ~9 min; set 2026-11-16 for the weekly format, revisit with YouTube retention). Don't pad toward a target length.
+- Length is driven by content (user, 2026-11-16): no per-story time target. Give each story the explanation it needs
+  for the audience to understand it, no more. **Hard cap: 20 min for the whole episode.** Don't pad toward a length.
 - **Cadence (user plan, 2026-11-14):** one long-form video a week with the week's top 3–5 stories, explained as now.
   Shorts cut from it promote it. This is unlike the P2A digest, which is daily.
 
@@ -132,7 +132,7 @@ confirm on the primary source, with its date, at the time you script.
 
 ## Script rules
 
-- Narration ≈ 150 words/min; a story is 150–280 words over 12–18 beats. Spell numbers as words ("ninety-six percent"), because the TTS reads digits unreliably. On-screen numbers use digits.
+- Narration ≈ 150 words/min; a story is as long as its explanation needs (no word or beat target). Spell numbers as words ("ninety-six percent"), because the TTS reads digits unreliably. On-screen numbers use digits.
 - Story arc: hook (what happened) → plain-English explainer (analogy + diagram) → evidence (source visual, highlighted sentence) → why it matters → reality check. Don't use hype words like "shocking" or "changes everything".
 - The intro teases the stories with visuals in about 20 s, then ends on the channel line, word for word: "This is
   Pixels to Actions. Every week, we go through what's new in robotics and physical AI." (user, 2026-11-16: inform,
@@ -200,8 +200,8 @@ Don't change the identity without the user's say-so. The research behind it is i
 - **Every beat:** label chip + headline + "STORY n/N", credit chip, and **captions (required, the user's call)**:
   punctuated, word-synced, grouped at clause breaks.
 - **Attention rules** (`docs/attention.md`): no moving or decorative backgrounds; no music or effects under speech;
-  one focal element per beat; a new visual every 5–7 s; the first item on screen within 0.4 s; weekly episodes about
-  7–8 min (cap ~9).
+  one focal element per beat; a new visual every 5–7 s; the first item on screen within 0.4 s; episodes as long as the stories
+  need, hard cap 20 min.
 - **End card:** lockup, "Sources linked in the description", Subscribe. Never the website, URL or digest. The outro
   narration opens "That's Pixels to Actions."
 - **Thumbnails:** use the `youtube-thumbnails` skill. It researches first, makes 5–7 candidates, rubric-scores them,

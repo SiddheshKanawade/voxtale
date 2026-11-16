@@ -40,7 +40,7 @@ the tools; where they disagree, the skill wins and this file gets fixed.
   *Check:* Narration text
 - [ ] **2.4** `GUIDE` Every term is defined on screen when first used (an `acronym` scene for VLA and the like); one everyday analogy per hard idea  
   *Check:* Script read-through
-- [ ] **2.5** `GUIDE` Story length about 60–90 s (150–280 words, 12–18 beats); episode about 7–8 min, cap ~9 min  
+- [ ] **2.5** `GUIDE` Each story is as long as its explanation needs (no per-story time target); no padding. Episode: `HARD` cap 20 min  
   *Check:* `props.json` durations
 - [ ] **2.6** `GUIDE` No hype words ("shocking", "changes everything", "insane")  
   *Check:* Search the narration
