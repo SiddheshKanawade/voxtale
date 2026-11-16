@@ -16,7 +16,7 @@ export type BannerProps = { thumbs: string[]; line?: string; sub?: string };
 const W = 2560, H = 1440;
 const SAFE = { w: 1546, h: 423 };
 const SX = (W - SAFE.w) / 2, BY = (H - SAFE.h) / 2; // safe area left edge; band top edge (band = full width, SAFE.h tall)
-const CARD = { w: 432, h: 243 };                     // fits a side wing (507 px wide) with a margin, 16:9
+const CARD = { w: 600, h: 338 };                     // 16:9; reaches past the 507 px wing into the safe area's empty sides
 
 export const Banner: React.FC<BannerProps> = ({ thumbs, line = "Every week: what's new in robotics and physical AI", sub = "Research, products and deals · every source linked" }) => {
   applyDesign("blueprint-light");
@@ -37,7 +37,7 @@ export const Banner: React.FC<BannerProps> = ({ thumbs, line = "Every week: what
       </div>
       {/* Desktop: one real episode thumbnail in each side wing of the band, tilted toward the centre. */}
       {wings.map((src, i) => {
-        const left = i === 0 ? (SX - CARD.w) / 2 : W - SX + (SX - CARD.w) / 2;
+        const left = i === 0 ? 34 : W - 34 - CARD.w;
         return (
           <div key={i} style={{ position: "absolute", left, top: BY + (SAFE.h - CARD.h) / 2, width: CARD.w, height: CARD.h,
             transform: `rotate(${i === 0 ? -4 : 4}deg)`, borderRadius: 14, overflow: "hidden", background: "#fff",
