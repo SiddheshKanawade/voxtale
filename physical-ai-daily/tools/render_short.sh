@@ -24,7 +24,8 @@ done
 ffmpeg -v error -y -pattern_type glob -i "$SH/qa/f*.png" -vf "scale=360:-1,tile=6x1" -frames:v 1 "$SH/qa/contact_sheet_$D.png"
 echo "contact sheet: $SH/qa/contact_sheet_$D.png"
 [ $STILLS = 1 ] && exit 0
-npx remotion render src/shorts/index.ts Short "$SH/out/$NAME-$D.raw.mp4" --props="$SH/props.json" --public-dir="$SH" --concurrency=4
+# 4K (2160x3840) and crf 15 by default, like render.sh; SCALE=1 CRF=18 for a quick draft.
+npx remotion render src/shorts/index.ts Short "$SH/out/$NAME-$D.raw.mp4" --props="$SH/props.json" --public-dir="$SH" --concurrency=4 --scale="${SCALE:-2}" --crf="${CRF:-15}"
 ffmpeg -v error -y -i "$SH/out/$NAME-$D.raw.mp4" -c:v copy -af "loudnorm=I=-14:TP=-2:LRA=11" -c:a aac -b:a 192k "$SH/out/$NAME-$D.mp4"
 rm "$SH/out/$NAME-$D.raw.mp4"
 echo "final: $SH/out/$NAME-$D.mp4"

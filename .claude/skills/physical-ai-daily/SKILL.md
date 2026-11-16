@@ -23,7 +23,7 @@ tools/video_frames.mjs       stills from a page's own <video>, lifted above play
 tools/clip.py                cut a few seconds of muted, credited official footage into assets/ (HARD 7.2)
 tools/crop.py                crop a figure panel (fractions) + write its metadata json
 tools/voice.py               episode.json -> audio/<seg>_<beat>.wav + props.json (word timings, punctuation, media metadata)
-tools/render.sh              voice -> QA contact sheet -> MP4 -> loudness-normalized final (-14 LUFS)
+tools/render.sh              voice -> QA contact sheet -> 4K MP4 -> loudness-normalized final (-14 LUFS)
 tools/render_both.sh         light then dark, under the shared render lock (.render.lock); use this when agents run in parallel
 tools/beat_sheet.py          one frame per beat from a rendered MP4 into labelled contact sheets, for QA
 tools/thumb_receipts.py      OCR-crop thumbnail receipts (macOS Vision; build tools/ocr from ocr.swift)
@@ -95,7 +95,7 @@ and say in the hand-off what you spent.
    Look at every PNG before rendering. A `WARN: text not found` means the quote isn't on the page verbatim, so fix the quote.
 6. **Render.** `tools/render.sh <ep> --stills-only` first. Better: render once, then pull one frame per beat at 75% of its
    length into contact sheets (`python3 -I tools/beat_sheet.py <ep> <mp4> <dir>`) and read them. Final light and dark:
-   `tools/render_both.sh <ep>` (waits for the shared lock, so parallel agents render one at a time). Fix, then run the full render (about 3.5 min for a 4-min episode).
+   `tools/render_both.sh <ep>` (waits for the shared lock, so parallel agents render one at a time). Fix, then run the full render. **Finals are 4K** (3840x2160, crf 15; user 2026-11-16, output quality): about 7x real time on this Mac, so ~1 h per design for an 8-min episode; `SCALE=1 CRF=18` for a quick draft.
 
 ## Scene catalog (`visual.type`)
 

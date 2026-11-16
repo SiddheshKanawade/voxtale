@@ -22,7 +22,10 @@ ffmpeg -v error -y -pattern_type glob -i "$EP/qa/f*.png" -vf "scale=960:-1,tile=
 echo "contact sheet: $EP/qa/contact_sheet.png"
 [[ " $* " == *" --stills-only "* ]] && exit 0
 
-npx remotion render src/index.ts Episode "$EP/out/$NAME.raw.mp4" --props="$EP/props.json" --public-dir="$EP" --concurrency=4
+# 4K by default (user, 2026-11-16: output quality): --scale=2 renders the 1920x1080 composition at 3840x2160
+# (Shorts 2160x3840) so text and graphics stay sharp, and YouTube serves 4K uploads with a better codec even at 1080p.
+# --crf 15 (lower = better; Remotion's default is 18). SCALE=1 CRF=18 for a quick draft.
+npx remotion render src/index.ts Episode "$EP/out/$NAME.raw.mp4" --props="$EP/props.json" --public-dir="$EP" --concurrency=4 --scale="${SCALE:-2}" --crf="${CRF:-15}"
 # YouTube normalizes to about -14 LUFS; master there so narration isn't turned up with added noise.
 # TP -2 (not -1.5): AAC encoding adds ~0.2-0.5 dB of true peak after loudnorm, and the target is <= -1.5 dBTP.
 ffmpeg -v error -y -i "$EP/out/$NAME.raw.mp4" -c:v copy -af "loudnorm=I=-14:TP=-2:LRA=11" -c:a aac -b:a 192k "$EP/out/$NAME.mp4"

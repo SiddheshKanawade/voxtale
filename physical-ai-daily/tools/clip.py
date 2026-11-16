@@ -8,7 +8,7 @@ the footage rule (docs/video-requirements.md 7.2) decides what may be used: offi
 published first; other public footage only when that doesn't show it; wire agencies last. Every clip is a few
 seconds, muted, credited on screen and listed in the description with its URL.
 
-Writes assets/<name>.mp4 (H.264, no audio, at most 1920 px wide, 30 fps), assets/<name>_last.png (the last frame,
+Writes assets/<name>.mp4 (H.264, no audio, source resolution up to 3840 px wide for 4K renders, 30 fps), assets/<name>_last.png (the last frame,
 held if the beat outlasts the clip) and assets/<name>.json (size, duration, credit, url), which tools/voice.py
 inlines like an image's capture metadata.
 """
@@ -46,7 +46,7 @@ def main() -> None:
     assets.mkdir(parents=True, exist_ok=True)
     mp4, last = assets / f"{a.name}.mp4", assets / f"{a.name}_last.png"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(a.start), "-i", str(a.source), "-t", str(a.dur), "-an",
-                    "-vf", "scale='min(1920,iw)':-2,fps=30", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18",
+                    "-vf", "scale='min(3840,iw)':-2,fps=30", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "14",
                     "-movflags", "+faststart", str(mp4)], check=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-sseof", "-0.1", "-i", str(mp4), "-frames:v", "1", "-update", "1", str(last)], check=True)
     meta = {**probe(mp4), "highlight": None, "last": f"assets/{last.name}", "credit": a.credit, "url": a.url}
