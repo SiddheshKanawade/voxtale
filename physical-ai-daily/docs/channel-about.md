@@ -8,16 +8,32 @@ what the channel is (docs/research-channel-intro.md). Wording follows the episod
 ## About
 
 ```
-Every week: what's new in robotics and physical AI.
+What's new in robotics and physical AI, explained so anyone can follow.
 
-Each episode goes through the week's main robot and physical-AI stories: new research, products and deals.
-We say what happened, explain how it works in plain words, and note what isn't known yet.
-Every source is linked in the description.
+Every week we go through the main robot and physical-AI stories: new research, products and deals. For each one we
+say what happened, how it works in plain words, why it matters, and what isn't known yet. Every source is linked
+in the video description.
 
-New episode every week, plus short clips through the week.
+New episode every week, plus short explainers through the week.
+
+🌐 https://pixelstoactions.com
+📩 Business inquiries: <email>
 ```
 
-First line: 50 characters. Leave out a fixed weekday until the posting day is decided.
+First line: 71 characters. Fill in the business email (or delete that line); add the posting day once fixed
+("New episode every Sunday").
+
+## How competitors write theirs (16 channels, fetched 2026-11-16 with yt-dlp)
+
+| Pattern | Who does it | Example (≤15 words) |
+|---|---|---|
+| One-line promise first, often ≤8 words | bycloud, AI Search, Matt Wolfe, Kevin Wood | "Frontier AI Research Explained" (bycloud) |
+| Says who it's for / that it's easy to follow | AI Search, Matthew Berman, Wes Roth, AI Revolution | "Making AI easy to understand for everyone" (AI Search) |
+| Upload schedule | Matt Wolfe, Fireship | "New videos every Friday" (Matt Wolfe) |
+| Links block (site, newsletter, socials) | Matt Wolfe, Fireship, Yannic Kilcher, ColdFusion | |
+| Business-contact email | 8 of 16 | |
+| Very short or a catchphrase only | Two Minute Papers, Welch Labs | "What a time to be alive!" (Two Minute Papers) |
+| Hype or sales language | PRO Robots, TheAIGrid | (avoided: the user's "inform, don't sell" rule) |
 
 ## Other channel fields
 
