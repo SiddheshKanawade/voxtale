@@ -22,7 +22,7 @@ export const Banner: React.FC<BannerProps> = ({ thumbs, line = "Every week: what
     <AbsoluteFill style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       <Backdrop kind="blueprint" />
       {/* Left half of the safe area: the mark, the name, the line. */}
-      <div style={{ position: "absolute", left: SX + 10, top: SY, width: 720, height: SAFE.h, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <div style={{ position: "absolute", left: SX + 10, top: SY, width: 690, height: SAFE.h, display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
           <LogoMark size={96} />
           <Wordmark size={82} style={{ color: C.ink }} />
@@ -32,10 +32,10 @@ export const Banner: React.FC<BannerProps> = ({ thumbs, line = "Every week: what
         <div style={{ marginTop: 26, width: 140, height: 10, borderRadius: 5, background: BRAND.red }} />
       </div>
       {/* Right half: real episode thumbnails as slightly tilted cards. */}
-      <div style={{ position: "absolute", left: SX + 770, top: SY, width: SAFE.w - 770, height: SAFE.h }}>
+      <div style={{ position: "absolute", left: SX + 720, top: SY, width: SAFE.w - 720, height: SAFE.h }}>
         {cards.map((src, i) => {
-          const w = 352, h = 198;
-          const left = [20, 205, 395][i], top = [40, 175, 55][i];
+          const w = 500, h = 281;
+          const left = [0, 160, 320][i], top = [-25, 135, 0][i];
           return (
             <div key={i} style={{ position: "absolute", left, top, width: w, height: h, transform: `rotate(${tilt[i]}deg)`, zIndex: i === 1 ? 3 : 1,
               borderRadius: 14, overflow: "hidden", background: "#fff", boxShadow: "0 22px 50px rgba(31,32,35,0.25), 0 0 0 6px #fff" }}>
