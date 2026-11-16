@@ -124,6 +124,14 @@ Check, every Short:
 - [ ] "Why it matters" is the source's or episode's own statement, not ours
 - [ ] 30–45 s (or a written reason); one CTA, at the end
 
+**Cover (thumbnail), every Short (user, 2026-11-16):** not the first frame. Make a cover that provokes curiosity or
+raises an eyebrow: a big two- or three-line hook (the company's name when it's newsworthy) over one or two frames that
+tell the story at a glance, e.g. "SHOWN ONCE" → "ON ITS OWN". Frames and their labels must be true to the source (use
+the source's own on-screen labels where possible). Render in the design being uploaded (the user uploads **dark**):
+`shorts/<slug>/cover/props.json` = {"design", "lines", "panels": [{"src", "label"}], "credit"}, then
+`npx remotion still src/shorts/index.ts ShortCover <slug>/out/cover-<design>.png --props=<slug>/cover/props.json --public-dir=<slug>`
+(renderer `video/src/shorts/Cover.tsx`).
+
 ## 5. Hand off (never upload)
 
 Per Short: the MP4 paths (light, dark), duration, and:

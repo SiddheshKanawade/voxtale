@@ -48,3 +48,4 @@ tools/ocr
 brand/thumbs/
 brand/banner_props.json
 brand/ChannelBanner.png
+episodes/*/shorts/*/cover/*.png

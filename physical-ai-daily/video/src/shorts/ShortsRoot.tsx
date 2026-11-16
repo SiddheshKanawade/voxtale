@@ -1,11 +1,14 @@
 import React from "react";
-import { Composition } from "remotion";
+import { Composition, Still } from "remotion";
+import { Cover, CoverProps } from "./Cover";
 import { END_S, Short, ShortProps } from "./Short";
 
 const FPS = 30;
 const placeholder: ShortProps = { date: "", hook: "Hook", segments: [] };
 
 export const ShortsRoot: React.FC = () => (
+  <>
+  <Still id="ShortCover" component={Cover} width={1080} height={1920} defaultProps={{ lines: ["Hook"], panels: [] } as CoverProps} />
   <Composition
     id="Short"
     component={Short}
@@ -18,4 +21,5 @@ export const ShortsRoot: React.FC = () => (
       durationInFrames: Math.max(FPS, Math.ceil((props.segments.reduce((a, s) => a + s.duration, 0) + END_S) * FPS)),
     })}
   />
+</>
 );
