@@ -92,12 +92,12 @@ Set Related video → AI-made worlds, can top AI run a real robot?, Toyota and W
 
 ### machenta-one-demo
 
-**Title** (31 chars): `Robots that learn from one demo`
+**Title** (pick one): current `Machenta's robots learn a task from one demo` · plainer `Can Machenta's robot learn a job by watching once?`
 
 **Description**
 ```
-Machenta says its robots learn a new task from one demonstration, with objects they have never seen. These are the company's own numbers, on tasks it calls simple, with no paper yet.
-Source: https://machenta.com/blog/instant-robot-learning
+Machenta, a robotics startup that just came out of stealth, says its robots learn a new task from one demonstration, with objects they have never seen. These are the company's own numbers, on tasks it calls simple, with no paper yet.
+Source: https://machenta.com/blog/instant-robot-learning · https://x.com/Ed__Johns/status/2115030792720031996
 Video: Machenta, https://machenta.com/blog/instant-robot-learning
 ```
 Set Related video → AI-made worlds, can top AI run a real robot?, Toyota and Waymo
