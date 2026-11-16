@@ -45,8 +45,9 @@ One story per Short (two Shorts may share a story; one Short never covers two). 
 that person understands it, then points to the full episode for everything else. Spend the words on explaining, not
 on detail: the result and why it matters, nothing more from the paper.
 
-**Length:** 30–45 s, about 6–8 beats, plain spoken English (Andrew voice at its normal pace; speed it up only if it
-runs long).
+**Length:** 30–45 s at normal pace, about 6–8 beats, plain spoken English. **Every Short is then played at 1.175×**
+(user, 2026-11-16): set top-level `"speed": 1.175` in its episode.json (voice.py time-stretches after synthesis,
+pitch kept, no TTS credits), so finals land around 32–40 s.
 
 **Shape (approved by the user, 2026-11-16):**
 
