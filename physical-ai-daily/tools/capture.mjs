@@ -69,6 +69,13 @@ try {
       const b = page.getByRole("button", { name: re }).first();
       if (await b.isVisible().catch(() => false)) { await b.click().catch(() => {}); break; }
     }
+    // Banners with no reject button (e.g. a fixed privacy notice): hide them without clicking anything.
+    await page.evaluate(() => {
+      for (const el of document.querySelectorAll("body *")) {
+        const cs = getComputedStyle(el);
+        if ((cs.position === "fixed" || cs.position === "sticky") && /privacy|cookie|consent/i.test(el.textContent || "") && el.offsetHeight < 600 && !/^(header|nav)$/i.test(el.tagName)) el.style.display = "none";
+      }
+    });
     if (opt.find) {
       const box = await page.evaluate((needle) => {
         const norm = (s) => s.replace(/\s+/g, " ");
@@ -98,8 +105,13 @@ try {
         return null;
       }, opt.find);
       if (!box) console.error(`WARN: text not found on page: "${opt.find.slice(0, 60)}..."`);
-      meta.highlight = box;
-      await page.waitForTimeout(800);
+      await page.waitForTimeout(1000);
+      // Smooth-scrolling pages move after the first measurement: scroll instantly, settle, then re-measure.
+      if (box) {
+        await page.evaluate(() => document.querySelector("mark").scrollIntoView({ block: "center", behavior: "instant" }));
+        await page.waitForTimeout(1500);
+        meta.highlight = await page.evaluate(() => { const b = document.querySelector("mark").getBoundingClientRect(); return { x: b.x, y: b.y, w: b.width, h: b.height }; });
+      } else meta.highlight = null;
     }
     await page.screenshot({ path: out });
   }

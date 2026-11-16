@@ -18,9 +18,15 @@ tools/triage_batches.py      harvest -> reading batches for triage subagents
 tools/chatter.py             what X, HN and YouTube say about one story
 tools/news_daily.sh          scheduled NewsData pull (launchd via tools/install_news_schedule.sh) into news/
 tools/capture.mjs            page / tweet / element / video-frame screenshots via installed Chrome, in-page highlight
+tools/highlight.mjs          page capture when the sentence spans links/markup and capture.mjs --find fails
+tools/video_frames.mjs       stills from a page's own <video>, lifted above play buttons and banners
+tools/clip.py                cut a few seconds of muted, credited official footage into assets/ (HARD 7.2)
 tools/crop.py                crop a figure panel (fractions) + write its metadata json
 tools/voice.py               episode.json -> audio/<seg>_<beat>.wav + props.json (word timings, punctuation, media metadata)
 tools/render.sh              voice -> QA contact sheet -> MP4 -> loudness-normalized final (-14 LUFS)
+tools/render_both.sh         light then dark, under the shared render lock (.render.lock); use this when agents run in parallel
+tools/beat_sheet.py          one frame per beat from a rendered MP4 into labelled contact sheets, for QA
+tools/thumb_receipts.py      OCR-crop thumbnail receipts (macOS Vision; build tools/ocr from ocr.swift)
 video/src/Episode.tsx        chrome: top bar, chapter progress bar, story header, credit chip, captions
 video/src/scenes.tsx         scene catalog (below) + word-cue timing + hold-cap punch-in
 video/src/diagrams.tsx       custom animated explainers (kitting, snap-through)
@@ -86,7 +92,8 @@ and say in the hand-off what you spent.
    - arXiv figures: check the license on the abs page (CC BY means reusable with credit), download `arxiv.org/html/<id>v1/figures/*.png`, then `python3 tools/crop.py <src> <out> x0 y0 x1 y1` for panels
    Look at every PNG before rendering. A `WARN: text not found` means the quote isn't on the page verbatim, so fix the quote.
 6. **Render.** `tools/render.sh <ep> --stills-only` first. Better: render once, then pull one frame per beat at 75% of its
-   length into contact sheets and read them. Fix, then run the full render (about 3.5 min for a 4-min episode).
+   length into contact sheets (`python3 -I tools/beat_sheet.py <ep> <mp4> <dir>`) and read them. Final light and dark:
+   `tools/render_both.sh <ep>` (waits for the shared lock, so parallel agents render one at a time). Fix, then run the full render (about 3.5 min for a 4-min episode).
 
 ## Scene catalog (`visual.type`)
 

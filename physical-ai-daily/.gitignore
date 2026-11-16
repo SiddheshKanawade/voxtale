@@ -41,3 +41,7 @@ episodes/*/shorts/*/audio/
 episodes/*/shorts/*/out/
 episodes/*/shorts/*/qa/
 episodes/*/shorts/*/props.json
+
+# Shared render lock (tools/render_both.sh) and the compiled OCR helper (built from tools/ocr.swift)
+.render.lock/
+tools/ocr
