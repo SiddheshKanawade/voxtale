@@ -118,5 +118,7 @@ try {
   if (meta) fs.writeFileSync(out.replace(/\.png$/, ".json"), JSON.stringify(meta, null, 2));
   if (meta) console.log(`OK ${out} ${JSON.stringify(meta)}`);
 } finally {
-  await browser.close();
+  // Some pages (e.g. the DeepMind blog) keep Chrome from closing; the files are written by now, so don't wait forever.
+  await Promise.race([browser.close(), new Promise((r) => setTimeout(r, 10000))]);
+  process.exit(process.exitCode ?? 0);
 }

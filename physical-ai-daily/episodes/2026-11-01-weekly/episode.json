@@ -3,1111 +3,6 @@
   "date": "November 1, 2026",
   "design": "blueprint-light",
   "voice": "en-US-AndrewNeural",
-  "segments": [
-    {
-      "id": "intro",
-      "kind": "title",
-      "headline": "Pixels2Actions",
-      "beats": [
-        {
-          "narration": "This week, Google DeepMind shows a world model you can steer in real time.",
-          "visual": {
-            "type": "photo",
-            "src": "assets/v_g1_5s.png",
-            "overlay": "A world you can steer",
-            "credit": "Video still: Google DeepMind"
-          }
-        },
-        {
-          "narration": "Researchers test whether a frontier AI model can really run a robot, and where it fails.",
-          "visual": {
-            "type": "split",
-            "items": [
-              {
-                "src": "assets/v_s5_12s.png",
-                "label": "Frontier model on real robots",
-                "cue": "frontier"
-              },
-              {
-                "src": "assets/v_z3_4s.png",
-                "label": "Trained only in simulation",
-                "cue": "run"
-              }
-            ],
-            "credit": "SenseNova et al. · ZAP project page (Luma AI)"
-          }
-        },
-        {
-          "narration": "Plus a startup whose robots learn from one demonstration, Toyota building robotaxis for Waymo, and self-driving excavators.",
-          "visual": {
-            "type": "panels",
-            "items": [
-              {
-                "src": "assets/v_m0_18s.png",
-                "label": "One demo",
-                "cue": "robot"
-              },
-              {
-                "src": "assets/t_car.png",
-                "label": "Toyota × Waymo",
-                "cue": "toyota"
-              },
-              {
-                "src": "assets/b_photo.png",
-                "label": "Excavators",
-                "cue": "excavators"
-              }
-            ],
-            "credit": "Machenta · Toyota · Bedrock Robotics via TechCrunch"
-          }
-        },
-        {
-          "narration": "This is Pixels to Actions. Every week, we go through what's new in robotics and physical AI.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Pixels2Actions",
-            "sub": "Every week: what's new in robotics and physical AI"
-          }
-        }
-      ]
-    },
-    {
-      "id": "s1",
-      "kind": "story",
-      "label": "NEWS",
-      "headline": "Genie 4: a world you can steer",
-      "source": "deepmind.google",
-      "sourceDate": "Oct 27, 2026",
-      "urls": [
-        "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/"
-      ],
-      "beats": [
-        {
-          "narration": "Story one. Google DeepMind announced Genie 4, its new world model.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/g_hero.png"
-          }
-        },
-        {
-          "narration": "A world model is an AI that generates a world as you move through it.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "⌨️",
-                "label": "You act",
-                "sub": "keys or a text prompt",
-                "cue": "you"
-              },
-              {
-                "icon": "🧠",
-                "label": "Model generates",
-                "sub": "the next moment",
-                "cue": "generates"
-              },
-              {
-                "icon": "🌐",
-                "label": "World responds",
-                "sub": "in real time",
-                "cue": "move"
-              }
-            ]
-          },
-          "section": "plain"
-        },
-        {
-          "narration": "Think of a video game with no game engine. The AI itself draws what happens next.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/g_clip_world.mp4"
-          }
-        },
-        {
-          "narration": "In DeepMind's recordings, people steer with keyboard controls, and use text prompts to change the scene as it evolves.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/g_clip_steer.mp4"
-          }
-        },
-        {
-          "narration": "It's also DeepMind's first real-time world model to generate audio natively.",
-          "visual": {
-            "type": "photo",
-            "src": "assets/v_g9_4s.png",
-            "pan": "out",
-            "credit": "Video still: Google DeepMind"
-          }
-        },
-        {
-          "narration": "So why is this on a robotics channel?",
-          "visual": {
-            "type": "kinetic",
-            "text": "Why robots care"
-          }
-        },
-        {
-          "narration": "DeepMind says Genie 4 can help with developing training environments for robots and agents.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/g_robots.png"
-          },
-          "section": "evidence"
-        },
-        {
-          "narration": "Like a flight simulator, but for robots: a safe place to practice, in endless variations.",
-          "visual": {
-            "type": "versus",
-            "left": {
-              "icon": "✈️",
-              "title": "Flight simulator",
-              "sub": "Pilots practice before the real thing",
-              "cue": "flight"
-            },
-            "right": {
-              "icon": "🤖",
-              "title": "World model",
-              "sub": "Robots could practice in generated worlds",
-              "cue": "robots"
-            }
-          }
-        },
-        {
-          "narration": "On the announcement page, a simulated robot arm holds a pipette and dispenses liquid into a lab plate.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/g_clip_pipette.mp4"
-          }
-        },
-        {
-          "narration": "And DeepMind's Gemini 4 Argon works with Genie 4 to simulate Apptronik's Apollo humanoid playing checkers,",
-          "visual": {
-            "type": "photo",
-            "src": "assets/g_apollo_sim.png",
-            "fit": "contain",
-            "credit": "Video still: Google DeepMind"
-          }
-        },
-        {
-          "narration": "breaking the task down into real-time steps.",
-          "visual": {
-            "type": "split",
-            "items": [
-              {
-                "src": "assets/g_apollo_steps.png",
-                "label": "Gemini 4 Argon: steps",
-                "cue": "breaking"
-              },
-              {
-                "src": "assets/g_apollo_sim.png",
-                "label": "Genie 4: simulation",
-                "cue": "steps"
-              }
-            ],
-            "credit": "Video still: Google DeepMind"
-          }
-        },
-        {
-          "narration": "Why it matters. DeepMind pitches world models as safe training grounds for robots, and it's already experimenting with Genie 4 alongside its Gemini Robotics work.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "🌐",
-                "label": "Generated world",
-                "sub": "Genie 4",
-                "cue": "world"
-              },
-              {
-                "icon": "🤖",
-                "label": "Robot training ground",
-                "sub": "the pitch",
-                "cue": "training"
-              },
-              {
-                "icon": "🦾",
-                "label": "Gemini Robotics",
-                "sub": "experiments",
-                "cue": "experimenting"
-              }
-            ]
-          },
-          "section": "matters"
-        },
-        {
-          "narration": "Reality check. Those robot clips are generated simulations. DeepMind doesn't say any robot was trained in Genie 4, and it gives no benchmark numbers.",
-          "visual": {
-            "type": "checklist",
-            "title": "Reality check",
-            "items": [
-              {
-                "status": "ok",
-                "text": "Real-time, steerable, with native audio",
-                "cue": "reality"
-              },
-              {
-                "status": "warn",
-                "text": "Robot clips are generated simulations",
-                "cue": "generated"
-              },
-              {
-                "status": "no",
-                "text": "No robot reported trained in it",
-                "cue": "trained"
-              },
-              {
-                "status": "no",
-                "text": "No benchmark numbers",
-                "cue": "benchmark"
-              }
-            ]
-          },
-          "section": "reality"
-        },
-        {
-          "narration": "DeepMind also says details and object permanence can still drift over time.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/g_drift.png"
-          }
-        },
-        {
-          "narration": "For now, it's a research preview for trusted testers.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/g_preview.png",
-            "stamp": "Preview"
-          }
-        }
-      ]
-    },
-    {
-      "id": "s2",
-      "kind": "story",
-      "label": "PAPER",
-      "headline": "Can GPT-6 Astra run a real robot?",
-      "source": "SenseNova et al. · arXiv",
-      "sourceDate": "Oct 15–30, 2026",
-      "urls": [
-        "https://www.sensenova.ai/has-gpt-6-astra-achieved-embodied-intelligence",
-        "https://arxiv.org/abs/2610.22471",
-        "https://arxiv.org/abs/2610.41320",
-        "https://arxiv.org/abs/2610.35817"
-      ],
-      "beats": [
-        {
-          "narration": "Story two. Frontier AI models, like one called GPT-6 Astra, can now directly control robots.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/s_hero.png",
-            "credit": "Source: sensenova.ai"
-          }
-        },
-        {
-          "narration": "But how well?",
-          "visual": {
-            "type": "kinetic",
-            "text": "But how well?"
-          }
-        },
-        {
-          "narration": "Here's the setup. The model sees camera images, works out a plan, and sends motion commands through a harness, a software layer that works like an interpreter for the robot.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "📷",
-                "label": "Sees",
-                "sub": "camera images",
-                "cue": "sees"
-              },
-              {
-                "icon": "🧠",
-                "label": "Plans",
-                "sub": "the frontier model",
-                "cue": "plan"
-              },
-              {
-                "icon": "🔌",
-                "label": "Harness",
-                "sub": "turns plans into motion calls",
-                "cue": "harness"
-              },
-              {
-                "icon": "🦾",
-                "label": "Robot moves",
-                "cue": "commands"
-              }
-            ]
-          },
-          "section": "plain"
-        },
-        {
-          "narration": "First, a big report led by SenseNova, published earlier in October.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/s_absdate.png",
-            "credit": "Source: arXiv:2610.22471 · Oct 15, 2026"
-          }
-        },
-        {
-          "narration": "In simulation, GPT-6 Astra scored ninety-nine to one hundred percent on six benchmark suites,",
-          "visual": {
-            "type": "photo",
-            "src": "assets/s_sim_c.png",
-            "fit": "contain",
-            "badge": "99–100% in simulation",
-            "badgeCue": "ninety",
-            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
-          },
-          "section": "evidence"
-        },
-        {
-          "narration": "but with help: it was allowed to learn in context from the benchmark's training set.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/s_10x.png",
-            "credit": "Source: sensenova.ai"
-          }
-        },
-        {
-          "narration": "On real robots, simple pick-and-place worked: seventeen of eighteen trials.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/s_clip_pnp.mp4"
-          }
-        },
-        {
-          "narration": "But plug insertion, which needs precise contact, went zero for eleven, across three robot platforms.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "from": 0,
-                "to": 0,
-                "suffix": "/11",
-                "label": "real plug insertions",
-                "cue": "zero"
-              }
-            ],
-            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
-          }
-        },
-        {
-          "narration": "In the report's own findings, cloth folding and long mobile tasks were also markedly harder.",
-          "visual": {
-            "type": "photo",
-            "src": "assets/s_plug_c.png",
-            "fit": "contain",
-            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
-          }
-        },
-        {
-          "narration": "The authors' verdict: competent, but not yet practical.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Competent, not yet practical",
-            "sub": "SenseNova et al.: “not yet that of practical embodied intelligence”",
-            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
-          }
-        },
-        {
-          "narration": "Two new preprints this week try to close that gap.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Two fixes",
-            "sub": "LEXP · ZAP"
-          }
-        },
-        {
-          "narration": "The first, LEXP, gives the model a notebook of lessons. After each attempt, it extracts lessons and reuses them later, without retraining the model.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "🦾",
-                "label": "Try",
-                "sub": "a real task",
-                "cue": "attempt"
-              },
-              {
-                "icon": "📝",
-                "label": "Extract lessons",
-                "sub": "what happened",
-                "cue": "extracts"
-              },
-              {
-                "icon": "🔁",
-                "label": "Reuse",
-                "sub": "on the next actions",
-                "cue": "reuses"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "Across twelve real-world tasks, success rose from five point six percent for plain Astra, to sixty-three point nine percent.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "from": 5,
-                "to": 5,
-                "suffix": ".6%",
-                "label": "plain Astra",
-                "cue": "five"
-              },
-              {
-                "from": 63,
-                "to": 63,
-                "suffix": ".9%",
-                "label": "with LEXP",
-                "cue": "sixty"
-              }
-            ],
-            "credit": "Source: arXiv:2610.41320 (LEXP)"
-          }
-        },
-        {
-          "narration": "Those are the paper's own trials, on a two-armed robot.",
-          "visual": {
-            "type": "photo",
-            "src": "assets/l_639_c.png",
-            "fit": "contain",
-            "credit": "Source: arXiv:2610.41320 (LEXP)"
-          }
-        },
-        {
-          "narration": "The second, ZAP from Luma AI, teaches a small open model its motion skills entirely in simulation,",
-          "visual": {
-            "type": "clip",
-            "src": "assets/z_clip_sim.mp4"
-          }
-        },
-        {
-          "narration": "with no real-world robot data.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/z_abs.png",
-            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
-          }
-        },
-        {
-          "narration": "On a real two-armed robot, it succeeded on twenty-nine of thirty trials,",
-          "visual": {
-            "type": "clip",
-            "src": "assets/z_clip_real.mp4"
-          }
-        },
-        {
-          "narration": "matching GPT-6 Astra in the same harness.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/z_2930.png",
-            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
-          }
-        },
-        {
-          "narration": "Why it matters. The ZAP authors put it this way: their model already understands robot tasks, and mainly lacks motion control.",
-          "visual": {
-            "type": "versus",
-            "left": {
-              "icon": "🧠",
-              "title": "Understanding",
-              "sub": "Already there, per ZAP",
-              "cue": "understands"
-            },
-            "right": {
-              "icon": "✋",
-              "title": "Motion control",
-              "sub": "The missing skill",
-              "cue": "lacks"
-            }
-          },
-          "section": "matters"
-        },
-        {
-          "narration": "Reality check. These are preprints with small trial counts, and precise contact, like plugging something in, was the weak spot.",
-          "visual": {
-            "type": "checklist",
-            "title": "Reality check",
-            "items": [
-              {
-                "status": "ok",
-                "text": "Real-robot trials, with counts",
-                "cue": "reality"
-              },
-              {
-                "status": "warn",
-                "text": "Preprints, small trial counts",
-                "cue": "preprints"
-              },
-              {
-                "status": "no",
-                "text": "Plug insertion: 0/11",
-                "cue": "precise"
-              }
-            ]
-          },
-          "section": "reality"
-        }
-      ]
-    },
-    {
-      "id": "s3",
-      "kind": "story",
-      "label": "NEWS",
-      "headline": "Robots that learn from one demo",
-      "source": "machenta.com · x.com/Ed__Johns",
-      "sourceDate": "Oct 27, 2026",
-      "urls": [
-        "https://machenta.com/blog/instant-robot-learning",
-        "https://x.com/Ed__Johns/status/2115030792720031996"
-      ],
-      "beats": [
-        {
-          "narration": "Story three. A startup called Machenta came out of stealth, saying its robots learn a new task from a single demonstration.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/m_blog.png",
-            "credit": "Source: machenta.com"
-          }
-        },
-        {
-          "narration": "Founder Ed Johns announced a forty million dollar seed round, co-led by Creandum and USV.",
-          "visual": {
-            "type": "photo",
-            "src": "assets/m_tweet_c.png",
-            "fit": "contain",
-            "credit": "Source: x.com/Ed__Johns · Oct 27, 2026"
-          }
-        },
-        {
-          "narration": "Here's the usual way to teach a robot: collect hours or days of demonstrations, then train for hours or days.",
-          "visual": {
-            "type": "versus",
-            "left": {
-              "icon": "⏳",
-              "title": "The usual way",
-              "sub": "Hours or days of demos, then hours or days of training",
-              "cue": "usual"
-            },
-            "right": {
-              "icon": "👆",
-              "title": "Machenta's claim",
-              "sub": "Show it once. No training, no waiting.",
-              "cue": "train"
-            }
-          },
-          "section": "plain"
-        },
-        {
-          "narration": "Machenta's pitch is like showing a new coworker a task once.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Show it once"
-          }
-        },
-        {
-          "narration": "In its videos, a person demonstrates once, on objects the robot has never seen,",
-          "visual": {
-            "type": "clip",
-            "src": "assets/m_clip_demo.mp4"
-          }
-        },
-        {
-          "narration": "then rearranges them and steps back, and the robot does the task on its own.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/m_clip_auto.mp4"
-          }
-        },
-        {
-          "narration": "The company says the model was trained entirely in simulation, without a single pixel of real-world training data.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/m_sim.png",
-            "credit": "Source: machenta.com"
-          }
-        },
-        {
-          "narration": "The idea is to use simulation to learn how to learn, not to memorize one task.",
-          "visual": {
-            "type": "versus",
-            "left": {
-              "icon": "📼",
-              "title": "Memorize",
-              "sub": "one task at a time",
-              "cue": "memorize"
-            },
-            "right": {
-              "icon": "🧩",
-              "title": "Learn to learn",
-              "sub": "pick up new tasks from one demo",
-              "cue": "learn"
-            }
-          }
-        },
-        {
-          "narration": "Machenta says the same model runs on six different robots.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/m_six.png",
-            "credit": "Source: machenta.com"
-          },
-          "section": "evidence"
-        },
-        {
-          "narration": "Here, several of them work a line together, in a one-person factory demo.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/m_clip_factory.mp4"
-          }
-        },
-        {
-          "narration": "To stress-test it, Machenta ran self-resetting tasks for an hour each:",
-          "visual": {
-            "type": "shot",
-            "src": "assets/m_stress.png",
-            "credit": "Source: machenta.com"
-          }
-        },
-        {
-          "narration": "seventy-four of seventy-four block placements, seventy-eight of seventy-eight screwdriver handovers, and ninety-seven of ninety-nine attempts at standing a bottle upright.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "from": 0,
-                "to": 74,
-                "suffix": "/74",
-                "label": "block placements",
-                "cue": "seventy-four"
-              },
-              {
-                "from": 0,
-                "to": 78,
-                "suffix": "/78",
-                "label": "screwdriver handovers",
-                "cue": "seventy-eight"
-              },
-              {
-                "from": 0,
-                "to": 97,
-                "suffix": "/99",
-                "label": "bottle stand-ups",
-                "cue": "ninety"
-              }
-            ],
-            "credit": "Source: machenta.com (self-reported)"
-          }
-        },
-        {
-          "narration": "Why it matters. Machenta claims one demonstration is enough to learn a new task.",
-          "visual": {
-            "type": "photo",
-            "src": "assets/v_m0_25s.png",
-            "credit": "Video still: Machenta"
-          },
-          "section": "matters"
-        },
-        {
-          "narration": "If that holds up, teaching a robot becomes as quick as showing it once.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "👆",
-                "label": "Show once",
-                "cue": "teaching"
-              },
-              {
-                "icon": "🤖",
-                "label": "Robot does it",
-                "cue": "quick"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "Reality check. Machenta itself calls these tasks relatively simple.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/m_simple.png",
-            "stamp": "Self-reported",
-            "credit": "Source: machenta.com"
-          },
-          "section": "reality"
-        },
-        {
-          "narration": "The blog mentions no paper or code, and there's no independent evaluation yet.",
-          "visual": {
-            "type": "checklist",
-            "title": "Reality check",
-            "items": [
-              {
-                "status": "ok",
-                "text": "Uncut demo videos, six robots",
-                "cue": "blog"
-              },
-              {
-                "status": "warn",
-                "text": "Company's own numbers, simple tasks",
-                "cue": "mentions"
-              },
-              {
-                "status": "no",
-                "text": "No paper or code mentioned",
-                "cue": "paper"
-              },
-              {
-                "status": "no",
-                "text": "No independent evaluation yet",
-                "cue": "independent"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "id": "s4",
-      "kind": "story",
-      "label": "NEWS",
-      "headline": "Toyota will build robotaxis for Waymo",
-      "source": "global.toyota",
-      "sourceDate": "Oct 30, 2026",
-      "urls": [
-        "https://global.toyota/en/newsroom/corporate/44960881.html"
-      ],
-      "beats": [
-        {
-          "narration": "Story four. Toyota and Waymo announced the next phase of their self-driving partnership.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/t_none.png"
-          }
-        },
-        {
-          "narration": "Toyota will build an autonomous version of its bZ4X for Waymo's ride-hailing service.",
-          "visual": {
-            "type": "clip",
-            "src": "assets/t_clip_car.mp4"
-          }
-        },
-        {
-          "narration": "The whole build happens under one roof, at Toyota's Takaoka plant in Japan, from assembling the base vehicle to integrating Waymo's self-driving hardware.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "🏭",
-                "label": "Base vehicle",
-                "sub": "assembled by Toyota",
-                "cue": "assembling"
-              },
-              {
-                "icon": "📡",
-                "label": "Waymo hardware",
-                "sub": "integrated on site",
-                "cue": "integrating"
-              },
-              {
-                "icon": "🚕",
-                "label": "Robotaxi",
-                "sub": "bZ4X for Waymo",
-                "cue": "hardware"
-              }
-            ]
-          },
-          "section": "plain"
-        },
-        {
-          "narration": "Think of a phone that leaves the factory with its key apps already installed.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Built in, at the factory"
-          }
-        },
-        {
-          "narration": "That's straight from Toyota's release.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/t_takaoka.png"
-          },
-          "section": "evidence"
-        },
-        {
-          "narration": "Testing and validation in Japan begin in twenty twenty-seven, with the United Kingdom and other Waymo markets planned for the following years.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "🇯🇵",
-                "label": "Japan",
-                "sub": "2027: test and validate",
-                "cue": "japan"
-              },
-              {
-                "icon": "🇬🇧",
-                "label": "United Kingdom",
-                "sub": "following years",
-                "cue": "united"
-              },
-              {
-                "icon": "🌍",
-                "label": "Other Waymo markets",
-                "sub": "following years",
-                "cue": "other"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "Toyota's release spells out the timeline.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/t_2027.png"
-          }
-        },
-        {
-          "narration": "The two companies will also keep exploring self-driving technology for personally owned Toyota cars.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/t_owned.png"
-          }
-        },
-        {
-          "narration": "Why it matters. The companies say this will accelerate scaling safety-validated autonomous vehicles globally,",
-          "visual": {
-            "type": "photo",
-            "src": "assets/t_car.png",
-            "pan": "out",
-            "credit": "Photo: Toyota Motor Corporation"
-          },
-          "section": "matters"
-        },
-        {
-          "narration": "with the robotaxis built on Toyota's own production line.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Robotaxis off a car factory line"
-          }
-        },
-        {
-          "narration": "Reality check. Twenty twenty-seven is for testing and validation, not public rides. The release gives no fleet size, no city, and no date for paying passengers.",
-          "visual": {
-            "type": "checklist",
-            "title": "Reality check",
-            "items": [
-              {
-                "status": "ok",
-                "text": "Official Toyota release, named plant",
-                "cue": "reality"
-              },
-              {
-                "status": "warn",
-                "text": "2027 = testing and validation",
-                "cue": "testing"
-              },
-              {
-                "status": "no",
-                "text": "No fleet size or city given",
-                "cue": "fleet"
-              },
-              {
-                "status": "no",
-                "text": "No date for paying passengers",
-                "cue": "paying"
-              }
-            ]
-          },
-          "section": "reality"
-        }
-      ]
-    },
-    {
-      "id": "s5",
-      "kind": "story",
-      "label": "NEWS",
-      "headline": "$600M for self-driving excavators",
-      "source": "techcrunch.com",
-      "sourceDate": "Oct 26, 2026",
-      "urls": [
-        "https://techcrunch.com/2026/10/26/this-startups-self-driving-excavators-help-dig-up-600m-in-new-funding/"
-      ],
-      "beats": [
-        {
-          "narration": "Story five. Self-driving excavators just pulled in a very large funding round.",
-          "visual": {
-            "type": "photo",
-            "src": "assets/b_head.png",
-            "fit": "contain",
-            "credit": "Source: TechCrunch · photo: Bedrock Robotics"
-          }
-        },
-        {
-          "narration": "TechCrunch reports that Bedrock Robotics raised six hundred million dollars, at a valuation of four point one billion.",
-          "visual": {
-            "type": "stat",
-            "items": [
-              {
-                "from": 0,
-                "to": 600,
-                "prefix": "$",
-                "suffix": "M",
-                "label": "Series C",
-                "cue": "six"
-              },
-              {
-                "from": 4,
-                "to": 4,
-                "prefix": "$",
-                "suffix": ".1B",
-                "label": "valuation",
-                "cue": "four"
-              }
-            ]
-          }
-        },
-        {
-          "narration": "The round was co-led by CapitalG and Emergence Capital.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/b_600.png"
-          }
-        },
-        {
-          "narration": "Bedrock makes a self-driving kit that's retrofitted onto construction and other worksite vehicles.",
-          "visual": {
-            "type": "flow",
-            "steps": [
-              {
-                "icon": "🚜",
-                "label": "Existing machine",
-                "sub": "excavator",
-                "cue": "excavators"
-              },
-              {
-                "icon": "🧰",
-                "label": "Bedrock kit",
-                "sub": "retrofitted",
-                "cue": "kit"
-              },
-              {
-                "icon": "🤖",
-                "label": "Self-driving",
-                "sub": "on the worksite",
-                "cue": "worksite"
-              }
-            ]
-          },
-          "section": "plain"
-        },
-        {
-          "narration": "Think of it as an add-on autopilot for machines that already exist.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/b_kit.png"
-          }
-        },
-        {
-          "narration": "According to TechCrunch, excavators with the kit are now working commercially, including at a Nevada water treatment facility,",
-          "visual": {
-            "type": "photo",
-            "src": "assets/b_photo.png",
-            "fit": "contain",
-            "credit": "Photo: Bedrock Robotics via TechCrunch"
-          },
-          "section": "evidence"
-        },
-        {
-          "narration": "a Texas earthwork site, and a civil sitework project with Zachry Construction.",
-          "visual": {
-            "type": "shot",
-            "src": "assets/b_sites.png"
-          }
-        },
-        {
-          "narration": "Why excavators? According to Bedrock, it takes five years or more to master operating one,",
-          "visual": {
-            "type": "shot",
-            "src": "assets/b_five.png"
-          },
-          "section": "matters"
-        },
-        {
-          "narration": "and skilled operators are in short supply.",
-          "visual": {
-            "type": "kinetic",
-            "text": "Skilled operators: in short supply"
-          }
-        },
-        {
-          "narration": "The money is meant to speed up Bedrock's move to commercial work, at more construction sites.",
-          "visual": {
-            "type": "versus",
-            "left": {
-              "icon": "🧪",
-              "title": "Testing and pilots",
-              "sub": "where Bedrock started",
-              "cue": "money"
-            },
-            "right": {
-              "icon": "🏗️",
-              "title": "Commercial work",
-              "sub": "more construction sites",
-              "cue": "commercial"
-            }
-          }
-        },
-        {
-          "narration": "Reality check. This comes from TechCrunch's report. It gives no count of machines deployed, and no revenue.",
-          "visual": {
-            "type": "checklist",
-            "title": "Reality check",
-            "items": [
-              {
-                "status": "ok",
-                "text": "Named investors and partners",
-                "cue": "reality"
-              },
-              {
-                "status": "warn",
-                "text": "Single source: TechCrunch",
-                "cue": "techcrunch"
-              },
-              {
-                "status": "no",
-                "text": "No count of machines deployed",
-                "cue": "count"
-              },
-              {
-                "status": "no",
-                "text": "No revenue figures",
-                "cue": "revenue"
-              }
-            ]
-          },
-          "section": "reality"
-        }
-      ]
-    },
-    {
-      "id": "outro",
-      "kind": "title",
-      "headline": "Pixels2Actions",
-      "beats": [
-        {
-          "narration": "That's Pixels to Actions. Every source is linked in the description. If this was useful, subscribe, and I'll break down next week's stories the same way.",
-          "visual": {
-            "type": "end",
-            "subscribeCue": "subscribe"
-          }
-        }
-      ]
-    }
-  ],
   "thumbnails": [
     {
       "layout": "evidence",
@@ -1267,6 +162,1954 @@
           "h": 0.1975
         }
       }
+    }
+  ],
+  "segments": [
+    {
+      "id": "intro",
+      "kind": "title",
+      "headline": "Pixels2Actions",
+      "beats": [
+        {
+          "narration": "This week, Google DeepMind shows a world model you can steer in real time.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_g1_5s.png",
+            "overlay": "A world you can steer",
+            "credit": "Video still: Google DeepMind",
+            "badge": "AI-generated"
+          }
+        },
+        {
+          "narration": "Researchers test whether a frontier AI model can really run a robot, and where it fails.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/v_s5_12s.png",
+                "label": "Frontier model on real robots",
+                "cue": "frontier"
+              },
+              {
+                "src": "assets/v_z3_4s.png",
+                "label": "Trained only in simulation",
+                "cue": "run"
+              }
+            ],
+            "credit": "SenseNova et al. · ZAP project page (Luma AI)"
+          }
+        },
+        {
+          "narration": "Plus a startup whose robots learn from one demonstration, Toyota building robotaxis for Waymo, and self-driving excavators.",
+          "visual": {
+            "type": "panels",
+            "items": [
+              {
+                "src": "assets/v_m0_18s.png",
+                "label": "One demo",
+                "cue": "robot"
+              },
+              {
+                "src": "assets/t_car.png",
+                "label": "Toyota × Waymo",
+                "cue": "toyota"
+              },
+              {
+                "src": "assets/b_photo.png",
+                "label": "Excavators",
+                "cue": "excavators"
+              }
+            ],
+            "credit": "Machenta · Toyota · Bedrock Robotics via TechCrunch"
+          }
+        },
+        {
+          "narration": "This is Pixels to Actions. Every week, we go through what's new in robotics and physical AI.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Pixels2Actions",
+            "sub": "Every week: what's new in robotics and physical AI"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Genie 4: a world you can steer",
+      "source": "deepmind.google",
+      "sourceDate": "Oct 27, 2026",
+      "urls": [
+        "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/"
+      ],
+      "beats": [
+        {
+          "narration": "Story one. Google DeepMind announced Genie 4, its new world model.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_hero.png"
+          }
+        },
+        {
+          "narration": "A world model is an AI that generates a world as you move through it.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "⌨️",
+                "label": "You act",
+                "sub": "keys or a text prompt",
+                "cue": "you"
+              },
+              {
+                "icon": "🧠",
+                "label": "Model generates",
+                "sub": "the next moment",
+                "cue": "generates"
+              },
+              {
+                "icon": "🌐",
+                "label": "World responds",
+                "sub": "in real time",
+                "cue": "move"
+              }
+            ]
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Think of a video game with no game engine. The AI itself draws what happens next.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/g_clip_world.mp4",
+            "stamp": "AI-generated"
+          }
+        },
+        {
+          "narration": "You set an event in motion, and Genie 4 simulates what happens next.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_g6_6s.png",
+            "pan": "in",
+            "badge": "AI-generated",
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "DeepMind says that includes how the world responds, how it sounds, and how the people in it move.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_event.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "In DeepMind's recordings, people steer with keyboard controls, and use text prompts to change the scene as it evolves.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/g_clip_steer.mp4",
+            "stamp": "AI-generated"
+          }
+        },
+        {
+          "narration": "You can type a change, like new weather, a camera move, or a new person or object,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_weather.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "and Gemini adapts your prompt to fit the scene.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/g_clip_steer_last.png",
+            "credit": "Video still: Google DeepMind",
+            "badge": "AI-generated",
+            "pan": "in"
+          }
+        },
+        {
+          "narration": "It's also DeepMind's first real-time world model to generate audio natively:",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_g9_4s.png",
+            "credit": "Video still: Google DeepMind",
+            "badge": "AI-generated",
+            "pan": "out"
+          }
+        },
+        {
+          "narration": "the sound is made by Genie 4 itself.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_g3_4s.png",
+            "credit": "Video still: Google DeepMind",
+            "badge": "AI-generated",
+            "pan": "in"
+          }
+        },
+        {
+          "narration": "So why is this on a robotics channel?",
+          "visual": {
+            "type": "kinetic",
+            "text": "Why robots care"
+          }
+        },
+        {
+          "narration": "DeepMind says Genie 4 can help with developing training environments for robots and agents.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_robots.png"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "Like a flight simulator, but for robots: a safe place to practice, in endless variations.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "✈️",
+              "title": "Flight simulator",
+              "sub": "Pilots practice before the real thing",
+              "cue": "flight"
+            },
+            "right": {
+              "icon": "🤖",
+              "title": "World model",
+              "sub": "Robots could practice in generated worlds",
+              "cue": "robots"
+            }
+          }
+        },
+        {
+          "narration": "DeepMind's stated aim is to test how AI systems navigate different environments",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_before.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "before bringing them to the real world.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Simulation first",
+            "sub": "then the real world"
+          }
+        },
+        {
+          "narration": "To keep a simulation on task, DeepMind puts a second AI in the loop:",
+          "visual": {
+            "type": "kinetic",
+            "text": "A second AI in the loop"
+          }
+        },
+        {
+          "narration": "Gemini three point eight Flash.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_flash.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "As Genie draws the world, Gemini watches the scene, breaks the goal into steps, and checks each new frame to verify that the step succeeded.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "👀",
+                "label": "Watch",
+                "sub": "the scene as Genie draws it",
+                "cue": "watches"
+              },
+              {
+                "icon": "🪜",
+                "label": "Break into steps",
+                "sub": "the goal, one step at a time",
+                "cue": "breaks"
+              },
+              {
+                "icon": "✅",
+                "label": "Check",
+                "sub": "each new frame: did the step work?",
+                "cue": "checks"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Think of a director calling out each next move while the scene is being filmed.",
+          "visual": {
+            "type": "kinetic",
+            "text": "A director in the loop",
+            "sub": "Gemini plans the steps · Genie 4 draws them"
+          }
+        },
+        {
+          "narration": "On the announcement page, a simulated robot arm holds a pipette and dispenses liquid into a lab plate.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/g_clip_pipette.mp4",
+            "stamp": "AI-generated"
+          }
+        },
+        {
+          "narration": "DeepMind's Gemini 4 Argon also works with Genie 4",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_apollo.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "to simulate Apptronik's Apollo humanoid playing checkers.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/g_apollo_sim.png",
+            "credit": "Video still: Google DeepMind",
+            "fit": "contain",
+            "badge": "AI-generated"
+          }
+        },
+        {
+          "narration": "Here's how. Argon breaks the task into steps, and feeds each step to Genie 4 as a text caption while the simulation renders.",
+          "visual": {
+            "type": "split",
+            "items": [
+              {
+                "src": "assets/g_apollo_steps.png",
+                "label": "Gemini 4 Argon: step captions",
+                "cue": "breaks"
+              },
+              {
+                "src": "assets/g_apollo_sim.png",
+                "label": "Genie 4: AI-generated simulation",
+                "cue": "feeds"
+              }
+            ],
+            "credit": "Video still: Google DeepMind"
+          }
+        },
+        {
+          "narration": "Because those captions steer the scene as it goes,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/g_apollo_steps.png",
+            "credit": "Video still: Google DeepMind",
+            "fit": "contain"
+          }
+        },
+        {
+          "narration": "DeepMind says the simulation can adapt as it moves toward finishing the task.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_argon.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "Why it matters. DeepMind pitches world models as safe training grounds for robots, and it's already experimenting with Genie 4 alongside its Gemini Robotics work.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🌐",
+                "label": "Generated world",
+                "sub": "Genie 4",
+                "cue": "world"
+              },
+              {
+                "icon": "🤖",
+                "label": "Robot training ground",
+                "sub": "the pitch",
+                "cue": "training"
+              },
+              {
+                "icon": "🦾",
+                "label": "Gemini Robotics",
+                "sub": "experiments",
+                "cue": "experimenting"
+              }
+            ]
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. Those robot clips are generated simulations. DeepMind doesn't say any robot was trained in Genie 4, and it gives no benchmark numbers.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Real-time, steerable, with native audio",
+                "cue": "reality"
+              },
+              {
+                "status": "warn",
+                "text": "Robot clips are generated simulations",
+                "cue": "generated"
+              },
+              {
+                "status": "no",
+                "text": "No robot reported trained in it",
+                "cue": "trained"
+              },
+              {
+                "status": "no",
+                "text": "No benchmark numbers",
+                "cue": "benchmark"
+              }
+            ]
+          },
+          "section": "reality"
+        },
+        {
+          "narration": "DeepMind also says visual details and object permanence",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_drift.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "things staying where they should, can still drift over time.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Object permanence",
+            "sub": "things staying where they should"
+          }
+        },
+        {
+          "narration": "It lists complex physical interactions and spatial accuracy among the areas it's still researching.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_limits.png",
+            "credit": "Source: deepmind.google"
+          }
+        },
+        {
+          "narration": "For now, it's a research preview for trusted testers.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/g_preview.png",
+            "stamp": "Preview"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "Can GPT-6 Astra run a real robot?",
+      "source": "SenseNova et al. · arXiv",
+      "sourceDate": "Oct 15–30, 2026",
+      "urls": [
+        "https://www.sensenova.ai/has-gpt-6-astra-achieved-embodied-intelligence",
+        "https://arxiv.org/abs/2610.22471",
+        "https://arxiv.org/abs/2610.41320",
+        "https://arxiv.org/abs/2610.35817"
+      ],
+      "beats": [
+        {
+          "narration": "Story two. Frontier AI models, like one called GPT-6 Astra,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_hero.png",
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "can now directly control robots.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_s5_25s.png",
+            "credit": "Video still: SenseNova",
+            "fit": "contain"
+          }
+        },
+        {
+          "narration": "Frontier means among the largest, most capable AI models.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Frontier model",
+            "sub": "among the largest, most capable AI models"
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "The ZAP paper describes GPT-6 Astra as a trillion-parameter model,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/z_trillion.png",
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "meaning about a trillion adjustable numbers inside it.",
+          "visual": {
+            "type": "kinetic",
+            "text": "1,000,000,000,000",
+            "sub": "parameters: the adjustable numbers inside a model"
+          }
+        },
+        {
+          "narration": "Robots usually run on a different kind of model, a V-L-A: vision, language, action.",
+          "visual": {
+            "type": "acronym",
+            "letters": [
+              {
+                "letter": "V",
+                "word": "Vision"
+              },
+              {
+                "letter": "L",
+                "word": "Language"
+              },
+              {
+                "letter": "A",
+                "word": "Action"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "It sees camera images, reads an instruction, and outputs movements. It's trained on robot demonstrations.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "📷",
+                "label": "Sees",
+                "sub": "camera images",
+                "cue": "sees"
+              },
+              {
+                "icon": "💬",
+                "label": "Reads",
+                "sub": "an instruction",
+                "cue": "reads"
+              },
+              {
+                "icon": "🦾",
+                "label": "Moves",
+                "sub": "outputs actions",
+                "cue": "outputs"
+              },
+              {
+                "icon": "🎓",
+                "label": "Trained on",
+                "sub": "robot demonstrations",
+                "cue": "trained"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "GPT-6 Astra has no task- or robot-specific training. It reasons about the scene, and drives the robot through software.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🤖",
+              "title": "VLA",
+              "sub": "Trained on robot demonstrations",
+              "cue": "robot"
+            },
+            "right": {
+              "icon": "🧠",
+              "title": "Frontier model",
+              "sub": "General reasoning, driven through software",
+              "cue": "reasons"
+            }
+          }
+        },
+        {
+          "narration": "But how well?",
+          "visual": {
+            "type": "kinetic",
+            "text": "But how well?"
+          }
+        },
+        {
+          "narration": "Here's the setup. The model sees camera images, works out a plan, and sends motion commands through a harness, a software layer that works like an interpreter for the robot.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "📷",
+                "label": "Sees",
+                "sub": "camera images",
+                "cue": "sees"
+              },
+              {
+                "icon": "🧠",
+                "label": "Plans",
+                "sub": "the frontier model",
+                "cue": "plan"
+              },
+              {
+                "icon": "🔌",
+                "label": "Harness",
+                "sub": "turns plans into motion calls",
+                "cue": "harness"
+              },
+              {
+                "icon": "🦾",
+                "label": "Robot moves",
+                "cue": "commands"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "First, a big report led by SenseNova, published earlier in October.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_absdate.png",
+            "credit": "Source: arXiv:2610.22471 · Oct 15, 2026"
+          }
+        },
+        {
+          "narration": "The report tested GPT-6 Astra on twelve benchmarks, which are standard test suites,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_12.png",
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "and on eight real robot platforms.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_s5_12s.png",
+            "credit": "Video still: SenseNova",
+            "fit": "contain"
+          }
+        },
+        {
+          "narration": "In simulation, it scored ninety-nine to one hundred percent on six benchmark suites,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/s_sim_c.png",
+            "fit": "contain",
+            "badge": "99–100% in simulation",
+            "badgeCue": "ninety",
+            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "but with help: it was allowed to learn in context from the benchmark's training set.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_10x.png",
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "In plain terms: before testing, it studied example solutions,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_pkg.png",
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "and wrote itself a package of notes, motions and helper code, to look things up during the test.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "📝",
+                "label": "Notes",
+                "sub": "task guidance",
+                "cue": "notes"
+              },
+              {
+                "icon": "🧰",
+                "label": "Motions + helper code",
+                "sub": "from the demos",
+                "cue": "code"
+              },
+              {
+                "icon": "🔎",
+                "label": "Look things up",
+                "sub": "during the test",
+                "cue": "look"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "It was also allowed up to ten times the usual number of steps. Think of an open-book exam, with extra time.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "📖",
+              "title": "Open book",
+              "sub": "Notes built from the training demos",
+              "cue": "open"
+            },
+            "right": {
+              "icon": "⏱️",
+              "title": "Extra time",
+              "sub": "Up to 10× the official step limit",
+              "cue": "ten"
+            }
+          }
+        },
+        {
+          "narration": "On the real robots, there were no demonstrations and no notes package,",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🖥️",
+              "title": "Simulation",
+              "sub": "Open book, extra time",
+              "cue": "real"
+            },
+            "right": {
+              "icon": "🦾",
+              "title": "Real robots",
+              "sub": "No demos, no notes package",
+              "cue": "demonstrations"
+            }
+          }
+        },
+        {
+          "narration": "only context written by people, like joint limits and safety constraints.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_human.png",
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "An operator held an emergency stop,",
+          "visual": {
+            "type": "kinetic",
+            "text": "🛑 Emergency stop",
+            "sub": "held by a person on every real run"
+          }
+        },
+        {
+          "narration": "and success was judged from the physical result, not the model's own claim.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_judge.png",
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "Simple pick-and-place, moving rigid objects, worked in seventeen of eighteen trials.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/s_clip_pnp.mp4",
+            "badge": "17/18",
+            "badgeCue": "seventeen"
+          }
+        },
+        {
+          "narration": "But plug insertion, which needs precise contact, went zero for eleven, across three robot platforms.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 0,
+                "suffix": "/11",
+                "label": "real plug insertions",
+                "cue": "zero"
+              }
+            ],
+            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
+          }
+        },
+        {
+          "narration": "Why? The report says the model can tell a task is unfinished, but not which physical condition is unmet,",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "✅",
+              "title": "Can tell",
+              "sub": "the task isn't finished",
+              "cue": "unfinished"
+            },
+            "right": {
+              "icon": "❓",
+              "title": "Can't tell",
+              "sub": "which physical condition is unmet",
+              "cue": "unmet"
+            }
+          }
+        },
+        {
+          "narration": "so its corrections don't converge. Looking done isn't the same as being done.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/s_verify.png",
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "Like plugging in a charger in the dark: you can tell it isn't in, but not whether you're too high or too far left.",
+          "visual": {
+            "type": "kinetic",
+            "text": "A plug in the dark",
+            "sub": "It can tell it's not in, not why"
+          }
+        },
+        {
+          "narration": "Real hardware adds its own limits. On one robot, two of three plug attempts ended with a joint collision fault.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 2,
+                "suffix": "/3",
+                "label": "PiPER plug attempts ended by a collision fault",
+                "cue": "two"
+              }
+            ],
+            "credit": "Source: sensenova.ai"
+          }
+        },
+        {
+          "narration": "Cloth folding and long mobile tasks were also markedly harder:",
+          "visual": {
+            "type": "photo",
+            "src": "assets/s_plug_c.png",
+            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)",
+            "fit": "contain"
+          }
+        },
+        {
+          "narration": "two of four folds, and nine of twenty-three navigation searches.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 2,
+                "suffix": "/4",
+                "label": "cloth folds (Franka 3)",
+                "cue": "two"
+              },
+              {
+                "from": 0,
+                "to": 9,
+                "suffix": "/23",
+                "label": "navigation searches",
+                "cue": "nine"
+              }
+            ],
+            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
+          }
+        },
+        {
+          "narration": "The authors' verdict: competent, but not yet practical.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Competent, not yet practical",
+            "sub": "SenseNova et al.: “not yet that of practical embodied intelligence”",
+            "credit": "Source: arXiv:2610.22471 (SenseNova et al.)"
+          }
+        },
+        {
+          "narration": "Two new preprints, papers shared before peer review, try to close that gap.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Two fixes",
+            "sub": "LEXP · ZAP"
+          }
+        },
+        {
+          "narration": "The first, LEXP, doesn't retrain the model at all. The model's weights stay fixed. What changes is the information it's given before each move.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🏋️",
+              "title": "Retraining",
+              "sub": "Change the model itself",
+              "cue": "retrain"
+            },
+            "right": {
+              "icon": "📝",
+              "title": "LEXP",
+              "sub": "Change what the model reads",
+              "cue": "changes"
+            }
+          }
+        },
+        {
+          "narration": "A planner splits the task into steps. After each attempt, LEXP writes down lessons from what actually happened, and when they apply, then feeds the relevant ones back.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🗺️",
+                "label": "Plan",
+                "sub": "split the task into steps",
+                "cue": "planner"
+              },
+              {
+                "icon": "🦾",
+                "label": "Try",
+                "sub": "a real attempt",
+                "cue": "attempt"
+              },
+              {
+                "icon": "📝",
+                "label": "Write lessons",
+                "sub": "what happened, when it applies",
+                "cue": "lessons"
+              },
+              {
+                "icon": "🔁",
+                "label": "Reuse",
+                "sub": "on the next actions",
+                "cue": "feeds"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Like a notebook of lessons the robot rereads before each move.",
+          "visual": {
+            "type": "kinetic",
+            "text": "A notebook of lessons",
+            "sub": "Same model, better notes"
+          }
+        },
+        {
+          "narration": "Across twelve real-world tasks, success rose from five point six percent for plain Astra, to sixty-three point nine percent.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 5,
+                "to": 5,
+                "suffix": ".6%",
+                "label": "plain Astra",
+                "cue": "five"
+              },
+              {
+                "from": 63,
+                "to": 63,
+                "suffix": ".9%",
+                "label": "with LEXP",
+                "cue": "sixty"
+              }
+            ],
+            "credit": "Source: arXiv:2610.41320 (LEXP)"
+          }
+        },
+        {
+          "narration": "That's twenty-three of thirty-six trials, against two of thirty-six for plain Astra.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/l_639_c.png",
+            "credit": "Source: arXiv:2610.41320 (LEXP)",
+            "fit": "contain"
+          }
+        },
+        {
+          "narration": "With memory alone, just the history of its past attempts, it reached nineteen.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 19,
+                "suffix": "/36",
+                "label": "memory alone: history of past attempts",
+                "cue": "nineteen"
+              }
+            ],
+            "credit": "Source: arXiv:2610.41320 (LEXP)"
+          }
+        },
+        {
+          "narration": "Those are the paper's own trials, on one two-armed robot, with three trials per task.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/l_three.png",
+            "credit": "Source: arXiv:2610.41320 (LEXP)"
+          }
+        },
+        {
+          "narration": "The second, ZAP from Luma AI, starts by splitting robot control into two skills: understanding what the task asks for, and knowing how to move.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🧠",
+              "title": "What",
+              "sub": "Understand the task and the scene",
+              "cue": "understanding"
+            },
+            "right": {
+              "icon": "✋",
+              "title": "How",
+              "sub": "Motion control: grasp, approach, move",
+              "cue": "move"
+            }
+          }
+        },
+        {
+          "narration": "The authors tested a small open model, Qwen three point six.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Qwen 3.6",
+            "sub": "a small open model"
+          }
+        },
+        {
+          "narration": "On its own, it succeeded in just sixteen point seven percent of real trials.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/z_qwen.png",
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "Looking closer, it understood the task, but only thirty-six percent of its motion calls were correct.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/z_36.png",
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "So ZAP teaches only the motion part, entirely in simulation,",
+          "visual": {
+            "type": "clip",
+            "src": "assets/z_clip_sim.mp4"
+          }
+        },
+        {
+          "narration": "on as few as forty deliberately simple tasks, with no real-world robot data.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/z_40.png",
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "The model practices, and learns from its own successful attempts. No bigger model teaches it.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🖥️",
+                "label": "Practice",
+                "sub": "simple tasks in simulation",
+                "cue": "practices"
+              },
+              {
+                "icon": "✅",
+                "label": "Keep successes",
+                "sub": "its own good attempts",
+                "cue": "successful"
+              },
+              {
+                "icon": "📈",
+                "label": "Learn",
+                "sub": "no teacher model",
+                "cue": "teaches"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Then it was tested on a real two-armed robot, on tasks it never trained on,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_z15_4s.png",
+            "credit": "Video still: Luma AI (ZAP authors)"
+          }
+        },
+        {
+          "narration": "like handing a test tube between arms and placing it in a rack.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_z0_10s.png",
+            "credit": "Video still: Luma AI (ZAP authors)"
+          }
+        },
+        {
+          "narration": "It succeeded on twenty-nine of thirty trials,",
+          "visual": {
+            "type": "clip",
+            "src": "assets/z_clip_real.mp4",
+            "badge": "29/30",
+            "badgeCue": "twenty-nine"
+          }
+        },
+        {
+          "narration": "matching GPT-6 Astra in the same harness.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/z_2930.png",
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "Cost matters too. In this harness, GPT-6 Astra takes three hundred ninety-seven seconds and four dollars eighty-seven cents per average real task.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 397,
+                "suffix": " s",
+                "label": "GPT-6 Astra, per task",
+                "cue": "seconds"
+              },
+              {
+                "from": 0,
+                "to": 4,
+                "prefix": "$",
+                "suffix": ".87",
+                "label": "GPT-6 Astra, per task",
+                "cue": "dollars"
+              }
+            ],
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "The authors say ZAP matches it at three times the speed, and one seventeenth of the cost.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/z_3x.png",
+            "credit": "Source: arXiv:2610.35817 (ZAP, CC BY 4.0)"
+          }
+        },
+        {
+          "narration": "Why it matters. The ZAP authors argue that a small open model already understands robot tasks, and mainly lacks motion control. And that part, they show, can be taught in simulation.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🧠",
+              "title": "Understanding",
+              "sub": "Already there, per ZAP",
+              "cue": "understands"
+            },
+            "right": {
+              "icon": "✋",
+              "title": "Motion control",
+              "sub": "The missing skill",
+              "cue": "lacks"
+            }
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Reality check. These are preprints with small trial counts, and precise contact, like plugging something in, was the weak spot.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Real-robot trials, with counts",
+                "cue": "reality"
+              },
+              {
+                "status": "warn",
+                "text": "Preprints, small trial counts",
+                "cue": "preprints"
+              },
+              {
+                "status": "no",
+                "text": "Plug insertion: 0/11",
+                "cue": "precise"
+              }
+            ]
+          },
+          "section": "reality"
+        },
+        {
+          "narration": "LEXP lists its code as coming soon, and ZAP doesn't mention releasing code or weights.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "no",
+                "text": "LEXP code: “coming soon”",
+                "cue": "lexp"
+              },
+              {
+                "status": "no",
+                "text": "ZAP: no code or weights mentioned",
+                "cue": "zap"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Robots that learn from one demo",
+      "source": "machenta.com · x.com/Ed__Johns",
+      "sourceDate": "Oct 27, 2026",
+      "urls": [
+        "https://machenta.com/blog/instant-robot-learning",
+        "https://x.com/Ed__Johns/status/2115030792720031996"
+      ],
+      "beats": [
+        {
+          "narration": "Story three. A startup called Machenta came out of stealth,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_blog.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "saying its robots learn a new task from a single demonstration.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_m0_18s.png",
+            "credit": "Video still: Machenta"
+          }
+        },
+        {
+          "narration": "Founder Ed Johns announced a forty million dollar seed round, co-led by Creandum and USV.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/m_tweet_c.png",
+            "fit": "contain",
+            "credit": "Source: x.com/Ed__Johns · Oct 27, 2026"
+          }
+        },
+        {
+          "narration": "Here's the usual way to teach a robot: collect demonstrations, then train the model on them, before you can use it.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "⏳",
+              "title": "The usual way",
+              "sub": "Collect demos, train the model, then use it",
+              "cue": "usual"
+            },
+            "right": {
+              "icon": "👆",
+              "title": "Machenta's claim",
+              "sub": "Show it once. No training, no waiting.",
+              "cue": "train"
+            }
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Machenta says robot models like VLAs are usually post-trained on many real demonstrations per task,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_post.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "a process that can take days or weeks.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Days or weeks",
+            "sub": "per task, says Machenta"
+          }
+        },
+        {
+          "narration": "Machenta's pitch is like showing a new coworker a task once.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Show it once"
+          }
+        },
+        {
+          "narration": "Its model swaps the language part for a demonstration. Machenta calls it a V-D-A: vision, demo, action.",
+          "visual": {
+            "type": "acronym",
+            "letters": [
+              {
+                "letter": "V",
+                "word": "Vision"
+              },
+              {
+                "letter": "D",
+                "word": "Demo"
+              },
+              {
+                "letter": "A",
+                "word": "Action"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "In its videos, a person demonstrates once, on objects the robot has never seen,",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_demo.mp4"
+          }
+        },
+        {
+          "narration": "then rearranges them, steps back, and the robot does it alone, with no further training.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_auto.mp4"
+          }
+        },
+        {
+          "narration": "The company says the model was trained entirely in simulation,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_sim.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "without a single pixel of real-world training data.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Zero real-world pixels",
+            "sub": "in its training data, says Machenta"
+          }
+        },
+        {
+          "narration": "The idea is to use simulation to learn how to learn, not to memorize one task.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "📼",
+              "title": "Memorize",
+              "sub": "one task at a time",
+              "cue": "memorize"
+            },
+            "right": {
+              "icon": "🧩",
+              "title": "Learn to learn",
+              "sub": "pick up new tasks from one demo",
+              "cue": "learn"
+            }
+          }
+        },
+        {
+          "narration": "To do that, Machenta generates a vast range of random simulated tasks, objects and settings,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_random.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "so the model has to work out what matters from whichever demonstration it's shown.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🎲",
+                "label": "Random sim worlds",
+                "sub": "tasks, objects, settings",
+                "cue": "model"
+              },
+              {
+                "icon": "👀",
+                "label": "One demo each",
+                "sub": "different every time",
+                "cue": "matters"
+              },
+              {
+                "icon": "🧩",
+                "label": "Learns to read a demo",
+                "sub": "not one task",
+                "cue": "shown"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "A common worry is the sim-to-real gap: a skill learned in a simulator breaks when reality differs.",
+          "visual": {
+            "type": "kinetic",
+            "text": "The sim-to-real gap",
+            "sub": "Skills learned in simulation can break in reality"
+          }
+        },
+        {
+          "narration": "Machenta's answer: at test time, the demonstration and the camera images both come from the real world.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_m0_8s.png",
+            "credit": "Video still: Machenta"
+          }
+        },
+        {
+          "narration": "As it puts it, to the model, reality is just one more environment to adapt to.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_real.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "Machenta says the same model runs on six different robots.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_six.png",
+            "credit": "Source: machenta.com"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "Here, three robots, each with a different gripper and camera setup,",
+          "visual": {
+            "type": "clip",
+            "src": "assets/m_clip_factory.mp4"
+          }
+        },
+        {
+          "narration": "work a line together in a one-person factory demo.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_m6_20s.png",
+            "credit": "Video still: Machenta",
+            "fit": "contain"
+          }
+        },
+        {
+          "narration": "To stress-test it, Machenta ran tasks that reset themselves, for an hour each:",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_stress.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "seventy-four of seventy-four block placements, seventy-eight of seventy-eight screwdriver handovers, and ninety-seven of ninety-nine attempts at standing a bottle upright.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 74,
+                "suffix": "/74",
+                "label": "block placements",
+                "cue": "seventy-four"
+              },
+              {
+                "from": 0,
+                "to": 78,
+                "suffix": "/78",
+                "label": "screwdriver handovers",
+                "cue": "seventy-eight"
+              },
+              {
+                "from": 0,
+                "to": 97,
+                "suffix": "/99",
+                "label": "bottle stand-ups",
+                "cue": "ninety"
+              }
+            ],
+            "credit": "Source: machenta.com (self-reported)"
+          }
+        },
+        {
+          "narration": "Why it matters. Machenta claims one demonstration is enough to learn a new task.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/v_m0_25s.png",
+            "credit": "Video still: Machenta"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Machenta argues that if every new task needs days or weeks of data and training,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_why.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "robots stay too slow and too expensive to deploy at scale.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Too slow, too expensive",
+            "sub": "Machenta's argument for instant learning"
+          }
+        },
+        {
+          "narration": "Reality check. Machenta itself calls these tasks relatively simple.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_simple.png",
+            "stamp": "Self-reported",
+            "credit": "Source: machenta.com"
+          },
+          "section": "reality"
+        },
+        {
+          "narration": "And it says these results come from its first few months, mostly fundamental research.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/m_months.png",
+            "credit": "Source: machenta.com"
+          }
+        },
+        {
+          "narration": "The blog mentions no paper or code, and there's no independent evaluation yet.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Uncut demo videos, six robots",
+                "cue": "blog"
+              },
+              {
+                "status": "warn",
+                "text": "Company's own numbers, simple tasks",
+                "cue": "mentions"
+              },
+              {
+                "status": "no",
+                "text": "No paper or code mentioned",
+                "cue": "paper"
+              },
+              {
+                "status": "no",
+                "text": "No independent evaluation yet",
+                "cue": "independent"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "Toyota will build robotaxis for Waymo",
+      "source": "global.toyota",
+      "sourceDate": "Oct 30, 2026",
+      "urls": [
+        "https://global.toyota/en/newsroom/corporate/44960881.html"
+      ],
+      "beats": [
+        {
+          "narration": "Story four. Toyota and Waymo announced the next phase of their self-driving partnership.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_none.png"
+          }
+        },
+        {
+          "narration": "It builds on a preliminary agreement the two announced in April twenty twenty-five.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_april.png"
+          }
+        },
+        {
+          "narration": "Toyota will build self-driving bZ4X cars for Waymo's driverless ride-hailing service.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/t_clip_car.mp4"
+          }
+        },
+        {
+          "narration": "The whole build happens under one roof, at Toyota's Takaoka plant in Japan, from assembling the base vehicle to integrating Waymo's self-driving hardware.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🏭",
+                "label": "Base vehicle",
+                "sub": "assembled by Toyota",
+                "cue": "assembling"
+              },
+              {
+                "icon": "📡",
+                "label": "Waymo hardware",
+                "sub": "integrated on site",
+                "cue": "integrating"
+              },
+              {
+                "icon": "🚕",
+                "label": "Robotaxi",
+                "sub": "bZ4X for Waymo",
+                "cue": "hardware"
+              }
+            ]
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Think of a phone that leaves the factory with its key apps already installed.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Built in, at the factory"
+          }
+        },
+        {
+          "narration": "That's straight from Toyota's release.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_takaoka.png"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "Testing and validation in Japan begin in twenty twenty-seven, with the United Kingdom and other Waymo markets planned for the following years.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🇯🇵",
+                "label": "Japan",
+                "sub": "2027: test and validate",
+                "cue": "japan"
+              },
+              {
+                "icon": "🇬🇧",
+                "label": "United Kingdom",
+                "sub": "following years",
+                "cue": "united"
+              },
+              {
+                "icon": "🌍",
+                "label": "Other Waymo markets",
+                "sub": "following years",
+                "cue": "other"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "Toyota's release spells out the timeline.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_2027.png"
+          }
+        },
+        {
+          "narration": "The two companies will also keep exploring self-driving technology for personally owned Toyota cars,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_owned.png"
+          }
+        },
+        {
+          "narration": "the kind people buy for themselves.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Personally owned cars",
+            "sub": "not only robotaxis"
+          }
+        },
+        {
+          "narration": "Why it matters. The companies say this will accelerate scaling safety-validated autonomous vehicles globally.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/t_car.png",
+            "pan": "out",
+            "credit": "Photo: Toyota Motor Corporation"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "Toyota says it paves the way for Japan's first fully autonomous ride-hailing service",
+          "visual": {
+            "type": "shot",
+            "src": "assets/t_first.png"
+          }
+        },
+        {
+          "narration": "built on domestically manufactured vehicles.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Built in Japan",
+            "sub": "domestically manufactured robotaxis"
+          }
+        },
+        {
+          "narration": "Reality check. Twenty twenty-seven is for testing and validation, not public rides. The release gives no fleet size, no city, and no date for paying passengers.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Official Toyota release, named plant",
+                "cue": "reality"
+              },
+              {
+                "status": "warn",
+                "text": "2027 = testing and validation",
+                "cue": "testing"
+              },
+              {
+                "status": "no",
+                "text": "No fleet size or city given",
+                "cue": "fleet"
+              },
+              {
+                "status": "no",
+                "text": "No date for paying passengers",
+                "cue": "paying"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "kind": "story",
+      "label": "NEWS",
+      "headline": "$600M for self-driving excavators",
+      "source": "techcrunch.com",
+      "sourceDate": "Oct 26, 2026",
+      "urls": [
+        "https://techcrunch.com/2026/10/26/this-startups-self-driving-excavators-help-dig-up-600m-in-new-funding/"
+      ],
+      "beats": [
+        {
+          "narration": "Story five. Self-driving excavators just pulled in a very large funding round.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/b_head.png",
+            "fit": "contain",
+            "credit": "Source: TechCrunch · photo: Bedrock Robotics"
+          }
+        },
+        {
+          "narration": "TechCrunch reports that Bedrock Robotics raised six hundred million dollars, at a valuation of four point one billion.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 600,
+                "prefix": "$",
+                "suffix": "M",
+                "label": "Series C",
+                "cue": "six"
+              },
+              {
+                "from": 4,
+                "to": 4,
+                "prefix": "$",
+                "suffix": ".1B",
+                "label": "valuation",
+                "cue": "four"
+              }
+            ]
+          }
+        },
+        {
+          "narration": "A Series C is a later funding round. The valuation is what the deal says the whole company is worth.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Series C · valuation",
+            "sub": "A later funding round · what the deal says the company is worth"
+          }
+        },
+        {
+          "narration": "TechCrunch notes it was founded in twenty twenty-four, and has raised nearly one billion dollars since.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/b_age.png"
+          }
+        },
+        {
+          "narration": "The round was co-led by CapitalG and Emergence Capital.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/b_600.png"
+          }
+        },
+        {
+          "narration": "Bedrock makes a self-driving kit that's retrofitted onto construction and other worksite vehicles.",
+          "visual": {
+            "type": "flow",
+            "steps": [
+              {
+                "icon": "🚜",
+                "label": "Existing machine",
+                "sub": "excavator",
+                "cue": "construction"
+              },
+              {
+                "icon": "🧰",
+                "label": "Bedrock kit",
+                "sub": "retrofitted",
+                "cue": "kit"
+              },
+              {
+                "icon": "🤖",
+                "label": "Self-driving",
+                "sub": "on the worksite",
+                "cue": "worksite"
+              }
+            ]
+          },
+          "section": "plain"
+        },
+        {
+          "narration": "Think of it as an add-on autopilot for machines that already exist.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/b_kit.png"
+          }
+        },
+        {
+          "narration": "Two months before the round, Bedrock moved its excavators beyond testing and pilots,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/b_pilot.png"
+          },
+          "section": "evidence"
+        },
+        {
+          "narration": "onto active construction sites.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Pilots → active sites",
+            "sub": "two months before the round"
+          }
+        },
+        {
+          "narration": "Excavators with the kit are now working commercially, including at a Nevada water treatment facility,",
+          "visual": {
+            "type": "photo",
+            "src": "assets/b_photo.png",
+            "fit": "contain",
+            "credit": "Photo: Bedrock Robotics via TechCrunch"
+          }
+        },
+        {
+          "narration": "a Texas earthwork site, and a civil sitework project with Zachry Construction.",
+          "visual": {
+            "type": "shot",
+            "src": "assets/b_sites.png"
+          }
+        },
+        {
+          "narration": "Why excavators? According to Bedrock, it takes five years or more to master operating one,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/b_five.png"
+          },
+          "section": "matters"
+        },
+        {
+          "narration": "and skilled operators are in short supply.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Skilled operators: in short supply"
+          }
+        },
+        {
+          "narration": "And a construction trade group, the Associated Builders and Contractors,",
+          "visual": {
+            "type": "shot",
+            "src": "assets/b_retire.png"
+          }
+        },
+        {
+          "narration": "estimates that more than forty percent of construction workers will retire in the next five years.",
+          "visual": {
+            "type": "stat",
+            "items": [
+              {
+                "from": 0,
+                "to": 40,
+                "prefix": ">",
+                "suffix": "%",
+                "label": "of construction workers retiring within 5 years (ABC estimate)",
+                "cue": "forty"
+              }
+            ],
+            "credit": "Source: TechCrunch"
+          }
+        },
+        {
+          "narration": "The money is meant to speed up Bedrock's move to commercial work, at more construction sites.",
+          "visual": {
+            "type": "versus",
+            "left": {
+              "icon": "🧪",
+              "title": "Testing and pilots",
+              "sub": "where Bedrock started",
+              "cue": "money"
+            },
+            "right": {
+              "icon": "🏗️",
+              "title": "Commercial work",
+              "sub": "more construction sites",
+              "cue": "commercial"
+            }
+          }
+        },
+        {
+          "narration": "Reality check. This comes from TechCrunch's report. It gives no count of machines deployed, and no revenue.",
+          "visual": {
+            "type": "checklist",
+            "title": "Reality check",
+            "items": [
+              {
+                "status": "ok",
+                "text": "Named investors and partners",
+                "cue": "reality"
+              },
+              {
+                "status": "warn",
+                "text": "Single source: TechCrunch",
+                "cue": "techcrunch"
+              },
+              {
+                "status": "no",
+                "text": "No count of machines deployed",
+                "cue": "count"
+              },
+              {
+                "status": "no",
+                "text": "No revenue figures",
+                "cue": "revenue"
+              }
+            ]
+          },
+          "section": "reality"
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "kind": "title",
+      "headline": "Pixels2Actions",
+      "beats": [
+        {
+          "narration": "That's Pixels to Actions. Every source is linked in the description. If this was useful, subscribe, and I'll break down next week's stories the same way.",
+          "visual": {
+            "type": "end",
+            "subscribeCue": "subscribe"
+          }
+        }
+      ]
     }
   ]
 }

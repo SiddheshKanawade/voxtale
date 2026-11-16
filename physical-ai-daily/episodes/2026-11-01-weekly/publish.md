@@ -1,6 +1,6 @@
 # Publish: 2026-11-01-weekly (Oct 25–Nov 1, 2026)
 
-Chapter times come from props.json, using the `timeline()` in video/src/theme.ts with STING_S = 1.6 after the intro. The total of 486.3 s matches the rendered out/*.mp4 (486.4 s).
+Chapter times come from props.json, using the `timeline()` in video/src/theme.ts with STING_S = 1.6 after the intro. The total of 876.4 s (14:36) matches the rendered out/*.mp4 (876.5 s).
 
 ---
 
@@ -20,11 +20,11 @@ Google DeepMind's Genie 4 world model, and tests of whether a frontier AI model 
 Chapters
 0:00 This week
 0:28 Genie 4: a world you can steer
-2:01 Can GPT-6 Astra run a real robot?
-4:05 Robots that learn from one demo
-5:40 Toyota will build robotaxis for Waymo
-6:51 $600M for self-driving excavators
-7:54 Wrap-up
+3:17 Can GPT-6 Astra run a real robot?
+8:48 Robots that learn from one demo
+11:27 Toyota will build robotaxis for Waymo
+12:51 $600M for self-driving excavators
+14:24 Wrap-up
 
 Sources (in story order)
 1. Google DeepMind Genie 4
@@ -33,8 +33,8 @@ Sources (in story order)
 - SenseNova et al., report page: https://www.sensenova.ai/has-gpt-6-astra-achieved-embodied-intelligence
 - SenseNova et al., full report (PDF): https://www.sensenova.ai/gpt-6/assets/docs/has_gpt-6_achieved_embodied_intelligence.pdf
 - SenseNova et al., arXiv:2610.22471: https://arxiv.org/abs/2610.22471
-- LEXP, arXiv:2610.41320: https://arxiv.org/abs/2610.41320
-- ZAP (Luma AI), arXiv:2610.35817: https://arxiv.org/abs/2610.35817
+- LEXP, arXiv:2610.41320: https://arxiv.org/abs/2610.41320 (full text: https://arxiv.org/html/2610.41320v1)
+- ZAP (Luma AI), arXiv:2610.35817: https://arxiv.org/abs/2610.35817 (full text: https://arxiv.org/html/2610.35817v3)
 3. Machenta
 - Machenta blog: https://machenta.com/blog/instant-robot-learning
 - Ed Johns on X (Oct 27, 2026): https://x.com/Ed__Johns/status/2115030792720031996
@@ -49,7 +49,7 @@ Video clips (short excerpts with our commentary, original audio muted)
 - Video: Luma AI, ZAP authors (2 clips): https://zero-real.github.io/
 - Video: Machenta (3 clips): https://machenta.com/blog/instant-robot-learning
 - Video: Toyota (1 clip): https://www.youtube.com/watch?v=Cy8Xbh6trtI
-Images: Genie 4 stills from Google DeepMind (also AI-generated); figures from the SenseNova, LEXP and ZAP papers (ZAP under CC BY 4.0); Machenta stills; Toyota Motor Corporation photo; Bedrock Robotics photo via TechCrunch (all linked above).
+Images: Genie 4 stills from Google DeepMind (also AI-generated, labelled on screen); figures and highlighted passages from the SenseNova report page, the LEXP paper and the ZAP paper (ZAP under CC BY 4.0); video stills from the SenseNova report page and the ZAP project page; Machenta stills and blog passages; Toyota Motor Corporation photo and release; Bedrock Robotics photo and article passages via TechCrunch (all linked above).
 
 Pixels2Actions: every week, we go through what's new in robotics and physical AI, with every source linked.
 ```
