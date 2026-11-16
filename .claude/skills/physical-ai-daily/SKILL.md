@@ -237,7 +237,8 @@ listed in the description with its URL; never another creator's commentary or a 
 each clip's URL, owner and timestamps in the hand-off. Downloading the source file needs the user's OK (name the file,
 source and size). Cut it with `tools/clip.py <ep> <source.mp4> <name> --start S --dur S --credit "Video: NVIDIA" --url
 <URL>` (muted, at most 10 s, writes the credit and URL beside it), then use the beat `{"type": "clip", "src":
-"assets/<name>.mp4"}` (optional `"fit": "cover"`, default shows the whole frame; `"stamp"`, e.g. "AI-generated" on generated footage; `"badge"` for a
+"assets/<name>.mp4"}` (optional `"fit": "cover"`, default shows the whole frame; `"stamp"`, a small subtle tag such as "Simulation" or "Self-reported" ("AI-generated" only on media *we* generated; another
+lab's generated footage is identified by its credit and the narration); `"badge"` for a
 number, with `"badgeCue"`). `voice.py` refuses a clip without a
 credit or URL and warns when the narration outlasts the footage by more than 2 s (the last frame holds; split the beat
 instead). Always list sources in the description.

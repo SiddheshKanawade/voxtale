@@ -94,6 +94,8 @@ when official footage doesn't show it (checklist HARD 7.2): a few seconds each, 
 the robot doing the thing in frame 0. Wire-agency footage last (Content ID claims). Downloading the source needs the
 user's OK; cut it with `tools/clip.py` (same as episodes, see the physical-ai-daily skill). When no official
 footage exists, get motion from consecutive stills, the push-in, counting stats and a new visual every beat.
+Tags on footage stay small and subtle (user, 2026-11-16). "AI-generated" is only for media we generate ourselves:
+another lab's generated footage (e.g. Genie 4) is identified by its credit line and the narration, never by a stamp.
 Generated video (Higgsfield, Blender) only rarely, to explain an idea, labelled "Illustration" / "AI-generated" and
 never presented as real (HARD 4.5).
 
