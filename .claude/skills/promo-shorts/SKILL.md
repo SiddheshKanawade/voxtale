@@ -78,7 +78,9 @@ cut detail first (see "Leave out"); only then voice it faster with `"direct": [[
 `VOICE_STRENGTH=2`.
 
 **Point to OUR episode (user, 2026-11-17):** the Short sends viewers to our full episode, not to the original source.
-Copy the episode's YouTube thumbnail (`<ep>/out/thumbnail.png`) to the Short's `assets/episode_thumb.png` and set
+Copy the episode thumbnail candidate **about this Short's own story** (`<ep>/out/thumb_<n>_*.png`, matched by its
+receipt/hook; user, 2026-11-17: the astra Short must not end on Machenta's thumbnail) to the Short's
+`assets/episode_thumb.png` and set
 top-level `"episodeThumb": "assets/episode_thumb.png"`: the renderer then shows that thumbnail with "FULL EPISODE ↓"
 during the spoken CTA (the last beat) and on the end card, so viewers recognise what the Related-video link opens.
 In the description, the episode link comes first ("Full episode: <url>"), sources after it.
