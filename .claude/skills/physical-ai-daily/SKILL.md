@@ -147,6 +147,9 @@ confirm on the primary source, with its date, at the time you script.
 
 - Narration ≈ 150 words/min; a story is as long as its explanation needs (no word or beat target). Spell numbers as words ("ninety-six percent"), because the TTS reads digits unreliably. On-screen numbers use digits.
 - Story arc: hook (what happened) → plain-English explainer (analogy + diagram) → evidence (source visual, highlighted sentence) → why it matters → reality check. Don't use hype words like "shocking" or "changes everything".
+- **Backlog episodes** (weeks published long after they happened; user, 2026-11-17): say the week, never "this
+  week". Intro opens "In the week of August 2nd…"; the on-screen date shows the week ("Aug 2–9, 2026"); titles and
+  descriptions name the week; no "today"/"just announced"; if a source says something changed since, say so.
 - The intro teases the stories with visuals in about 20 s, then ends on the channel line, word for word: "This is
   Pixels to Actions. Every week, we go through what's new in robotics and physical AI." (user, 2026-11-16: inform,
   don't sell; no "biggest", no "explained in plain English" pitch). Research: `docs/research-channel-intro.md`. The outro opens with "That's Pixels to Actions." (written

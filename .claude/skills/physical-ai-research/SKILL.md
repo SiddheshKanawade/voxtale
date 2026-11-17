@@ -57,6 +57,15 @@ and ~20 X accounts. They steer the harvest (accounts, X keywords, arXiv terms) a
 prompt names (pi0.7, GR00T, V-JEPA, UMI) is news even when the post is quiet. Every item's `topics` tags are a lexical
 hint, not a score; untagged items can still be the week's biggest story.
 
+## Backlog weeks (user, 2026-11-17)
+
+To build a posting buffer, past weeks (Aug 2 – Oct 25, 2026, newest first) are researched months after the fact.
+For those: harvest with `discover.py --until <week end>` (NewsData can't reach back: use the web-discovery beats for
+news), and lean even harder on learning: `research_md.py --min-learning 3`. A launch or deal from three months ago
+must still be worth hearing about today; prefer stories whose result still stands, and note in the card anything that
+has changed since the week (a later correction, a retraction, a product that shipped) when a source says so.
+Engagement counts are mature by now: compare them within the week, not with current weeks.
+
 ## Learning over knowing (user, 2026-11-16)
 
 The channel teaches more than it reports. Every week at least **2 of the 5 stories are "learning" stories**: the core

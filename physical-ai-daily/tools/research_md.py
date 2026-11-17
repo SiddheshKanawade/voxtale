@@ -29,6 +29,8 @@ def main() -> None:
     ap.add_argument("ep", type=Path)
     ap.add_argument("--window", required=True)
     ap.add_argument("--picks", type=int, default=5)
+    ap.add_argument("--min-learning", type=int, default=MIN_LEARNING,
+                    help="backlog weeks (published months later) use 3: learning stories age better than news")
     args = ap.parse_args()
     ep, J = args.ep, args.ep / "judge"
     panel = json.loads((J / "panel.json").read_text())
@@ -41,7 +43,7 @@ def main() -> None:
     # experiment with a result). Short of that, the lowest-ranked news pick gives way to the best-ranked learning story.
     kind = lambda r: stories[r["id"]].get("kind", "news")  # noqa: E731
     picks, rest, moved = panel[:args.picks], panel[args.picks:], []
-    while sum(kind(r) == "learning" for r in picks) < MIN_LEARNING and any(kind(r) == "learning" for r in rest):
+    while sum(kind(r) == "learning" for r in picks) < args.min_learning and any(kind(r) == "learning" for r in rest):
         out_r = max((r for r in picks if kind(r) != "learning"), key=lambda r: r["rank"])
         in_r = min((r for r in rest if kind(r) == "learning"), key=lambda r: r["rank"])
         picks = [in_r if r is out_r else r for r in picks]
