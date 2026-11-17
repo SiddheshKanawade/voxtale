@@ -12,7 +12,6 @@
       ],
       "image": "assets/g_apollo_sim.png",
       "focus": "50% 40%",
-      "stamp": "AI-GENERATED (GENIE 4)",
       "receipt": {
         "src": "assets/g_robots.png",
         "source": "GOOGLE DEEPMIND",
@@ -144,7 +143,6 @@
       ],
       "image": "assets/v_g0_3s.png",
       "focus": "55% 50%",
-      "stamp": "AI-GENERATED (GENIE 4)",
       "receipt": {
         "src": "assets/g_robots.png",
         "source": "GOOGLE DEEPMIND",
