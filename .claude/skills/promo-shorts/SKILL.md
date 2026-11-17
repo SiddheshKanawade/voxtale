@@ -147,6 +147,11 @@ the source's own on-screen labels where possible). Render in the design being up
 `npx remotion still src/shorts/index.ts ShortCover <slug>/out/cover-<design>.png --props=<slug>/cover/props.json --public-dir=<slug>`
 (renderer `video/src/shorts/Cover.tsx`).
 
+**Title and cover text work together, never repeat each other** (user, 2026-11-17). The title carries one part
+(e.g. the fact or score: "GPT-6 Astra vs. a power strip: 0 for 11"), the cover carries another (e.g. the contrast
+and the open question: "GPT-6 Astra moves blocks just fine. Why can't it plug in?"). Viewers see both at once, so
+repeated words are wasted space. Write them as a pair and check them side by side.
+
 ## 5. Hand off (never upload)
 
 Per Short: the MP4 paths (light, dark), duration, and:
