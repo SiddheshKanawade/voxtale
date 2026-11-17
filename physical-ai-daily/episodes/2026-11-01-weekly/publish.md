@@ -84,7 +84,7 @@ Set Related video → AI-made worlds, can top AI run a real robot?, Toyota and W
 
 ### genie4-robot-worlds
 
-**Title** (pick one; cover says "Nothing here was filmed. Google's AI made it.", so the title carries the name and the why): current `Google's Genie 4 builds practice worlds for robots` · plainer `Why Google is making fake worlds for robots`
+**Title** (pick one; the cover asks "Why is Google making fake worlds for robots?", so the title carries the name and the surprise): current `Google's Genie 4: none of this was filmed` · plainer `Nothing in this video was filmed`
 
 **Description**
 ```
