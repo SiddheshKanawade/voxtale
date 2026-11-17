@@ -1,0 +1,19 @@
+{
+ "design": "blueprint",
+ "lines": [
+  "*GPT-6 Astra* moves",
+  "blocks just fine.",
+  "Why can't it plug in?"
+ ],
+ "panels": [
+  {
+   "src": "cover/pick1.png",
+   "label": "PICK UP: WORKED"
+  },
+  {
+   "src": "cover/plug.png",
+   "label": "PLUG IN: 0 OF 11"
+  }
+ ],
+ "credit": "Video: SenseNova"
+}

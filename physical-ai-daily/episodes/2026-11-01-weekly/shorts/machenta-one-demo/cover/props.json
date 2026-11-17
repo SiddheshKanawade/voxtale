@@ -1,0 +1,4 @@
+{"design": "blueprint",
+ "lines": ["Machenta's robot", "saw it *once*.", "Then did it *alone*."],
+ "panels": [{"src": "cover/demo.png", "label": "SHOWN ONCE"}, {"src": "cover/alone.png", "label": "ON ITS OWN"}],
+ "credit": "Video: Machenta"}

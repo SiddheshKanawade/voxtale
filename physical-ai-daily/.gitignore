@@ -49,3 +49,5 @@ brand/thumbs/
 brand/banner_props.json
 brand/ChannelBanner.png
 episodes/*/shorts/*/cover/*.png
+# Re-include Shorts cover recipes (root .gitignore ignores any cover/ dir for coverage reports); frames stay out
+!episodes/*/shorts/*/cover/

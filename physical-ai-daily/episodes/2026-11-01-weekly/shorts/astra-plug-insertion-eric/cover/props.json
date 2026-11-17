@@ -1,0 +1,4 @@
+{"design": "blueprint",
+ "lines": ["A top AI ran", "this robot.", "*0 for 11* on a plug."],
+ "panels": [{"src": "cover/plug.png", "label": "PLUG IN: FAILED"}],
+ "credit": "Video: SenseNova"}
