@@ -23,7 +23,7 @@ export type ThumbProps = {
   stat?: string;          // the big number, for "stat"
   label?: string;         // small chip above the words, e.g. "NEWS"
   receipt?: Receipt;      // "evidence" layout: the proof card
-  stamp?: string;         // label on the subject image, e.g. "AI-GENERATED": required when the image is generated footage
+  stamp?: string;         // small label on the subject image ("Simulation"); "AI-generated" only for media we generated
 };
 
 // A crop of a captured source page. Fractions are of the full image; mark (optional) is a highlighter box, in fractions
@@ -124,9 +124,9 @@ export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, 
           <div style={{ position: "absolute", left: 112, right: 40, top: 40 }}>{text(fit(104, 1120))}</div>
         </>
       )}
-      {/* a stamp on the subject (top-right, clear of the duration) so generated footage is never passed off as real */}
-      {stamp && <div style={{ position: "absolute", right: 28, top: 28, background: "rgba(20,20,22,0.82)", color: "#fff", fontFamily: FONT,
-        fontWeight: 800, fontSize: 30, letterSpacing: 2, padding: "8px 16px", borderRadius: 8, border: `3px solid ${BRAND.yellow}` }}>{stamp}</div>}
+      {/* a small, quiet label on the subject (top-right, clear of the duration badge): informs without pulling the eye */}
+      {stamp && <div style={{ position: "absolute", right: 24, top: 22, background: "rgba(20,20,22,0.55)", color: "#fff", fontFamily: FONT,
+        fontWeight: 600, fontSize: 20, letterSpacing: 0.3, padding: "4px 10px", borderRadius: 6 }}>{stamp}</div>}
       {/* top-left: YouTube draws the duration over the bottom-right corner */}
       <div style={{ position: "absolute", left: 28, top: 28 }}><LogoMark size={56} /></div>
     </AbsoluteFill>

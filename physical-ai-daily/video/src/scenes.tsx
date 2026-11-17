@@ -63,40 +63,41 @@ const Card: React.FC<{ m: Media; box: { x: number; y: number; w: number; h: numb
   );
 };
 
-// Page screenshot; pushes in on the highlighted sentence when there is one.
-const Shot: React.FC<P> = ({ v, dur, words }) => {
+// Page screenshot. Text holds still (user, 2026-11-16: the curved zoom-and-pan onto text strained the eyes): with a
+// highlight, the card is framed on that sentence from the first frame (no camera move); without one, the whole page
+// shows. The card only slides in, in a straight line, as every card does.
+const Shot: React.FC<P> = ({ v }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const m = v.src!;
-  const punch = frame >= punchCut(words, dur, fps) ? 1.3 : 1;
   const enter = spring({ frame, fps, config: { damping: 18, mass: 0.6 } });
   const fit = Math.min(STAGE.w / m.width, STAGE.h / m.height);
   const cw = m.width * fit, ch = m.height * fit;
-  // Zoom so the highlight fills ~90% of the card width, panned to the card centre, clamped so no blank edge shows.
-  let tf = `scale(${interpolate(frame, [0, dur], [1, 1.08]) * punch})`, origin = "50% 30%";
+  let tf = "none";
   if (m.highlight) {
-    const t = interpolate(frame, [fps * 0.4, fps * 2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.inOut(Easing.cubic) });
-    const target = Math.max(1, Math.min(2.2, (cw * 0.9) / (m.highlight.w * fit))) * punch;
-    const s = interpolate(t, [0, 1], [1, target]) * interpolate(frame, [0, dur], [1, 1.03]);
+    // Scale so the highlight fills ~90% of the card width (at most 2.2x), centred on it, clamped so no blank edge shows.
+    const s = Math.max(1, Math.min(2.2, (cw * 0.9) / (m.highlight.w * fit)));
     const hx = (m.highlight.x + m.highlight.w / 2) * fit, hy = (m.highlight.y + m.highlight.h / 2) * fit;
-    const tx = Math.min(0, Math.max(cw - cw * s, (cw / 2 - hx * s) * t));
-    const ty = Math.min(0, Math.max(ch - ch * s, (ch / 2 - hy * s) * t));
+    const tx = Math.min(0, Math.max(cw - cw * s, cw / 2 - hx * s));
+    const ty = Math.min(0, Math.max(ch - ch * s, ch / 2 - hy * s));
     tf = `translate(${tx}px, ${ty}px) scale(${s})`;
-    origin = "0 0";
   }
-  const st = pop(frame, Math.round(dur * 0.35), fps);
   return (
     <>
       <Card m={m} box={STAGE} style={{ transform: `translateY(${(1 - enter) * 60}px)` }}
-        imgStyle={{ transform: tf, transformOrigin: origin }} />
-      {v.stamp && (
-        <div style={{ position: "absolute", right: 200, top: 230, transform: `rotate(-8deg) scale(${0.6 + st * 0.4})`, opacity: st,
-          border: `6px solid ${C.bad}`, color: C.bad, fontWeight: 900, fontSize: 64, padding: "8px 28px", borderRadius: 12,
-          letterSpacing: 4, textTransform: "uppercase", background: "rgba(15,15,17,0.85)" }}>{v.stamp}</div>
-      )}
+        imgStyle={{ transform: tf, transformOrigin: "0 0" }} />
+      {/* on the card's top-right corner (the card is centred in STAGE) */}
+      {v.stamp && <Tag text={v.stamp} at={{ right: 1920 - (STAGE.x + (STAGE.w + cw) / 2) + 16, top: STAGE.y + (STAGE.h - ch) / 2 + 14 }} />}
     </>
   );
 };
+
+// A label on a source ("Self-reported", "Preprint", "Simulation"): small and quiet like the credit chip, so it informs
+// without pulling the eye (user, 2026-11-16). "AI-generated" is only for media we generated ourselves.
+const Tag: React.FC<{ text: string; at?: { right: number; top: number } }> = ({ text, at = { right: 16, top: 14 } }) => (
+  <div style={{ position: "absolute", ...at, fontSize: 22, fontWeight: 600, letterSpacing: 0.3,
+    color: "#fff", background: "rgba(15,15,17,0.55)", padding: "5px 12px", borderRadius: 6 }}>{text}</div>
+);
 
 // Clip: a few seconds of muted public footage (tools/clip.py), credited by the episode's Credit chip. Framed whole
 // ("contain") by default so the action isn't cropped; "cover" fills the stage. If the narration outlasts the
@@ -122,10 +123,7 @@ const Clip: React.FC<P> = ({ v, dur, words }) => {
         <OffthreadVideo src={staticFile(m.src)} muted style={media} />
       </Sequence>
       {frame >= clipF && m.last && <Img src={staticFile(m.last)} style={{ ...media, transform: `scale(${hold})` }} />}
-      {v.stamp && (
-        <div style={{ position: "absolute", right: 22, top: 20, background: "rgba(0,0,0,0.75)", color: "#f5c518", fontWeight: 800,
-          fontSize: 34, padding: "8px 18px", borderRadius: 10, letterSpacing: 1 }}>{v.stamp}</div>
-      )}
+      {v.stamp && <Tag text={v.stamp} />}
       {v.badge && (
         <div style={{ position: "absolute", right: 22, bottom: 22, background: C.accent, color: "#111", fontWeight: 900, fontSize: 52,
           padding: "12px 26px", borderRadius: 14, transform: `scale(${bd})`, boxShadow: "0 20px 50px rgba(0,0,0,0.5)" }}>{v.badge}</div>

@@ -23,7 +23,8 @@ or re-rendering a video, and move an item to "Done" with the commit once it's fi
   - Shorts, `video/src/shorts/Short.tsx`: `Picture`/`ClipBand` stamp, 30 px yellow on black.
   - Thumbnails: keep the hook big; only the image labels get smaller.
 - **Status:** done for Shorts on 2026-11-17: `Tag` in Short.tsx (22 px, translucent), and no "AI-generated" stamp on
-  Genie 4 footage. Still open for episodes (`scenes.tsx` stamps and badges) and thumbnails, in the next video.
+  Genie 4 footage. Done for episodes on 2026-11-17 (`Tag` in scenes.tsx on shots and clips) and thumbnails (`Thumbnail.tsx` stamp: 20 px,
+  translucent). Number badges (e.g. 17/18) stay large on purpose: they are the content, not a label.
 
 ### 2026-11-16: the curved zoom-and-pan onto text is uncomfortable to watch
 - **User:** "The zoom effect we have on text (papers, images) is paining in eye." Fix it in the next video; the current
@@ -48,7 +49,9 @@ or re-rendering a video, and move an item to "Done" with the commit once it's fi
   - Show the highlighted sentence at a readable size from the first frame instead of zooming towards it.
   - Replace the punch-in on text beats with a cut to a different visual.
   - Photos of real things may keep a very slow drift. Check that with the user.
-- **Status:** open. Next video.
+- **Status:** fixed for screenshots on 2026-11-17 (`Shot` in scenes.tsx): framed on the highlight from the first frame,
+  no zoom, no pan, no punch-in. Still open: `Photo` keeps its slow Ken Burns drift and the 7 s punch-in on real-world
+  photos. Ask the user if they want those still too.
 
 ## Done
 
