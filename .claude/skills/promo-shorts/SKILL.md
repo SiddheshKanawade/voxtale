@@ -84,6 +84,13 @@ receipt/hook; user, 2026-11-17: the astra Short must not end on Machenta's thumb
 top-level `"episodeThumb": "assets/episode_thumb.png"`: the renderer then shows that thumbnail with "FULL EPISODE ↓"
 during the spoken CTA (the last beat) and on the end card, so viewers recognise what the Related-video link opens.
 In the description, the episode link comes first ("Full episode: <url>"), sources after it.
+Known trade-off (accepted by the user): the end card shows the Short's own story's thumbnail, while the Related-video
+link opens the episode, whose YouTube thumbnail may be a different story; the episode title in the link carries it.
+Before rendering, look at the chosen end-card thumbnail: it must follow the current tag rules (small labels; no
+"AI-generated" stamp on another lab's footage). Remake the candidate if it doesn't.
+**Mapping used for the first three weeks** (thumbnail candidate number from `<ep>/episode.json` "thumbnails"):
+Oct 25–Nov 1: astra, zap → 2 · genie4 → 1 · machenta → 3. Nov 1–8: halo-sim-homes → 1 · halo-how-it-trains → 2 ·
+robocolosseum → 3 · agility → 6. Nov 8–15: groot2 → 1 · gemini → 2 · cybercab → 3 · both supermimic → 5.
 
 **Fields:** copy the episode's `design`, `voice`/`tts`, `date`. Add top-level `"hook"` (≤ ~12 words; wrap one key
 word in `*asterisks*` for the accent colour) and `"cta"` (end-card line). One segment `{"id": "short", "kind":
