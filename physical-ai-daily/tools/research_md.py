@@ -29,6 +29,8 @@ def main() -> None:
     ap.add_argument("ep", type=Path)
     ap.add_argument("--window", required=True)
     ap.add_argument("--picks", type=int, default=5)
+    ap.add_argument("--models", default="Opus, Sonnet and Fable",
+                    help="the models that judged, as written in research.md (e.g. when a fallback model stood in)")
     ap.add_argument("--min-learning", type=int, default=MIN_LEARNING,
                     help="backlog weeks (published months later) use 3: learning stories age better than news")
     args = ap.parse_args()
@@ -53,7 +55,7 @@ def main() -> None:
     rest.sort(key=lambda r: r["rank"])
 
     out = [f"# Research {ep.name} (window: {args.window.replace(':', ' → ')})", "",
-           f"Ranked by the judge panel: {len(judges)} passes (Opus, Sonnet and Fable, two card orders each), cut line "
+           f"Ranked by the judge panel: {len(judges)} passes ({args.models}, two card orders each), cut line "
            f"settled pairwise in both orders. Cards: `judge/cards.md`. Everything below is quoted from stored sources; "
            f"summaries and explanations are written at the scripting step.", "",
            "## Shortlist", "",
@@ -65,7 +67,7 @@ def main() -> None:
         out.append(f"| {r['rank']} | {r['story']} | {kind(r)} | {r['overall']} (spread {r['spread']}) | {c['significance']} | "
                    f"{c['viewer_pull']} | {c['evidence']} | {c['showability']} | {c['momentum']} | "
                    f"{r['lineup_votes']}/{len(judges)} | {v['primary_url']} ({st['date']}) |")
-    out += ["", f"Editorial rule (at least {MIN_LEARNING} learning stories): "
+    out += ["", f"Editorial rule (at least {args.min_learning} learning stories): "
             + ("; ".join(moved) if moved else "already met, nothing moved") + "."]
     for r in picks:
         card = cards[r["id"]]["card"]
