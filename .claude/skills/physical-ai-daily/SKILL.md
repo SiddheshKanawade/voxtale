@@ -178,8 +178,13 @@ the same fact in another real source). Drop a fact only when every step fails, a
 **ElevenLabs `eleven_v3`, voice Eric (`cjVigY5qzO86Huf0OWal`).** Set in episode.json as `"tts": "elevenlabs"`, `"voice"`,
 `"model"`. The user picked it twice in blind tests, as the most realistic voice, over Edge Andrew, directed Andrew and
 six Eleven v4 voices (`docs/voice-research.md` sections 7b–9).
-- Each beat is one call on its narration. Pauses come from punctuation; don't split beats into spliced phrases (the
-  user found the directed splices unnatural). An optional `eleven_text` can add v3 audio tags like `[short pause]`.
+- **Always one continuous take per segment, never pieces** (user, 2026-11-18: "always get complete audio, never in
+  pieces, we will edit video accordingly"). `voice.py` voices each segment (a story, the intro, the outro) in one
+  request and cuts the take into beats at the pause between sentences, using the word timings; the beat files join back
+  into the exact take, and the visuals are timed to those cuts. Per-beat calls made the audio sound stitched (tone and
+  loudness jumping, mechanical gaps). One optional delivery tag for the whole take: `"eleven_tag"` (top-level or per
+  segment). Per-beat `eleven_text` and `direct` are ignored. Segments over ~2,800 characters go out as a few long
+  takes split at beat boundaries (the API's request limit).
 - Word timings come from the API's character timestamps; `voice.py` aborts if they're missing.
 - `ELEVENLABS_API_KEY` lives in `physical-ai-daily/.env` (git-ignored; never print or commit it). Free tier:
   10,000 characters a month. An episode is about 3,600. Beats are cached in `audio/*.el.*`, so edits re-voice only the

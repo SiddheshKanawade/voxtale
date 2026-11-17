@@ -73,9 +73,12 @@ like this are still much harder." → CTA.
 nothing generated. Numbers spelled as words in narration, digits on screen. The CTA's promise must be true of the
 episode ("what we still don't know" only if the episode covers it).
 
-**Voice:** edge-tts `en-US-AndrewNeural` (user, 2026-11-15: "Andrew's voice is good for this"). If a script runs long,
-cut detail first (see "Leave out"); only then voice it faster with `"direct": [["hook", narration, 0]]` and
-`VOICE_STRENGTH=2`.
+**Voice:** ElevenLabs Eric for Shorts once the plan allows (user, 2026-11-17), else edge-tts `en-US-AndrewNeural`.
+**Always one continuous take, never pieces** (user, 2026-11-18): `voice.py` voices the whole Short in one request and
+cuts it into beats at the natural pauses; the visuals follow those cuts. For Eric, set one top-level
+`"eleven_tag": "[excited]"` for the whole take; never per-beat tags (they made the Genie Short sound patched
+together: tone flips, loudness jumps, mechanical gaps). Speed is `"speed": 1.175` on the whole take. If a script runs
+long, cut detail (see "Leave out"); don't speed it up further.
 
 **Point to OUR episode (user, 2026-11-17):** the Short sends viewers to our full episode, not to the original source.
 Copy the episode thumbnail candidate **about this Short's own story** (`<ep>/out/thumb_<n>_*.png`, matched by its

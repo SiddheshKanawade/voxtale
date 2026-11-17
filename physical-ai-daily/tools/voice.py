@@ -6,16 +6,20 @@ Usage: .venv/bin/python tools/voice.py episodes/<episode-dir>
 Reads <episode-dir>/episode.json, writes audio/<segment>_<beat>.wav and props.json (episode + per-beat
 audio path, duration, word timings for captions, and inlined visual metadata).
 
-Direction (docs/voice-research.md): a beat may carry "direct": [[style, text, pause_after_s], ...]. Each phrase is
-voiced separately with that style's rate/pitch, trimmed to its words, and joined with the given pause. The phrase
-texts must join back into the narration exactly. Beats without "direct" are voiced as one "neutral" phrase.
+One continuous take per segment (user, 2026-11-18: "always get complete audio, never in pieces"). Each segment (a
+whole Short, or one story of an episode) is voiced in a single request on its full narration, so prosody, loudness
+and pauses flow like one read. The take is then cut into beats at the natural pause between sentences, using the
+TTS word timings, so the beat files join back into the original take exactly: no added silences, no re-trimming.
+The visuals are timed to those cuts. Per-beat "direct" phrases and per-beat "eleven_text" are ignored.
 
 ElevenLabs: with "tts": "elevenlabs" in episode.json, "voice" is an ElevenLabs voice id and "model" defaults to eleven_v3
-(the blind-test winner, docs/voice-research.md section 8). Each beat is one call on its narration, so pauses come from
-punctuation, not splices. Word timings come from the API's character timestamps. ELEVENLABS_API_KEY is read from the
-environment or the project's .env. Audio is cached per beat in audio/, so re-runs don't spend characters.
+(the blind-test winner, docs/voice-research.md section 8). One optional delivery tag for the whole take goes in
+top-level (or per-segment) "eleven_tag", e.g. "[excited]"; it is said in the tone, never read out. Word timings come
+from the API's character timestamps. A segment longer than ELEVEN_MAX characters is split at beat boundaries into a
+few long takes (the API's per-request limit). ELEVENLABS_API_KEY is read from the environment or the project's .env.
+Takes are cached in audio/, so re-runs don't spend characters.
 
-Speed: an optional top-level "speed" (e.g. 1.175 for Shorts) time-stretches every beat after synthesis, with pitch
+Speed: an optional top-level "speed" (e.g. 1.175 for Shorts) time-stretches the take after synthesis, with pitch
 kept and word timings scaled. It costs no TTS characters.
 """
 import base64
@@ -26,7 +30,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 import urllib.error
 import urllib.request
 import wave
@@ -38,7 +41,6 @@ import edge_tts
 
 TICKS_PER_SECOND = 10_000_000  # edge-tts reports offsets in 100ns units
 TAIL_PAD = 0.6  # seconds of breathing room at the end of a segment
-BEAT_GAP = 0.25  # pause between beats inside a segment
 HOLD_CAP_S = 7  # longest a single static visual should hold (matches HOLD_CAP_S in video/src/scenes.tsx)
 STATIC_TYPES = {"photo", "shot", "kinetic"}
 CLIP_HOLD_S = 2  # a clip beat may outlast its footage by this much (the last frame holds); more reads as a freeze
@@ -104,36 +106,6 @@ def decode(path: Path) -> np.ndarray:
     return np.frombuffer(raw, dtype=np.int16)
 
 
-async def voice_beat(beat: dict, voice: str, out: Path) -> list[dict]:
-    """Voice each directed phrase, trim it to its words, join with the directed pauses; return shifted word timings."""
-    phrases = beat.get("direct") or [["neutral", beat["narration"], 0]]
-    joined = " ".join(t for _, t, _ in phrases)
-    if joined.split() != beat["narration"].split():
-        raise ValueError(f"direct does not match narration:\n  {joined}\n  {beat['narration']}")
-    pcm, words, t = [], [], 0.0
-    with tempfile.TemporaryDirectory() as tmp:
-        for k, (style, text, pause) in enumerate(phrases):
-            rate, pitch = prosody_args(style)
-            mp3 = Path(tmp) / f"{k}.mp3"
-            ws = await synth(text, voice, mp3, rate, pitch)
-            audio = decode(mp3)
-            last = k == len(phrases) - 1
-            a = max(0.0, ws[0]["start"] - LEAD)
-            b = min(len(audio) / SR, ws[-1]["end"] + (LAST_TAIL if last else TAIL))
-            pcm.append(audio[int(a * SR):int(b * SR)])
-            words += [{**w, "start": round(w["start"] - a + t, 3), "end": round(w["end"] - a + t, 3)} for w in ws]
-            t += b - a
-            if not last:
-                pcm.append(np.zeros(int(pause * PAUSE_SCALE * SR), dtype=np.int16))
-                t += pause * PAUSE_SCALE
-    with wave.open(str(out), "wb") as f:
-        f.setnchannels(1)
-        f.setsampwidth(2)
-        f.setframerate(SR)
-        f.writeframes(np.concatenate(pcm).tobytes())
-    return words
-
-
 def api_key() -> str:
     if "ELEVENLABS_API_KEY" in os.environ:
         return os.environ["ELEVENLABS_API_KEY"]
@@ -159,34 +131,6 @@ def eleven_words(alignment: dict) -> list[dict]:
         cur["text"] += ch
         cur["end"] = b
     return words
-
-
-def eleven_beat(beat: dict, voice: str, model: str, out: Path) -> list[dict]:
-    """Voice a beat in one ElevenLabs call (cached by voice, model and text); trim to its words; return word timings."""
-    text = beat.get("eleven_text", beat["narration"])  # optional variant with [audio tags]
-    key = hashlib.sha1(f"{voice}|{model}|{text}".encode()).hexdigest()[:16]
-    mp3, meta = out.with_suffix(".el.mp3"), out.with_suffix(".el.json")
-    if not (meta.exists() and json.loads(meta.read_text())["key"] == key):
-        req = urllib.request.Request(
-            f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format=mp3_44100_128",
-            data=json.dumps({"text": text, "model_id": model}).encode(),
-            headers={"xi-api-key": api_key(), "Content-Type": "application/json"})
-        try:
-            d = json.load(urllib.request.urlopen(req, timeout=120))
-        except urllib.error.HTTPError as e:
-            sys.exit(f"ElevenLabs HTTP {e.code}: {e.read().decode()[:300]}")
-        mp3.write_bytes(base64.b64decode(d["audio_base64"]))
-        meta.write_text(json.dumps({"key": key, "alignment": d["alignment"]}))
-    ws = eleven_words(json.loads(meta.read_text())["alignment"])
-    audio = decode(mp3)
-    a = max(0.0, ws[0]["start"] - LEAD)
-    b = min(len(audio) / SR, ws[-1]["end"] + LAST_TAIL)
-    with wave.open(str(out), "wb") as f:
-        f.setnchannels(1)
-        f.setsampwidth(2)
-        f.setframerate(SR)
-        f.writeframes(audio[int(a * SR):int(b * SR)].tobytes())
-    return [{**w, "start": round(w["start"] - a, 3), "end": round(w["end"] - a, 3)} for w in ws]
 
 
 def duration(path: Path) -> float:
@@ -230,17 +174,6 @@ def inline_media(ep_dir: Path, visual: dict) -> dict:
     return visual
 
 
-def speed_up(wav: Path, words: list[dict], factor: float) -> list[dict]:
-    """Time-stretch a voiced beat by `factor` (pitch kept, ffmpeg atempo) and scale its word timings to match.
-    Applied after synthesis, so it costs no TTS credits and the per-beat caches keep the original-speed audio."""
-    if abs(factor - 1) < 1e-3:
-        return words
-    tmp = wav.with_suffix(".speed.wav")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-af", f"atempo={factor}", str(tmp)], check=True)
-    tmp.replace(wav)
-    return [{**w, "start": round(w["start"] / factor, 3), "end": round(w["end"] / factor, 3)} for w in words]
-
-
 def check_clip(seg_id: str, i: int, beat: dict) -> None:
     """A clip is always credited on screen (checklist HARD 7.2); the credit comes from tools/clip.py's metadata."""
     v = beat["visual"]
@@ -253,29 +186,117 @@ def check_clip(seg_id: str, i: int, beat: dict) -> None:
         print(f"  WARN {seg_id}[{i}] clip is {v['src']['duration']:.1f}s, beat {beat['duration']:.1f}s: split the beat or cut a longer clip")
 
 
+ELEVEN_MAX = 2800  # characters per ElevenLabs request; longer segments are split at beat boundaries
+
+
+def eleven_take(text: str, voice: str, model: str, cache: Path) -> tuple[np.ndarray, list[dict]]:
+    """One ElevenLabs request for a whole text (cached by voice, model and text). Returns audio at SR and word timings."""
+    key = hashlib.sha1(f"{voice}|{model}|{text}".encode()).hexdigest()[:16]
+    mp3, meta = cache / f".take_{key}.mp3", cache / f".take_{key}.json"
+    if not (mp3.exists() and meta.exists()):
+        req = urllib.request.Request(
+            f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format=mp3_44100_128",
+            data=json.dumps({"text": text, "model_id": model}).encode(),
+            headers={"xi-api-key": api_key(), "Content-Type": "application/json"})
+        try:
+            d = json.load(urllib.request.urlopen(req, timeout=300))
+        except urllib.error.HTTPError as e:
+            sys.exit(f"ElevenLabs HTTP {e.code}: {e.read().decode()[:300]}")
+        mp3.write_bytes(base64.b64decode(d["audio_base64"]))
+        meta.write_text(json.dumps({"alignment": d["alignment"]}))
+    return decode(mp3), eleven_words(json.loads(meta.read_text())["alignment"])
+
+
+async def edge_take(text: str, voice: str, cache: Path) -> tuple[np.ndarray, list[dict]]:
+    """One edge-tts request for a whole text (cached by voice and text)."""
+    key = hashlib.sha1(f"{voice}|{text}".encode()).hexdigest()[:16]
+    mp3, meta = cache / f".take_{key}.mp3", cache / f".take_{key}.json"
+    if not (mp3.exists() and meta.exists()):
+        rate, pitch = prosody_args("neutral")
+        meta.write_text(json.dumps(await synth(text, voice, mp3, rate, pitch)))
+    return decode(mp3), json.loads(meta.read_text())
+
+
+def chunks(beats: list[dict], limit: int) -> list[list[int]]:
+    """Beat indices grouped into consecutive runs whose narration fits one request."""
+    out, cur, n = [], [], 0
+    for i, b in enumerate(beats):
+        if cur and n + len(b["narration"]) + 1 > limit:
+            out.append(cur)
+            cur, n = [], 0
+        cur.append(i)
+        n += len(b["narration"]) + 1
+    return out + ([cur] if cur else [])
+
+
+def assign_words(words: list[dict], beats: list[dict]) -> list[list[dict]]:
+    """Give each TTS word to its beat by walking the normalized characters of the narration."""
+    ends, total = [], 0
+    for b in beats:
+        total += len(norm(b["narration"]))
+        ends.append(total)
+    per, pos, k = [[] for _ in beats], 0, 0
+    for w in words:
+        while k < len(beats) - 1 and pos >= ends[k]:
+            k += 1
+        per[k].append(w)
+        pos += len(norm(w["text"]))
+    return per
+
+
+def stretch(audio: np.ndarray, words: list[dict], factor: float) -> tuple[np.ndarray, list[dict]]:
+    """Time-stretch a whole take (pitch kept) and scale its word timings."""
+    if abs(factor - 1) < 1e-3:
+        return audio, words
+    out = subprocess.run(["ffmpeg", "-v", "error", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-i", "-",
+                          "-af", f"atempo={factor}", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-"],
+                         input=audio.tobytes(), capture_output=True, check=True).stdout
+    return np.frombuffer(out, dtype=np.int16), [{**w, "start": w["start"] / factor, "end": w["end"] / factor} for w in words]
+
+
+async def voice_segment(ep: dict, seg: dict, ep_dir: Path) -> None:
+    """Voice a segment as continuous take(s), cut it into beat files at the pauses between beats, fill beat timings."""
+    beats, cache = seg["beats"], ep_dir / "audio"
+    pieces, words, t0 = [], [], 0.0
+    eleven = ep.get("tts") == "elevenlabs"
+    for run in chunks(beats, ELEVEN_MAX if eleven else 10_000):
+        text = " ".join(beats[i]["narration"] for i in run)
+        if eleven:
+            tag = seg.get("eleven_tag") or ep.get("eleven_tag") or ""
+            audio, ws = eleven_take(f"{tag} {text}".strip(), ep["voice"], ep.get("model", "eleven_v3"), cache)
+        else:
+            audio, ws = await edge_take(text, ep["voice"], cache)
+        pieces.append(audio)
+        words += [{**w, "start": w["start"] + t0, "end": w["end"] + t0} for w in ws]
+        t0 += len(audio) / SR
+    audio, words = stretch(np.concatenate(pieces), words, float(ep.get("speed", 1)))
+    per = assign_words(words, beats)
+    if any(not ws for ws in per):
+        raise SystemExit(f"{seg['id']}: TTS words didn't line up with the beats' narration")
+    # Cut halfway through the pause between one beat's last word and the next beat's first word.
+    cuts = [max(0.0, per[0][0]["start"] - LEAD)]
+    cuts += [(per[i][-1]["end"] + per[i + 1][0]["start"]) / 2 for i in range(len(beats) - 1)]
+    cuts.append(min(len(audio) / SR, per[-1][-1]["end"] + LAST_TAIL))
+    for i, beat in enumerate(beats):
+        a, b = cuts[i], cuts[i + 1]
+        out = cache / f"{seg['id']}_{i:02d}.wav"
+        with wave.open(str(out), "wb") as f:
+            f.setnchannels(1)
+            f.setsampwidth(2)
+            f.setframerate(SR)
+            f.writeframes(audio[int(a * SR):int(b * SR)].tobytes())
+        ws = [{**w, "start": round(w["start"] - a, 3), "end": round(w["end"] - a, 3)} for w in per[i]]
+        beat["words"] = restore_punctuation(ws, beat["narration"])
+        beat["audio"] = f"audio/{out.name}"
+        beat["duration"] = round(b - a + (TAIL_PAD if i == len(beats) - 1 else 0), 3)
+
+
 async def main(ep_dir: Path) -> None:
     ep = json.loads((ep_dir / "episode.json").read_text())
     (ep_dir / "audio").mkdir(exist_ok=True)
     for seg in ep["segments"]:
+        await voice_segment(ep, seg, ep_dir)
         for i, beat in enumerate(seg["beats"]):
-            out = ep_dir / "audio" / f"{seg['id']}_{i:02d}.wav"
-            if ep.get("tts") == "elevenlabs":
-                words = eleven_beat(beat, ep["voice"], ep.get("model", "eleven_v3"), out)
-            else:
-                # Cache edge beats by voice and text, so a rerun only re-voices edited or failed beats.
-                key = hashlib.sha1(f"{ep['voice']}|{json.dumps(beat.get('direct'))}|{beat['narration']}".encode()).hexdigest()[:16]
-                cw, cj = ep_dir / "audio" / f".edge_{key}.wav", ep_dir / "audio" / f".edge_{key}.json"
-                if cw.exists() and cj.exists():
-                    words = json.loads(cj.read_text())
-                else:
-                    words = await voice_beat(beat, ep["voice"], cw)
-                    cj.write_text(json.dumps(words))
-                out.write_bytes(cw.read_bytes())
-            words = speed_up(out, words, float(ep.get("speed", 1)))
-            beat["words"] = restore_punctuation(words, beat["narration"])
-            beat["audio"] = f"audio/{out.name}"
-            last = i == len(seg["beats"]) - 1
-            beat["duration"] = round(duration(out) + (TAIL_PAD if last else BEAT_GAP), 3)
             inline_media(ep_dir, beat["visual"])
             check_clip(seg["id"], i, beat)
         seg["duration"] = round(sum(b["duration"] for b in seg["beats"]), 3)
