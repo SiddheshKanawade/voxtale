@@ -103,6 +103,13 @@ const ShortScene: React.FC<{ beat: Beat; first: boolean }> = ({ beat }) => {
   return <Kinetic text={v.overlay ?? v.text ?? ""} />;
 };
 
+// A label on footage ("Simulation", "Self-reported"): small and quiet, like the credit chip, so it informs without
+// pulling the eye (user, 2026-11-16). "AI-generated" is only for media we generate ourselves.
+const Tag: React.FC<{ text: string }> = ({ text }) => (
+  <div style={{ position: "absolute", right: 22, top: 20, fontSize: 22, fontWeight: 600, color: "#fff", letterSpacing: 0.3,
+    background: "rgba(0,0,0,0.45)", padding: "4px 12px", borderRadius: 6 }}>{text}</div>
+);
+
 // A picture in the media band, with a slow push-in. For "shot" with a highlight, it frames the highlighted sentence.
 const Picture: React.FC<{ m: Media; highlight?: boolean; credit?: string; stamp?: string; badge?: string; fit?: "cover" | "contain" }> = ({ m, highlight, credit, stamp, badge, fit }) => {
   const frame = useCurrentFrame();
@@ -126,8 +133,7 @@ const Picture: React.FC<{ m: Media; highlight?: boolean; credit?: string; stamp?
         left: W / 2 - cx * s, top: MEDIA.height / 2 - cy * s }} />
       {h && <div style={{ position: "absolute", left: W / 2 - (box.w * s) / 2 - 10, top: MEDIA.height / 2 - (box.h * s) / 2 - 8,
         width: box.w * s + 20, height: box.h * s + 16, border: `5px solid ${BRAND.yellow}`, borderRadius: 10 }} />}
-      {stamp && <div style={{ position: "absolute", right: 24, top: 22, background: "rgba(0,0,0,0.75)", color: BRAND.yellow,
-        fontWeight: 800, fontSize: 30, padding: "8px 16px", borderRadius: 8 }}>{stamp}</div>}
+      {stamp && <Tag text={stamp} />}
       {badge && <div style={{ position: "absolute", left: 24, bottom: 70, background: BRAND.red, color: "#fff", fontWeight: 900,
         fontSize: 54, padding: "10px 22px", borderRadius: 12 }}>{badge}</div>}
       {credit && <div style={{ position: "absolute", left: 24, bottom: 18, fontSize: 24, color: "#fff", background: "rgba(0,0,0,0.6)",
@@ -150,8 +156,7 @@ const ClipBand: React.FC<{ m: Media; credit?: string; stamp?: string }> = ({ m, 
         <OffthreadVideo src={staticFile(m.src)} muted style={media} />
       </Sequence>
       {frame >= clipF && m.last && <Img src={staticFile(m.last)} style={{ ...media, transform: `scale(${hold})` }} />}
-      {stamp && <div style={{ position: "absolute", right: 24, top: 22, background: "rgba(0,0,0,0.75)", color: BRAND.yellow,
-        fontWeight: 800, fontSize: 30, padding: "8px 16px", borderRadius: 8 }}>{stamp}</div>}
+      {stamp && <Tag text={stamp} />}
       <div style={{ position: "absolute", left: 24, bottom: 18, fontSize: 24, color: "#fff", background: "rgba(0,0,0,0.6)",
         padding: "4px 12px", borderRadius: 6 }}>{credit ?? m.credit}</div>
     </div>

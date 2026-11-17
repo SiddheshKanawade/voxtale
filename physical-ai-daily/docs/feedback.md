@@ -22,7 +22,8 @@ or re-rendering a video, and move an item to "Done" with the commit once it's fi
     - Photo badges.
   - Shorts, `video/src/shorts/Short.tsx`: `Picture`/`ClipBand` stamp, 30 px yellow on black.
   - Thumbnails: keep the hook big; only the image labels get smaller.
-- **Status:** open. Next video. The posted Oct 25–Nov 1 episode stays as it is.
+- **Status:** done for Shorts on 2026-11-17: `Tag` in Short.tsx (22 px, translucent), and no "AI-generated" stamp on
+  Genie 4 footage. Still open for episodes (`scenes.tsx` stamps and badges) and thumbnails, in the next video.
 
 ### 2026-11-16: the curved zoom-and-pan onto text is uncomfortable to watch
 - **User:** "The zoom effect we have on text (papers, images) is paining in eye." Fix it in the next video; the current

@@ -1,0 +1,93 @@
+{
+  "title": "Pixels2Actions",
+  "date": "November 1, 2026",
+  "design": "blueprint-light",
+  "voice": "cjVigY5qzO86Huf0OWal",
+  "hook": "Can today's smartest AI *plug in* a cable?",
+  "cta": "How researchers are trying to close that gap: full episode, link below",
+  "segments": [
+    {
+      "id": "short",
+      "kind": "story",
+      "label": "PAPER",
+      "headline": "Why can't AI plug in a cable?",
+      "source": "Research report · arXiv",
+      "sourceDate": "Oct 2026",
+      "beats": [
+        {
+          "narration": "Plugging in a cable is easy for us, but it takes a precise touch, and that is hard for robots.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/s_clip_plug.mp4"
+          },
+          "eleven_text": "[curious] Plugging in a cable is easy for us, but it takes a precise touch, and that is hard for robots."
+        },
+        {
+          "narration": "So what happened when one of today's most advanced AI models took control of a real robot and tried it?",
+          "visual": {
+            "type": "clip",
+            "src": "assets/s_clip_pnp4.mp4"
+          },
+          "eleven_text": "[excited] So what happened when one of today's most advanced AI models took control of a real robot and tried it?"
+        },
+        {
+          "narration": "Researchers gave the AI direct control of real robot arms and asked it to do everyday tasks.",
+          "visual": {
+            "type": "clip",
+            "src": "assets/s_clip_pnp.mp4"
+          },
+          "eleven_text": "[excited] Researchers gave the AI direct control of real robot arms and asked it to do everyday tasks."
+        },
+        {
+          "narration": "Picking things up and putting them somewhere else mostly worked.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Pick up, put down: mostly worked",
+            "sub": "On real robot arms"
+          },
+          "eleven_text": "[excited] Picking things up and putting them somewhere else mostly worked."
+        },
+        {
+          "narration": "But plugging in the cable failed every single time.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/s_plug_cards.png",
+            "credit": "Video still: SenseNova"
+          },
+          "eleven_text": "[excited] But plugging in the cable failed every single time."
+        },
+        {
+          "narration": "The researchers' verdict: these AI models are competent, but not yet practical for real robots.",
+          "visual": {
+            "type": "kinetic",
+            "text": "Competent. Not yet practical.",
+            "sub": "The researchers' verdict · early paper, small tests"
+          },
+          "eleven_text": "[thoughtful] The researchers' verdict: these AI models are competent, but not yet practical for real robots."
+        },
+        {
+          "narration": "Their report says precise, hands-on tasks like this are still much harder.",
+          "visual": {
+            "type": "photo",
+            "src": "assets/s_plug_still.png",
+            "credit": "Video still: SenseNova"
+          },
+          "eleven_text": "[thoughtful] Their report says precise, hands-on tasks like this are still much harder."
+        },
+        {
+          "narration": "How researchers are trying to close that gap is in this week's full episode. Link below.",
+          "visual": {
+            "type": "kinetic",
+            "text": "This week's full episode",
+            "sub": "Link below ↓"
+          },
+          "eleven_text": "[excited] How researchers are trying to close that gap is in this week's full episode. Link below."
+        }
+      ]
+    }
+  ],
+  "speed": 1.175,
+  "episodeThumb": "assets/episode_thumb.png",
+  "tts": "elevenlabs",
+  "model": "eleven_v3"
+}
