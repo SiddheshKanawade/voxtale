@@ -17,6 +17,12 @@ export type CoverProps = {
 
 const W = 1080, PAD = 56;
 
+// Three lines must fit above the panels (y < 540): longer lines get a smaller size so a model name fits.
+const hookSize = (lines: string[]) => {
+  const n = Math.max(...lines.map((l) => l.replace(/\*/g, "").length));
+  return n <= 16 ? 112 : n <= 19 ? 100 : 88;
+};
+
 const Accent: React.FC<{ text: string }> = ({ text }) => (
   <>{text.split("*").map((p, i) => <span key={i} style={i % 2 ? { color: current.light ? BRAND.red : BRAND.yellow } : undefined}>{p}</span>)}</>
 );
@@ -29,7 +35,7 @@ export const Cover: React.FC<CoverProps> = ({ design, lines, panels, credit }) =
     <AbsoluteFill style={{ fontFamily: FONT, color: C.ink }}>
       <Backdrop kind="blueprint" />
       <div style={{ position: "absolute", left: PAD, top: 70 }}><Lockup size={46} /></div>
-      <div style={{ position: "absolute", left: PAD, right: PAD, top: 170, fontSize: 112, fontWeight: 900, lineHeight: 1.0, letterSpacing: -3 }}>
+      <div style={{ position: "absolute", left: PAD, right: PAD, top: 170, fontSize: hookSize(lines), fontWeight: 900, lineHeight: 1.0, letterSpacing: -3 }}>
         {lines.map((l, i) => <div key={i}><Accent text={l} /></div>)}
       </div>
       {panels.slice(0, n).map((p, i) => (
