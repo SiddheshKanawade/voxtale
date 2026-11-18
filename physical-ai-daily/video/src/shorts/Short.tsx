@@ -163,7 +163,8 @@ const ClipBand: React.FC<{ m: Media; credit?: string; stamp?: string }> = ({ m, 
   );
 };
 
-const Stack: React.FC<{ items: { src: Media; label?: string }[]; credit?: string }> = ({ items, credit }) => {
+// voice.py inlines each item's media metadata into the item itself (as for episodes), so an item is a Media plus label.
+const Stack: React.FC<{ items: (Media & { label?: string })[]; credit?: string }> = ({ items, credit }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const n = Math.min(items.length, 2), each = (MEDIA.height - 16) / n;
@@ -171,11 +172,11 @@ const Stack: React.FC<{ items: { src: Media; label?: string }[]; credit?: string
     <div style={{ position: "absolute", left: 0, top: MEDIA.top, width: W, height: MEDIA.height }}>
       {items.slice(0, n).map((it, i) => {
         const inn = spring({ frame: frame - i * 10, fps, config: { damping: 16 } });
-        const s = Math.max(W / it.src.width, each / it.src.height);
+        const s = Math.max(W / it.width, each / it.height);
         return (
           <div key={i} style={{ position: "absolute", left: 0, top: i * (each + 16), width: W, height: each, overflow: "hidden", opacity: inn }}>
-            <Img src={staticFile(it.src.src)} style={{ position: "absolute", width: it.src.width * s, height: it.src.height * s,
-              left: (W - it.src.width * s) / 2, top: (each - it.src.height * s) / 2 }} />
+            <Img src={staticFile(it.src)} style={{ position: "absolute", width: it.width * s, height: it.height * s,
+              left: (W - it.width * s) / 2, top: (each - it.height * s) / 2 }} />
             {it.label && <div style={{ position: "absolute", left: 24, top: 20, background: "rgba(0,0,0,0.75)", color: "#fff", fontWeight: 800,
               fontSize: 34, padding: "8px 16px", borderRadius: 8 }}>{it.label}</div>}
           </div>
