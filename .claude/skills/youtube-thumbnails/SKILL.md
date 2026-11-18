@@ -92,6 +92,11 @@ Thumbnail practice and YouTube's tools change, so don't rely only on the evidenc
 
 ### 1. Generate options: 8-10 candidates
 
+**A hook must say what happened and to what, not just a number** (user, 2026-11-18). Rejected: "Learned from
+13.2 minutes" (learned what? from what?) and "Doubling every 54 days?" (what is doubling?). Accepted: "Learned to
+climb / from 13 min of human moves" and "Getting better fast. / Still under 50%." (answers the title's question).
+Test each hook on someone who hasn't seen the video: could they say in one sentence what it claims?
+
 **Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (current / plainer / question / number-led / contrast), one marked ★; 8–10 rendered thumbnails or covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them; every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
 
 1. **Find the promise:** the one surprising, true thing in the episode, and where the video answers it (often the
