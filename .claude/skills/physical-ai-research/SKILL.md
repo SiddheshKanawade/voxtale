@@ -66,6 +66,19 @@ must still be worth hearing about today; prefer stories whose result still stand
 has changed since the week (a later correction, a retraction, a product that shipped) when a source says so.
 Engagement counts are mature by now: compare them within the week, not with current weeks.
 
+Learned on the first backlog run (Oct 18–25, 2026-11-17):
+- **arXiv export API 429s** (worse when two weeks harvest from one IP): use `tools/discover_oai.py` (same args as
+  `discover.py`, reads OAI-PMH). Harvest weeks one after the other, never in parallel. OAI's `created` isn't always
+  the v1 date: the tool drops IDs from before the window's month, and every carded paper's v1 date is still checked
+  on its abs page.
+- **X for one week** may need two runs (`--days 7 --until <end>` plus `--days 1 --until <start>`) to cover all 8 days.
+- **Judge quota:** check that every judge model answers before the panel. When Fable returns 429 ("Fable limit"),
+  run that slot on Haiku, keep the 3 models × 2 orders structure, and say so in research.md (`research_md.py --models`).
+- **Account weekly limit** can stop a subagent mid-run: write partial results to disk as you go, so a resumed run
+  picks up where it stopped.
+- Name verify entries `<story id> …` from the start (`research_md.py` matches by prefix).
+- Drop stories already covered in a later episode (check the other `episodes/*/research.md` picks).
+
 ## Learning over knowing (user, 2026-11-16)
 
 The channel teaches more than it reports. Every week at least **2 of the 5 stories are "learning" stories**: the core

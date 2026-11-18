@@ -13,6 +13,7 @@ license, recent activity and whether it needs keys or outside services; read eve
 | `physical-ai-daily` | Production: script (`episode.json`), capture, voice, render, hand-off | Frozen v1.0 identity (light default); acceptance checklist in `docs/video-requirements.md` |
 | `promo-shorts` | 2–3 promotional 9:16 Shorts per episode: hook on frame 0, payoff, one CTA to the episode; light and dark | Evidence: `docs/research-shorts-*.md`. Public footage allowed with citation, official first (short, credited, muted) |
 | `youtube-thumbnails` | Evidence-led thumbnails: research, 5–7 candidates, rubric, pick plus two for Test & Compare | Open: whether news-site screenshots may appear in thumbnails |
+| `weekly-package` | Kickoff: `/weekly-package <week>` → research, episode, thumbnails, 3–4 Shorts and `publish.md`, unattended | Orders the phase skills, each in its own subagent; holds the cross-phase user rules and the preflight |
 
 ## Third-party
 
