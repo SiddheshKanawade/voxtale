@@ -21,7 +21,7 @@ This skill only orders the work. The rules live in the phase skills; read each o
 |---|---|---|
 | 1 Research | `physical-ai-research` | `<ep>/research.md` (5 picks, ≥3 learning on backlog weeks) |
 | 2 Episode | `physical-ai-daily` | `<ep>/episode.json`, `<ep>/out/*.mp4` (4K light + dark) |
-| 3 Thumbnails | `youtube-thumbnails` | 5–7 candidates, pick + 2 runners-up, one thumbnail per story |
+| 3 Thumbnails | `youtube-thumbnails` | 8–10 candidates on a lettered contact sheet, pick + 2 runners-up, one per story |
 | 4 Shorts | `promo-shorts` | 3–4 Shorts in `<ep>/shorts/<slug>/out/` (dark + light), each with a cover |
 | 5 Package | (this skill) | `<ep>/publish.md` complete, the hand-off message |
 
@@ -65,8 +65,11 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
 - **Clips:** official footage first, a few seconds each, muted, credited, URL in the description.
   - Raw downloads stay git-ignored and are deleted after cutting.
   - The user OK'd official clips for episodes; ask before any non-official footage.
-- **Titles:**
-  - Always two options: *current* (names companies or models) and *plainer* (a newcomer understands).
+- **Titles and thumbnails, wide options (the user iterates a lot here):**
+  - At least 8 titles per video, each tagged by angle, always including *current* (names companies or models) and
+    *plainer* (a newcomer understands); one marked ★; each names the thumbnail/cover it pairs with.
+  - Episode: 8–10 thumbnails; each Short: 3–4 covers. Vary the hook text, not only the image. One lettered
+    contact sheet per video, in the hand-off.
   - No "Robotics this week:" prefix.
   - Title and cover/thumbnail text complement each other and never repeat.
 - **Shorts:**
@@ -83,13 +86,13 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
 
 Finish `<ep>/publish.md` so the user can post from it alone:
 - **Episode:**
-  - Both title options.
+  - The "Options" section: all titles with angle and paired thumbnail, the contact sheet, rubric scores.
   - The description: names the week, then chapters with timestamps from the rendered `props.json`, every source
     URL, clip credits, and tags.
   - Thumbnail pick and the 2 runners-up for Test & Compare.
   - MP4 paths (light and dark).
 - **Each Short:**
-  - Both title options.
+  - 8+ title options and 3–4 covers (contact sheet), paired.
   - Description starting `Full episode: <EPISODE_URL>` (a placeholder until the user posts and sends the link; then
     fill it in).
   - The Related video setting.
@@ -100,7 +103,7 @@ Before handing off, look at the episode's beat sheet, every thumbnail and every 
 
 The hand-off message lists:
 - Every path the user uploads.
-- The two titles for each video.
+- The contact sheets and the ★ title per video (the full lists are in publish.md).
 - The voice used.
 - What was dropped or unverified, and why.
 - Any credits spent (Higgsfield, ElevenLabs).

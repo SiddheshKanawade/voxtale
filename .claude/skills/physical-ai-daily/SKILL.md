@@ -123,8 +123,9 @@ why. `HARD` items are the user's firm rules (sourcing, copyright and official-fo
 
 7. **Hand off.** Report the final path, the duration, and a description block listing every source URL. Uploading is the user's action, so never upload.
    Write `<ep>/publish.md` (title, description with chapters, sources, clip credits, the About line, tags, and each
-   Short's title and description). **Titles (user, 2026-11-16):** always offer two: a *current* one naming the stories
-   and a *plainer* one a newcomer understands (no model names or jargon). No "Robotics this week:" prefix. Example the
+   Short's title and description). **Titles (user, 2026-11-16 and 2026-11-18):** offer at least 8, always including a *current* one naming the stories
+   and a *plainer* one a newcomer understands (no model names or jargon), plus question, number-led and contrast
+   angles, one marked ★, each paired with a thumbnail (`youtube-thumbnails`: 8–10 candidates, lettered contact sheet). No "Robotics this week:" prefix. Example the
    user chose: "AI-made worlds, can top AI run a real robot?, Toyota and Waymo".
 
 ## Verification rules (learned the hard way)

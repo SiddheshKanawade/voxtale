@@ -1,6 +1,6 @@
 ---
 name: youtube-thumbnails
-description: Design and render evidence-led YouTube thumbnails for the Pixels2Actions channel (project physical-ai-daily): one honest curiosity hook, a subject "face", and a tilted source "receipt" with the key claim highlighted, in the episode's design (blueprint / blueprint-light). Researches current thumbnail guidance on the web first, renders 5-7 candidate thumbnails, scores them against a rubric and picks one (keeping the next two for YouTube Test & Compare). Use when the user asks for a thumbnail, thumbnail variants, packaging, or to improve click-through.
+description: Design and render evidence-led YouTube thumbnails for the Pixels2Actions channel (project physical-ai-daily): one honest curiosity hook, a subject "face", and a tilted source "receipt" with the key claim highlighted, in the episode's design (blueprint / blueprint-light). Researches current thumbnail guidance on the web first, renders 8-10 candidate thumbnails, scores them against a rubric and picks one (keeping the next two for YouTube Test & Compare). Use when the user asks for a thumbnail, thumbnail variants, packaging, or to improve click-through.
 ---
 
 # YouTube thumbnails (Pixels2Actions)
@@ -90,11 +90,13 @@ Thumbnail practice and YouTube's tools change, so don't rely only on the evidenc
   and the open question: "GPT-6 Astra moves blocks just fine. Why can't it plug in?"). Viewers see both at once, so
   repeated words are wasted space. Write them as a pair and check them side by side.
 
-### 1. Generate options: 5-7 candidates
+### 1. Generate options: 8-10 candidates
+
+**Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (current / plainer / question / number-led / contrast), one marked ★; 8–10 rendered thumbnails or covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them; every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
 
 1. **Find the promise:** the one surprising, true thing in the episode, and where the video answers it (often the
    reality-check beat).
-2. **Write 5-7 candidates that differ in idea, not just colour.** Cover several angles:
+2. **Write 8-10 candidates that differ in idea, not just colour.** Cover several angles:
    - *tension* ("96% success / *but...*", answered by the reality check)
    - *question* ("Robot brain / *2× better?*", answered by the 30–100% range)
    - *mystery* ("No battery. / *How?*", answered by the explainer)

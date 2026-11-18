@@ -155,10 +155,12 @@ the source's own on-screen labels where possible). Render in the design being up
 and the open question: "GPT-6 Astra moves blocks just fine. Why can't it plug in?"). Viewers see both at once, so
 repeated words are wasted space. Write them as a pair and check them side by side.
 
+**Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (current / plainer / question / number-led / contrast), one marked ★; per Short, 3–4 rendered covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them; every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
+
 ## 5. Hand off (never upload)
 
 Per Short: the MP4 paths (light, dark), duration, and:
-- **Title** (≤ 40 chars, the hook's question or result, no hype words) and a 1–2 line **description** with the sources.
+- **Titles** (8+ options as above, ≤ 40 chars each, the hook's question or result, no hype words) and a 1–2 line **description** with the sources.
 - **Related video**: "set this Short's Related video to the episode in Studio" (the only clickable path).
 - **When**: publish after the episode is live, so the link works.
 - **What to watch** after a week (`docs/youtube-feedback.md`): Stayed-to-watch %, average view duration and %,
