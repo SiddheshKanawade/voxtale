@@ -85,6 +85,14 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
   - Avoid vague labels such as "AI-run". Rejected examples: "Learned from 13.2 minutes", "Doubling every 54 days?".
   - Titles stand alone and fit in about 70 characters. The user's A/B titles had no date suffix; the week stays in
     the description.
+  - Two strong pairs beat three with a weak one. Test whole ideas (a different lead story, or another framing of
+    it), never colour or word-order tweaks: YouTube says similar options rarely produce a winner.
+  - In the hand-off, tell the user to:
+    - start the test at publish and let it run to its end (YouTube says within two weeks);
+    - never edit the title or thumbnail mid-test, because that stops it;
+    - act only on a "Winner" label. Inconclusive is likely at our traffic, and YouTube then keeps the first option.
+  - Log each test (mode, the three angles, the label, the shares) in `docs/youtube-feedback.md`, so patterns show up
+    across episodes.
   - Render each pair's thumbnail in light and dark to `out/ab-test/<n>-<slug>-{light,dark}.png`. Look at each at
     sidebar size (168×94).
 - **Shorts:**
