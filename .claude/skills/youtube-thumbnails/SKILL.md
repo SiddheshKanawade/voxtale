@@ -92,6 +92,11 @@ Thumbnail practice and YouTube's tools change, so don't rely only on the evidenc
 
 ### 1. Generate options: 8-10 candidates
 
+**Then build the A/B test set** (YouTube Test & Compare, "Title and thumbnail" mode). Read
+`physical-ai-daily/docs/research-ab-testing.md` first; if it is missing or more than ~60 days old, do a deep web
+search and update it. Make 3 title + thumbnail pairs, each a different angle and image, ★ first, and write them to
+`out/ab-test/`. The rules are in the weekly-package skill under "A/B test set".
+
 **A hook must say what happened and to what, not just a number** (user, 2026-11-18). Rejected: "Learned from
 13.2 minutes" (learned what? from what?) and "Doubling every 54 days?" (what is doubling?). Accepted: "Learned to
 climb / from 13 min of human moves" and "Getting better fast. / Still under 50%." (answers the title's question).

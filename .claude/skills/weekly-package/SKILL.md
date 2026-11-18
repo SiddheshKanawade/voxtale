@@ -21,7 +21,7 @@ This skill only orders the work. The rules live in the phase skills; read each o
 |---|---|---|
 | 1 Research | `physical-ai-research` | `<ep>/research.md` (5 picks, ≥3 learning on backlog weeks) |
 | 2 Episode | `physical-ai-daily` | `<ep>/episode.json`, `<ep>/out/*.mp4` (4K light + dark) |
-| 3 Thumbnails | `youtube-thumbnails` | 8–10 candidates on a lettered contact sheet, pick + 2 runners-up, one per story |
+| 3 Thumbnails | `youtube-thumbnails` | 8–10 candidates on a lettered contact sheet, one per story, and the **A/B test set** (3 title + thumbnail pairs) |
 | 4 Shorts | `promo-shorts` | 3–4 Shorts in `<ep>/shorts/<slug>/out/` (dark + light), each with a cover |
 | 5 Package | (this skill) | `<ep>/publish.md` complete, the hand-off message |
 
@@ -72,6 +72,21 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
     contact sheet per video, in the hand-off.
   - No "Robotics this week:" prefix.
   - Title and cover/thumbnail text complement each other and never repeat.
+- **A/B test set (YouTube Test & Compare, "Title and thumbnail" mode; user, 2026-11-18):**
+  - First read `physical-ai-daily/docs/research-ab-testing.md`, which covers how Test & Compare picks a winner, how
+    different the variants should be, and small-channel traffic.
+    - If it is missing or more than ~60 days old, do a deep web search first (WebSearch `extended`, Firecrawl,
+      YouTube Help and Creator Insider, practitioner studies). Then update the doc with dated sources, and follow
+      it over the defaults below where they differ.
+  - Build **3 pairs**. Each pair is a different angle, ideally a different story or image, so the test compares
+    ideas, not wording. ★ goes first, because YouTube keeps the first when there's no clear winner.
+  - In each pair the thumbnail text adds to its title and never repeats it. The hook says what happened and to
+    what, never a bare number. Name the subject and its specific type: "Robot arms:", "Unitree G1".
+  - Avoid vague labels such as "AI-run". Rejected examples: "Learned from 13.2 minutes", "Doubling every 54 days?".
+  - Titles stand alone and fit in about 70 characters. The user's A/B titles had no date suffix; the week stays in
+    the description.
+  - Render each pair's thumbnail in light and dark to `out/ab-test/<n>-<slug>-{light,dark}.png`. Look at each at
+    sidebar size (168×94).
 - **Shorts:**
   - Newcomer format: two-sentence plain opening (background, then question), what they did, result (≤1 number),
     why it matters as the source says it, one caveat, and a CTA.
@@ -89,10 +104,12 @@ Finish `<ep>/publish.md` so the user can post from it alone:
   - The "Options" section: all titles with angle and paired thumbnail, the contact sheet, rubric scores.
   - The description: names the week, then chapters with timestamps from the rendered `props.json`, every source
     URL, clip credits, and tags.
-  - Thumbnail pick and the 2 runners-up for Test & Compare.
+  - **A/B test** section ready to paste into Test & Compare: the 3 pairs in order, each with title, thumbnail file
+    and a one-line "what this variant tests".
   - MP4 paths (light and dark).
 - **Each Short:**
   - 8+ title options and 3–4 covers (contact sheet), paired.
+  - Each ★ title passes the same "what happened, to what" test as the A/B set.
   - Description starting `Full episode: <EPISODE_URL>` (a placeholder until the user posts and sends the link; then
     fill it in).
   - The Related video setting.
@@ -103,7 +120,9 @@ Before handing off, look at the episode's beat sheet, every thumbnail and every 
 
 The hand-off message lists:
 - Every path the user uploads.
-- The contact sheets and the ★ title per video (the full lists are in publish.md).
+- **The A/B set in full** (3 titles + thumbnail paths), and every title option with its angle, in chat, not
+  only in publish.md. The user picks from the chat.
+- The contact sheets.
 - The voice used.
 - What was dropped or unverified, and why.
 - Any credits spent (Higgsfield, ElevenLabs).
