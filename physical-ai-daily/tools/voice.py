@@ -73,10 +73,12 @@ def prosody_args(style: str) -> tuple[str, str]:
 
 async def synth(text: str, voice: str, out: Path, rate: str = "+0%", pitch: str = "+0Hz", attempts: int = 40) -> list[dict]:
     # The edge-tts service intermittently returns no audio or stalls (worse with several episodes voicing at once);
-    # time out and retry with capped backoff.
+    # time out and retry with capped backoff. The timeout scales with the text: a whole-segment take streams at about
+    # 17 characters a second (2,435 characters took 140 s), so a fixed 60 s timed out every attempt.
+    timeout = 60 + len(text) / 5
     for i in range(attempts):
         try:
-            return await asyncio.wait_for(synth_once(text, voice, out, rate, pitch), timeout=60)
+            return await asyncio.wait_for(synth_once(text, voice, out, rate, pitch), timeout=timeout)
         except (edge_tts.exceptions.NoAudioReceived, asyncio.TimeoutError):
             if i == attempts - 1:
                 raise
