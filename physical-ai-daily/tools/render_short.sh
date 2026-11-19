@@ -28,4 +28,6 @@ echo "contact sheet: $SH/qa/contact_sheet_$D.png"
 npx remotion render src/shorts/index.ts Short "$SH/out/$NAME-$D.raw.mp4" --props="$SH/props.json" --public-dir="$SH" --concurrency=4 --scale="${SCALE:-2}" --crf="${CRF:-15}"
 ffmpeg -v error -y -i "$SH/out/$NAME-$D.raw.mp4" -c:v copy -af "loudnorm=I=-14:TP=-2:LRA=11" -c:a aac -b:a 192k "$SH/out/$NAME-$D.mp4"
 rm "$SH/out/$NAME-$D.raw.mp4"
+# Shots under 1.5 s flash past as glitches; warn (a deliberate fast cut is fine, say why in the hand-off).
+python3 "$ROOT/tools/shot_check.py" "$SH/out/$NAME-$D.mp4" || echo "WARN: short shots above; fix the clip unless the fast cut is intended"
 echo "final: $SH/out/$NAME-$D.mp4"

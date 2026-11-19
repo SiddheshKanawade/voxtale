@@ -30,4 +30,6 @@ npx remotion render src/index.ts Episode "$EP/out/$NAME.raw.mp4" --props="$EP/pr
 # TP -2 (not -1.5): AAC encoding adds ~0.2-0.5 dB of true peak after loudnorm, and the target is <= -1.5 dBTP.
 ffmpeg -v error -y -i "$EP/out/$NAME.raw.mp4" -c:v copy -af "loudnorm=I=-14:TP=-2:LRA=11" -c:a aac -b:a 192k "$EP/out/$NAME.mp4"
 rm "$EP/out/$NAME.raw.mp4"
+# Shots under 1.5 s flash past as glitches; warn (a deliberate fast cut is fine, say why in the hand-off).
+python3 "$ROOT/tools/shot_check.py" "$EP/out/$NAME.mp4" || echo "WARN: short shots above; fix the clip unless the fast cut is intended"
 echo "final: $EP/out/$NAME.mp4"

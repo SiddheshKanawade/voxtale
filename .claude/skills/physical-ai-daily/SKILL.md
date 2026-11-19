@@ -243,7 +243,8 @@ footage (news outlets, other creators) only when that doesn't show it. Every cli
 discussing it throughout (commentary, not re-publishing), its audio muted, credited on screen ("Video: Reuters") and
 listed in the description with its URL; never another creator's commentary or a whole segment. Wire-agency footage
 (AP, Reuters, Getty, Storyful) last: Content ID claims are likely and can take the revenue or block the video. Note
-each clip's URL, owner and timestamps in the hand-off. Downloading the source file needs the user's OK (name the file,
+each clip's URL, owner and timestamps in the hand-off. **Every shot on screen long enough to see** (user, 2026-11-19): official videos are edited fast, so a cut can carry a few frames of the next shot (a presenter's face, half a lower-third) that flash past as a glitch. `tools/clip.py` scene-checks every cut and refuses shots under 1.5 s, printing the longest clean shot to re-cut from; render.sh and render_short.sh warn on the final MP4 (`tools/shot_check.py`). Not a blanket rule: when a fast cut or sudden motion is the point (a montage, a before/after snap, a robot falling), keep it with `--allow-short-shots "<why>"` and say why in the hand-off.
+Downloading the source file needs the user's OK (name the file,
 source and size). Cut it with `tools/clip.py <ep> <source.mp4> <name> --start S --dur S --credit "Video: NVIDIA" --url
 <URL>` (muted, at most 10 s, writes the credit and URL beside it), then use the beat `{"type": "clip", "src":
 "assets/<name>.mp4"}` (optional `"fit": "cover"`, default shows the whole frame; `"stamp"`, a small subtle tag such as "Simulation" or "Self-reported" ("AI-generated" only on media *we* generated; another

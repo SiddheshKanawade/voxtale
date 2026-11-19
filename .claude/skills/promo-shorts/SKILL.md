@@ -110,7 +110,8 @@ multipliers). Use short clips of **official footage the company or lab itself pu
 newsroom, press kit, own page or channel), then other public footage (news, other creators) with proper citation
 when official footage doesn't show it (checklist HARD 7.2): a few seconds each, credited, audio muted, and ideally
 the robot doing the thing in frame 0. Wire-agency footage last (Content ID claims). Downloading the source needs the
-user's OK; cut it with `tools/clip.py` (same as episodes, see the physical-ai-daily skill). When no official
+user's OK; cut it with `tools/clip.py` (same as episodes, see the physical-ai-daily skill). Every shot must be long enough to see: clip.py refuses
+slivers under 1.5 s unless `--allow-short-shots "<why>"` (a deliberate fast cut); see the physical-ai-daily skill. When no official
 footage exists, get motion from consecutive stills, the push-in, counting stats and a new visual every beat.
 Tags on footage stay small and subtle (user, 2026-11-16). "AI-generated" is only for media we generate ourselves:
 another lab's generated footage (e.g. Genie 4) is identified by its credit line and the narration, never by a stamp.
