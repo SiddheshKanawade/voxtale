@@ -123,6 +123,25 @@ Test each hook on someone who hasn't seen the video: could they say in one sente
    (company videos) are the user's call, since a thumbnail is promotional.
 5. **Receipt:** the captured sentence or post that states the number. Crop tightly so the highlighted words are large.
 
+**Receipts that read (learned 2026-11-20):**
+- **Size:** keep a receipt to about 50 characters across its 620 px card, which gives about 20 px type at full size. A
+  full-width abstract line (80–110 characters) renders too small to read.
+  - Prefer captures where the claim sits inside one or two lines. Zoomed captures (800×450 viewport) carry about 65
+    characters per line.
+  - `mark` boxes one OCR line only. A claim that wraps from the end of one line to the start of the next can't be
+    cropped tightly: use a different capture or sentence.
+- **Coordinates:** captures are saved at 2×. A 1600×900 entry in a capture's `.json` is a 3200×1800 PNG, and its
+  `highlight` box is in the 1600×900 page pixels. `crop` and `mark` are fractions, so `thumb_receipts.py` is unaffected;
+  hand-made crops must scale.
+- **When another agent holds `episode.json`** (thumbnails running beside the episode phase):
+  - Render in a scratch dir that has its own `episode.json` and copies of the assets. `thumb_receipts.py` writes
+    `episode.json`.
+  - Freeze each receipt source as `assets/thumb_r_<name>.png`. Pages can be re-captured underneath you, and the crop
+    fractions only fit the pixels they were computed on.
+  - Hand the spec over in `<ep>/thumbs.md`.
+- **Burned-in labels:** a source video's labels ("Solving – Step 3/15", "Solved!!!", "1x") read as clutter on a cover.
+  Crop them off into `assets/thumb_<name>.png`.
+
 ### 2. Render all candidates
 
 Put every candidate in `episode.json` → `"thumbnails"`, then render them in the episode's design:
