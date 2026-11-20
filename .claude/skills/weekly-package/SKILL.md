@@ -40,6 +40,8 @@ This skill only orders the work. The rules live in the phase skills; read each o
 
 The phases are long, and their tool output would flood one context. Run each as a subagent:
 - Brief it with the week, the folder, this skill's rules section and the phase skill to load.
+- Research spawns its own subagents (triage, judges, the pairwise judge), so start it as a `general-purpose` agent,
+  not a fork: forks can't spawn.
 - Wait for it to finish, check its output files yourself, then start the next phase.
 
 Phases 3 and 4 may overlap phase 2's final 4K render. They need `episode.json`, the assets and the per-story

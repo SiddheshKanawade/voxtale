@@ -78,6 +78,12 @@ Learned on the first backlog run (Oct 18–25, 2026-11-17):
   picks up where it stopped.
 - Name verify entries `<story id> …` from the start (`research_md.py` matches by prefix).
 - Drop stories already covered in a later episode (check the other `episodes/*/research.md` picks).
+- **Resuming** (Oct 11–18, 2026-11-20): check each step's files before calling a model; the panel needs only
+  `judge_*.json` ×6 to go on to aggregate, pairs, settle and `research_md.py`. Judges sometimes write a stray `}` or a
+  note after their JSON object; `judge_panel.py` and `research_md.py` read the first object and ignore the rest.
+- **This phase spawns subagents** (beats, triage, verification, six judges, the pairwise judge): run it as a
+  general-purpose agent, not a fork, because forks can't spawn. If the pairwise judge can't be fresh, say so in
+  `research.md`.
 
 ## Learning over knowing (user, 2026-11-16)
 

@@ -131,7 +131,8 @@ def prepare(cards_path: Path, out: Path, judges: int, picks: int, orders: int = 
 
 def aggregate(out: Path, picks: int) -> list[dict]:
     cards = {c["id"]: c for c in json.loads((out / "cards.json").read_text())}
-    verdicts = [json.loads(p.read_text()) for p in sorted(out.glob("judge_*.json"))]
+    # raw_decode: a judge sometimes writes a stray "}" or a note after its JSON object; the object itself is what counts
+    verdicts = [json.JSONDecoder().raw_decode(p.read_text().lstrip())[0] for p in sorted(out.glob("judge_*.json"))]
     model = lambda v: v["judge"][0]  # noqa: E731  judge "A2" is model A's second ordering
     rows = []
     for cid, c in cards.items():

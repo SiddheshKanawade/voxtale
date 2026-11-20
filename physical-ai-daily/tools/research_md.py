@@ -39,7 +39,8 @@ def main() -> None:
     cards = {c["id"]: c for c in json.loads((J / "cards.json").read_text())}
     stories = {s["id"]: s for s in json.loads((J / "stories.json").read_text())}
     verify = [e for f in sorted(glob.glob(str(ep / "verify/*.json"))) for e in json.loads(Path(f).read_text())]
-    judges = [json.loads(Path(p).read_text()) for p in sorted(glob.glob(str(J / "judge_*.json")))]
+    # raw_decode, as in judge_panel.py: a stray "}" or note after a judge's JSON object is ignored
+    judges = [json.JSONDecoder().raw_decode(Path(p).read_text().lstrip())[0] for p in sorted(glob.glob(str(J / "judge_*.json")))]
     reason = {(v["judge"], s["id"]): s["reasoning"] for v in judges for s in v["scores"]}
     # Editorial rule: at least MIN_LEARNING of the picks are "learning" stories (a new capability, method or
     # experiment with a result). Short of that, the lowest-ranked news pick gives way to the best-ranked learning story.
