@@ -93,9 +93,19 @@ and say in the hand-off what you spent.
    - `node tools/capture.mjs frames <url> <ep>/assets/x.png --selector video --nth N --times "2,8,15"`: stills from a video playing on the source page (find N by probing each `nth` once; some lazy videos never load, so skip them)
    - arXiv figures: check the license on the abs page (CC BY means reusable with credit), download `arxiv.org/html/<id>v1/figures/*.png`, then `python3 tools/crop.py <src> <out> x0 y0 x1 y1` for panels
    Look at every PNG before rendering. A `WARN: text not found` means the quote isn't on the page verbatim, so fix the quote.
+   - **arXiv abstract pages: capture at `--w 800`** (`node tools/highlight.mjs <abs-url> <out.png> "<sentence>" --w 800`).
+     At 1600 px an abstract sentence spans the full width, so `Shot` can't zoom (scale = 0.9 × width ÷ highlight
+     width) and the text lands ~15 px at 1080p (2026-11-20).
+   - **Numbers in arXiv HTML are MathML** (`15/15`, `23%`), so a needle containing them never matches. Highlight the
+     words just before the number, then widen the `.json` highlight box to the full paragraph lines so the number
+     isn't cropped off the frame edge.
 6. **Render.** `tools/render.sh <ep> --stills-only` first. Better: render once, then pull one frame per beat at 75% of its
    length into contact sheets (`python3 -I tools/beat_sheet.py <ep> <mp4> <dir>`) and read them. Final light and dark:
-   `tools/render_both.sh <ep>` (waits for the shared lock, so parallel agents render one at a time). Fix, then run the full render. **Finals are 4K** (3840x2160, crf 15; user 2026-11-16, output quality): about 7x real time on this Mac, so ~1 h per design for an 8-min episode; `SCALE=1 CRF=18` for a quick draft.
+   `tools/render_both.sh <ep>` (waits for the shared lock, so parallel agents render one at a time). Fix, then run the full render.
+   **Check `df -h` first and keep ≥ 10 GB free:** an 11-min 1080p draft died with `ENOSPC` starting from 6.7 GB free
+   (2026-11-20). Too full to render? Still QA every beat: `npx remotion bundle src/index.ts --out-dir=<tmp>
+   --public-dir=<ep>` once, then `npx remotion still <tmp> Episode b.png --frame=<75% of the beat> --props=<ep>/props.json
+   --scale=0.5` per beat (≈250 MB temporary instead of a full MP4). **Finals are 4K** (3840x2160, crf 15; user 2026-11-16, output quality): about 7x real time on this Mac, so ~1 h per design for an 8-min episode; `SCALE=1 CRF=18` for a quick draft.
 
 ## Scene catalog (`visual.type`)
 
