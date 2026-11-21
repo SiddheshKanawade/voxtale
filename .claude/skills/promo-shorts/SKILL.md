@@ -156,7 +156,26 @@ the source's own on-screen labels where possible). Render in the design being up
 and the open question: "GPT-6 Astra moves blocks just fine. Why can't it plug in?"). Viewers see both at once, so
 repeated words are wasted space. Write them as a pair and check them side by side.
 
-**Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (current / plainer / question / number-led / contrast), one marked ★; per Short, 3–4 rendered covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them; every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
+**Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (current / plainer / question / number-led / contrast), one marked ★; per Short, 3–4 rendered covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them (`python3 tools/covers_sheet.py <ep>/shorts/<slug>`); every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
+
+**Framing checks learned on Oct 11–18 (2026-11-21):**
+- **Clips:** the picture band is 1080×940, so `ClipBand` center-crops 16:9 footage to about 65% of its width.
+  - Check what survives the crop: `ffmpeg … -vf "crop='min(iw,ih*1080/940)':ih"` on the first, middle and last frame.
+  - A source overlay can turn misleading. NYU's "71%" became "1%".
+  - Side-by-side comparisons lose a panel or a label.
+  - The fix is a Short-only copy: crop around the subject, or pad (letterbox) the frame to 1080:940 with ffmpeg. Cut
+    it with `tools/clip.py <short> <padded.mp4> <name>_v …`, which keeps the credit, the URL and the shot check.
+  - Check that the beat still reaches the moment that matters. A compare clip's second drop came after its beat
+    ended, so it was re-cut with `--start`.
+- **Shot beats** fit the highlight box to the band width, so a single long highlighted line ends up about 20 px tall.
+  - Captures are stored at 2× (`png` 3200 px wide; JSON width 1600). Compute in JSON units: text height =
+    `h × min(1080/(1.25·w), 940/(1.25·h))`.
+  - Under about 40 px, use footage, a still or a `stat` instead. The narration and captions carry the source's words.
+- **Covers:** the source's own banners ("Solved!!!", "Scanning | Planning", method labels) sit where our panel label
+  goes, top left.
+  - Crop the banner off the frame, or drop our label (`label` is optional) when the source label is the point, e.g.
+    WBD / Direct retargeting.
+  - Vary the frame between covers: three covers on the same moment read as one option.
 
 ## 5. Hand off (never upload)
 
