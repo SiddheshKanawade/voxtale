@@ -19,7 +19,7 @@ from the API's character timestamps. A segment longer than ELEVEN_MAX characters
 few long takes (the API's per-request limit). ELEVENLABS_API_KEY is read from the environment or the project's .env.
 Takes are cached in audio/, so re-runs don't spend characters.
 
-Speed: an optional top-level "speed" (e.g. 1.175 for Shorts) time-stretches the take after synthesis, with pitch
+Speed: an optional top-level "speed" (1.15 for episodes, 1.175 for Shorts) time-stretches the take after synthesis, with pitch
 kept and word timings scaled. It costs no TTS characters.
 """
 import base64

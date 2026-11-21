@@ -74,6 +74,8 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
   physical AI." Inform, don't sell.
 - **Episode:**
   - 4K (render.sh defaults).
+  - Narration at 1.15×: `"speed": 1.15` in episode.json (user, 2026-11-21). Chapter times in `publish.md` come from
+    the sped-up `props.json`.
   - No per-story time target; hard cap 20 min.
   - Screenshots hold still.
   - Tags small and subtle.

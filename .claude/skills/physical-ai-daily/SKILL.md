@@ -196,6 +196,13 @@ six Eleven v4 voices (`docs/voice-research.md` sections 7b–9).
   loudness jumping, mechanical gaps). One optional delivery tag for the whole take: `"eleven_tag"` (top-level or per
   segment). Per-beat `eleven_text` and `direct` are ignored. Segments over ~2,800 characters go out as a few long
   takes split at beat boundaries (the API's request limit).
+- **Episodes play at 1.15×** (user, 2026-11-21, "default for videos"). Set the top-level `"speed": 1.15` in
+  episode.json, next to `"voice"`.
+  - `voice.py` time-stretches each whole take after synthesis, keeping the pitch, and scales the word timings, so
+    captions and cuts stay in sync. Visuals re-time to the shorter beats, and clips keep their own speed.
+  - Write and time the script at normal pace; the speed is applied at voicing. First used on 2026-10-18-weekly:
+    10:41 → 9:19.
+  - Shorts use their own 1.175× (promo-shorts skill).
 - Word timings come from the API's character timestamps; `voice.py` aborts if they're missing.
 - `ELEVENLABS_API_KEY` lives in `physical-ai-daily/.env` (git-ignored; never print or commit it). Free tier:
   10,000 characters a month. An episode is about 3,600. Beats are cached in `audio/*.el.*`, so edits re-voice only the
