@@ -34,7 +34,14 @@ This skill only orders the work. The rules live in the phase skills; read each o
     3,600 characters and a Short about 600. Otherwise use edge-tts `en-US-AndrewNeural` for all of it.
   - Say which voice and why in the hand-off. Never print the key.
 - Check every judge model answers (Fable quota runs out; fall back to Haiku, see the research skill).
-- `df -h` (4K renders are large), and check `.render.lock` isn't held by a dead process.
+- `df -h /System/Volumes/Data`: keep about 10 GB free for a 4K episode, and check `.render.lock` isn't held by a dead
+  process.
+  - The disk is shared with other projects. On 2026-11-20, MyoChallenge runs and Brave temp files took it from 8.6 GB
+    to 1.6 GB mid-run.
+  - Check again before each 4K render. If space is short, ask the user what to free, and offer this project's own
+    leftovers first: old samples' ignored `out/`, `audio/`, `qa/` and `assets/`. Keep the reference episode named in the
+    physical-ai-daily skill and every git-tracked file.
+  - Never delete outside this project.
 
 ## 1–4. Run the phases in order, each in its own subagent
 
@@ -43,6 +50,14 @@ The phases are long, and their tool output would flood one context. Run each as 
 - Research spawns its own subagents (triage, judges, the pairwise judge), so start it as a `general-purpose` agent,
   not a fork: forks can't spawn.
 - Wait for it to finish, check its output files yourself, then start the next phase.
+- After research, read `research.md`'s run notes. If the pairwise cut line wasn't answered by a fresh judge
+  (2026-11-20: a resumed run answered it itself after seeing the scores), re-ask it from this session. Move
+  `judge/pairwise.json` aside, then give a fresh `opus` agent only `judge/pairwise.md`, with no other file and no web.
+  Then run `judge_panel.py settle`, then `research_md.py <ep> --window FROM:TO --min-learning 3` (backlog weeks). Add
+  `--models "Opus, Sonnet and Haiku"` when a fallback model judged. The generator overwrites `research.md`, so
+  re-append the hand-written run notes afterwards.
+  - Check a "doesn't match" report against `pairwise_index.json` before changing anything: "second" in a reversed
+    pair names the same story.
 
 Phases 3 and 4 may overlap phase 2's final 4K render. They need `episode.json`, the assets and the per-story
 thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so renders queue.

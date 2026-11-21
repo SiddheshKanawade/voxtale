@@ -150,6 +150,11 @@ the source's own on-screen labels where possible). Render in the design being up
 `shorts/<slug>/cover/props.json` = {"design", "lines", "panels": [{"src", "label"}], "credit"}, then
 `npx remotion still src/shorts/index.ts ShortCover <slug>/out/cover-<design>.png --props=<slug>/cover/props.json --public-dir=<slug>`
 (renderer `video/src/shorts/Cover.tsx`).
+- **The cover passes the newcomer test too** (2026-11-21). A method's acronym means nothing to a newcomer. "2 methods
+  drop the ball. *WBD holds on.*" was rewritten as "Same robot, 3 controllers. *Only one keeps the ball.*" Name the
+  robot or company, never the paper's acronym.
+- **The frame shows what the text claims.** For a comparison clip, use the moment the claim is true, often the
+  clip's last frame (`assets/<clip>_last.png`, with the black bars cropped), not the start.
 
 **Title and cover text work together, never repeat each other** (user, 2026-11-17). The title carries one part
 (e.g. the fact or score: "GPT-6 Astra vs. a power strip: 0 for 11"), the cover carries another (e.g. the contrast
