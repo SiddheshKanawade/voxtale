@@ -18,6 +18,8 @@ export type ThumbProps = {
   lines: string[];        // 1-2 short lines; wrap a word in *asterisks* to colour it
   image?: string;         // episode-relative path
   image2?: string;        // second image, for "split"
+  focus2?: string;        // object-position for image2 (default "50% 60%")
+  labels?: string[];      // "split": a small chip naming each image's subject and its type, e.g. ["Apollo humanoid", "ANYmal-D"]
   focus?: string;         // CSS object-position for the image crop, e.g. "70% 30%"
   zoom?: number;          // scale the subject image up to crop away figure labels or borders (default 1)
   stat?: string;          // the big number, for "stat"
@@ -60,7 +62,7 @@ const words = (line: string, accent: string) =>
   line.split(/(\*[^*]+\*)/).map((part, i) =>
     part.startsWith("*") ? <span key={i} style={{ color: accent }}>{part.slice(1, -1)}</span> : <span key={i}>{part}</span>);
 
-export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, image2, focus = "50% 50%", zoom = 1, stat, label, receipt, stamp }) => {
+export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, image2, focus = "50% 50%", focus2 = "50% 60%", zoom = 1, stat, label, labels, receipt, stamp }) => {
   const look = applyDesign(design);
   const ink = look.light ? C.ink : "#ffffff";
   const accent = look.light ? BRAND.red : BRAND.yellow;
@@ -118,7 +120,11 @@ export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, 
         <>
           {[image, image2].map((src, i) => (
             <Img key={src} src={staticFile(src)} style={{ position: "absolute", top: 250, left: i ? 652 : 0, width: 628, height: 470, objectFit: "cover",
-              objectPosition: i ? "50% 60%" : focus }} />
+              objectPosition: i ? focus2 : focus }} />
+          ))}
+          {labels?.map((l, i) => l && (
+            <div key={i} style={{ position: "absolute", top: 272, left: i ? 674 : 22, background: BRAND.red, color: "#fff", fontFamily: FONT,
+              fontWeight: 800, fontSize: 30, letterSpacing: 1.5, padding: "6px 14px", borderRadius: 8, textTransform: "uppercase" }}>{l}</div>
           ))}
           <div style={{ position: "absolute", left: 640, top: 250, bottom: 0, width: 12, background: BRAND.red }} />
           <div style={{ position: "absolute", left: 112, right: 40, top: 40 }}>{text(fit(104, 1120))}</div>
