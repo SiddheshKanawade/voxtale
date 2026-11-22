@@ -12,9 +12,11 @@ import { Backdrop } from "./Episode";
 // the source with the key claim highlighted plus a source tag (source cues raise clicks and trust; docs/thumbnails.md).
 // "face" = image on the right, words on the left; "stat" = one huge number over a faded image;
 // "split" = two images side by side under a short line.
+// "moment" (default since 2026-11-22, docs/packaging.md) = one real frame of the decisive instant, full-bleed, with
+// 0-3 big words that add to the title and an optional chip naming the subject ("APOLLO HUMANOID"). No receipt.
 export type ThumbProps = {
   design?: string;
-  layout: "evidence" | "face" | "stat" | "split";
+  layout: "moment" | "evidence" | "face" | "stat" | "split";
   lines: string[];        // 1-2 short lines; wrap a word in *asterisks* to colour it
   image?: string;         // episode-relative path
   image2?: string;        // second image, for "split"
@@ -113,6 +115,17 @@ export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, 
             <div>{chip}</div>
             <div style={{ fontFamily: FONT, fontWeight: 900, fontSize: 300, lineHeight: 0.85, letterSpacing: -14, color: accent }}>{stat}</div>
             {text(fit(84, 1100), { marginTop: 18 })}
+          </div>
+        </>
+      )}
+      {layout === "moment" && image && (
+        <>
+          <Img src={staticFile(image)} style={{ position: "absolute", inset: 0, width: 1280, height: 720, objectFit: "cover",
+            objectPosition: focus, transform: `scale(${zoom})`, transformOrigin: focus }} />
+          <AbsoluteFill style={{ background: `linear-gradient(90deg, rgba(${C.bgRgb},0.94) 0%, rgba(${C.bgRgb},0.7) 30%, rgba(${C.bgRgb},0) 56%)` }} />
+          <div style={{ position: "absolute", left: 56, top: 0, bottom: 0, width: 640, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div>{chip}</div>
+            {lines.length > 0 && text(fit(150, 640))}
           </div>
         </>
       )}

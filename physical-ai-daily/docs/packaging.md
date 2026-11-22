@@ -48,6 +48,9 @@ Caveats:
 - First applied to Oct 11–18 (cover E of each Short). Examples: "A Robot Dog Solved a Giant Rubik's Cube With Its
   Feet" with "No hands"; "This Robot Learned Cornhole From a Video of a Person" with "7 in a row".
 
-Episodes: the same findings point to one lead story in the title (and first in the video), with the rest as "plus N
-more". The thumbnail would show that story's moment with 0–3 words and no receipt. Not yet adopted in the
-`youtube-thumbnails` skill (pending the user's go).
+## Rules (episodes: in `youtube-thumbnails`, `weekly-package`, `physical-ai-daily`, from 2026-11-22)
+
+- **Title:** one lead story, a robot doing something concrete, plain words first and the name last, then "(plus N
+  more)" if anything. The lead story plays first in the episode.
+- **Thumbnail:** the `moment` layout in `Thumbnail.tsx`: one real frame of the decisive instant, full-bleed, with 0–3
+  words and a chip naming the robot and its type. The `evidence` (receipt) layout is retired as a default.

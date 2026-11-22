@@ -1,195 +1,182 @@
 ---
 name: youtube-thumbnails
-description: Design and render evidence-led YouTube thumbnails for the Pixels2Actions channel (project physical-ai-daily): one honest curiosity hook, a subject "face", and a tilted source "receipt" with the key claim highlighted, in the episode's design (blueprint / blueprint-light). Researches current thumbnail guidance on the web first, renders 8-10 candidate thumbnails, scores them against a rubric and picks one (keeping the next two for YouTube Test & Compare). Use when the user asks for a thumbnail, thumbnail variants, packaging, or to improve click-through.
+description: Write the titles and render the thumbnails for the Pixels2Actions channel (project physical-ai-daily). One lead story, packaged as a robot doing something concrete; the thumbnail shows that story's decisive moment (a real frame) with 0–3 words that add to the title and a label naming the robot, in the episode's design (blueprint / blueprint-light). Researches current guidance first, renders 8–10 candidates on a lettered contact sheet, scores them against a rubric and picks one. Use when the user asks for a title, a thumbnail, thumbnail variants, packaging, or better click-through.
 ---
 
-# YouTube thumbnails (Pixels2Actions)
+# Titles and thumbnails (Pixels2Actions)
 
-Research and sources: `physical-ai-daily/docs/thumbnails.md`. Template: `physical-ai-daily/video/src/Thumbnail.tsx`.
+Research: `physical-ai-daily/docs/packaging.md`, on content (2026-11-22), which supersedes the receipt approach.
+Design rounds 1–3: `physical-ai-daily/docs/thumbnails.md`. Template: `physical-ai-daily/video/src/Thumbnail.tsx`.
 Renderer: `physical-ai-daily/tools/thumbnails.py`.
+
+**Why this changed (user, 2026-11-22):** "I am not liking the titles and thumbnails that you are generating. It's
+not a design problem, rather a content." The noun-list roundup titles and the sentence-plus-receipt thumbnails were the
+problem.
 
 ## What the evidence supports (and how strongly)
 
-1. **Faces and short text set breakout thumbnails apart; contrast alone doesn't.** vidIQ, 500 breakouts, July 2026
-   (correlational). Our "face" is the robot or the main subject, shown big.
-2. **A curiosity gap invites the click, but only if the video closes it.** Loewenstein's information-gap theory;
-   clickbait studies show misleading packaging raises clicks while repeated exposure breeds scepticism, and satisfaction
-   follows expectation vs delivery. So the hook asks a question **the video answers**. A literal "WATCH NOW" has no
-   evidence behind it and reads as spam: the open question *is* the call to watch.
-3. **Source cues raise clicks and trust.** High-reputation sources get clicked more regardless of content (Winter &
-   Krämer); expert quotes raise trust. Credibility *labels* alone don't change behaviour, so show the actual receipt:
-   the source's own sentence with the number highlighted, not just a logo.
-4. **Thumbnail and title split one promise.** The thumbnail is the visual hook; the title adds context. Never repeat the
-   title's words (practitioner consensus: vidIQ, Hooklab, Overseeros).
-5. **Readable at 168×94** (the sidebar size); 1280×720, under 2 MB.
-6. **Arrows and circles: mixed evidence.** Use them only to point at something small. The receipt's highlighter is our
-   one pointer.
-7. **Test, don't guess:** YouTube Studio's Test & Compare runs up to 3 thumbnails and picks on watch time.
+Details and sources are in `docs/packaging.md`.
 
-## The template ("evidence" layout)
+1. **The idea matters more than the wording.** In 24,333 Upworthy A/B pairs, wording picked the winner only 54% of the
+   time. YouTube: "You need a compelling idea, or everything else really won't matter". So the first job is choosing
+   **the lead story**: the single most surprising true result that a newcomer can picture.
+2. **One story, one promise.** No niche video that beat its channel's size was a roundup. Noun lists ("A, B, and 3
+   more") sit at the bottom.
+3. **The promise pays off early.** Test & Compare picks on watch time, and YouTube measures viewer satisfaction. The
+   title's lead story is the **first** story in the episode.
+4. **Concrete, plain words, a protagonist acting, names last** ("This Robot Learned Cornhole From a Video of a Person",
+   not "Gemini 4 Argon for Robotics"). Simpler headlines won across about 31,000 tests.
+5. **Give the setup and withhold the outcome, the "how" or the catch.** Curiosity needs some knowledge plus an open
+   gap. A complete factual sentence leaves no gap.
+6. **Honest negativity beats hype.** In about 105,000 headline tests, each negative word added +2.3% CTR and each
+   positive word cost 1.0%. A real limit from the source is a strong angle; "insane" and "breakthrough" are not.
+7. **Statements over questions.** Questions underperformed in several datasets.
+8. **The thumbnail shows the moment** (action, outcome or tension), not a portrait or a setup shot, with **0–3 words**.
+   YouTube: titles and thumbnails "work together to create interest and tell a story".
+9. **No source screenshot on the thumbnail.** No evidence says it helps, it's unreadable at feed size, and it's a
+   second idea. Proof goes in the video's first minute and in the description.
+10. **Readable at 168×94** (the sidebar); 1280×720, under 2 MB.
+11. **Test, don't guess:** Test & Compare runs up to 3 options and picks on watch time.
+
+## The template ("moment" layout, the default)
 
 ```
 +--------------------------------------------------+
-| [mark]                         |                  |
-| HOOK LINE ONE                  |   SUBJECT        |
-| *HOOK TWO*  (accent colour)    |   (face/robot,   |
-|                                |    big, right)   |
-|  SOURCE: <WHO>                 |                  |
-|  /receipt crop, tilted -3deg/  |                  |
-|  key number highlighted        |                  |
+| [mark]                                            |
+|  [ROBOT NAME + TYPE]  (red chip)                  |
+|  0-3 BIG WORDS          the decisive instant,     |
+|  (outcome / catch /     full-bleed real frame,    |
+|   how)                  subject on the right      |
 +--------------------------------------------------+
 ```
 
-- **Brand mark** top-left only (YouTube draws the duration at bottom-right).
-- **Hook:** 2 lines, ≤ ~4 words. The colour line is the curiosity gap. Text auto-fits and never wraps.
-- **Subject:** right ~55%, faded into the background; `focus` picks the crop and `zoom` cuts figure labels.
-- **Receipt:** a crop of a page we already captured for the episode (`assets/*.png` + its `.json`). The tag names the
-  source ("GOOGLE DEEPMIND", "ARXIV PAPER"). If the capture has no highlight, add `mark` (fractions of the crop).
+- **Image:** one real frame of the decisive instant: the bag leaving the hand, the foot on the cube, the robot holding
+  the ball. A frame from the source's own video or a CC BY figure. Never a generated or composited image passed off as
+  real.
+- **Words:** 0–3, adding what the title doesn't say: "7 in a row", "No hands", "A person steers". Break them over two
+  lines to get bigger type.
+- **Label (`label`):** names the robot and its type ("APOLLO HUMANOID", "UNITREE G1", "ANYMAL-D"), so the words can be
+  short and still say what happened to what.
+- **Brand mark** top-left only; YouTube draws the duration at bottom-right.
 - **Design** follows the episode: `blueprint` (dark) or `blueprint-light`.
+- Other layouts stay available: `split` (two real frames with `labels`, for a true before/after or two-story
+  contrast), `stat` (only when the number *is* the story), `face`. The `evidence` (receipt) layout is retired as a
+  default.
 
 **The tools are starting points, not limits.** If one doesn't fit the job, change it or write your own script; a missing tool or option is never a reason to stop. Keep the data formats between steps and the rules intact (`physical-ai-daily/docs/tools.md`).
+
+## Titles
+
+- **Lead with one story.** Write "[protagonist] [did concrete thing]", with the plain word first and the name last or in
+  parentheses: "This Robot Learned Cornhole From a Video of a Person (Gemini 4 Argon)". A roundup may add "(plus 4
+  more)". Never a list of names.
+- **Plain words a newcomer knows:** "robot dog", "humanoid", "robot arm". No acronyms or model names up front.
+- **Statements, not questions.** No hype words. An honest catch from the source is allowed and often strongest:
+  "Google Says Its Robot Sank 7 in a Row. It Didn't Say How Many Tries".
+- About 70 characters or fewer; no date suffix (the week goes in the description). No "Robotics this week:" prefix.
+- **Honesty:** every claim is in the source and the video, and the video pays the title off in its first story.
 
 ## Workflow
 
 ### 0. Research first, every time
 
-Thumbnail practice and YouTube's tools change, so don't rely only on the evidence above. Before designing:
+Practice and YouTube's tools change, so don't rely only on the evidence above. Before writing:
 
-1. **Search aggressively, not a token check.** Decide how many searches based on the episode's topics and what
-   turns up. Send them in parallel batches, and use `extended` mode for anything recent or niche. Cover all of these
-   angles:
-   - new thumbnail studies and data (`YouTube thumbnail study <current year>`, `thumbnail CTR analysis`, vidIQ / 1of10
-     / eden.so research)
-   - YouTube's own changes: Test & Compare, the Studio packaging and title-test features, Creator Insider, YouTube Help
-   - the episode's topic niche (`robotics YouTube thumbnails`, `AI explainer thumbnails what works`), plus what the
-     current top videos on this story use (search the story name + YouTube)
-   - curiosity, clickbait and trust research (new papers on misleading thumbnails or source cues)
-   - text, faces and readability on mobile and TV home feeds
-   - anything that contradicts our rules: search for counter-evidence on purpose (`thumbnail text hurts CTR`,
-     `faces don't matter thumbnails`)
+1. **Search properly, not a token check.** Send searches in parallel batches, and use `extended` mode for anything
+   recent or niche. Cover:
+   - new title and thumbnail studies (vidIQ / 1of10 / headline A/B research)
+   - YouTube's own changes (Test & Compare, Creator Insider, YouTube Help, the Liaison)
+   - what the top videos on this week's lead story use: search the story name plus YouTube, and check views against
+     channel size
+   - counter-evidence to our rules, searched for on purpose
 
-   Open the strongest sources (primary studies, YouTube docs) and read them rather than trusting search snippets. Keep
-   going until new searches stop turning up new findings.
-2. Prefer data (coded samples, A/B results, YouTube's own docs) over opinion blogs. Note each source's strength the way
-   `docs/thumbnails.md` does.
-3. Compare with the evidence list above. **If something is new or contradicts it, append a dated row to
-   `docs/thumbnails.md`** and say how it changes this run (e.g. a new layout, more or less text).
-4. Tell the user in one or two lines what the research changed, or that it confirmed the current approach.
+   Open the strongest sources and read them; don't trust snippets.
+2. **Pull niche data when the doc is stale** (over ~60 days). Use yt-dlp metadata of recent robotics videos, rank them by
+   views ÷ subscribers, and look at the outliers' titles and thumbnails. Study thumbnails privately and delete them
+   after.
+3. Append new or contradicting findings, dated, to `docs/packaging.md` and say how they change this run.
+4. Tell the user in a line or two what the research changed or confirmed.
 
-### Rules from the user's reviews (2026-11-16/17)
+### Rules from the user's reviews (still in force)
 
-- **One candidate per story at least.** Each Short ends on the thumbnail of its own story (promo-shorts skill), so
-  the candidates double as the Shorts' end cards: cover every story the Shorts will use, not just the top pick.
-- **Image labels are small and subtle** ("Simulation", "Self-reported"): they inform, they don't pull the eye. The
-  hook stays big.
-- **"AI-generated" only on media we generated ourselves.** Another lab's generated footage (e.g. Genie 4) gets no
-  stamp; say what it is in the hook or credit ("Not filmed.", "Video: Google DeepMind · generated by Genie 4").
-- **Newcomer-friendly hooks**, inform rather than sell (no pitchy phrasing).
-- **Title and cover text work together, never repeat each other** (user, 2026-11-17). The title carries one part
-  (e.g. the fact or score: "GPT-6 Astra vs. a power strip: 0 for 11"), the cover carries another (e.g. the contrast
-  and the open question: "GPT-6 Astra moves blocks just fine. Why can't it plug in?"). Viewers see both at once, so
-  repeated words are wasted space. Write them as a pair and check them side by side.
+- **One candidate per story at least.** Each Short ends on its own story's thumbnail (promo-shorts skill), so cover
+  every story the Shorts use.
+- **Labels are small and factual;** the words stay big. "AI-generated" only on media we generated. Another lab's
+  generated footage is identified in the credit, never stamped.
+- **Title and thumbnail work together and never repeat each other** (2026-11-17). Write them as a pair and check them
+  side by side.
+- **Words + label + title together say what happened and to what** (2026-11-18). Rejected for vagueness: "Learned
+  from 13.2 minutes", "Doubling every 54 days?", "AI-run robot arms". Test on someone who hasn't seen the video: could
+  they say in one sentence what it claims?
+- **No acronyms a newcomer can't read** ("WBD holds on" was rejected, 2026-11-21). Name the robot or company.
+- **Wide options, up front** (2026-11-18, "we iterate a lot here"):
+  - At least 8 titles, each tagged with its angle (plainer / current / protagonist / honest catch / how / number-led /
+    contrast), one marked ★.
+  - 8–10 rendered thumbnails varying the image as well as the words.
+  - One lettered contact sheet; every title names the thumbnail it pairs with.
+  - All of it goes in an "Options" section of publish.md, and in chat at hand-off.
 
-### 1. Generate options: 8-10 candidates
+### 1. Generate options: 8–10 candidates
 
-**Then build the A/B test set** (YouTube Test & Compare, "Title and thumbnail" mode). Read
-`physical-ai-daily/docs/research-ab-testing.md` first; if it is missing or more than ~60 days old, do a deep web
-search and update it. Make 3 title + thumbnail pairs, each a different angle and image, ★ first, and write them to
-`out/ab-test/`. The rules are in the weekly-package skill under "A/B test set".
+1. **Pick the lead story** before anything else (in a weekly package, before the episode is scripted, so it opens the
+   episode): the most surprising true result a newcomer can picture, with a showable moment.
+2. **Find each story's moment.** Scan the clips at 2–6 fps (`ffmpeg -vf "fps=6,scale=300:-1,tile=6x4"`), pick the
+   decisive frame, and extract it at full resolution. Measure where the subject sits (its x-range) before setting
+   `focus`; don't guess. Crop off burned-in source labels ("Solving – Step 3/15", "1x").
+3. **Write 8–10 candidates that differ in idea**, mostly on the lead story, plus at least one per other story (for the
+   Shorts' end cards). Angles for the words: *outcome* ("7 in a row"), *catch* ("A person steers"), *how* ("No hands"),
+   *contrast* (`split` with two real frames), *number* (`stat`, only when the number is the story).
+4. **Honesty check on every candidate:** every word and number is in the source and the video; no implied result the
+   video doesn't show; no fake urgency. Drop failures; don't blur the claim.
+5. **Images:** prefer the source's own footage frames or CC BY figures. Press frames are promotional use; the user
+   decides.
 
-**A hook must say what happened and to what, not just a number** (user, 2026-11-18). Rejected: "Learned from
-13.2 minutes" (learned what? from what?) and "Doubling every 54 days?" (what is doubling?). Accepted: "Learned to
-climb / from 13 min of human moves" and "Getting better fast. / Still under 50%." (answers the title's question).
-Test each hook on someone who hasn't seen the video: could they say in one sentence what it claims?
-
-**Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (current / plainer / question / number-led / contrast), one marked ★; 8–10 rendered thumbnails or covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them; every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
-
-1. **Find the promise:** the one surprising, true thing in the episode, and where the video answers it (often the
-   reality-check beat).
-2. **Write 8-10 candidates that differ in idea, not just colour.** Cover several angles:
-   - *tension* ("96% success / *but...*", answered by the reality check)
-   - *question* ("Robot brain / *2× better?*", answered by the 30–100% range)
-   - *mystery* ("No battery. / *How?*", answered by the explainer)
-   - *stakes* (what changes for the viewer or the industry, if the video says so)
-   - *contrast* (old way vs new, using the `split` layout)
-   - *number* (the single most striking verified number, using the `stat` layout)
-
-   Vary the subject image and receipt too, where the episode has more than one good option. Any layout in
-   `Thumbnail.tsx` is allowed; `evidence` is the default.
-3. **Honesty check on every candidate** (the channel's script rules apply): every number on the thumbnail is in the
-   source receipt and the video. Questions must not imply a false answer. No "shocking", no fake urgency, no implying a
-   deployment that was a pilot. Drop any candidate that fails; don't fix it by blurring the claim.
-4. **Images:** a robot face or close-up beats a wide shot. Prefer CC BY figures (arXiv) or our own art; press frames
-   (company videos) are the user's call, since a thumbnail is promotional.
-5. **Receipt:** the captured sentence or post that states the number. Crop tightly so the highlighted words are large.
-
-**Receipts that read (learned 2026-11-20):**
-- **Size:** keep a receipt to about 50 characters across its 620 px card, which gives about 20 px type at full size. A
-  full-width abstract line (80–110 characters) renders too small to read.
-  - Prefer captures where the claim sits inside one or two lines. Zoomed captures (800×450 viewport) carry about 65
-    characters per line.
-  - `mark` boxes one OCR line only. A claim that wraps from the end of one line to the start of the next can't be
-    cropped tightly: use a different capture or sentence.
-- **Coordinates:** captures are saved at 2×. A 1600×900 entry in a capture's `.json` is a 3200×1800 PNG, and its
-  `highlight` box is in the 1600×900 page pixels. `crop` and `mark` are fractions, so `thumb_receipts.py` is unaffected;
-  hand-made crops must scale.
-- **When another agent holds `episode.json`** (thumbnails running beside the episode phase):
-  - Render in a scratch dir that has its own `episode.json` and copies of the assets. `thumb_receipts.py` writes
-    `episode.json`.
-  - Freeze each receipt source as `assets/thumb_r_<name>.png`. Pages can be re-captured underneath you, and the crop
-    fractions only fit the pixels they were computed on.
-  - Hand the spec over in `<ep>/thumbs.md`.
-- **Burned-in labels:** a source video's labels ("Solving – Step 3/15", "Solved!!!", "1x") read as clutter on a cover.
-  Crop them off into `assets/thumb_<name>.png`.
+**Then the A/B test set**, when the user wants one (YouTube Test & Compare, "Title and thumbnail" mode). Read
+`physical-ai-daily/docs/research-ab-testing.md` first. Build 3 title + thumbnail pairs, each a different *idea* about
+the lead story (outcome vs. catch vs. how), or another story only if it plays in the first ~2 minutes. ★ goes first.
+Write them to `out/ab-test/`. The rest of the rules are in the weekly-package skill under "A/B test set".
 
 ### 2. Render all candidates
 
-Put every candidate in `episode.json` → `"thumbnails"`, then render them in the episode's design:
+Put every candidate in `episode.json` → `"thumbnails"`, then render in the episode's design:
 
 ```
 python3 tools/thumbnails.py episodes/<dir> <design>
 ```
 
-This writes `out/thumb_<n>_<design>.png` plus `out/thumbs_preview.png` (each one beside its 168×94 sidebar size).
+This writes `out/thumb_<n>_<design>.png` plus `out/thumbs_preview.png` (each beside its 168×94 size).
 
 ### 3. Choose one: score, don't guess
 
-**Look at** `out/thumbs_preview.png` and each full-size PNG (Read them). Score every candidate 0-2 on each criterion,
-and show the table to the user:
+**Look at** `out/thumbs_preview.png` and each full-size PNG. Score every candidate 0–2 per criterion and show the table:
 
 | Criterion | 2 = | Evidence |
 |---|---|---|
-| Readable at 168×94 | hook legible in the sidebar size | practitioner consensus |
-| One clear focal subject | face/robot big, not covered by text | vidIQ breakout study |
-| Honest curiosity gap | raises a question the video answers | information-gap theory, clickbait studies |
-| Visible proof | receipt shows the claim, number highlighted and legible at full size | source-cue experiments |
-| Complements the title | doesn't repeat the title's words | practitioner consensus |
-| Series consistency | design, brand mark top-left, bottom-right clear | brand rules (`docs/brand.md`) |
-| Distinct at a glance | the idea reads in about a second | practitioner consensus |
+| Shows the moment | the decisive instant (action, outcome, tension), not a portrait or setup | YouTube guidance; niche outliers |
+| One focal subject | the robot big and clear, not covered by words | vidIQ breakout study |
+| Words add to the title | 0–3 words carrying the outcome, catch or how; no repeat of the title | YouTube guidance; practitioner consensus |
+| Honest curiosity gap | the open part is answered in the video's first minute | information-gap research; Test & Compare on watch time |
+| Plain to a newcomer | label + words + title say what happened to what, no jargon | headline simplicity tests; user's rules |
+| Readable at 168×94 | words and subject legible in the sidebar size | practitioner consensus |
+| Series consistency | design, brand mark top-left, bottom-right clear | `docs/brand.md` |
 
-Rules:
-- Any candidate that failed the honesty check is out, whatever it scores.
-- **Pick the highest total.** On a tie, prefer the one whose question the video answers earliest.
-- Keep the runners-up 2 and 3 for YouTube **Test & Compare** (it tests up to 3).
-- If every candidate scores 1 or less on readability or focal subject, revise crops (`crop`, `mark`, `focus`, `zoom`) or
-  hooks and render again, rather than picking the least bad.
+- Anything that failed the honesty check is out, whatever it scores.
+- **Pick the highest total.** On a tie, prefer the lead story.
+- If every candidate scores 1 or less on "Shows the moment", find better frames rather than picking the least bad.
 
 ### 4. Deliver
 
-Copy the winner to `out/thumbnail.png` and the runners-up to `out/thumbnail_test_2.png` / `_3.png`. Report:
-- what the research changed
-- the score table
-- why the winner won
-- where the files are
-
-After Test & Compare results come in, record which angle won in `docs/thumbnails.md`, so future runs can weight it.
+Copy the winner to `out/thumbnail.png`, and the A/B pairs (if any) to `out/ab-test/`. Report what the research
+changed, the score table, why the winner won, and where the files are. After a Test & Compare result, record which idea
+won in `docs/youtube-feedback.md`.
 
 ### Example `episode.json` entry
 
 ```json
 "thumbnails": [
-  {"layout": "evidence", "lines": ["96% success", "*but...*"], "image": "assets/dm_merc_36s.png", "focus": "55% 35%",
-   "receipt": {"src": "assets/s2_tweet.png", "source": "GOOGLE DEEPMIND",
-               "crop": {"x": 0, "y": 0, "w": 1, "h": 0.34}, "mark": {"x": 0.845, "y": 0.665, "w": 0.095, "h": 0.12}}}
+  {"layout": "moment", "lines": ["7 in a row"], "label": "APOLLO HUMANOID",
+   "image": "assets/g_moment_release.png", "focus": "50% 50%"}
 ]
 ```
+
+Paired title: "This Robot Learned Cornhole From a Video of a Person (Gemini 4 Argon)".

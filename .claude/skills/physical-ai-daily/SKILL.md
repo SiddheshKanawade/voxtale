@@ -79,8 +79,10 @@ and say in the hand-off what you spent.
    NewsData.io), subagent triage, web search, what people are saying, scoring, and verification. It writes `<ep>/candidates.json` and a scored shortlist in
    `<ep>/research.md`. Never pad to reach a story count.
 2. **Pick.** Take the five picks from `research.md` (the panel's ranking with the learning-stories rule applied). Show
-   them to the user before scripting unless they said to run unattended. **Order: learning stories first** (new
-   capabilities, methods, experiments), news after; the strongest learning story opens. `research.md` gives each
+   them to the user before scripting unless they said to run unattended. **Order: the lead story opens** (2026-11-22). It
+   is the story the title and thumbnail sell, picked with `youtube-thumbnails` before scripting: the most surprising
+   true result a newcomer can picture. The packaging's promise must pay off first. Then the other learning stories
+   (new capabilities, methods, experiments), news after. `research.md` gives each
    story's verified quotes, gaps, reactions and links: script only from those, then re-verify while capturing.
 3. **Re-check** each pick against the verification rules below while capturing; research doesn't replace them.
 4. **Write `episode.json`.** Segments (`kind` story/title, `label` NEWS / ON X / PAPER, `headline` ≤ 40 chars,
@@ -133,10 +135,12 @@ why. `HARD` items are the user's firm rules (sourcing, copyright and official-fo
 
 7. **Hand off.** Report the final path, the duration, and a description block listing every source URL. Uploading is the user's action, so never upload.
    Write `<ep>/publish.md` (title, description with chapters, sources, clip credits, the About line, tags, and each
-   Short's title and description). **Titles (user, 2026-11-16 and 2026-11-18):** offer at least 8, always including a *current* one naming the stories
-   and a *plainer* one a newcomer understands (no model names or jargon), plus question, number-led and contrast
-   angles, one marked ★, each paired with a thumbnail (`youtube-thumbnails`: 8–10 candidates, lettered contact sheet). No "Robotics this week:" prefix. Example the
-   user chose: "AI-made worlds, can top AI run a real robot?, Toyota and Waymo".
+   Short's title and description). **Titles (user, 2026-11-16, -18 and -22):** follow `youtube-thumbnails`. Lead with one story: a robot doing
+   something concrete, plain words first, the name last ("This Robot Learned Cornhole From a Video of a Person (Gemini 4
+   Argon)"). Use statements, no hype, and no noun-list roundups. Offer at least 8, always including a *current* one (names
+   the company or model) and a *plainer* one, one marked ★, each paired with a moment thumbnail (8–10 candidates,
+   lettered contact sheet). No "Robotics this week:" prefix. The earlier roundup style ("AI-made worlds, can top AI
+   run a real robot?, Toyota and Waymo") is superseded.
 
 ## Verification rules (learned the hard way)
 

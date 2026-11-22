@@ -79,3 +79,16 @@ highlighted part (e.g. "proof-of-concept").
 Genie 4, e.g. "AI-GENERATED (GENIE 4)") and `receipt.width` (wider card for tight crops). Receipt crops were computed
 from macOS Vision OCR of each capture: a window of ~0.25-0.4 page widths centred on the key phrase, with a `mark` box
 around the number, so the words read at full size (the full-width crops of round 2 came out at ~14 px text).
+
+## Round 4: content, not design (2026-11-22)
+
+The user rejected the content of the packaging: noun-list roundup titles, and thumbnails that state a full fact beside
+a source receipt. The research is in `docs/packaging.md`. It found no evidence that a source screenshot on a thumbnail
+helps. The default is now the `moment` layout: one real frame of the decisive instant, 0–3 words, a label naming the
+robot. Receipts stay in the video and the description.
+
+Receipt know-how, kept in case the `evidence` layout is used again:
+- Keep a receipt to about 50 characters across its 620 px card (~20 px type).
+- Captures are saved at 2×; `crop` and `mark` are fractions.
+- `mark` boxes one OCR line only.
+- Freeze receipt sources as `assets/thumb_r_<name>.png` when another agent may re-capture pages.

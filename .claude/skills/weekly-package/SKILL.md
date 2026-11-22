@@ -21,7 +21,7 @@ This skill only orders the work. The rules live in the phase skills; read each o
 |---|---|---|
 | 1 Research | `physical-ai-research` | `<ep>/research.md` (5 picks, ≥3 learning on backlog weeks) |
 | 2 Episode | `physical-ai-daily` | `<ep>/episode.json`, `<ep>/out/*.mp4` (4K light + dark) |
-| 3 Thumbnails | `youtube-thumbnails` | 8–10 candidates on a lettered contact sheet, one per story, and the **A/B test set** (3 title + thumbnail pairs) |
+| 3 Thumbnails | `youtube-thumbnails` | 8+ titles and 8–10 "moment" thumbnails on a lettered contact sheet, one per story, and the **A/B test set** (3 title + thumbnail pairs) unless the user says no test this week |
 | 4 Shorts | `promo-shorts` | 3–4 Shorts in `<ep>/shorts/<slug>/out/` (dark + light), each with a cover |
 | 5 Package | (this skill) | `<ep>/publish.md` complete, the hand-off message |
 
@@ -50,6 +50,9 @@ The phases are long, and their tool output would flood one context. Run each as 
 - Research spawns its own subagents (triage, judges, the pairwise judge), so start it as a `general-purpose` agent,
   not a fork: forks can't spawn.
 - Wait for it to finish, check its output files yourself, then start the next phase.
+- **Between research and the episode, pick the lead story** (`youtube-thumbnails`, "Pick the lead story"). It is the
+  most surprising true result a newcomer can picture, with a showable moment. Tell the episode phase to open with it:
+  the title sells it, so it must play first (2026-11-22, `docs/packaging.md`).
 - After research, read `research.md`'s run notes. If the pairwise cut line wasn't answered by a fresh judge
   (2026-11-20: a resumed run answered it itself after seeing the scores), re-ask it from this session. Move
   `judge/pairwise.json` aside, then give a fresh `opus` agent only `judge/pairwise.md`, with no other file and no web.
@@ -84,11 +87,20 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
 - **Clips:** official footage first, a few seconds each, muted, credited, URL in the description.
   - Raw downloads stay git-ignored and are deleted after cutting.
   - The user OK'd official clips for episodes; ask before any non-official footage.
-- **Titles and thumbnails, wide options (the user iterates a lot here):**
+- **Titles and thumbnails: content first** (user, 2026-11-22: "not liking the titles and thumbnails… it's content,
+  not design"). Research and sources are in `docs/packaging.md`; the working rules are in `youtube-thumbnails` and
+  `promo-shorts`.
+  - **Episode title:** one lead story, a robot doing something concrete, plain words first and the name last, and the
+    rest as "(plus 4 more)" if anything. Never a noun list: rejected "Gemini 4 Argon, ETH Zurich's Rubik's Cube solved
+    by foot, and more". Use statements, not questions, and no hype words. An honest catch from the source is a good
+    angle.
+  - **Thumbnail / cover:** one real frame of the decisive instant, 0–3 words that add to the title, and a label naming
+    the robot and its type. No sentences, no source screenshots ("receipts").
+- **Wide options (the user iterates a lot here):**
   - At least 8 titles per video, each tagged by angle, always including *current* (names companies or models) and
     *plainer* (a newcomer understands); one marked ★; each names the thumbnail/cover it pairs with.
-  - Episode: 8–10 thumbnails; each Short: 3–4 covers. Vary the hook text, not only the image. One lettered
-    contact sheet per video, in the hand-off.
+  - Episode: 8–10 thumbnails; each Short: 3–4 covers. Vary the image and the words. One lettered contact sheet per
+    video, in the hand-off.
   - No "Robotics this week:" prefix.
   - Title and cover/thumbnail text complement each other and never repeat.
 - **A/B test set (YouTube Test & Compare, "Title and thumbnail" mode; user, 2026-11-18):**
@@ -97,10 +109,12 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
     - If it is missing or more than ~60 days old, do a deep web search first (WebSearch `extended`, Firecrawl,
       YouTube Help and Creator Insider, practitioner studies). Then update the doc with dated sources, and follow
       it over the defaults below where they differ.
-  - Build **3 pairs**. Each pair is a different angle, ideally a different story or image, so the test compares
-    ideas, not wording. ★ goes first, because YouTube keeps the first when there's no clear winner.
-  - In each pair the thumbnail text adds to its title and never repeats it. The hook says what happened and to
-    what, never a bare number. Name the subject and its specific type: "Robot arms:", "Unitree G1".
+  - Build **3 pairs**, each a different idea, so the test compares ideas, not wording. Make them about the lead
+    story (outcome vs. catch vs. how), or another story only if it plays in the first ~2 minutes: the test picks on
+    watch time. ★ goes first, because YouTube keeps the first when there's no clear winner.
+  - In each pair the thumbnail words add to the title and never repeat it. Title + label + words together say what
+    happened and to what, never a bare number. The label names the robot and its type: "Unitree G1", "Apollo
+    humanoid".
   - Avoid vague labels such as "AI-run". Rejected examples: "Learned from 13.2 minutes", "Doubling every 54 days?".
   - Titles stand alone and fit in about 70 characters. The user's A/B titles had no date suffix; the week stays in
     the description.
@@ -118,7 +132,8 @@ thumbnails, not the final MP4s. `tools/render_both.sh` takes the shared lock, so
   - Newcomer format: two-sentence plain opening (background, then question), what they did, result (≤1 number),
     why it matters as the source says it, one caveat, and a CTA.
   - Speed 1.175×.
-  - Curiosity cover (ShortCover) naming the company or model, not frame 0.
+  - Moment cover (ShortCover): one real frame of the decisive instant, 1–3 words and a label naming the robot. Not
+    frame 0, and no sentences.
   - The end card shows **that Short's own story** thumbnail with "FULL EPISODE ↓".
   - The user uploads the **dark** versions.
 - **Never upload, never post.** Commit only code, skill and doc changes. Never commit `.env`, `p2a_topics.json`,
