@@ -8,10 +8,12 @@ import { C, FONT } from "../theme";
 // Cover (thumbnail) for a Short, 1080x1920: a curiosity hook in big type over one or two stacked frames that show
 // the story (e.g. "shown once" -> "does it alone"). Not the Short's first frame: the cover's job is to make someone
 // tap. Hook lines take *asterisks* for the accent colour. Frames are paths relative to --public-dir.
+// "Moment" cover (docs/packaging.md, 2026-11-22): one panel showing the decisive instant, cropped with `focus`, under a
+// 1-3 word hook, which gets the biggest type.
 export type CoverProps = {
   design?: string;
   lines: string[];
-  panels: { src: string; label?: string }[];
+  panels: { src: string; label?: string; focus?: string }[];  // focus: CSS object-position, e.g. "80% 50%"
   credit?: string;
 };
 
@@ -20,7 +22,7 @@ const W = 1080, PAD = 56;
 // Three lines must fit above the panels (y < 540): longer lines get a smaller size so a model name fits.
 const hookSize = (lines: string[]) => {
   const n = Math.max(...lines.map((l) => l.replace(/\*/g, "").length));
-  return n <= 16 ? 112 : n <= 19 ? 100 : 88;
+  return n <= 11 ? 150 : n <= 16 ? 112 : n <= 19 ? 100 : 88;
 };
 
 const Accent: React.FC<{ text: string }> = ({ text }) => (
@@ -30,7 +32,8 @@ const Accent: React.FC<{ text: string }> = ({ text }) => (
 export const Cover: React.FC<CoverProps> = ({ design, lines, panels, credit }) => {
   applyDesign(design);
   const n = Math.min(2, panels.length);
-  const top = 560, gap = 34, ph = n === 2 ? 560 : 1000;
+  const moment = n === 1 && lines.length === 1;  // one short line over one big frame: the frame starts higher and runs taller
+  const top = moment ? 390 : 560, gap = 34, ph = n === 2 ? 560 : moment ? 1100 : 1000;
   return (
     <AbsoluteFill style={{ fontFamily: FONT, color: C.ink }}>
       <Backdrop kind="blueprint" />
@@ -41,7 +44,7 @@ export const Cover: React.FC<CoverProps> = ({ design, lines, panels, credit }) =
       {panels.slice(0, n).map((p, i) => (
         <div key={i} style={{ position: "absolute", left: PAD, width: W - 2 * PAD, top: top + i * (ph + gap), height: ph,
           borderRadius: 22, overflow: "hidden", boxShadow: current.light ? "0 18px 50px rgba(31,32,35,0.2)" : "0 24px 60px rgba(0,0,0,0.6)" }}>
-          <Img src={staticFile(p.src)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <Img src={staticFile(p.src)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: p.focus ?? "50% 50%" }} />
           {p.label && (
             <div style={{ position: "absolute", left: 22, top: 22, background: i === n - 1 ? BRAND.red : "rgba(15,15,17,0.82)", color: "#fff",
               fontWeight: 900, fontSize: 46, padding: "10px 22px", borderRadius: 12, letterSpacing: 0.5 }}>{p.label}</div>

@@ -143,11 +143,19 @@ Check, every Short:
 - [ ] "Why it matters" is the source's or episode's own statement, not ours
 - [ ] 30–45 s (or a written reason); one CTA, at the end
 
-**Cover (thumbnail), every Short (user, 2026-11-16):** not the first frame. Make a cover that provokes curiosity or
-raises an eyebrow: a big two- or three-line hook (the company's name when it's newsworthy) over one or two frames that
-tell the story at a glance, e.g. "SHOWN ONCE" → "ON ITS OWN". Frames and their labels must be true to the source (use
-the source's own on-screen labels where possible). Render in the design being uploaded (the user uploads **dark**):
-`shorts/<slug>/cover/props.json` = {"design", "lines", "panels": [{"src", "label"}], "credit"}, then
+**Cover (thumbnail), every Short: the moment cover** (user, 2026-11-22: "not liking the titles and thumbnails… it's
+content, not design"; evidence in `physical-ai-daily/docs/packaging.md`). Not the first frame.
+- **One real frame of the decisive instant**: the bag leaving the hand, the foot on the cube, the robot holding the
+  ball. Not a portrait or a setup shot.
+- **1–3 words that add what the title doesn't say**, often the outcome or the catch: "7 in a row", "No hands",
+  "Under 5 min".
+- **A label naming the robot and its type**, e.g. "APOLLO HUMANOID" or "UNITREE G1".
+- **No sentences, no screenshots, no source receipts.** The proof goes in the Short and in its description.
+- With one line and one panel, the panel starts higher and runs taller. Set `"focus"` (object-position) to crop
+  around the subject, and check the whole subject survives the crop (measure its x-range, don't guess).
+
+Frames and labels must be true to the source. Render in the design being uploaded (the user uploads **dark**):
+`shorts/<slug>/cover/props.json` = {"design", "lines", "panels": [{"src", "label", "focus"}], "credit"}, then
 `npx remotion still src/shorts/index.ts ShortCover <slug>/out/cover-<design>.png --props=<slug>/cover/props.json --public-dir=<slug>`
 (renderer `video/src/shorts/Cover.tsx`).
 - **The cover passes the newcomer test too** (2026-11-21). A method's acronym means nothing to a newcomer. "2 methods
@@ -161,7 +169,14 @@ the source's own on-screen labels where possible). Render in the design being up
 and the open question: "GPT-6 Astra moves blocks just fine. Why can't it plug in?"). Viewers see both at once, so
 repeated words are wasted space. Write them as a pair and check them side by side.
 
-**Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (current / plainer / question / number-led / contrast), one marked ★; per Short, 3–4 rendered covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them (`python3 tools/covers_sheet.py <ep>/shorts/<slug>`); every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
+**Titles: a robot doing something concrete** (2026-11-22, `docs/packaging.md`).
+- Name the protagonist and what it did, in plain words, with any model or lab name last: "A Robot Dog Solved a Giant
+  Rubik's Cube With Its Feet", "This Robot Learned Cornhole From a Video of a Person".
+- Write statements, not questions. Questions underperformed in headline tests.
+- No hype words ("insane", "breakthrough"). An honest catch from the source works: "…It Didn't Say How Many Tries".
+- One idea per title.
+
+**Wide options, up front (user, 2026-11-18: "we iterate a lot here"):** at least 8 titles, each tagged with its angle (plainer / current / protagonist / number-led / contrast / honest catch / how), one marked ★; per Short, 3–4 rendered covers that vary the hook text (2–3 hooks on the same image) as well as the image; one lettered contact sheet of all of them (`python3 tools/covers_sheet.py <ep>/shorts/<slug>`); every title names the thumbnail it pairs with. All of it goes in an "Options" section of publish.md.
 
 **Framing checks learned on Oct 11–18 (2026-11-21):**
 - **Clips:** the picture band is 1080×940, so `ClipBand` center-crops 16:9 footage to about 65% of its width.
@@ -185,7 +200,7 @@ repeated words are wasted space. Write them as a pair and check them side by sid
 ## 5. Hand off (never upload)
 
 Per Short: the MP4 paths (light, dark), duration, and:
-- **Titles** (8+ options as above, ≤ 40 chars each, the hook's question or result, no hype words) and a 1–2 line **description** with the sources.
+- **Titles** (8+ options as above: a robot doing something concrete, statements, no hype words) and a 1–2 line **description** with the sources.
 - **Related video**: "set this Short's Related video to the episode in Studio" (the only clickable path).
 - **When**: publish after the episode is live, so the link works.
 - **What to watch** after a week (`docs/youtube-feedback.md`): Stayed-to-watch %, average view duration and %,
