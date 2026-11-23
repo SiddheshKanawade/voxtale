@@ -39,8 +39,14 @@ def post(t: dict) -> str:
     return f"### {t['url']}\n{meta}\n{t['text']}{links}"
 
 
+NEWS_TEXT_MAX = 1500  # some saved pulls carry a whole scraped page (100k+ chars), which made one batch ~500k tokens
+
+
 def article(n: dict) -> str:
-    return f"### {n['url']}\n**{n.get('title')}** ({n.get('outlet')}, {n['published'][:10]})\n{n.get('text') or '(no description)'}"
+    text = n.get("text") or "(no description)"
+    if len(text) > NEWS_TEXT_MAX:
+        text = text[:NEWS_TEXT_MAX] + " [truncated; open the URL for the rest]"
+    return f"### {n['url']}\n**{n.get('title')}** ({n.get('outlet')}, {n['published'][:10]})\n{text}"
 
 
 def main() -> None:
