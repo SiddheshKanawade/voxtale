@@ -12,6 +12,7 @@ import { Beat, C, FONT, Media, Word } from "../theme";
 export type ShortProps = {
   date: string; design?: string; hook: string; cta?: string; headline?: string; label?: string;
   episodeThumb?: string; // the full episode's YouTube thumbnail: shown during the spoken CTA and on the end card
+  episodeThumbDark?: string; // optional dark-design version of it, used when rendering the dark design
   segments: { id: string; beats: Beat[]; duration: number }[];
 };
 
@@ -20,8 +21,9 @@ const SAFE = { left: 64, right: 150, top: 150, bottom: 430 }; // px kept clear o
 const MEDIA = { top: 440, height: 940 }; // the picture band (ends at 1380; captions under it, clear of the bottom UI)
 export const END_S = 2.2; // end card hold after the last word
 
-export const Short: React.FC<ShortProps> = ({ hook, cta, headline, label, segments, design, episodeThumb }) => {
+export const Short: React.FC<ShortProps> = ({ hook, cta, headline, label, segments, design, episodeThumb: lightThumb, episodeThumbDark }) => {
   applyDesign(design);
+  const episodeThumb = !current.light && episodeThumbDark ? episodeThumbDark : lightThumb;
   const { fps } = useVideoConfig();
   const beats = segments.flatMap((s) => s.beats);
   let t = 0;
@@ -98,7 +100,7 @@ const ShortScene: React.FC<{ beat: Beat; first: boolean }> = ({ beat }) => {
   if (v.type === "kinetic") return <Kinetic text={v.text ?? ""} sub={v.sub} />;
   if (v.type === "stat") return <Stat items={v.items ?? []} />;
   if (v.type === "split" || v.type === "panels") return <Stack items={v.items ?? []} credit={v.credit} />;
-  if (v.type === "clip" && v.src) return <ClipBand m={v.src} credit={v.credit} stamp={v.stamp} />;
+  if (v.type === "clip" && v.src) return <ClipBand m={v.src} credit={v.credit} stamp={v.stamp} badge={v.badge} />;
   if (v.src) return <Picture m={v.src} highlight={v.type === "shot"} credit={v.credit} stamp={v.stamp} badge={v.badge} fit={v.fit} />;
   return <Kinetic text={v.overlay ?? v.text ?? ""} />;
 };
@@ -144,7 +146,7 @@ const Picture: React.FC<{ m: Media; highlight?: boolean; credit?: string; stamp?
 
 // A few seconds of muted public footage (tools/clip.py) filling the media band, always credited (checklist HARD 7.2).
 // Past the end of the footage the last frame holds with a slow push-in.
-const ClipBand: React.FC<{ m: Media; credit?: string; stamp?: string }> = ({ m, credit, stamp }) => {
+const ClipBand: React.FC<{ m: Media; credit?: string; stamp?: string; badge?: string }> = ({ m, credit, stamp, badge }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const clipF = Math.min(durationInFrames, Math.floor((m.duration ?? durationInFrames / fps) * fps));
@@ -157,6 +159,8 @@ const ClipBand: React.FC<{ m: Media; credit?: string; stamp?: string }> = ({ m, 
       </Sequence>
       {frame >= clipF && m.last && <Img src={staticFile(m.last)} style={{ ...media, transform: `scale(${hold})` }} />}
       {stamp && <Tag text={stamp} />}
+      {badge && <div style={{ position: "absolute", left: 24, bottom: 70, background: BRAND.red, color: "#fff", fontWeight: 900,
+        fontSize: 54, padding: "10px 22px", borderRadius: 12 }}>{badge}</div>}
       <div style={{ position: "absolute", left: 24, bottom: 18, fontSize: 24, color: "#fff", background: "rgba(0,0,0,0.6)",
         padding: "4px 12px", borderRadius: 6 }}>{credit ?? m.credit}</div>
     </div>
@@ -253,9 +257,13 @@ const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
   for (let i = 0; i < words.length; i++) if (now >= words[i].start) active = i;
   if (active < 0 || now > words[words.length - 1].end + 0.3) return null;
   const chunk = chunks.find((c) => c.includes(active))!;
+  // One line only: a wrapped second line lands in YouTube's bottom UI zone, so long chunks get a smaller size
+  // (~0.54 em per character of this bold face; the box is 866 px wide minus 52 px padding).
+  const chars = chunk.reduce((n, i) => n + words[i].text.length + 1, -1);
+  const size = Math.max(44, Math.min(62, Math.floor((W - SAFE.left - SAFE.right - 52) / (chars * 0.54))));
   return (
     <div style={{ position: "absolute", left: SAFE.left, right: SAFE.right, top: MEDIA.top + MEDIA.height + 22, display: "flex", justifyContent: "center" }}>
-      <div style={{ background: "rgba(0,0,0,0.82)", borderRadius: 16, padding: "14px 26px", fontSize: 62, fontWeight: 800,
+      <div style={{ background: "rgba(0,0,0,0.82)", borderRadius: 16, padding: "14px 26px", fontSize: size, fontWeight: 800,
         letterSpacing: -0.5, textAlign: "center", lineHeight: 1.15 }}>
         {/* Real spaces between words (not margins), so a long group can wrap inside the safe area. */}
         {chunk.map((i, k) => (

@@ -86,6 +86,8 @@ receipt/hook; user, 2026-11-17: the astra Short must not end on Machenta's thumb
 `assets/episode_thumb.png` and set
 top-level `"episodeThumb": "assets/episode_thumb.png"`: the renderer then shows that thumbnail with "FULL EPISODE ↓"
 during the spoken CTA (the last beat) and on the end card, so viewers recognise what the Related-video link opens.
+Also set `"episodeThumbDark"` to the dark thumbnail: the dark render (the one the user uploads) then ends on the dark
+version (2026-11-23). Captions shrink (62 → 44 px) rather than wrap into YouTube's bottom UI zone.
 In the description, the episode link comes first ("Full episode: <url>"), sources after it.
 Known trade-off (accepted by the user): the end card shows the Short's own story's thumbnail, while the Related-video
 link opens the episode, whose YouTube thumbnail may be a different story; the episode title in the link carries it.

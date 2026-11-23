@@ -107,7 +107,12 @@ and say in the hand-off what you spent.
    **Check `df -h` first and keep ≥ 10 GB free:** an 11-min 1080p draft died with `ENOSPC` starting from 6.7 GB free
    (2026-11-20). Too full to render? Still QA every beat: `npx remotion bundle src/index.ts --out-dir=<tmp>
    --public-dir=<ep>` once, then `npx remotion still <tmp> Episode b.png --frame=<75% of the beat> --props=<ep>/props.json
-   --scale=0.5` per beat (≈250 MB temporary instead of a full MP4). **Finals are 4K** (3840x2160, crf 15; user 2026-11-16, output quality): about 7x real time on this Mac, so ~1 h per design for an 8-min episode; `SCALE=1 CRF=18` for a quick draft.
+   --scale=0.5` per beat (≈250 MB temporary instead of a full MP4).
+   **Free RAM decides the disk cost** (2026-11-23): Remotion's parallel encoding streams frames to ffmpeg only with
+   about 4.2 GB of free RAM at render start; otherwise it caches every frame on disk (a 1080p draft took ~4 GB before
+   it was stopped). Check `vm_stat` free + inactive pages and the render log before a long render. With parallel
+   encoding on, a 10-min 4K final is ~0.48 GB and needs ~1.4 GB more at its peak. A render killed hard can leave
+   `.render.lock` behind: if no `remotion render` process is alive, remove it. **Finals are 4K** (3840x2160, crf 15; user 2026-11-16, output quality): about 7x real time on this Mac, so ~1 h per design for an 8-min episode; `SCALE=1 CRF=18` for a quick draft.
 
 ## Scene catalog (`visual.type`)
 

@@ -28,4 +28,5 @@ else
     EXTRA=()  # render.sh writes the design into props.json only when it voices (cached, so cheap): don't skip it
   done
   setdesign "$DIR/episode.json" blueprint-light
+  if [[ -f "$DIR/props.json" ]]; then setdesign "$DIR/props.json" blueprint-light; fi
 fi

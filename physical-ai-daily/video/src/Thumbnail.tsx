@@ -28,6 +28,7 @@ export type ThumbProps = {
   label?: string;         // small chip above the words, e.g. "NEWS"
   receipt?: Receipt;      // "evidence" layout: the proof card
   stamp?: string;         // small label on the subject image ("Simulation"); "AI-generated" only for media we generated
+  side?: "left" | "right"; // "moment": where the words sit (default "left"); "right" when the subject is on the left of the frame
 };
 
 // A crop of a captured source page. Fractions are of the full image; mark (optional) is a highlighter box, in fractions
@@ -64,7 +65,7 @@ const words = (line: string, accent: string) =>
   line.split(/(\*[^*]+\*)/).map((part, i) =>
     part.startsWith("*") ? <span key={i} style={{ color: accent }}>{part.slice(1, -1)}</span> : <span key={i}>{part}</span>);
 
-export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, image2, focus = "50% 50%", focus2 = "50% 60%", zoom = 1, stat, label, labels, receipt, stamp }) => {
+export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, image2, focus = "50% 50%", focus2 = "50% 60%", zoom = 1, stat, label, labels, receipt, stamp, side = "left" }) => {
   const look = applyDesign(design);
   const ink = look.light ? C.ink : "#ffffff";
   const accent = look.light ? BRAND.red : BRAND.yellow;
@@ -122,8 +123,9 @@ export const Thumbnail: React.FC<ThumbProps> = ({ design, layout, lines, image, 
         <>
           <Img src={staticFile(image)} style={{ position: "absolute", inset: 0, width: 1280, height: 720, objectFit: "cover",
             objectPosition: focus, transform: `scale(${zoom})`, transformOrigin: focus }} />
-          <AbsoluteFill style={{ background: `linear-gradient(90deg, rgba(${C.bgRgb},0.94) 0%, rgba(${C.bgRgb},0.7) 30%, rgba(${C.bgRgb},0) 56%)` }} />
-          <div style={{ position: "absolute", left: 56, top: 0, bottom: 0, width: 640, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <AbsoluteFill style={{ background: `linear-gradient(${side === "right" ? 270 : 90}deg, rgba(${C.bgRgb},0.94) 0%, rgba(${C.bgRgb},0.7) 30%, rgba(${C.bgRgb},0) 56%)` }} />
+          <div style={{ position: "absolute", [side === "right" ? "right" : "left"]: 56, top: 0, bottom: 0, width: 640, display: "flex", flexDirection: "column",
+            justifyContent: "center", ...(side === "right" ? { alignItems: "flex-end", textAlign: "right" } : {}) }}>
             <div>{chip}</div>
             {lines.length > 0 && text(fit(150, 640))}
           </div>

@@ -112,3 +112,12 @@ A segment's numbers depend on more than the story. Control for what we can:
 - Chase one viral Short: one data point is not a pattern.
 - Change the editorial rules (sourcing, verification, learning over knowing) because a story performed badly. Those
   rules are the channel's identity; the feedback tunes the ranking within them.
+
+## A/B test log (Test & Compare)
+
+One row per episode test. Fill the label (Winner / Preferred / Inconclusive) and the watch-time shares when YouTube
+ends the test; look for patterns across episodes (which angle wins), not single results.
+
+| Episode | Mode | Option 1 ★ | Option 2 | Option 3 | Started | Label | Shares |
+|---|---|---|---|---|---|---|---|
+| 2026-11-22-weekly | Title and thumbnail | how: "Four Humanoid Robots Carry a Table as One Calls Each Move Out Loud" + A "No network" (four G1s holding the table) | outcome, how withheld: "Four Humanoid Robots Carried a Table With No Network Between Them" + B "8 of 10" (four G1s walking with the table) | catch: "Humanoid Robots Lift Together on One Robot's Spoken Command" + C "Needs quiet" (two G1s carrying a box) | <publish date> | pending | pending |

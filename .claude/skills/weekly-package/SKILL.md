@@ -42,6 +42,9 @@ This skill only orders the work. The rules live in the phase skills; read each o
     leftovers first: old samples' ignored `out/`, `audio/`, `qa/` and `assets/`. Keep the reference episode named in the
     physical-ai-daily skill and every git-tracked file.
   - Never delete outside this project.
+  - Free RAM matters too: under ~4.2 GB free at render start, Remotion caches every frame on disk (2026-11-23, see
+    the physical-ai-daily skill). Disk also drops while phases 3–4 run beside the 4K render: hold their large writes
+    until it finishes.
 
 ## 1–4. Run the phases in order, each in its own subagent
 

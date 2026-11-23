@@ -122,7 +122,8 @@ Practice and YouTube's tools change, so don't rely only on the evidence above. B
    episode): the most surprising true result a newcomer can picture, with a showable moment.
 2. **Find each story's moment.** Scan the clips at 2–6 fps (`ffmpeg -vf "fps=6,scale=300:-1,tile=6x4"`), pick the
    decisive frame, and extract it at full resolution. Measure where the subject sits (its x-range) before setting
-   `focus`; don't guess. Crop off burned-in source labels ("Solving – Step 3/15", "1x").
+   `focus`; don't guess. Crop off burned-in source labels ("Solving – Step 3/15", "1x"). When the subject fills the
+   left of the frame and can't be shifted, set `"side": "right"` (`moment` layout): the gradient and words move right.
 3. **Write 8–10 candidates that differ in idea**, mostly on the lead story, plus at least one per other story (for the
    Shorts' end cards). Angles for the words: *outcome* ("7 in a row"), *catch* ("A person steers"), *how* ("No hands"),
    *contrast* (`split` with two real frames), *number* (`stat`, only when the number is the story).

@@ -146,19 +146,31 @@ def norm(s: str) -> str:
 
 
 def restore_punctuation(words: list[dict], narration: str) -> list[dict]:
-    """Boundary events drop punctuation; walk the script tokens in step to put it back for captions."""
-    tokens, j, rest = narration.split(), 0, None
+    """Boundary events drop punctuation; walk the script tokens in step to put it back for captions.
+
+    A token the TTS speaks as several boundary words ("GPT-6.1" -> "GPT-6", ".", "1"; "two-eighty" -> "two",
+    "eighty") becomes one caption word spanning them, shown as written, so captions don't split a name.
+    """
+    tokens, j, rest, cur, out = narration.split(), 0, None, None, []
     for w in words:
         if j >= len(tokens):
-            break
+            out.append(w)
+            continue
         rest = norm(tokens[j]) if rest is None else rest
         nw = norm(w["text"])
-        if nw and rest.startswith(nw):
-            rest = rest[len(nw):]
-            if not rest:  # token fully consumed: show it as written, punctuation included
-                w["text"] = tokens[j] if norm(tokens[j]) == nw else w["text"] + re.sub(r"^.*?([^\w]*)$", r"\1", tokens[j])
-                j, rest = j + 1, None
-    return words
+        if cur is not None and (not nw or rest.startswith(nw)):  # another piece of the token being spoken
+            cur["end"] = w["end"]
+        elif nw and rest.startswith(nw):
+            cur = {**w}
+            out.append(cur)
+        else:
+            out.append(w)
+            continue
+        rest = rest[len(nw):]
+        if not rest:  # token fully consumed: show it as written, punctuation included
+            cur["text"] = tokens[j]
+            j, rest, cur = j + 1, None, None
+    return out
 
 
 def media_meta(ep_dir: Path, src: str) -> dict:

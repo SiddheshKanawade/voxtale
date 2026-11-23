@@ -78,6 +78,11 @@ Learned on the first backlog run (Oct 18–25, 2026-11-17):
   picks up where it stopped.
 - Name verify entries `<story id> …` from the start (`research_md.py` matches by prefix).
 - Drop stories already covered in a later episode (check the other `episodes/*/research.md` picks).
+- **Nov 15–22 run (2026-11-23):** X `from:` batches can return HTTP 503 transiently: re-run just those batches
+  (`episodes/2026-11-22-weekly/scripts/x_retry.py` is the one-off; move it into `tools/` if it recurs). Saved news
+  pulls can carry whole scraped pages, so `triage_batches.py` caps news descriptions at 1,500 characters; if a news
+  batch is still over ~80k tokens, lower `--news`. pi.website returned 429 every time: check Physical
+  Intelligence by hand or on X.
 - **Resuming** (Oct 11–18, 2026-11-20): check each step's files before calling a model; the panel needs only
   `judge_*.json` ×6 to go on to aggregate, pairs, settle and `research_md.py`. Judges sometimes write a stray `}` or a
   note after their JSON object; `judge_panel.py` and `research_md.py` read the first object and ignore the rest.
