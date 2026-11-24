@@ -1,5 +1,5 @@
 import React from "react";
-import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, Word } from "../theme";
 import { BRAND, Lockup } from "../brand";
 import { current } from "../design";
@@ -71,9 +71,10 @@ export const SectionChip: React.FC<{ section: string }> = ({ section }) => {
   );
 };
 
-// copied from ../scenes.tsx Tag (kept independent): a quiet label on a source ("Simulation", "Preprint").
+// copied from ../scenes.tsx Tag (kept independent): a quiet label on a source ("Simulation", "Preprint"). 26 px here
+// (the digest's 22 px is hard to read on a phone).
 export const Tag: React.FC<{ text: string; at?: { right: number; top: number } }> = ({ text, at = { right: 16, top: 14 } }) => (
-  <div style={{ position: "absolute", ...at, fontSize: 22, fontWeight: 600, letterSpacing: 0.3,
+  <div style={{ position: "absolute", ...at, fontSize: 26, fontWeight: 600, letterSpacing: 0.3,
     color: "#fff", background: "rgba(15,15,17,0.55)", padding: "5px 12px", borderRadius: 6 }}>{text}</div>
 );
 
@@ -87,18 +88,42 @@ export const Credit: React.FC<{ text: string }> = ({ text }) => (
   </div>
 );
 
-// copied from ../Episode.tsx (kept independent): short phrases, broken at punctuation, the spoken word highlighted.
+// Adapted from ../Episode.tsx Captions (kept independent): the spoken word highlighted in a short phrase. Phrases never
+// cross a sentence; inside one they break at clause punctuation or about 7 words, and a 1-2 word scrap is merged into
+// its neighbour (a one-word page flashes past and reads as a glitch).
+const SENT = /[.?!]["')\]]*$/, CLAUSE = /[,;:—–]["')\]]*$/;
+export const phrases = (words: Word[]): number[][] => {
+  const out: number[][] = [];
+  let sent: number[] = [];
+  const flush = () => {
+    if (!sent.length) return;
+    // clauses, then long clauses cut into near-equal runs of at most 7
+    const parts: number[][] = [];
+    let cl: number[] = [];
+    sent.forEach((i, k) => { cl.push(i); if (CLAUSE.test(words[i].text) || k === sent.length - 1) { parts.push(cl); cl = []; } });
+    const runs = parts.flatMap((c) => {
+      const pieces = Math.ceil(c.length / 7), size = Math.ceil(c.length / pieces);
+      return Array.from({ length: pieces }, (_, j) => c.slice(j * size, (j + 1) * size)).filter((r) => r.length);
+    });
+    // merge scraps (< 3 words) into a neighbour in the same sentence: the shorter side, so pages stay balanced
+    for (let j = runs.findIndex((r) => r.length < 3); j >= 0 && runs.length > 1; j = runs.findIndex((r) => r.length < 3)) {
+      const prev = j > 0 ? runs[j - 1].length : Infinity, next = j < runs.length - 1 ? runs[j + 1].length : Infinity;
+      if (prev <= next) runs[j - 1].push(...runs[j]); else runs[j + 1].unshift(...runs[j]);
+      runs.splice(j, 1);
+    }
+    out.push(...runs);
+    sent = [];
+  };
+  words.forEach((w, i) => { sent.push(i); if (SENT.test(w.text)) flush(); });
+  flush();
+  return out;
+};
+
 export const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const now = frame / fps;
-  const chunks: number[][] = [];
-  let cur: number[] = [];
-  words.forEach((w, i) => {
-    cur.push(i);
-    if (cur.length >= 7 || (/[.,?!:;]$/.test(w.text) && cur.length >= 2)) { chunks.push(cur); cur = []; }
-  });
-  if (cur.length) chunks.push(cur);
+  const chunks = React.useMemo(() => phrases(words), [words]);
   let active = -1;
   for (let i = 0; i < words.length; i++) if (now >= words[i].start) active = i;
   if (active < 0 || now > words[words.length - 1].end + 0.3) return null;
@@ -114,6 +139,3 @@ export const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
     </div>
   );
 };
-
-export const fadeInOut = (frame: number, dur: number, fadeIn = true, fadeOut = true) =>
-  interpolate(frame, [0, 6, dur - 5, dur], [fadeIn ? 0 : 1, 1, 1, fadeOut ? 0 : 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });

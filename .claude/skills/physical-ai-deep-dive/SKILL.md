@@ -262,6 +262,22 @@ never extra content.
 
 **Never use generic B-roll under an explanation.** No drift, no decorative motion. Every movement has a purpose.
 
+**Footage first** (critic, 2026-11-25). The first RoboBuilder draft was 81% boxes and cards and 9% footage, with a
+217 s stretch and no clip at all, even though the project had released 233 clips. The adversary rated it "plays as a
+lecture" (S1). So:
+- **Event beats show the event moving.** Every beat that describes an event (a robot failing, slipping, crossing, a
+  bench test, a redesign) shows it moving where an official clip exists.
+- **Footage targets:** footage is at least 30% of the runtime, and no stretch longer than 45 s goes without real
+  footage or an animated mechanism.
+- **Diagrams carry mechanisms only.** A box with a phrase in it is not a visual.
+- **Plan before the script is final.** Write a per-beat visual plan from `assets.md` before scripting finishes, and
+  count the footage share.
+- **Sim-vs-real comparisons:** both panels at full opacity on the key word, the clips aligned so the divergence happens
+  together, a freeze with a marker on the divergence point, and the robot at least 35% of its panel's width.
+- **The payoff is seen.** When the narration says a robot "crosses", show it past the last obstacle, not still on it.
+- **Numbers:** every spoken headline number is on screen on its word, with its n. A series of numbers belongs in a
+  chart (`bars`), not in separate cards.
+
 **Paper figures:** show the original briefly with a credit, so viewers see it's real. Then crop to the panel under
 discussion, or redraw it and reveal one series at a time. Use only the one equation that carries the key idea, built
 term by term. Screenshots and figures hold still: a straight cut-in, never a curved pan.
@@ -289,6 +305,15 @@ term by term. Screenshots and figures hold still: a straight cut-in, never a cur
    on it (the full packet: per-shot sheets with the narration under each, motion strips, seams, loudness, and the
    narration-vs-script transcript check). Fix, and re-run until no high-severity finding is left. Delete the draft
    afterwards.
+   - **Shots file:** write `qa/shots.json` from `props.json`, one shot per beat (`t0`/`t1` from the beat durations;
+     the 1.6 s sting after the open segment).
+   - **Reviewers:** a 13-minute episode has about 90 shots, so split the 16 sheets across three fresh reviewers, each
+     given the whole `packet.json`.
+   - **The adversary matters most.** In round 1 it was the one that saw the film plays as a lecture: each reviewer saw
+     a third of the film and noted it only in passing.
+   - **Whisper:** the narration check needs Python with `faster_whisper`; none is installed (2026-11-25), so say the
+     check was skipped.
+   - **Allow for three rounds:** the 2026-11-25 draft took about 2.5 h to voice, render and review once.
 4. **Final:** run `tools/deepdive/render_both.sh <dd>` for 4K light and dark (shared lock, about −14 LUFS, shot check).
    Check both with `ffprobe` (3840×2160, duration) and look at a frame sheet of the dark render.
 

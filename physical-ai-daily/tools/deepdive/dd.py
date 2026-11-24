@@ -21,6 +21,8 @@ from pathlib import Path
 
 FPS, STING_S, END_S = 30, 1.6, 1.6  # video/src/brand.tsx
 CHAPTER_CARD_MAX_S = 4
+HOLD_S = 1.0  # every reveal lands by the beat's end - 1 s (kit.tsx cuer clamps later ones)
+EMPTY_S = 1.5  # a number card shows nothing before its number's word
 QUOTE_MAX_WORDS = 25
 STAGE_W, STAGE_H = 1680, 660
 
@@ -77,24 +79,26 @@ def cues(v: dict) -> list[tuple[str, object]]:
     """Every (where, cue) a visual waits for."""
     out = []
     add = lambda where, c: c is not None and out.append((where, c))
-    for k in ("cue", "questionCue", "noteCue", "revealCue", "markCue", "cycleCue", "centerCue", "badgeCue"):
+    for k in ("cue", "questionCue", "noteCue", "revealCue", "markCue", "cycleCue", "centerCue", "badgeCue", "split", "outcomeCue"):
         add(k, v.get(k))
-    for key in ("nodes", "edges", "focus", "regions", "options", "items"):
+    for key in ("nodes", "edges", "focus", "regions", "options", "items", "bars"):
         for i, x in enumerate(v.get(key) or []):
             if isinstance(x, dict):
-                add(f"{key}[{i}]", x.get("cue"))
-    if isinstance(v.get("compare"), dict):
-        add("compare", v["compare"].get("cue"))
-    if isinstance(v.get("back"), dict):
-        add("back", v["back"].get("cue"))
+                for k in ("cue", "reveal", "outcomeCue"):
+                    add(f"{key}[{i}].{k}", x.get(k))
+                if isinstance(x.get("check"), dict):
+                    add(f"{key}[{i}].check", x["check"].get("cue"))
+    for key in ("compare", "back", "baseline", "freeze", "check"):
+        if isinstance(v.get(key), dict):
+            add(key, v[key].get("cue"))
     return out
 
 
 def fit_h(w: float, label: str, sub: str | None, icon: str | None) -> float:
-    """A build box's height for its text, as fitH in video/src/deepdive/diagrams.tsx."""
-    tw = (w - 48 - (72 if icon else 0)) * 0.92
+    """A build box's height for its text, as fitH in video/src/deepdive/diagrams.tsx (38 px label, 28 px sub)."""
+    tw = (w - 48 - (74 if icon else 0)) * 0.92
     lines = lambda s, px: max(1, math.ceil(len(s) * px / tw))
-    return max(96, 44 + 38 * lines(label, 18.5) + (6 + 29 * lines(sub, 12.6) if sub else 0))
+    return max(100, 46 + 42 * lines(label, 38 * 0.545) + (6 + 34 * lines(sub, 28 * 0.525) if sub else 0))
 
 
 def overlap(a: dict, b: dict) -> bool:
@@ -118,8 +122,9 @@ def check(d: Path) -> int:
                 ct = cue_time(words, c)
                 if ct is None:
                     errors.append(f"{at} {where}: cue {c!r} not in the narration: {b['narration'][:70]!r}")
-                elif ct > b["duration"]:
-                    warns.append(f"{at} {where}: cue {c!r} at {ct:.1f}s, after the beat ends ({b['duration']:.1f}s)")
+                elif ct > b["duration"] - HOLD_S:
+                    warns.append(f"{at} {where}: cue {c!r} at {ct:.1f}s, within {HOLD_S:.0f} s of the beat's end ({b['duration']:.1f}s):"
+                                 f" it lands at {max(0, b['duration'] - HOLD_S):.1f}s instead (hold rule)")
             t = v.get("type")
             if t == "chapter" and b["duration"] > CHAPTER_CARD_MAX_S:
                 warns.append(f"{at}: chapter card holds {b['duration']:.1f}s > {CHAPTER_CARD_MAX_S}s: shorten its narration")
@@ -141,20 +146,29 @@ def check(d: Path) -> int:
                         if x not in ids | eids:
                             errors.append(f"{at}: focus id {x!r} is neither a node nor an edge ('from>to')")
                 ks = list(boxes)
+                if ks:  # the auto-fit centres the layout; only one bigger than the stage shrinks text below 38/28 px
+                    bw = max(b["x"] + b["w"] / 2 for b in boxes.values()) - min(b["x"] - b["w"] / 2 for b in boxes.values())
+                    bh = max(b["y"] + b["h"] / 2 for b in boxes.values()) - min(b["y"] - b["h"] / 2 for b in boxes.values())
+                    if bw > STAGE_W or bh > STAGE_H:
+                        warns.append(f"{at}: boxes span {bw:.0f} x {bh:.0f}, more than the stage ({STAGE_W} x {STAGE_H}): the fit shrinks the text")
                 for j, a in enumerate(ks):
                     bx = boxes[a]
-                    if bx["x"] - bx["w"] / 2 < 0 or bx["x"] + bx["w"] / 2 > STAGE_W or bx["y"] - bx["h"] / 2 < 0 or bx["y"] + bx["h"] / 2 > STAGE_H:
-                        warns.append(f"{at}: node {a!r} leaves the stage (x 0-{STAGE_W}, y 0-{STAGE_H}, centre coordinates)")
                     for c in ks[j + 1:]:
                         if overlap(bx, boxes[c]):
                             errors.append(f"{at}: nodes {a!r} and {c!r} overlap")
+                        elif overlap({**bx, "w": bx["w"] + 40, "h": bx["h"] + 40}, boxes[c]):
+                            warns.append(f"{at}: nodes {a!r} and {c!r} are under 20 px apart (box heights fit 38/28 px text): space them out")
             if t == "figure":
                 m = v.get("src", {})
                 for j, r in enumerate(v.get("regions", [])):
                     if r["x"] < 0 or r["y"] < 0 or r["x"] + r["w"] > m.get("width", 1e9) + 1 or r["y"] + r["h"] > m.get("height", 1e9) + 1:
                         errors.append(f"{at}: regions[{j}] leaves the image ({m.get('width')}x{m.get('height')}, the .json's space)")
-            if t == "number" and not re.search(r"\d", str(v.get("value", ""))):
-                warns.append(f"{at}: value {v.get('value')!r} has no digits (numbers as digits on screen)")
+            if t == "number":
+                if not re.search(r"\d", str(v.get("value", ""))):
+                    warns.append(f"{at}: value {v.get('value')!r} has no digits (numbers as digits on screen)")
+                vt = cue_time(words, v["cue"]) if v.get("cue") is not None else 0
+                if vt and vt > EMPTY_S and not v.get("cont"):
+                    warns.append(f"{at}: the number lands at {vt:.1f}s and nothing is on screen before it: cue it earlier or split the beat")
             if t == "predict":
                 n = len(v.get("options", []))
                 if not 2 <= n <= 3:
@@ -163,8 +177,37 @@ def check(d: Path) -> int:
                     errors.append(f"{at}: answer {v.get('answer')!r} isn't an option index")
                 if "revealCue" not in v:
                     warns.append(f"{at}: no revealCue: the answer shows at 80% of the beat")
-            if t == "pair" and len(v.get("items", [])) != 2:
-                errors.append(f"{at}: pair needs 2 items")
+            if t in ("pair", "video", "grid"):
+                sides = v.get("items", []) if t != "video" else [{**(v.get("src") or {}), **v}]
+                for j, it in enumerate(sides):
+                    w, h, cr = it.get("width", 1e9), it.get("height", 1e9), it.get("crop")
+                    if cr and (cr["x"] < 0 or cr["y"] < 0 or cr["x"] + cr["w"] > w + 1 or cr["y"] + cr["h"] > h + 1):
+                        errors.append(f"{at}: side {j} crop leaves the clip ({w}x{h}, clip pixels)")
+                    if it.get("from") and it.get("duration") and it["from"] >= it["duration"]:
+                        errors.append(f"{at}: side {j} from={it['from']} is past the clip's end ({it['duration']}s)")
+                for m in (v.get("freeze") or {}).get("marks", []):
+                    side = sides[m.get("side", 0)] if m.get("side", 0) < len(sides) else {}
+                    if not (0 <= m["x"] <= side.get("width", 1e9) and 0 <= m["y"] <= side.get("height", 1e9)):
+                        errors.append(f"{at}: freeze mark at {m['x']},{m['y']} is off side {m.get('side', 0)}'s clip")
+            if t == "pair":
+                if len(v.get("items", [])) != 2:
+                    errors.append(f"{at}: pair needs 2 items")
+                if v.get("mode") != "sequence":
+                    for j, it in enumerate(v.get("items", [])):
+                        if "cue" in it:
+                            warns.append(f"{at}: items[{j}].cue is ignored in a split pair (both sides show from the start): use "
+                                         "reveal to hold a side back, focus to light it")
+            if t == "grid" and not 2 <= len(v.get("items", [])) <= 6:
+                errors.append(f"{at}: grid takes 2-6 items (2x2 or 2x3)")
+            if t == "bars":
+                bars = v.get("bars", [])
+                if not 1 <= len(bars) <= 8:
+                    warns.append(f"{at}: {len(bars)} bars (1-8)")
+                for j, br in enumerate(bars):
+                    if br.get("value") is None and not br.get("range"):
+                        errors.append(f"{at}: bars[{j}] has neither value nor range")
+                    if br.get("value") is not None and br.get("display") and not re.search(r"\d", br["display"]):
+                        warns.append(f"{at}: bars[{j}] display {br['display']!r} has no digits")
             if t == "quote":
                 nw = len(str(v.get("text", "")).split())
                 if nw > QUOTE_MAX_WORDS:

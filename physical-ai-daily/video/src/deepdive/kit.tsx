@@ -1,6 +1,6 @@
 import React from "react";
 import { Easing, interpolate, spring } from "remotion";
-import { C, Word } from "../theme";
+import { C, STAGE, Word } from "../theme";
 import { BRAND } from "../brand";
 import { current } from "../design";
 import { cueFrame } from "../scenes";
@@ -9,8 +9,18 @@ import type { DDSegment } from "./DeepDive";
 // Shared pieces of the deep-dive scenes: cue timing, the one highlight colour, box styles, line icons, path geometry.
 
 export type Cue = string | number;
-// Every deep-dive scene gets the digest's scene props plus the chapter it plays in (and the chapter count).
-export type DP = { v: any; dur: number; index: number; words: Word[]; seg: DDSegment; chapters: number };
+// Every deep-dive scene gets the digest's scene props, the chapter it plays in, and its place on the cut timeline.
+// A scene starts `pre` frames before its beat (the crossfade lead) and its words are shifted to match, so every frame
+// number below is a frame of the scene's own Sequence.
+export type DP = {
+  v: any; dur: number; index: number; words: Word[]; seg: DDSegment; chapters: number;
+  pre: number; // frames before the beat that this scene is already on screen
+  len: number; // the beat's own frames (narration), without the lead or the tail
+  hold: number; // last frame a reveal may land on: the beat's end - 1 s, so every finished build is seen whole
+  born: number; // entrance animations start here: 0, or SETTLED on the video's first frame (already in place)
+  chain?: any[]; // build: the visuals of a cont chain, which share one fit
+  prev?: DP; // cont: the beat this one continues (its last highlight carries over)
+};
 
 export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 export const MONO = "'SF Mono', Menlo, monospace";
@@ -26,18 +36,35 @@ export const cueAt = (words: Word[], cue: Cue | undefined, fps: number, fallback
   return w ? Math.round(w.start * fps) : fallback;
 };
 
-// Reveal frames for a list: each item's cue, else spread over the first 60% of the beat. The first item lands within
-// 0.4 s, so a scene never opens on an empty stage (the rule of ../scenes reveals()).
-export const revealAt = (items: { cue?: Cue }[], words: Word[], fps: number, dur: number) =>
-  items.map((it, i) => {
-    const at = cueAt(words, it.cue, fps, Math.round((i / Math.max(1, items.length)) * dur * 0.6));
-    return i === 0 ? Math.min(at, Math.round(0.4 * fps)) : at;
-  });
+// A scene's cue resolver: word (or seconds into the beat) -> scene frame, never later than the hold (beat end - 1 s).
+export const cuer = (p: DP, fps: number) => (cue: Cue | undefined, fallback: number) =>
+  Math.min(p.hold, typeof cue === "number" ? Math.round(cue * fps) + p.pre : cueAt(p.words, cue, fps, fallback));
 
-// "cont": the visual continues the previous beat's diagram, so parts cued at 0 are already drawn (no second pop).
-// Settled parts don't take the highlight: the new beat's first reveal (or focus) does.
+// Reveal frames for a list: each item's cue, else spread over the first 60% of the beat. Each part appears on its word,
+// never before (diagrams show a faint scaffold of what's to come, so the stage isn't empty meanwhile).
+export const revealAt = (items: { cue?: Cue }[], p: DP, fps: number) => {
+  const c = cuer(p, fps);
+  return items.map((it, i) => c(it.cue, p.pre + Math.round((i / Math.max(1, items.length)) * p.len * 0.6)));
+};
+
+// Parts cued at 0 are already in place (no pop) when the scene continues the previous beat's diagram ("cont") or is the
+// video's first frame. Settled parts don't take the highlight: the beat's first new reveal (or focus) does.
 export const SETTLED = -60;
-export const settle = (v: any, at: number) => (v.cont && at <= 0 ? SETTLED : at);
+export const settle = (p: DP, at: number) => ((p.v.cont || p.born < 0) && at <= 0 ? SETTLED : at);
+
+// Emphasis follows the narration: a focus moves at the start of the clause that names its subject ("and for real"
+// switches on "and", not on "real"), when that start is within 1 s before the cue word.
+export const clauseAt = (p: DP, fps: number, cue: Cue | undefined, fallback: number) => {
+  const f = cuer(p, fps)(cue, fallback);
+  if (typeof cue !== "string") return f;
+  const n = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const m = cue.match(/^(.+)#(\d+)$/), stem = n(m ? m[1] : cue), nth = m ? +m[2] : 1;
+  const i = p.words.map((w, k) => (n(w.text).startsWith(stem) ? k : -1)).filter((k) => k >= 0)[nth - 1];
+  if (i == null) return f;
+  let j = i;
+  while (j > 0 && !/[.,;:?!]$/.test(p.words[j - 1].text) && p.words[i].start - p.words[j - 1].start <= 1) j--;
+  return Math.min(f, Math.round(p.words[j].start * fps));
+};
 
 export const pop = (frame: number, at: number, fps: number) => spring({ frame: frame - at, fps, config: { damping: 15, mass: 0.6 } });
 export const calm = (frame: number, at: number, fps: number) => spring({ frame: frame - at, fps, config: { damping: 200 } });
@@ -53,8 +80,30 @@ export const tint = (a: number) => (current.light ? `rgba(244,63,46,${a})` : `rg
 export const line = () => (current.light ? "rgba(31,32,35,0.22)" : "rgba(255,255,255,0.2)");
 export const ink2 = () => (current.light ? "rgba(31,32,35,0.62)" : "rgba(245,244,242,0.55)"); // arrows, axes
 export const DIM = 0.26; // opacity of what the narration isn't on
+export const LABEL_PX = 38, SUB_PX = 28, MAX_TEXT_PX = 64; // diagram text at scale 1; the auto-fit never goes past 64 px
 export const dimWash = () => (current.light ? "rgba(251,250,247,0.74)" : "rgba(10,10,11,0.64)");
 export const pad2 = (n: number) => String(n).padStart(2, "0");
+
+// A part not yet named: a faint dashed outline where it will land, so a diagram never opens on an empty stage and
+// nothing is shown before it's said.
+export const ghostStyle = (): React.CSSProperties => ({
+  border: `2px dashed ${current.light ? "rgba(31,32,35,0.2)" : "rgba(255,255,255,0.18)"}`, borderRadius: 16, boxSizing: "border-box",
+});
+
+// Auto-fit: a diagram's bounding box (stage-local) scaled to fill about 80% of STAGE and centred, never past 64 px text,
+// never below scale 1 unless it wouldn't fit the stage at all. One-box diagrams grow instead of sitting small.
+export type Fit = { s: number; tx: number; ty: number };
+export const fitBox = (x0: number, y0: number, x1: number, y1: number): Fit => {
+  const bw = Math.max(1, x1 - x0), bh = Math.max(1, y1 - y0);
+  const want = Math.min((STAGE.w * 0.8) / bw, (STAGE.h * 0.8) / bh);
+  const s = Math.min(MAX_TEXT_PX / LABEL_PX, want >= 1 ? want : Math.min(1, STAGE.w / bw, STAGE.h / bh));
+  return { s, tx: STAGE.w / 2 - (s * (x0 + x1)) / 2, ty: STAGE.h / 2 - (s * (y0 + y1)) / 2 };
+};
+// The stage, in stage-local coordinates, with a fit applied: diagrams draw inside it.
+export const Staged: React.FC<{ fit: Fit; children: React.ReactNode }> = ({ fit, children }) => (
+  <div style={{ position: "absolute", left: STAGE.x, top: STAGE.y, width: STAGE.w, height: STAGE.h, transformOrigin: "0 0",
+    transform: `translate(${fit.tx}px, ${fit.ty}px) scale(${fit.s})` }}>{children}</div>
+);
 
 // A diagram box: white card on paper, raised panel on black; the highlighted one gets the highlight border and a halo.
 export const boxStyle = (on: boolean): React.CSSProperties => ({
