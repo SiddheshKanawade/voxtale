@@ -4,7 +4,7 @@ import { C, Media, STAGE } from "../theme";
 import { BRAND } from "../brand";
 import { current } from "../design";
 import { Tag } from "./chrome";
-import { Cue, DP, Icon, SETTLED, clauseAt, cuer, ease, ghostStyle, hi, line, newest, onHi, pop, revealAt, settle } from "./kit";
+import { Cue, DP, Icon, SETTLED, clauseAt, cuer, ease, firstIn, hi, line, newest, onHi, pop, revealAt, settle } from "./kit";
 
 // Footage: video (one clip, punched in, aligned, frozen, marked), pair (sim vs real side by side, or in sequence), grid
 // (2x2 / 2x3 tiles). Clip time is remapped per side: start offset ("from"), speed, a freeze, a hold on the last frame.
@@ -108,7 +108,7 @@ const TravelArrow: React.FC<{ tr: Travel; at: { x: number; y: number } }> = ({ t
 const Panel: React.FC<{ it: Side; x: number; y: number; w: number; h: number; clock: Clock; on: boolean; fps: number; frame: number;
   marks: Mark[]; markP: number; checkAt: number; outcomeAt: number; o?: number }> = ({ it, x, y, w, h, clock, on, fps, frame, marks, markP, checkAt, outcomeAt, o = 1 }) => {
   const g = geo(it, w, h);
-  const ck = it.check ? pop(frame, checkAt, fps) : 0;
+  const ck = it.check && frame >= checkAt ? pop(frame, checkAt, fps) : 0; // (an old clip holding its slot has none)
   const ckAt = it.check?.x != null ? g.at(it.check.x, it.check.y ?? 0) : { x: w - 60, y: 60 };
   const tr = it.travel ? (typeof it.travel === "string" ? { x: w / 2, y: h - 52 } : g.at(it.travel.x, it.travel.y)) : null;
   const oc = frame >= outcomeAt ? ease(frame, outcomeAt, 8) : 0;
@@ -183,53 +183,87 @@ export const Video: React.FC<DP> = (p) => {
     checkAt={c(it.check?.cue, p.pre + Math.round(p.len * 0.8))} outcomeAt={settle(p, c(it.outcomeCue, 0))} />;
 };
 
+// ---------- swapping in place ----------
+
+// What a pair side or grid tile shows at a frame. A beat with the same layout as the one before (DeepDive passes it as
+// prev) swaps clips in place: a slot keeps the old clip until its new one's word, and a clip that stays in its slot keeps
+// playing (from where it was, unless the new beat sets "from").
+type SlotView = { it: Side; clock: Clock } | null;
+const pairAt = (p: DP, fps: number) => {
+  const v = p.v, c = cuer(p, fps), seq = v.mode === "sequence";
+  return (v.items ?? []).slice(0, 2).map((it: Side, i: number) => seq ? (i === 0 ? SETTLED : c(it.cue, p.pre + Math.round(p.len * 0.35)))
+    : it.reveal != null ? settle(p, c(it.reveal, p.pre)) : SETTLED);
+};
+const gridAt = (p: DP, fps: number) => {
+  const at = revealAt((p.v.items ?? []).slice(0, 6), p, fps).map((a) => settle(p, a));
+  return p.prev ? at : firstIn(at); // the first tile is in place at the cut; on a swap, the old tiles hold the places
+};
+const slotView = (p: DP, i: number, frame: number, fps: number): SlotView => {
+  const v = p.v, grid = v.type === "grid", items: Side[] = v.items ?? [], it = items[i];
+  if (!it) return null;
+  const at = grid ? gridAt(p, fps) : pairAt(p, fps);
+  const old: Side | undefined = p.prev?.v.items?.[i];
+  const same = !!old && old.src === it.src;
+  if (p.prev && old && !same && frame < at[i]) return slotView(p.prev, i, p.prev.dur + frame, fps);
+  if (frame < at[i] && !same) return null;
+  // a clip staying in its slot continues: its clip time where the last beat left it
+  const cont = same && it.from == null ? { ...it, from: slotView(p.prev!, i, p.prev!.dur, fps)?.clock.t ?? 0 } : it;
+  const seqA = !grid && v.mode === "sequence" && i === 0 && it.cue != null;
+  const t0 = Math.max(p.pre, same ? 0 : seqA ? cuer(p, fps)(it.cue, p.pre) : at[i]);
+  const fz = grid ? null : freezeOf(p, fps, v.freeze);
+  return { it, clock: clockOf(cont, t0, fz ? { f0: fz.f0, n: fz.n, at: fz.at(i) } : null, frame, fps) };
+};
+
 // ---------- pair ----------
 
 // Sim vs real. Split (default): two equal frames side by side, both on screen and at full opacity throughout (a "reveal"
 // cue holds one back); focus lights the side the narration is on with a border and label colour. Per side: crop, from,
 // playbackRate, outcome, check, travel, stamp. freeze: on its cue both sides hold (at freeze.at[side] clip seconds, or
 // where they are) for s seconds and the marks land on the divergence. mode "sequence": side A full frame, then side B
-// full frame on items[1].cue, then the split on "split" (usually with the freeze), each a cut.
+// full frame on items[1].cue, then the split on "split" (usually with the freeze), each a cut. Consecutive split pairs
+// swap clips in place.
 export const Pair: React.FC<DP> = (p) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const v = p.v, c = cuer(p, fps);
   const items: Side[] = (v.items ?? []).slice(0, 2);
   const seq = v.mode === "sequence";
-  // when each side comes on: from the start (split), its reveal cue, or (sequence) A at once and B on its cue
-  const at = items.map((it, i) => seq ? (i === 0 ? SETTLED : c(it.cue, p.pre + Math.round(p.len * 0.35)))
-    : it.reveal != null ? settle(p, c(it.reveal, p.pre)) : SETTLED);
-  // and when its clip starts playing: when it comes on (sequence A: on its cue, if it has one)
-  const run = items.map((it, i) => Math.max(p.pre, seq && i === 0 && it.cue != null ? c(it.cue, p.pre) : at[i]));
+  const at = pairAt(p, fps);
   const splitAt = seq ? c(v.split, p.pre + Math.round(p.len * 0.7)) : -Infinity;
   const fz = freezeOf(p, fps, v.freeze);
   const lit = focusOf(p, fps, frame);
   const mp = markP(frame, fps, fz);
-  const clocks = items.map((it, i) => clockOf(it, run[i], fz ? { f0: fz.f0, n: fz.n, at: fz.at(i) } : null, frame, fps));
+  const views = items.map((_, i) => slotView(p, i, frame, fps));
   const ratio = Math.max(...items.map(aspect));
   const gap = 48, half = (STAGE.w - gap) / 2, top = STAGE.y + LABEL_ROW, H = STAGE.h - LABEL_ROW;
   const phase = !seq || frame >= splitAt ? "split" : frame >= at[1] ? 1 : 0;
-  const panel = (i: number, b: { x: number; y: number; w: number; h: number }) => (
-    <Panel key={i} it={items[i]} {...b} clock={clocks[i]} on={i === lit} fps={fps} frame={frame}
-      marks={(v.freeze?.marks ?? []).filter((m: Mark) => (m.side ?? 0) === i)} markP={mp}
-      checkAt={c(items[i].check?.cue, p.pre + Math.round(p.len * 0.8))} outcomeAt={settle(p, c(items[i].outcomeCue, 0))}
-      o={frame >= at[i] ? (seq ? 1 : Math.min(1, ease(frame, at[i], 8))) : 0} />
-  );
+  const panel = (i: number, b: { x: number; y: number; w: number; h: number }) => {
+    const sv = views[i];
+    if (!sv) return null;
+    const fresh = sv.it === items[i]; // (on a swap, the old clip holds the slot until this one's word)
+    return (
+      <Panel key={i} it={sv.it} {...b} clock={sv.clock} on={i === lit} fps={fps} frame={frame}
+        marks={fresh ? (v.freeze?.marks ?? []).filter((m: Mark) => (m.side ?? 0) === i) : []} markP={mp}
+        checkAt={fresh ? c(items[i].check?.cue, p.pre + Math.round(p.len * 0.8)) : Infinity} outcomeAt={settle(p, c(sv.it.outcomeCue, 0))}
+        o={p.prev || seq || at[i] === SETTLED ? 1 : Math.min(1, ease(frame, at[i], 8))} />
+    );
+  };
   if (phase !== "split") return panel(phase, contain(aspect(items[phase]), STAGE.x, top, STAGE.w, H));
   return <>{items.map((_, i) => panel(i, contain(ratio, STAGE.x + i * (half + gap), top, half, H)))}</>;
 };
 
 // ---------- grid ----------
 
-// 2x2 or 2x3 clips or images, each labelled on its tile (optional stamp, crop, from, playbackRate), landing on their
-// cues (a dashed frame holds the place before), with one focus at a time: a border and label colour, no dimming.
+// 2x2 or 2x3 clips or images, each labelled on its tile (optional stamp, crop, from, playbackRate). The first tile is in
+// place at the cut and the others land on their cues (no empty frames before); one focus at a time is a border and label
+// colour. Consecutive grids with the same layout swap clips in place, each slot on its new clip's word.
 export const Grid: React.FC<DP> = (p) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const v = p.v;
   const items: Side[] = (v.items ?? []).slice(0, 6);
   const n = Math.max(1, items.length), cols = v.cols ?? (n <= 4 ? 2 : 3), rows = Math.ceil(n / cols);
-  const at = revealAt(items, p, fps).map((a) => settle(p, a));
+  const at = gridAt(p, fps);
   const lit = focusOf(p, fps, frame);
   const top = 152, H = 856 - top, gap = 20; // under the chapter header, above the credit chip
   const tw = Math.min((STAGE.w - gap * (cols - 1)) / cols, (((H - gap * (rows - 1)) / rows) * 16) / 9), th = (tw * 9) / 16;
@@ -237,20 +271,21 @@ export const Grid: React.FC<DP> = (p) => {
   const x0 = 960 - gw / 2, y0 = top + (H - gh) / 2;
   return (
     <>
-      {items.map((it, i) => {
+      {items.map((_, i) => {
+        const sv = slotView(p, i, frame, fps);
+        if (!sv) return null;
         const x = x0 + (i % cols) * (tw + gap), y = y0 + Math.floor(i / cols) * (th + gap);
-        const s = frame >= at[i] ? pop(frame, at[i], fps) : 0;
+        const s = sv.it !== items[i] || frame >= at[i] + 30 || p.prev ? 1 : pop(frame, at[i], fps); // a swap cuts, a new tile pops in
         const on = i === lit;
-        if (s <= 0) return <div key={i} style={{ position: "absolute", left: x, top: y, width: tw, height: th, ...ghostStyle(), borderRadius: 12 }} />;
         return (
           <div key={i} style={{ position: "absolute", left: x, top: y, width: tw, height: th, borderRadius: 12, overflow: "hidden", background: "#000",
             boxShadow: SHADOW(), outline: on ? `5px solid ${hi()}` : "none", outlineOffset: 3, opacity: Math.min(1, s),
             transform: `scale(${0.96 + 0.04 * Math.min(1, s)})` }}>
-            <MediaLayer it={it} w={tw} h={th} clock={clockOf(it, Math.max(p.pre, at[i]), null, frame, fps)} fps={fps} fit={v.fit} />
+            <MediaLayer it={sv.it} w={tw} h={th} clock={sv.clock} fps={fps} fit={v.fit} />
             <div style={{ position: "absolute", left: 12, top: 12, padding: "5px 14px", borderRadius: 8, fontSize: 30, fontWeight: 800,
               background: on ? hi() : "rgba(15,15,17,0.72)", color: on ? onHi() : "#fff", maxWidth: tw - 24, whiteSpace: "nowrap", overflow: "hidden",
-              textOverflow: "ellipsis" }}>{it.label}</div>
-            {it.stamp && <Tag text={it.stamp} at={{ right: 12, top: th - 54 }} />}
+              textOverflow: "ellipsis" }}>{sv.it.label}</div>
+            {sv.it.stamp && <Tag text={sv.it.stamp} at={{ right: 12, top: th - 58 }} />}
           </div>
         );
       })}

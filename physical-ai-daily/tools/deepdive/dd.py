@@ -7,9 +7,13 @@ Usage:
   python3 tools/deepdive/dd.py frames <dd-dir> <spec>...  frame numbers for stills: N, or <seg>:<beat>[@frac] (beat is
                                                          0-based; frac of the way into it, default 0.95: all revealed)
   python3 tools/deepdive/dd.py total <dd-dir>             the composition's length in frames
+  python3 tools/deepdive/dd.py shots <dd-dir>             writes <dd-dir>/qa/shots.json for the video critic: one entry per
+                                                         beat [{id: c<seg>b<beat>, t0, t1, narration, visual, chapter,
+                                                         pause}] plus the sting, timed exactly as the composition
 
 check exits 1 on errors (they render wrong) and prints warnings otherwise. The timing mirrors DeepDive.tsx: the
-digest's timeline() with the sting after the first "open" segment and the end tail after the last.
+digest's timeline() with the sting after the first "open" segment and the end tail after the last, on beat durations
+that include each beat's "pause" (silence after its narration).
 """
 from __future__ import annotations
 
@@ -22,7 +26,7 @@ from pathlib import Path
 FPS, STING_S, END_S = 30, 1.6, 1.6  # video/src/brand.tsx
 CHAPTER_CARD_MAX_S = 4
 HOLD_S = 1.0  # every reveal lands by the beat's end - 1 s (kit.tsx cuer clamps later ones)
-EMPTY_S = 1.5  # a number card shows nothing before its number's word
+EARLY_S = 1.5  # a first element is on screen from the cut: warn when its word comes later than this
 QUOTE_MAX_WORDS = 25
 STAGE_W, STAGE_H = 1680, 660
 
@@ -42,11 +46,16 @@ def props(d: Path) -> dict:
     return json.loads(p.read_text())
 
 
+def on_screen(b: dict) -> float:
+    """A beat's time on screen: its narration plus its pause."""
+    return b["duration"] + b.get("pause", 0)
+
+
 def starts(segs: list[dict]) -> tuple[list[float], float]:
     t, sting, out = 0.0, False, []
     for i, s in enumerate(segs):
         out.append(t)
-        t += s["duration"]
+        t += sum(on_screen(b) for b in s["beats"])
         if s["kind"] == "open" and not sting and i < len(segs) - 1:
             sting, t = True, t + STING_S
     return out, t + END_S
@@ -59,16 +68,22 @@ def beat_frames(segs: list[dict]) -> dict[tuple[str, int], tuple[int, int]]:
     for s, t in zip(segs, st):
         f = jsround(t * FPS)
         for i, b in enumerate(s["beats"]):
-            n = jsround(b["duration"] * FPS)
+            n = jsround(on_screen(b) * FPS)
             out[(s["id"], i)] = (f, n)
             f += n
     return out
 
 
-def cue_time(words: list[dict], cue) -> float | None:
-    """Seconds into the beat, as kit.tsx cueAt: a number, "word", or "word#n" (nth word starting with it)."""
+def cue_time(words: list[dict], cue, beat: dict | None = None) -> float | None:
+    """Seconds into the beat, as kit.tsx cuer: a number, "word", "word#n" (nth word starting with it), "pause" (the
+    pause's last second) or "pause+X"."""
     if isinstance(cue, (int, float)):
         return float(cue)
+    pm = re.match(r"^pause(?:\+([\d.]+))?$", cue)
+    if pm:
+        if beat is None:
+            return None
+        return beat["duration"] + (float(pm.group(1)) if pm.group(1) else max(0.0, beat.get("pause", 0) - HOLD_S))
     m = re.match(r"^(.+)#(\d+)$", cue)
     stem, nth = (m.group(1), int(m.group(2))) if m else (cue, 1)
     hits = [w for w in words if norm(w["text"]).startswith(norm(stem))]
@@ -118,13 +133,25 @@ def check(d: Path) -> int:
             warns.append(f"{s['id']}: chapter segment without a 'chapter' number (header and card show none)")
         for i, b in enumerate(s["beats"]):
             v, words, at = b["visual"], b.get("words", []), f"{s['id']}[{i}] {b['visual'].get('type')}"
+            end = on_screen(b)
             for where, c in cues(v):
-                ct = cue_time(words, c)
+                ct = cue_time(words, c, b)
                 if ct is None:
                     errors.append(f"{at} {where}: cue {c!r} not in the narration: {b['narration'][:70]!r}")
-                elif ct > b["duration"] - HOLD_S:
-                    warns.append(f"{at} {where}: cue {c!r} at {ct:.1f}s, within {HOLD_S:.0f} s of the beat's end ({b['duration']:.1f}s):"
-                                 f" it lands at {max(0, b['duration'] - HOLD_S):.1f}s instead (hold rule)")
+                elif ct > end - HOLD_S:
+                    warns.append(f"{at} {where}: cue {c!r} at {ct:.1f}s, within {HOLD_S:.0f} s of the beat's end ({end:.1f}s):"
+                                 f" it lands at {max(0, end - HOLD_S):.1f}s instead (hold rule)")
+            # the first content element is on screen from the cut, whatever its cue (DeepDive.tsx "Cuts")
+            first = {"build": "nodes", "loop": "nodes", "steps": "nodes", "timeline": "items", "bars": "bars", "grid": "items"}.get(v.get("type"))
+            if first and not v.get("cont"):
+                ts = [cue_time(words, x["cue"], b) for x in v.get(first, []) if isinstance(x, dict) and x.get("cue") is not None]
+                ts = [t for t in ts if t is not None]
+                if ts and min(ts) > EARLY_S:
+                    warns.append(f"{at}: its first element shows from the cut, {min(ts):.1f}s before its word: open the beat on it")
+            if v.get("type") == "number" and v.get("cue") is not None and (vt := cue_time(words, v["cue"], b)) and vt > EARLY_S:
+                warns.append(f"{at}: the number shows from the cut, {vt:.1f}s before its word: open the beat on it")
+            if v.get("type") == "predict" and not b.get("pause"):
+                warns.append(f"{at}: no pause: give the beat a 2-3 s \"pause\" and revealCue \"pause\" so the viewer can guess")
             t = v.get("type")
             if t == "chapter" and b["duration"] > CHAPTER_CARD_MAX_S:
                 warns.append(f"{at}: chapter card holds {b['duration']:.1f}s > {CHAPTER_CARD_MAX_S}s: shorten its narration")
@@ -134,12 +161,12 @@ def check(d: Path) -> int:
                                    "h": n.get("h") or fit_h(n.get("w", 400), n["label"], n.get("sub"), n.get("icon"))}
                          for n in v.get("nodes", [])}
                 eids = {e.get("id", f"{e['from']}>{e['to']}") for e in v.get("edges", [])}
-                shown = {n["id"]: cue_time(words, n["cue"]) if n.get("cue") is not None else None for n in v.get("nodes", [])}
+                shown = {n["id"]: cue_time(words, n["cue"], b) if n.get("cue") is not None else None for n in v.get("nodes", [])}
                 for e in v.get("edges", []):
                     for end in (e["from"], e["to"]):
                         if end not in ids:
                             errors.append(f"{at}: edge {e['from']}>{e['to']}: no node {end!r}")
-                        elif e.get("cue") is not None and None not in (ct := cue_time(words, e["cue"]), shown[end]) and ct < shown[end]:
+                        elif e.get("cue") is not None and None not in (ct := cue_time(words, e["cue"], b), shown[end]) and ct < shown[end]:
                             warns.append(f"{at}: edge {e['from']}>{e['to']} cue {e['cue']!r} comes before node {end!r}: the arrow waits for it")
                 for f in v.get("focus", []):
                     for x in f.get("ids", []):
@@ -166,9 +193,6 @@ def check(d: Path) -> int:
             if t == "number":
                 if not re.search(r"\d", str(v.get("value", ""))):
                     warns.append(f"{at}: value {v.get('value')!r} has no digits (numbers as digits on screen)")
-                vt = cue_time(words, v["cue"]) if v.get("cue") is not None else 0
-                if vt and vt > EMPTY_S and not v.get("cont"):
-                    warns.append(f"{at}: the number lands at {vt:.1f}s and nothing is on screen before it: cue it earlier or split the beat")
             if t == "predict":
                 n = len(v.get("options", []))
                 if not 2 <= n <= 3:
@@ -244,6 +268,28 @@ def frames(d: Path, specs: list[str]) -> None:
     print(" ".join(map(str, out)))
 
 
+def shots(d: Path) -> None:
+    """The cut list as the composition plays it, for the video critic's packet (qa/shots.json)."""
+    p = props(d)
+    segs = p["segments"]
+    bf = beat_frames(segs)
+    st, total = starts(segs)
+    out = []
+    for k, s in enumerate(segs):
+        for i, b in enumerate(s["beats"]):
+            f0, n = bf[(s["id"], i)]
+            out.append({"id": f"c{k}b{i:02d}", "t0": round(f0 / FPS, 3), "t1": round((f0 + n) / FPS, 3), "narration": b["narration"],
+                        "visual": b["visual"].get("type"), "chapter": s["headline"], "pause": b.get("pause", 0)})
+        if s["kind"] == "open" and k < len(segs) - 1 and not any(x["id"] == "sting" for x in out):
+            t0 = out[-1]["t1"]
+            out.append({"id": "sting", "t0": t0, "t1": round(jsround(st[k + 1] * FPS) / FPS, 3), "narration": "", "visual": "sting",
+                        "chapter": "", "pause": 0})
+    out[-1]["t1"] = round(math.ceil(total * FPS) / FPS, 3)  # the last shot holds through the end tail (sonic logo)
+    (d / "qa").mkdir(exist_ok=True)
+    (d / "qa" / "shots.json").write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
+    print(f"shots: {len(out)} -> {d / 'qa' / 'shots.json'} ({out[-1]['t1']:.2f}s)")
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         sys.exit(__doc__)
@@ -254,5 +300,7 @@ if __name__ == "__main__":
         frames(d, sys.argv[3:])
     elif cmd == "total":
         print(math.ceil(starts(props(d)["segments"])[1] * FPS))
+    elif cmd == "shots":
+        shots(d)
     else:
         sys.exit(__doc__)

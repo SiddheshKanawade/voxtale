@@ -309,6 +309,10 @@ term by term. Screenshots and figures hold still: a straight cut-in, never a cur
      the 1.6 s sting after the open segment).
    - **Reviewers:** a 13-minute episode has about 90 shots, so split the 16 sheets across three fresh reviewers, each
      given the whole `packet.json`.
+   - **Separate finding IDs:** give each reviewer its own range (F0xx, F2xx, F3xx). `merge_review.py` keys findings by
+     ID, and in round 1 two reviews both used F001… and the merge silently dropped one review's findings for the first
+     4 minutes.
+   - **Regression lists:** later rounds get the previous `findings.md` and report a `prior` status for each item.
    - **The adversary matters most.** In round 1 it was the one that saw the film plays as a lecture: each reviewer saw
      a third of the film and noted it only in passing.
    - **Whisper:** the narration check needs Python with `faster_whisper`; none is installed (2026-11-25), so say the

@@ -61,7 +61,7 @@ export const SectionChip: React.FC<{ section: string }> = ({ section }) => {
   const { fps } = useVideoConfig();
   const s = spring({ frame, fps, config: { damping: 18 } });
   return (
-    <div style={{ position: "absolute", top: 100, right: 64, padding: "8px 16px", fontSize: 22, fontWeight: 600, letterSpacing: 1,
+    <div style={{ position: "absolute", top: 96, right: 64, padding: "6px 16px", fontSize: 28, fontWeight: 600, letterSpacing: 0.5,
       textTransform: "uppercase", borderRadius: 4, fontFamily: MONO, opacity: s, transform: `translateX(${(1 - s) * 60}px)`,
       ...(current.light
         ? { color: BRAND.red, background: "rgba(251,250,247,0.92)", border: "1px solid rgba(31,32,35,0.25)" }
@@ -71,16 +71,16 @@ export const SectionChip: React.FC<{ section: string }> = ({ section }) => {
   );
 };
 
-// copied from ../scenes.tsx Tag (kept independent): a quiet label on a source ("Simulation", "Preprint"). 26 px here
-// (the digest's 22 px is hard to read on a phone).
+// copied from ../scenes.tsx Tag (kept independent): a quiet label on a source ("Simulation", "Preprint"). 30 px here, on
+// a darker chip (the digest's 22 px is unreadable on a phone; whatever sits in a tag must be readable).
 export const Tag: React.FC<{ text: string; at?: { right: number; top: number } }> = ({ text, at = { right: 16, top: 14 } }) => (
-  <div style={{ position: "absolute", ...at, fontSize: 26, fontWeight: 600, letterSpacing: 0.3,
-    color: "#fff", background: "rgba(15,15,17,0.55)", padding: "5px 12px", borderRadius: 6 }}>{text}</div>
+  <div style={{ position: "absolute", ...at, fontSize: 30, fontWeight: 700, letterSpacing: 0.2, lineHeight: 1.2, whiteSpace: "nowrap",
+    color: "#fff", background: "rgba(15,15,17,0.72)", padding: "4px 14px", borderRadius: 8 }}>{text}</div>
 );
 
-// copied from ../Episode.tsx (kept independent)
+// copied from ../Episode.tsx (kept independent); 28 px here (20 px is unreadable on a phone), wrapping if long.
 export const Credit: React.FC<{ text: string }> = ({ text }) => (
-  <div style={{ position: "absolute", left: 64, bottom: 178, fontSize: 20, fontWeight: 600, padding: "6px 14px", borderRadius: 8,
+  <div style={{ position: "absolute", left: 64, bottom: 172, maxWidth: 1792, fontSize: 28, lineHeight: 1.2, fontWeight: 600, padding: "6px 16px", borderRadius: 8,
     ...(current.light // a dark block reads as heavy on paper; keep the chip light there
       ? { color: "#55575e", background: "rgba(255,255,255,0.88)", border: "1px solid rgba(31,32,35,0.12)" }
       : { color: "#b5b3ae", background: "rgba(15,15,17,0.8)" }) }}>

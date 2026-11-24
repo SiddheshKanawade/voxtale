@@ -12,6 +12,7 @@ ENTRY=src/deepdive/index.ts
 [[ " $* " == *" --skip-voice "* ]] || "$ROOT/.venv/bin/python" "$ROOT/tools/voice.py" "$EP"
 # Every reveal waits for its cue word: a cue that isn't in its beat's narration would fall back to a guessed time.
 python3 "$ROOT/tools/deepdive/dd.py" check "$EP" || { echo "fix the errors above (video/src/deepdive/DeepDive.tsx documents the types)"; exit 1; }
+python3 "$ROOT/tools/deepdive/dd.py" shots "$EP"  # qa/shots.json: the cut list as rendered, for the video critic
 
 # Sonic logo (generated, identical every episode), served from the episode dir like other media.
 "$ROOT/.venv/bin/python" "$ROOT/tools/brand_audio.py" "$EP/brand" >/dev/null

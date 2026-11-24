@@ -5,24 +5,31 @@
 //
 // episode.json  {title, date, design?: "blueprint-light" (default) | "blueprint", voice, speed?, segments: Chapter[]}
 // Chapter       {id, kind: "open" | "chapter" | "outro", headline, chapter?: n, question?, source?, sourceDate?,
-//               beats: [{narration, visual, section?}]}. The sting plays after the first "open" segment; the end card
+//               beats: [{narration, visual, section?, pause?}]}. The sting plays after the first "open" segment; the end card
 //               (visual "end") holds through the sonic logo. On "chapter" segments a small header ("03 · headline")
 //               slides in once, on the first beat after the title card. Credit chip: visual.credit, else "Source: source".
 //               section: a mono chip, top right (a key of ../Episode SECTIONS, or any short text).
-// Cuts          Never through blank paper: the next visual starts 3 frames before its beat and is in by +6 while the
-//               outgoing one holds full until its beat ends, then fades over 6. The video's first frame shows the first
-//               visual whole. The sting dissolves in over the cold open's last visual and out onto the next one.
-// Cues          Every part waits for its cue: a word of THIS beat's narration (the first word starting with it, as
-//               ../scenes cueFrame), "word#2" for its 2nd occurrence, or a number of seconds. Without one, parts spread
-//               over the first 60% of the beat. Hold rule: every cue lands by the beat's end - 1 s (a later word is
-//               clamped), so each finished build is seen whole for 1 s. tools/deepdive/dd.py check lists cues that miss
-//               and cues within 1 s of the end.
+// pause         seconds of silence after a beat's narration (voice.py keeps the field): the visual holds, nothing is said,
+//               then the next beat. For a prediction: options on screen, revealCue "pause" ticks the answer in the
+//               pause's last second (after the viewer had time to guess); "pause+1.5" is 1.5 s into it.
+// Cuts          Never through blank paper, never onto an empty slot: the next visual starts 3 frames before its beat and
+//               is in by +6 while the outgoing one holds full until its beat ends, then fades over 6. Every visual
+//               arrives settled, its first content element already in place whatever its cue (the first node, bar,
+//               tile, timeline item, a number card's number), and later ones build onto it. The video's first frame
+//               shows the first visual whole. The sting dissolves in over the cold open's last visual and out onto the
+//               next one. Consecutive grids of the same shape, and consecutive split pairs, swap clips in place (a slot
+//               keeps its old clip until the new one's word; a clip that stays keeps playing); "join": false cuts.
+// Cues          Every later part waits for its cue: a word of THIS beat's narration (the first word starting with it, as
+//               ../scenes cueFrame), "word#2" for its 2nd occurrence, a number of seconds, "pause" or "pause+X". Without
+//               one, parts spread over the first 60% of the narration. Hold rule: every cue lands by the beat's end
+//               (pause included) - 1 s, so each finished build is seen whole for 1 s. tools/deepdive/dd.py check lists
+//               cues that miss, cues within 1 s of the end, and first elements shown well before their word.
 // cont: true    on build / loop / steps / timeline / bars: continues the previous beat's visual of the same type, with no
 //               cut: parts cued at 0 are already in place, the highlight carries over, a build chain keeps one fit.
 // Layout        build: box centres x, y in stage units (about 1680 x 660); build / loop / steps are auto-fitted to ~80%
-//               of the stage (text 38 px titles, 28 px subs at scale 1, never past 64 px). Parts not yet named show as
-//               faint dashed outlines ("scaffold": false hides them). figure regions: the image's own width/height from
-//               its .json (the space of "highlight").
+//               of the stage (text 38 px titles, 28 px subs at scale 1, never past 64 px). Nothing marks a part not yet
+//               named ("scaffold": true draws dashed outlines, for a deliberate fill-in-the-blanks). Tags, chips and the
+//               credit are >= 28 px. figure regions: the image's own width/height from its .json (the space of "highlight").
 // Highlight     one at a time: the part just revealed, or a focus step, which also dims the rest. Red on paper,
 //               yellow on black. Labels sit on the parts. Nothing moves except reveals, arrows drawing, a loop marker.
 //
@@ -38,14 +45,15 @@
 // figure    a paper figure, whole, then one region at a time: {src, regions?: [{x, y, w, h, cue, label?}], zoom?,
 //           stamp?, credit}. Each cue dims the rest and frames the region, its label as a tab; zoom: straight cut-in.
 // number    a headline number with its denominator: {value: "0 of 15", label, cue?, compare?: {value, label, cue},
-//           note?, noteCue?, pips?: false}. Number and label land together on the number's word (a label never shows
-//           alone). "K of M" (M <= 60) also draws M squares, K filled. Digits on screen.
+//           note?, noteCue?, pips?: false}. The number and its label are in place at the cut (a label never shows alone);
+//           the comparison lands on its word. "K of M" (M <= 60) also draws M squares, K filled. Digits on screen.
 // bars      a bar chart: {bars: [{label, value, display?, cue, note?, range?: [lo, hi], denominator?}], max?,
-//           baseline?: {value, label?, cue?}, orient?: "v" (default) | "h", title?}. Categories and empty tracks hold
-//           the stage; each bar grows on its word, its number (display, e.g. "73%" or "20–60%") at the bar's end and
-//           denominator ("57 of 86") with it. range: a dashed low-high span. max: 100 when displays are percentages.
+//           baseline?: {value, label?, cue?}, orient?: "v" (default) | "h", title?}. The first bar is in place at the
+//           cut; each next one grows on its word with its category, its number (display, e.g. "73%" or "20–60%") at
+//           the bar's end and denominator ("57 of 86"). range: a dashed low-high span. max: 100 for percentages.
 // predict   a prediction prompt: {question, options: [{label, sub?, cue?}] (2-3), answer: index, revealCue, tag?}.
-//           Held while the viewer guesses; on revealCue the answer is marked and the rest dim.
+//           Give the beat a "pause" (2-3 s) and revealCue "pause": the question is asked, the options hold through the
+//           silence while the viewer guesses, then the answer is marked and the rest dim.
 // video     one clip as a shot (the digest's clip can't crop or align): {src, crop?: {x, y, w, h} (clip pixels,
 //           punched in to fill the frame), from? / to? (clip seconds), playbackRate?, freeze?, check?, travel?, label?,
 //           outcome?, ok?, stamp?, credit?}. Past "to" or the clip's end, the last frame holds.
@@ -61,8 +69,8 @@
 //           full frame, then side B full frame on items[1].cue, then the split on "split" (each a cut; each clip starts
 //           when it comes on). Clips muted. Credit: visual.credit, else the clips' own.
 // grid      2x2 or 2x3 clips or images: {items: [{src, label, stamp?, cue?, crop?, from?, playbackRate?}] x4-6, focus?:
-//           [{item, cue}], cols?, fit?: "contain" | "cover"}. Each tile lands on its cue (a dashed frame before),
-//           labelled on the tile; one focus at a time (border and label colour). For several real outcomes as footage.
+//           [{item, cue}], cols?, fit?: "contain" | "cover"}. The first tile is in place at the cut, the others land on
+//           their cues; labelled on the tile; one focus at a time (border and label colour). Real outcomes as footage.
 // quote     a sourced quote, <= 25 words, text only: {text, name, role?, source?, mark?, markCue?} (mark: a phrase of
 //           text, underlined on its cue).
 // timeline  a lineage, left to right: {items: [{year, label, sub?, cue?, now?}] x3-6}. The axis extends as items are
@@ -87,9 +95,16 @@ import { DP, SETTLED, clamp } from "./kit";
 export type DDSegment = Omit<Segment, "kind"> & { kind: "open" | "chapter" | "outro"; chapter?: number; question?: string };
 export type DeepDiveProps = { title: string; date: string; segments: DDSegment[]; design?: string };
 
-// The digest's timeline, with the sting after the cold open ("open" plays the role of the digest's "title").
+// A beat's "pause" (seconds of silence after its narration, the visual holding) counts in its duration on screen.
+const withPauses = (segments: DDSegment[]): DDSegment[] => segments.map((s) => {
+  const beats = s.beats.map((b) => ({ ...b, duration: b.duration + ((b as any).pause ?? 0) }));
+  return { ...s, beats, duration: beats.reduce((a, b) => a + b.duration, 0) };
+});
+
+// The digest's timeline, with the sting after the cold open ("open" plays the role of the digest's "title"), on
+// durations that include the pauses.
 export const ddTimeline = (segments: DDSegment[]) =>
-  timeline(segments.map((s) => ({ ...s, kind: s.kind === "open" ? "title" : "story" }) as Segment), STING_S, END_S);
+  timeline(withPauses(segments).map((s) => ({ ...s, kind: s.kind === "open" ? "title" : "story" }) as Segment), STING_S, END_S);
 
 const DD: Record<string, React.FC<DP>> = {
   chapter: ChapterCard, build: Build, figure: Figure, number: NumberCard, predict: Predict, pair: Pair, grid: Grid, video: Video, quote: Quote,
@@ -109,23 +124,30 @@ const plan = (segments: DDSegment[], fps: number, starts: number[], endTail: num
   const flat = segments.flatMap((seg, k) => {
     let from = Math.round(starts[k] * fps);
     return seg.beats.map((beat, i) => {
-      const start = from, len = Math.round(beat.duration * fps);
+      const start = from, len = Math.round(beat.duration * fps), pause = Math.round(((beat as any).pause ?? 0) * fps);
       from += len;
-      return { seg, k, i, beat, start, len, v: beat.visual as any };
+      return { seg, k, i, beat, start, len, pause, v: beat.visual as any };
     });
   });
-  const joins = (n: number) => n > 0 && n < flat.length && !!flat[n].v.cont && !!DD[flat[n].v.type] && flat[n].v.type === flat[n - 1].v.type;
+  // A beat joins the one before (no crossfade, nothing rebuilt) when it says "cont", or when both are grids of the same
+  // shape or both split pairs: those swap their clips in place. Never across the sting.
+  const sameLayout = (a: any, b: any) =>
+    (a.type === "grid" && b.type === "grid" && (a.items?.length ?? 0) === (b.items?.length ?? 0) && (a.cols ?? 0) === (b.cols ?? 0))
+    || (a.type === "pair" && b.type === "pair" && a.mode !== "sequence" && b.mode !== "sequence");
+  const afterSting = (n: number) => n > 0 && flat[n].k === stingK + 1 && flat[n].i === 0;
+  const joins = (n: number) => n > 0 && n < flat.length && !afterSting(n) && !!DD[flat[n].v.type] && flat[n].v.type === flat[n - 1].v.type
+    && flat[n].v.join !== false && (!!flat[n].v.cont || sameLayout(flat[n - 1].v, flat[n].v));
   const slots: Slot[] = flat.map((b, n) => {
     const dd = !!DD[b.v.type], last = n === flat.length - 1, cont = joins(n), joinNext = joins(n + 1);
-    const afterSting = n > 0 && b.k === stingK + 1 && b.i === 0;
     const beforeSting = b.k === stingK && b.i === b.seg.beats.length - 1;
-    const pre = n === 0 ? (dd ? 0 : FIRST_PRE) : cont ? 0 : afterSting ? AFTER_STING : PRE;
+    const pre = n === 0 ? (dd ? 0 : FIRST_PRE) : cont ? 0 : afterSting(n) ? AFTER_STING : PRE;
     const tail = last ? endTail : joinNext ? 0 : beforeSting ? STING_IN : TAIL;
     const words = b.beat.words.map((w) => ({ ...w, start: w.start + pre / fps, end: w.end + pre / fps }));
-    const p: DP = { v: b.v, dur: pre + b.len + tail, index: n, words, seg: b.seg, chapters, pre, len: b.len,
-      hold: Math.max(pre, pre + b.len - fps), born: n === 0 || afterSting ? SETTLED : 0 }; // revealed whole: frame 0, or as the sting lifts
+    // every visual arrives settled: the cut's crossfade brings its first state in whole (no entrance from blank)
+    const p: DP = { v: b.v, dur: pre + b.len + tail, index: n, words, seg: b.seg, chapters, pre, len: b.len - b.pause, pause: b.pause,
+      hold: Math.max(pre, pre + b.len - fps), born: SETTLED };
     return { p, start: b.start, len: b.len, last, tail, beat: b.beat, seg: b.seg, i: b.i,
-      fadeIn: n > 0 && !cont && !afterSting, fadeOut: !last && !joinNext && !beforeSting };
+      fadeIn: n > 0 && !cont && !afterSting(n), fadeOut: !last && !joinNext && !beforeSting };
   });
   slots.forEach((s, n) => {
     if (!joins(n) && !joins(n + 1)) return;
@@ -174,7 +196,8 @@ export const DeepDive: React.FC<DeepDiveProps> = ({ date, segments, design }) =>
   const tl = ddTimeline(segments);
   const endTail = Math.round(END_S * fps);
   const stingK = tl.sting >= 0 ? segments.findIndex((s) => s.kind === "open") : -1;
-  const slots = plan(segments, fps, tl.starts, endTail, stingK);
+  const segs = withPauses(segments);
+  const slots = plan(segs, fps, tl.starts, endTail, stingK);
   const stingF = Math.round(tl.sting * fps), stingLen = Math.round(STING_S * fps);
   return (
     <AbsoluteFill style={{ fontFamily: FONT, color: C.ink, background: C.bg }}>
@@ -200,7 +223,7 @@ export const DeepDive: React.FC<DeepDiveProps> = ({ date, segments, design }) =>
         );
       })}
       <TopBar date={date} />
-      <Progress segments={segments} starts={tl.starts} total={tl.total} />
+      <Progress segments={segs} starts={tl.starts} total={tl.total} />
       {tl.sting >= 0 && (
         <>
           <Sequence from={stingF} durationInFrames={stingLen}><StingCut /></Sequence>

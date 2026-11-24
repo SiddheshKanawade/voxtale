@@ -15,11 +15,12 @@ export type Cue = string | number;
 export type DP = {
   v: any; dur: number; index: number; words: Word[]; seg: DDSegment; chapters: number;
   pre: number; // frames before the beat that this scene is already on screen
-  len: number; // the beat's own frames (narration), without the lead or the tail
-  hold: number; // last frame a reveal may land on: the beat's end - 1 s, so every finished build is seen whole
-  born: number; // entrance animations start here: 0, or SETTLED on the video's first frame (already in place)
+  len: number; // the beat's narration frames, without the lead, the pause or the tail
+  pause: number; // frames of silence after the narration (the beat's "pause"), the visual holding
+  hold: number; // last frame a reveal may land on: the beat's end (pause included) - 1 s, so every finished build is seen whole
+  born: number; // entrance animations start here: SETTLED (the cut's crossfade brings the first state in whole)
   chain?: any[]; // build: the visuals of a cont chain, which share one fit
-  prev?: DP; // cont: the beat this one continues (its last highlight carries over)
+  prev?: DP; // cont, or a grid / pair swapping in place: the beat this one continues
 };
 
 export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -36,21 +37,34 @@ export const cueAt = (words: Word[], cue: Cue | undefined, fps: number, fallback
   return w ? Math.round(w.start * fps) : fallback;
 };
 
-// A scene's cue resolver: word (or seconds into the beat) -> scene frame, never later than the hold (beat end - 1 s).
-export const cuer = (p: DP, fps: number) => (cue: Cue | undefined, fallback: number) =>
-  Math.min(p.hold, typeof cue === "number" ? Math.round(cue * fps) + p.pre : cueAt(p.words, cue, fps, fallback));
+// A scene's cue resolver -> scene frame, never later than the hold (beat end - 1 s). A cue is a word, a number of seconds
+// into the beat, "pause" (the pause's last second: after the viewer had time to guess) or "pause+1.5" (into the pause).
+export const cuer = (p: DP, fps: number) => (cue: Cue | undefined, fallback: number) => {
+  const m = typeof cue === "string" ? cue.match(/^pause(?:\+([\d.]+))?$/) : null;
+  const f = typeof cue === "number" ? Math.round(cue * fps) + p.pre
+    : m ? p.pre + p.len + (m[1] ? Math.round(+m[1] * fps) : Math.max(0, p.pause - fps))
+    : cueAt(p.words, cue, fps, fallback);
+  return Math.min(p.hold, f);
+};
 
-// Reveal frames for a list: each item's cue, else spread over the first 60% of the beat. Each part appears on its word,
-// never before (diagrams show a faint scaffold of what's to come, so the stage isn't empty meanwhile).
+// Reveal frames for a list: each item's cue, else spread over the first 60% of the beat.
 export const revealAt = (items: { cue?: Cue }[], p: DP, fps: number) => {
   const c = cuer(p, fps);
   return items.map((it, i) => c(it.cue, p.pre + Math.round((i / Math.max(1, items.length)) * p.len * 0.6)));
 };
 
-// Parts cued at 0 are already in place (no pop) when the scene continues the previous beat's diagram ("cont") or is the
-// video's first frame. Settled parts don't take the highlight: the beat's first new reveal (or focus) does.
+// Parts cued at 0 are already in place (no pop). Settled parts don't take the highlight: the beat's first new reveal (or
+// focus) does.
 export const SETTLED = -60;
 export const settle = (p: DP, at: number) => ((p.v.cont || p.born < 0) && at <= 0 ? SETTLED : at);
+// Never a blank page or an empty slot after a cut: a visual's first content element is in place when the crossfade
+// starts (whatever its cue; everything on that first cue comes with it), and later ones build onto it. (Unless the
+// beat already carries parts over.)
+export const firstIn = (at: number[]) => {
+  if (!at.length || at.includes(SETTLED)) return at;
+  const m = Math.min(...at);
+  return at.map((a) => (a === m ? SETTLED : a));
+};
 
 // Emphasis follows the narration: a focus moves at the start of the clause that names its subject ("and for real"
 // switches on "and", not on "real"), when that start is within 1 s before the cue word.

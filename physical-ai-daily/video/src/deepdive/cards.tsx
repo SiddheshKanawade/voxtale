@@ -3,7 +3,7 @@ import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "
 import { C, Media, STAGE } from "../theme";
 import { current } from "../design";
 import { Tag } from "./chrome";
-import { Cue, DP, Icon, MONO, SUB_PX, boxStyle, calm, cuer, dimWash, ease, hi, line, newest, onHi, pad2, pop, settle, tint } from "./kit";
+import { Cue, DP, Icon, MONO, SETTLED, SUB_PX, boxStyle, calm, cuer, dimWash, ease, hi, line, newest, onHi, pad2, pop, settle, tint } from "./kit";
 
 // Cards: chapter title, paper figure, headline number, prediction prompt, quote. (Footage: media.tsx.)
 
@@ -121,16 +121,16 @@ const Pips: React.FC<{ text: string; color: string }> = ({ text, color }) => {
 };
 
 // A headline number with its denominator and, on its cue, the comparison; the newer one carries the highlight. A label
-// never shows without its number (alone, "...then crossed the real course" reads as the opposite claim): each column,
-// number and label together, lands on its number's word.
+// never shows without its number (alone, "...then crossed the real course" reads as the opposite claim). The main number
+// and its label are in place at the cut (never a blank page after it); the comparison lands on its word.
 export const NumberCard: React.FC<DP> = (p) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const v = p.v, c = cuer(p, fps);
   const cmp = v.compare as { value: string; label: string; cue?: Cue } | undefined;
-  const a0 = settle(p, c(v.cue, p.pre));
-  const a1 = cmp ? settle(p, c(cmp.cue, Math.max(a0 + fps, p.pre + Math.round(p.len * 0.5)))) : Infinity;
-  const noteAt = settle(p, c(v.noteCue, (cmp ? a1 : a0) + Math.round(fps * 0.6)));
+  const a0 = SETTLED;
+  const a1 = cmp ? settle(p, c(cmp.cue, p.pre + Math.round(p.len * 0.5))) : Infinity;
+  const noteAt = settle(p, c(v.noteCue, (cmp ? a1 : p.pre) + Math.round(fps * 0.6)));
   const second = frame >= a1;
   const size = cmp ? 190 : 230;
   const col = (value: string, label: string, at: number, lit: boolean) => {

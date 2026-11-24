@@ -4,7 +4,7 @@ import { C, STAGE } from "../theme";
 import { current } from "../design";
 import {
   Arrow, Box, Cue, DIM, DP, Fit, Icon, LABEL_PX, MONO, Poly, Pt, SETTLED, SUB_PX, Staged, along, bez, boxStyle, clamp, cuer, ease,
-  exit, fitBox, ghostStyle, hi, inside, ink2, line, newest, onHi, poly, pop, revealAt, sample, settle,
+  exit, firstIn, fitBox, ghostStyle, hi, inside, ink2, line, newest, onHi, poly, pop, revealAt, sample, settle,
 } from "./kit";
 
 // Our own diagrams, built step by step with the narration: build (generic boxes and arrows), loop / steps (an
@@ -21,7 +21,8 @@ export const fitH = (w: number, label: string, sub?: string, icon?: string) => {
   return Math.max(100, 46 + 42 * lines(label, LABEL_PX * 0.545) + (sub ? 6 + 34 * lines(sub, SUB_PX * 0.525) : 0));
 };
 
-// A diagram box: optional icon on the left, label and sub on the part itself. Before its word: a dashed scaffold.
+// A diagram box: optional icon on the left, label and sub on the part itself. Before its word: nothing (a dashed
+// outline only with "scaffold": true; an empty slot reads as a missing picture).
 const Node: React.FC<{ b: Box; label: string; sub?: string; icon?: string; on: boolean; s: number; dim: boolean; badge?: string; ghost?: boolean }> = ({ b, label, sub, icon, on, s, dim, badge, ghost }) => {
   const at: React.CSSProperties = { position: "absolute", left: b.x - b.w / 2, top: b.y - b.h / 2, width: b.w, height: b.h };
   if (s <= 0) return ghost ? <div style={{ ...at, ...ghostStyle() }} /> : null;
@@ -30,7 +31,7 @@ const Node: React.FC<{ b: Box; label: string; sub?: string; icon?: string; on: b
       padding: "0 24px", boxSizing: "border-box", opacity: Math.min(1, s) * (dim ? DIM : 1), transform: `scale(${0.86 + 0.14 * s})` }}>
       {badge && (
         <div style={{ position: "absolute", left: -20, top: -20, width: 48, height: 48, borderRadius: 24, display: "flex", alignItems: "center",
-          justifyContent: "center", fontFamily: MONO, fontSize: 26, fontWeight: 700, background: on ? hi() : C.ink, color: on ? onHi() : C.bg }}>{badge}</div>
+          justifyContent: "center", fontFamily: MONO, fontSize: 28, fontWeight: 700, background: on ? hi() : C.ink, color: on ? onHi() : C.bg }}>{badge}</div>
       )}
       {icon && <Icon name={icon} size={56} color={on ? hi() : C.dim} />}
       <div style={{ textAlign: icon ? "left" : "center", minWidth: 0 }}>
@@ -91,7 +92,7 @@ type BState = { on: string[]; dim: boolean };
 const buildPlan = (p: DP, fps: number) => {
   const v = p.v, c = cuer(p, fps);
   const nodes: BNode[] = v.nodes ?? [], edges: BEdge[] = v.edges ?? [], focus: { ids: string[]; cue?: Cue }[] = v.focus ?? [];
-  const nAt = revealAt(nodes, p, fps).map((a) => settle(p, a));
+  const nAt = firstIn(revealAt(nodes, p, fps).map((a) => settle(p, a)));
   const atOf = Object.fromEntries(nodes.map((n, i) => [n.id, nAt[i]]));
   const eAt = edges.map((e) => { // an arrow never draws before both its boxes are in
     const ends = Math.max(atOf[e.from] ?? 0, atOf[e.to] ?? 0);
@@ -144,7 +145,7 @@ export const Build: React.FC<DP> = (p) => {
       })}
       {nodes.map((n, i) => (
         <Node key={n.id} b={box[n.id]} label={n.label} sub={n.sub} icon={n.icon} on={on(n.id)} dim={dimmed(n.id)}
-          s={frame >= nAt[i] ? pop(frame, nAt[i], fps) : 0} ghost={p.v.scaffold !== false} />
+          s={frame >= nAt[i] ? pop(frame, nAt[i], fps) : 0} ghost={p.v.scaffold === true} />
       ))}
     </Staged>
   );
@@ -192,7 +193,7 @@ export const Cycle: React.FC<DP & { ring: boolean }> = ({ ring, ...p }) => {
   const { fps } = useVideoConfig();
   const v = p.v, c = cuer(p, fps);
   const { nodes, n, boxes, conns, route, backY, cx, cy, fit } = cycleLayout(v, ring);
-  const at = revealAt(nodes, p, fps).map((a) => settle(p, a));
+  const at = firstIn(revealAt(nodes, p, fps).map((a) => settle(p, a)));
   const closeAt = settle(p, c(v.back?.cue, (at[n - 1] ?? 0) + 10));
   const cAt = conns.map((_, i) => (i < n - 1 ? at[i + 1] : closeAt));
   const T = Math.round((v.cycleS ?? 0.55 * n) * fps);
@@ -225,7 +226,7 @@ export const Cycle: React.FC<DP & { ring: boolean }> = ({ ring, ...p }) => {
           o={Math.max(0, (ease(frame, closeAt, 14) - 0.5) * 2)} />;
       })()}
       {nodes.map((nd, i) => (
-        <Node key={i} b={boxes[i]} label={nd.label} sub={nd.sub} icon={nd.icon} on={i === lit} dim={false} ghost={v.scaffold !== false}
+        <Node key={i} b={boxes[i]} label={nd.label} sub={nd.sub} icon={nd.icon} on={i === lit} dim={false} ghost={v.scaffold === true}
           s={frame >= at[i] ? pop(frame, at[i], fps) : 0} badge={ring ? undefined : String(i + 1)} />
       ))}
     </Staged>
@@ -236,7 +237,7 @@ export const Cycle: React.FC<DP & { ring: boolean }> = ({ ring, ...p }) => {
 
 type TItem = { year: string; label: string; sub?: string; cue?: Cue; now?: boolean };
 
-// A lineage on a horizontal axis (a faint full axis from the start; it inks in up to each item as it's named). The
+// A lineage on a horizontal axis that inks in up to each item as it's named (the first is in place at the cut). The
 // newest item is lit; when the current work (the "now" item, else the last) lands, it takes the highlight and the
 // earlier ones step back.
 export const Timeline: React.FC<DP> = (p) => {
@@ -244,7 +245,7 @@ export const Timeline: React.FC<DP> = (p) => {
   const { fps } = useVideoConfig();
   const items: TItem[] = p.v.items ?? [];
   const n = items.length;
-  const at = revealAt(items, p, fps).map((a) => settle(p, a));
+  const at = firstIn(revealAt(items, p, fps).map((a) => settle(p, a)));
   const nowIdx = items.some((it) => it.now) ? items.findIndex((it) => it.now) : n - 1;
   const k = newest(at, frame);
   const nowOn = frame >= at[nowIdx];
@@ -257,7 +258,7 @@ export const Timeline: React.FC<DP> = (p) => {
   return (
     <>
       <svg style={{ position: "absolute", left: STAGE.x, top: STAGE.y, overflow: "visible" }} width={STAGE.w} height={STAGE.h}>
-        <line x1={x0} y1={ax} x2={x1} y2={ax} stroke={line()} strokeWidth={3} strokeDasharray="10 10" />
+        {p.v.scaffold === true && <line x1={x0} y1={ax} x2={x1} y2={ax} stroke={line()} strokeWidth={3} strokeDasharray="10 10" />}
         <Arrow pl={axis} p={(end - x0) / (x1 - x0)} color={ink2()} id={`dd${p.index}t`} />
       </svg>
       {items.map((it, i) => {
@@ -287,8 +288,8 @@ export const Timeline: React.FC<DP> = (p) => {
 
 type Bar = { label: string; value?: number; display?: string; cue?: Cue; note?: string; range?: [number, number]; denominator?: string };
 
-// A bar chart, vertical (default) or horizontal: the axis, categories and empty tracks hold the stage, and each bar
-// grows on its word with its number at the bar's end. range: a low-high span ("20 to 60 percent"); denominator: the
+// A bar chart, vertical (default) or horizontal: the first bar is in place at the cut and each next one grows on its
+// word, with its category and its number at the bar's end. range: a low-high span ("20 to 60 percent"); denominator: the
 // count behind a share ("57 of 86"); baseline: a dashed reference line. The newest bar carries the highlight.
 export const Bars: React.FC<DP> = (p) => {
   const frame = useCurrentFrame();
@@ -299,7 +300,7 @@ export const Bars: React.FC<DP> = (p) => {
   const top = (b: Bar) => (b.range ? b.range[1] : b.value ?? 0);
   const pct = bars.some((b) => /%/.test(b.display ?? ""));
   const max: number = v.max ?? (pct && bars.every((b) => top(b) <= 100) ? 100 : Math.max(1, ...bars.map(top), v.baseline?.value ?? 0) * 1.12);
-  const at = revealAt(bars, p, fps).map((a) => settle(p, a));
+  const at = firstIn(revealAt(bars, p, fps).map((a) => settle(p, a)));
   const k = newest(at, frame);
   const bAt = v.baseline ? c(v.baseline.cue, p.born < 0 ? SETTLED : 0) : 0;
   const titleH = v.title ? 64 : 0;
@@ -318,7 +319,7 @@ export const Bars: React.FC<DP> = (p) => {
       {v.title && <div style={{ position: "absolute", ...abs(horiz ? 0 : L.x0, 0), width: STAGE.w, fontSize: 38, fontWeight: 800, letterSpacing: -0.5,
         opacity: ease(frame, p.born < 0 ? SETTLED : 0, 10) }}>{v.title}</div>}
       <svg style={{ position: "absolute", ...abs(0, 0), overflow: "visible" }} width={STAGE.w} height={STAGE.h}>
-        {bars.map((b, i) => { // empty tracks, full scale
+        {v.scaffold === true && bars.map((b, i) => { // empty tracks, full scale, only on request
           const cc = centre(i);
           return horiz
             ? <rect key={i} x={L.x0} y={cc - thick / 2} width={L.x1 - L.x0} height={thick} rx={8} fill={line()} opacity={0.35} />
@@ -360,7 +361,7 @@ export const Bars: React.FC<DP> = (p) => {
             {horiz ? (
               <>
                 <div style={{ position: "absolute", ...abs(0, cc), width: L.x0 - 30, transform: "translateY(-50%)", textAlign: "right",
-                  opacity: shown ? 1 : 0.45 }}>
+                  opacity: shown ? 1 : v.scaffold === true ? 0.45 : 0 }}>
                   <div style={{ fontSize: 36, fontWeight: 800, lineHeight: 1.1 }}>{b.label}</div>
                   {b.note && <div style={{ fontSize: SUB_PX, fontWeight: 600, color: C.dim, marginTop: 4, opacity: o }}>{b.note}</div>}
                 </div>
@@ -371,7 +372,8 @@ export const Bars: React.FC<DP> = (p) => {
               <>
                 <div style={{ position: "absolute", ...abs(cc - slot / 2, tip - 12), width: slot, transform: "translateY(-100%)", textAlign: "center",
                   display: "flex", flexDirection: "column", alignItems: "center", opacity: o }}>{val}{den}</div>
-                <div style={{ position: "absolute", ...abs(cc - slot / 2 + 8, L.y1 + 16), width: slot - 16, textAlign: "center", opacity: shown ? 1 : 0.45 }}>
+                <div style={{ position: "absolute", ...abs(cc - slot / 2 + 8, L.y1 + 16), width: slot - 16, textAlign: "center",
+                  opacity: shown ? 1 : v.scaffold === true ? 0.45 : 0 }}>
                   <div style={{ fontSize: 36, fontWeight: 800, lineHeight: 1.1 }}>{b.label}</div>
                   {b.note && <div style={{ fontSize: SUB_PX, fontWeight: 600, color: C.dim, marginTop: 6, lineHeight: 1.2, opacity: o }}>{b.note}</div>}
                 </div>
