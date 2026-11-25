@@ -25,10 +25,17 @@ export const Progress: React.FC<{ segments: DDSegment[]; starts: number[]; total
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
+  // The cold open split at the sting (two "open" segments, the sting between them) fills one bar.
+  const bars = segments.reduce<{ id: string; start: number; duration: number }[]>((out, s, k) => {
+    const prev = out[out.length - 1];
+    if (prev && s.kind === "open" && segments[k - 1].kind === "open") prev.duration = starts[k] + s.duration - prev.start;
+    else out.push({ id: s.id, start: starts[k], duration: s.duration });
+    return out;
+  }, []);
   return (
     <div style={{ position: "absolute", top: 70, left: 64, right: 64, height: 5, display: "flex", gap: 6 }}>
-      {segments.map((s, k) => {
-        const p = Math.min(1, Math.max(0, (t - starts[k]) / s.duration));
+      {bars.map((s) => {
+        const p = Math.min(1, Math.max(0, (t - s.start) / s.duration));
         return (
           <div key={s.id} style={{ flex: s.duration / total, borderRadius: 3, overflow: "hidden",
             background: current.light ? "rgba(31,32,35,0.12)" : "rgba(255,255,255,0.15)" }}>

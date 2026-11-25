@@ -10,6 +10,10 @@ Usage:
   python3 tools/deepdive/dd.py shots <dd-dir>             writes <dd-dir>/qa/shots.json for the video critic: one entry per
                                                          beat [{id: c<seg>b<beat>, t0, t1, narration, visual, chapter,
                                                          pause}] plus the sting, timed exactly as the composition
+  python3 tools/deepdive/dd.py transcript <dd-dir>        writes <dd-dir>/qa/transcript.md from episode.json (no voicing
+                                                         needed): the narration only, as a listener hears it, with chapter
+                                                         markers, pauses, the sting, and every chapter joint (last line ->
+                                                         next first line). The flow gate's reviewer gets only this file
 
 check exits 1 on errors (they render wrong) and prints warnings otherwise. The timing mirrors DeepDive.tsx: the
 digest's timeline() with the sting after the first "open" segment and the end tail after the last, on beat durations
@@ -126,6 +130,14 @@ def check(d: Path) -> int:
     chapters = [s for s in p["segments"] if s["kind"] == "chapter"]
     if p["segments"] and p["segments"][0]["kind"] != "open":
         warns.append("first segment isn't kind 'open': no sting after a cold open")
+    else:
+        # The sting follows the intro line (user, 2026-11-25): it plays after the first "open" segment, so that segment
+        # must end on the intro line, with "Today we're looking at…" in a second "open" segment.
+        first = p["segments"][0]["beats"] if p["segments"] else []
+        at = [i for i, b in enumerate(first) if "pixels to actions" in b["narration"].lower()]
+        if at and at[-1] != len(first) - 1:
+            warns.append(f"{p['segments'][0]['id']}: the intro line isn't the first segment's last beat, so the sting "
+                         "comes later; split the open after it into two 'open' segments (SKILL.md, the opening)")
     for s in p["segments"]:
         if s["kind"] not in ("open", "chapter", "outro"):
             errors.append(f"{s['id']}: kind {s['kind']!r} (open | chapter | outro)")
@@ -291,6 +303,36 @@ def shots(d: Path) -> None:
     print(f"shots: {len(out)} -> {d / 'qa' / 'shots.json'} ({out[-1]['t1']:.2f}s)")
 
 
+def transcript(d: Path) -> None:
+    # The story as one narrator tells it (user, 2026-11-25: "one person tells the complete story top to bottom").
+    # No visuals: the flow gate judges the joints by ear.
+    segs = json.loads((d / "episode.json").read_text())["segments"]
+    lines, joints, sting = ["# Transcript (narration only)", ""], [], False
+    sentences = lambda s: [x for x in re.split(r"(?<=[.?!])\s+", " ".join(b["narration"].strip() for b in s["beats"])) if x]
+    for k, s in enumerate(segs):
+        if s["kind"] != "open" or k == 0:
+            label = s.get("headline") or s["id"]
+            lines += [f"— {'chapter ' + str(s['chapter']) + ': ' if s.get('chapter') else ''}{label} —", ""]
+        para = []
+        for b in s["beats"]:
+            para.append(b["narration"].strip())
+            if b.get("pause"):
+                para.append(f"[pause {b['pause']}]")
+        lines += [" ".join(para), ""]
+        if s["kind"] == "open" and not sting and k < len(segs) - 1:
+            lines += ["[LOGO STING]", ""]
+            sting = True
+        if k < len(segs) - 1 and sentences(s) and sentences(segs[k + 1]):
+            joints.append(f"- {s['id']} → {segs[k + 1]['id']}: “{sentences(s)[-1]}” → “{sentences(segs[k + 1])[0]}”")
+    words = sum(len(b["narration"].split()) for s in segs for b in s["beats"])
+    pauses = sum(b.get("pause", 0) or 0 for s in segs for b in s["beats"])
+    lines += ["## Joints (each segment's last sentence → the next one's first)", ""] + joints
+    lines += ["", f"{words} words, {pauses:.1f} s of marked pauses"]
+    (d / "qa").mkdir(exist_ok=True)
+    (d / "qa" / "transcript.md").write_text("\n".join(lines) + "\n")
+    print(f"transcript: {words} words, {len(joints)} joints -> {d / 'qa' / 'transcript.md'}")
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         sys.exit(__doc__)
@@ -303,5 +345,7 @@ if __name__ == "__main__":
         print(math.ceil(starts(props(d)["segments"])[1] * FPS))
     elif cmd == "shots":
         shots(d)
+    elif cmd == "transcript":
+        transcript(d)
     else:
         sys.exit(__doc__)

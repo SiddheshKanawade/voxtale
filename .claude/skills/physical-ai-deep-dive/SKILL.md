@@ -10,6 +10,31 @@ video. The viewer is **an engineer working in the field**: keep the full technic
 never talk down ("not too simplified that you assume viewer is dumb"). Tell it as a story: "we don't want to bore
 users with lectures."
 
+## The rule above all others: one narrator tells the whole story, top to bottom
+
+The user has asked for this more than once (2026-11-24: "told as a story, never a lecture"; 2026-11-25: "one person
+tells the complete story top to bottom… I have told this before as well"), and the first four deep dives still broke
+it. Their scripts were written chapter by chapter and patched line by line, so every chapter card restarted the
+narration cold ("…no named expert reaction." → "The real tests took an estimated two hundred and forty hours."). A
+rule stated once in the script section wasn't enough, so these are built into the steps:
+1. **One writer, one pass.** One writer (you, or one subagent) writes the entire narration from the first line to the
+   last in a single pass, reading the previous paragraph before writing the next. Never split the script across
+   subagents, chapters or sessions, and never assemble it from per-chapter drafts. Chapters are markers for the viewer
+   (card, header, YouTube chapters); the narration never resets at them.
+2. **Every joint is a link.** A chapter's last line raises what the next one answers (a *but*, a *so*, a cost, an open
+   question), and the next chapter's first line picks it up in words the viewer just heard. No chapter opens with a
+   fresh topic sentence, a definition or "Now let's look at…".
+3. **Fixes rewrite passages, never single lines.** When any review changes narration, reread and rewrite the passage
+   around it (the beat before and after, across a chapter card if it's near one), then reread the joint. Swapping one
+   sentence in place is how seams appeared.
+4. **The flow gate runs twice:** before voicing (step 4) and again before the final render (step 6), after every
+   critic fix. `python3 tools/deepdive/dd.py transcript <dd>` writes `qa/transcript.md`: the narration only, with
+   chapter markers, pauses, the sting and the list of joints. A fresh reviewer gets only that file and reads it as a
+   listener. **A disconnected joint, or a line that sounds like a new speaker or a new lecture, is S1 and blocks the
+   render.**
+5. **The hand-off shows the joints:** each chapter's last line → the next chapter's first line, so the user can check
+   them at a glance.
+
 The evidence behind every rule here is in three docs; read the one a step points to:
 - `physical-ai-daily/docs/research-deep-dive-format.md`: channel outliers, retention, the story criteria.
 - `docs/research-deep-dive-teaching.md`: how to explain.
@@ -24,7 +49,7 @@ RAM shortage you can't fix inside the project, or a decision that is genuinely t
 | 1 Pick the story | `audit.md` / `audit.json`, `judge/`, `pick.md` |
 | 2 Research it | `research.md`, `assets.md`, `verify/<slug>.json` (quotes checked) |
 | 3 Outline | `outline.md`, reviewed by a fresh agent |
-| 4 Script | `episode.json` and `script-sources.md` |
+| 4 Script | `episode.json` and `script-sources.md`, written in one pass; `qa/transcript.md` passed the flow gate |
 | 5 Visuals | `assets/` (clips, figures), diagrams in `episode.json` |
 | 6 Voice, render, critics | `out/physical-ai-daily-<end>-deepdive-{light,dark}.mp4` |
 | 7 Package | `thumbs.md`, `out/thumb_*`, `out/ab-test/`, `shorts/<slug>/`, `publish.md` |
@@ -32,7 +57,7 @@ RAM shortage you can't fix inside the project, or a decision that is genuinely t
 
 Run long steps (the audit, research, the outline review, Shorts, critics) as background subagents. Brief each with
 the week, the folder, the step's section of this skill, and the rules at the end. Then check its files yourself before
-the next step.
+the next step. The script is the exception to splitting work: one writer writes all of it (the rule above).
 
 ## 0. Preflight
 
@@ -135,7 +160,7 @@ reason to want it (`research-deep-dive-storytelling.md` section 3).
 
 | # | Chapter | 15-min target [range] | Story job | Teaching job |
 |---|---|---|---|---|
-| 0 | **Cold open** (format below) | 0:00–0:45 [0:35–0:50] | Scene → the title's finding → the promise as 2–3 questions → the intro line → "Today we're looking at <study>…" → the sting | The study named around 30–35 s (flow first); the one number (with its denominator) that makes it a question |
+| 0 | **Cold open** (format below) | 0:00–0:50 [0:35–0:55] | Scene → the title's finding → the promise as 2–3 questions → the intro line → the logo sting → "Today we're looking at <study>…" | The study named around 30–40 s (flow first); the one number (with its denominator) that makes it a question |
 | 1 | **The goal and the stakes** | to 1:30 [to 2:00] | What the team set out to do and why it matters (sourced). Don't repeat the nut graf or the cold open's questions | The task concretely (input, output, pass test); the 2–4 paper-specific terms |
 | 2 | **The obvious approach hits the wall** | to 4:00 [2–3 min] | What a practitioner would reach for (the paper's first attempt, its baseline, or named prior work) and its documented failure. A prediction prompt before the reveal. Earlier work enters here as earlier tries | Why the obvious approach fails, from evidence; the sourced misconception named and refuted |
 | 3–4 | **Therefore: one fix per chapter** (2–3 chapters) | to 8:00 [4–7 min] | Each chapter is one beat chain (below), ending on the question the next one answers | Each viewer can draw one component, say which problem it solves and what it costs |
@@ -181,6 +206,22 @@ and keep the rule's intent. A few seconds either way is fine. Read the narration
 talking. Each sentence should follow from the one before. A sentence that starts cold ("Four agents designed…" right
 after the study's name) needs its link ("In it, …").
 
+**One story, not stitched sections** (user, 2026-11-25, after the first four deep dives: "there is disconnect between
+the sections. We need to sound them natural"). Those scripts were written chapter by chapter, so each chapter restarted
+cold after its card ("…no named expert reaction." → "The real tests took an estimated two hundred and forty hours.").
+- Write the whole narration top to bottom in one pass, as one person telling one story. Chapters are markers for the
+  viewer (card, header, YouTube chapters); the narration never resets at them.
+- Every joint is a real link: a chapter's last line raises what the next one answers (a *but*, a *so*, a cost, an
+  open question), and the next chapter's first line picks it up in words the viewer just heard.
+- Never open a chapter with a fresh topic sentence, a definition or "Now let's look at…".
+- **Flow gate, before voicing:** run `dd.py transcript <dd>`. A fresh reviewer gets only `qa/transcript.md`, reads it
+  as a listener and flags every disconnected joint, every line that sounds like a new speaker or a new lecture, every
+  rushed or listy line and every repetition. Fix by rewriting the passage, and re-run, at most 2 rounds. It runs again
+  before the final render (step 6).
+- **Pace:** one idea and at most one number per sentence; keep only the numbers that carry the story (the rest on
+  screen or dropped); pauses of about 1.0–1.5 s at chapter boundaries, 0.5–0.8 s after landings and 1.0–1.5 s after
+  prediction prompts. The first scripts ran ~185–190 wpm with ~2% of runtime in pauses; that read as rushed.
+
 **The opening** (format approved by the user, 2026-11-25; the order was set by the user the same day; evidence in
 `research-deep-dive-intro.md`). The first draft didn't name the study until 0:45. In our niche's outlier videos the
 topic is clear within seconds, and research videos that open on the problem name the study at about 15–40 s (Welch
@@ -192,12 +233,14 @@ Labs: 24 s). So the scene makes the topic clear at once, and the study is named 
 | 2. Finding | ~10–20 s | The headline finding the title promises, with its denominator |
 | 3. Promise | ~20–30 s | 2–3 questions in chapter order, unanswered. Footage under them where it exists |
 | 4. Intro line | ~30 s | Word for word: **"This is Pixels to Actions. We track the latest work in robotics and physical AI."** (user, 2026-11-24) |
-| 5. Nut graf | right after 4 | **"Today we're looking at <study>, <a preprint / paper / release> from <lab or company>, posted on <date>."** Then **"In it, …"**: what they did, in one sentence tied back to the study. Plain, not salesy. Footage under it. Then the sting |
+| 5. Logo sting | right after 4 | The 1.6 s logo animation with the sonic logo, as in the weekly digest (user, 2026-11-25: "bring in logo earlier… after we say this is Pixels to Actions"). Split the open into two segments, **both `"kind": "open"`**: the first ends on the intro-line beat, the second (`"id": "open-nut"`) holds slot 6. The renderer and `dd.py` play the sting after the first "open" segment, and the progress bar draws the two as one piece |
+| 6. Nut graf | right after the sting | **"Today we're looking at <study>, <a preprint / paper / release> from <lab or company>, posted on <date>."** Then **"In it, …"**: what they did, in one sentence tied back to the study. Plain, not salesy. Footage under it |
 
 - Aim to name the study around 30–35 s. Flow comes before the clock: the RoboBuilder opening names it at ~35 s.
-- **Don't rush it** (user, 2026-11-25). Keep the narration at the episode's own rate. Merge back-to-back cards into
-  one (a number with its `compare`). Give each landing a `pause` of about 0.5–0.8 s: after the finding, after a twist,
-  after the questions, and about 0.3 s between the intro line and "Today…".
+- **Don't rush it** (user, 2026-11-25, twice: the patched openings still felt fast). Write the opening fresh rather
+  than patching it. One idea and at most one number per sentence; keep only the numbers that carry the hook. Merge
+  back-to-back cards into one (a number with its `compare`). Give each landing a `pause` of about 0.5–0.8 s: after the
+  finding, after a twist, about 1.0 s after the questions, and about 0.3 s after the intro line, before the sting.
 - Use the same words for the same thing: "coding agent" every time, not "AI agent" in one line and "agent" in the
   next. Changing the word suggests a second agent.
 - No logo, greeting or "In this video, I…" before the scene.
@@ -351,7 +394,11 @@ term by term. Screenshots and figures hold still: a straight cut-in, never a cur
    - **Whisper:** the narration check needs Python with `faster_whisper`; none is installed (2026-11-25), so say the
      check was skipped.
    - **Allow for three rounds:** the 2026-11-25 draft took about 2.5 h to voice, render and review once.
-4. **Final:** run `tools/deepdive/render_both.sh <dd>` for 4K light and dark (shared lock, about −14 LUFS, shot check).
+   - **Narration fixes rewrite the passage,** never one sentence in place (the rule at the top): reread the beats
+     before and after, across a chapter card if it's near one.
+4. **Flow gate again**, after the last critic fix: `dd.py transcript <dd>`, a fresh listener-reviewer on
+   `qa/transcript.md` only. A disconnected joint or a line that sounds like a new speaker is S1 and blocks the final.
+5. **Final:** run `tools/deepdive/render_both.sh <dd>` for 4K light and dark (shared lock, about −14 LUFS, shot check).
    Check both with `ffprobe` (3840×2160, duration) and look at a frame sheet of the dark render.
 
 ## 7. Package (the full package, as in the digest)
@@ -409,6 +456,8 @@ The hand-off message, in chat:
 - any AI-generated media and its cost;
 - what was dropped or unverified, and why;
 - the critic rounds and what they changed;
+- the chapter joints from `qa/transcript.md` (each chapter's last line → the next one's first), and both flow-gate
+  results;
 - any credits spent.
 Tell them to start a Test & Compare test at publish, never edit mid-test, and act only on a "Winner" label.
 
@@ -417,6 +466,8 @@ Commit code, skill and doc changes only.
 
 ## Rules that carry over (user decisions; keep them)
 
+- **One narrator, one story, top to bottom** (the rule at the top of this skill): written in one pass, joints that
+  link, fixes that rewrite passages, and the flow gate before voicing and before the final.
 - **Never generate facts or opinions.** Every number in narration, on screen and in descriptions is on a captured page.
 - **Never upload, never post.** Uploading is the user's action.
 - **Keys** live only in the git-ignored `physical-ai-daily/.env`. Never print or commit them.
