@@ -2,7 +2,8 @@
 # Render a deep dive end to end, as tools/render.sh does for the digest: narration -> cue check -> QA stills -> MP4 ->
 # loudness-normalized final. Composition DeepDive (video/src/deepdive/index.ts).
 # Usage: tools/deepdive/render.sh <dd-episode-dir> [--stills-only] [--skip-voice]   (--skip-voice reuses audio/ + props.json)
-# 4K crf 15 by default; SCALE=1 CRF=23 CONCURRENCY=2 for a quick draft on a low-memory machine.
+# 4K crf 15 by default; SCALE=1 CRF=23 for a quick draft. CONCURRENCY defaults to 8: on this 14-core, 48 GB Mac, 4 left
+# half the CPU idle (2026-11-25); use CONCURRENCY=2 on a low-memory machine.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 EP="$(cd "$1" && pwd)"
@@ -37,7 +38,7 @@ echo "contact sheet: $EP/qa/contact_sheet.png"
 
 # 4K by default, as the digest (tools/render.sh): --scale=2 renders 1920x1080 at 3840x2160 so diagrams and text stay sharp.
 npx remotion render $ENTRY DeepDive "$EP/out/$NAME.raw.mp4" --props="$EP/props.json" --public-dir="$PUB" \
-  --concurrency="${CONCURRENCY:-4}" --scale="${SCALE:-2}" --crf="${CRF:-15}"
+  --concurrency="${CONCURRENCY:-8}" --scale="${SCALE:-2}" --crf="${CRF:-15}"
 # YouTube normalizes to about -14 LUFS; TP -2 leaves room for the true-peak overshoot AAC adds (see tools/render.sh).
 ffmpeg -v error -y -i "$EP/out/$NAME.raw.mp4" -c:v copy -af "loudnorm=I=-14:TP=-2:LRA=11" -c:a aac -b:a 192k "$EP/out/$NAME.mp4"
 rm "$EP/out/$NAME.raw.mp4"
