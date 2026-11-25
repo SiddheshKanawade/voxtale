@@ -277,6 +277,12 @@ lecture" (S1). So:
 - **The payoff is seen.** When the narration says a robot "crosses", show it past the last obstacle, not still on it.
 - **Numbers:** every spoken headline number is on screen on its word, with its n. A series of numbers belongs in a
   chart (`bars`), not in separate cards.
+- **Audit every clip against its metadata before the final render** (critic round 3, 2026-11-25). Record in
+  `qa/clip-audit.md` its agent, task, level, round, real or simulated, and fitted or unfitted simulator.
+  - Round 3's adversary found two real errors in a near-final cut: "first fifteen" failure tiles that were the team's
+    reference car, and a clip labelled "already fitted" playing over the unfitted simulator.
+  - It also found a chart legend that called the real bars "sim". Check every legend and label against its data too.
+  - The Shorts reuse the episode's clips, so check them against the same audit.
 
 **Paper figures:** show the original briefly with a credit, so viewers see it's real. Then crop to the panel under
 discussion, or redraw it and reveal one series at a time. Use only the one equation that carries the key idea, built

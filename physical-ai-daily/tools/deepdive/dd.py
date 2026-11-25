@@ -197,9 +197,10 @@ def check(d: Path) -> int:
                 n = len(v.get("options", []))
                 if not 2 <= n <= 3:
                     warns.append(f"{at}: {n} options (2-3)")
-                if not isinstance(v.get("answer"), int) or not 0 <= v["answer"] < n:
+                # answer null: the question beat stays unanswered; a later beat (cont) ticks it on its own word
+                if v.get("answer") is not None and (not isinstance(v["answer"], int) or not 0 <= v["answer"] < n):
                     errors.append(f"{at}: answer {v.get('answer')!r} isn't an option index")
-                if "revealCue" not in v:
+                if v.get("answer") is not None and "revealCue" not in v:
                     warns.append(f"{at}: no revealCue: the answer shows at 80% of the beat")
             if t in ("pair", "video", "grid"):
                 sides = v.get("items", []) if t != "video" else [{**(v.get("src") or {}), **v}]
