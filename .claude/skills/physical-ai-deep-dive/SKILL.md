@@ -48,8 +48,8 @@ RAM shortage you can't fix inside the project, or a decision that is genuinely t
 | 0 Preflight | the credits, disk and RAM check |
 | 1 Pick the story | `audit.md` / `audit.json`, `judge/`, `pick.md` |
 | 2 Research it | `research.md`, `assets.md`, `verify/<slug>.json` (quotes checked) |
-| 3 Outline | `outline.md`, reviewed by a fresh agent |
-| 4 Script | `episode.json` and `script-sources.md`, written in one pass; `qa/transcript.md` passed the flow gate |
+| 3 Outline | `outline.md`, action line first (section 3), reviewed by a fresh agent |
+| 4 Script | `episode.json` and `script-sources.md`, written in one pass; `qa/transcript.md` passed the flow gate and the story gate |
 | 5 Visuals | `assets/` (clips, figures), diagrams in `episode.json` |
 | 6 Voice, render, critics | `out/physical-ai-daily-<end>-deepdive-{light,dark}.mp4` |
 | 7 Package | `thumbs.md`, `out/thumb_*`, `out/ab-test/`, `shorts/<slug>/`, `publish.md` |
@@ -154,9 +154,49 @@ trusted source (user, 2026-11-24), and the script explains them in our own words
 
 ## 3. Outline as a story (`outline.md`)
 
+### The model: an explanatory narrative, not a lecture
+
+The first deep dives were accurate, ordered and still played as lectures. The user (2026-11-26): "it's not narration,
+it's story telling." The craft research (`docs/research-storytelling-craft-prose.md` P1–P68,
+`docs/research-storytelling-craft-video.md` V1–V56) names the fault: mostly explanation hung on a thin action line.
+Every guide describes the same fix under its own name: Hart's *explanatory narrative*, Bernard's *train and
+detours*, Glass's *anecdote then reflection*, Kramer's *primary narrative with digressions*.
+- **An action line carries the video** (P2, V2, V8). Named people do documented things in order, with results:
+  build, test, fail, change, retest. The people are the authors, named from the paper and their own posts. The
+  method is the plot. Robots and models are instruments: they act, but they never want or feel.
+- **Track one thing** (P3, V3). Follow one robot, design, run or failure case from the open, through the turn, to
+  the verdict. Cut good material that's off that line.
+- **Explanation is a short detour off the train** (P44, P46, V2):
+  - It comes only when the action has just raised the question, ideally while an outcome is pending: pause the clip
+    before the result, explain, then show it.
+  - It runs at most ~30 s, or 3–4 explanation beats in a row.
+  - It ends back on the train.
+- **Scenes, not summary** (V12, V15). A scene is a named doer and a documented action, at a time and place, shown on
+  screen. Put one in the first 30 s, at least one in every chapter, and never go more than ~60–90 s without one.
+  - **Then meaning** (V13): after each scene, one line says what it means, either a sourced finding or our framing.
+- **The hope chart** (P16). Every chapter changes the team's position: + it helped, − it exposed a problem. A run of
+  all-plus chapters is a lecture. Every way out is causal, never a lucky break.
+- **The pace paradox** (P28). Hurry through routine setup. Slow down at the first failure, the reversal and the
+  verdict: more screen time, shorter sentences, a pause.
+- **One engine question** (P42, V1). Ask it in the viewer's words, early, and answer it at the verdict. Hold back
+  the *how*, never the headline (V30).
+- **Setups and payoffs** (V23, P51):
+  - Before a key clip, say what to watch for. After it, let it land without restating it.
+  - Use later every term, clip and number introduced early.
+  - **A caveat that changes a result's meaning goes with that result.** The limits chapter keeps the rest.
+- **The narrator is a curious guide** (V34–V37). It asks the viewer's questions, admits the hard step, and points
+  attention ("watch the left wheel"). It never tells the viewer how to feel.
+- **End where you began, changed** (P53, V47). Write the last minute first. Return to the opening image or number at
+  a higher level, and end on the authors' open question.
+- **Never invent** (P36, P37, V49–V52; the factual rules below). No composites and no reordered events. No thoughts
+  or feelings beyond people's own published words, and attribute those aloud.
+
+### The chain of chapters
+
 The video is one causal chain: **question → obstacle → fix → test → new obstacle → … → answer**. Every piece of the
 mechanism comes in as the *therefore* to the *but* just before it. Nothing is explained before the viewer has a
-reason to want it (`research-deep-dive-storytelling.md` section 3).
+reason to want it (`research-deep-dive-storytelling.md` section 3). The chapters below are stations on the action
+line, not topics.
 
 | # | Chapter | 15-min target [range] | Story job | Teaching job |
 |---|---|---|---|---|
@@ -166,7 +206,7 @@ reason to want it (`research-deep-dive-storytelling.md` section 3).
 | 3–4 | **Therefore: one fix per chapter** (2–3 chapters) | to 8:00 [4–7 min] | Each chapter is one beat chain (below), ending on the question the next one answers | Each viewer can draw one component, say which problem it solves and what it costs |
 | 5 | **The turn** | to 9:00 [0:45–1:30] | A sourced result that changes what the viewer thought did the work (an ablation, a comparison, the authors' diagnosis). **Cut it if the sources hold none; never manufacture one** | The one thing to remember, in one sentence |
 | 6 | **The verdict** | to 11:30 [2–3 min] | The full test answers the central question; return to the cold-open footage. A prediction prompt before the headline number | Headline results with baselines, denominators and scope |
-| 7 | **What still breaks** | to 13:30 [1.5–3 min] | The authors' stated limits and the remaining failures. No tidy ending | Where it doesn't apply, and what the evidence doesn't show |
+| 7 | **What still breaks** | to 13:30 [1.5–3 min] | The authors' stated limits and the remaining failures, as scenes where footage exists. No tidy ending. A caveat that changes a result's meaning was already said with that result | Where it doesn't apply, and what the evidence doesn't show |
 | 8 | **What you can use; what it opens** | to 14:40 [1–2 min] | Code, data and design lessons. What the research opens, **sourced only** (the authors' future work, trusted sources), 30–60 s | What they can take away |
 | 9 | **Recap as questions** | to 15:20 [0:30–0:45] | The cold-open question answered in one line; 2–3 "why" questions, each with a one-line answer | Answer without the video |
 
@@ -192,10 +232,43 @@ padding.**
   no source shows one, X goes into the verdict or a short aside.
 
 `outline.md` lists:
-- the central question;
-- the one thing to remember;
-- per chapter: its BUT / ASK / THEREFORE / TEST / next BUT, each with the `research.md` facts it rests on;
+- the central question (the engine), and the one thing to remember;
+- **the action line**: a numbered list of documented events in order, each with who did it (named), what happened,
+  the result and its source. Write this first; the chapters are cut from it;
+- **the tracked thing** (one robot, design, run or failure case) and where it appears: open, turn, verdict;
+- per chapter: its BUT / ASK / THEREFORE / TEST / next BUT, each with the `research.md` facts it rests on; its scene
+  or scenes; its detours (which action beat raises each one); its hope-chart sign (+ or −);
+- the loop ledger: every question the video raises, and the chapter that answers it;
+- the ending, written out first;
 - the visual anchor for each chapter.
+
+**Story gate**, before the script is voiced (with the flow gate). A fresh story editor gets `qa/transcript.md` and
+`outline.md` and answers each question below yes or no, with the line that shows it. A "no" on 1–6 or 13 is S1.
+1. **Engine:** is the central question one sentence in the viewer's words, asked within ~30 s and answered at the
+   verdict? Does every chapter connect to it?
+2. **Action line:** do named people do documented things in order? Count the sentences whose subject is a person or
+   team acting, against those whose subject is "the paper", "the method" or "results". Does no robot or model want
+   or feel?
+3. **One tracked thing:** is it followed from the open, through the turn, to the verdict?
+4. **Detours:** tag each beat A (action, with a result) or D (detour). Is there no run of more than 3–4 Ds? Does every
+   D answer a question raised by the A just before it, start with an outcome pending where possible, and end back on
+   the train?
+5. **Scenes:** is there one in the first 30 s, at least one per chapter, and none more than ~60–90 s apart? Is each
+   followed by one line of meaning?
+6. **Hope chart:** does every chapter change the team's position? Is there a − after the first +?
+7. **Motivation before mechanism:** does every component and term arrive after the problem it solves? Could no
+   chapter open with "Now let's look at…"?
+8. **Loops:** is every question raised closed, and are the cold-open questions answered by name?
+9. **Setups and payoffs:** is there a watch-for before each key clip, and no restating after it? Is every early term,
+   clip and number used later? Does each meaning-changing caveat sit with its result?
+10. **Pace:** do the first failure, the reversal and the verdict get the most time and the shortest sentences? Is
+    routine setup brief? Are there never three blocks of the same kind (scene, explanation, number) in a row?
+11. **Narrator:** does it point attention at least once per chapter, voice the viewer's objection at the hard step,
+    and claim no feeling for anyone?
+12. **Ending:** does it return to the opening image or number at a higher level, end on the authors' open question,
+    and open no new problem?
+13. **Truth:** is there no invention, composite or reordered event? Is every reconstruction labelled, and is each fact
+    inside it in `script-sources.md`?
 
 Then a **fresh subagent reviews the outline** against both tests and the factual rules below, and against
 `research.md` only. Fix what it finds before scripting.
