@@ -69,3 +69,15 @@ an opening format backed by evidence.
 - Chapter 1 does not repeat the nut graf.
 - **Critic check:** from the first 45 s of the transcript alone, a fresh reader must be able to answer three questions
   what is this about and who did it (by 30 s), and what will I get from watching (by the end of slot 4).
+
+## Order chosen by the user (2026-11-25)
+
+After seeing the format above, the user chose this order: scene → finding → questions → intro line → "Today we're
+looking at RoboBuilder, a preprint from MIT's DeCoDE Lab, posted on November eighteenth…". The study is named at about
+32 s. The data supports it:
+- The topic is clear from the scene (a fresh reviewer had it at ~8 s).
+- The study's name isn't in the title or thumbnail, so the title's promise is still kept within 30 s.
+- 7 of 25 niche videos open problem-first and name the subject at ~15–40 s. Welch Labs' 9.5× outlier names its
+  subject at 24 s and its paper at 78 s.
+
+The skill's opening table follows this order.

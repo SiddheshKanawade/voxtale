@@ -135,7 +135,7 @@ reason to want it (`research-deep-dive-storytelling.md` section 3).
 
 | # | Chapter | 15-min target [range] | Story job | Teaching job |
 |---|---|---|---|---|
-| 0 | **Cold open** (format below) | 0:00–0:40 [0:35–0:45] | Scene → nut graf (what, who, when) → the title's finding → the promise as 2–3 questions → the intro line and the sting | The study named by 20 s; the one number (with its denominator) that makes it a question |
+| 0 | **Cold open** (format below) | 0:00–0:45 [0:35–0:50] | Scene → the title's finding → the promise as 2–3 questions → the intro line → "Today we're looking at <study>…" → the sting | The study named by ~32 s; the one number (with its denominator) that makes it a question |
 | 1 | **The goal and the stakes** | to 1:30 [to 2:00] | What the team set out to do and why it matters (sourced). Don't repeat the nut graf or the cold open's questions | The task concretely (input, output, pass test); the 2–4 paper-specific terms |
 | 2 | **The obvious approach hits the wall** | to 4:00 [2–3 min] | What a practitioner would reach for (the paper's first attempt, its baseline, or named prior work) and its documented failure. A prediction prompt before the reveal. Earlier work enters here as earlier tries | Why the obvious approach fails, from evidence; the sourced misconception named and refuted |
 | 3–4 | **Therefore: one fix per chapter** (2–3 chapters) | to 8:00 [4–7 min] | Each chapter is one beat chain (below), ending on the question the next one answers | Each viewer can draw one component, say which problem it solves and what it costs |
@@ -175,27 +175,32 @@ Then a **fresh subagent reviews the outline** against both tests and the factual
 
 ## 4. Script (`episode.json` + `script-sources.md`)
 
-**The opening** (format approved by the user, 2026-11-25; evidence in `research-deep-dive-intro.md`):
-The first draft never said what the video was about until 0:45, and the user caught it. In our niche's outlier videos
-the subject is named at a median of 5 s (research videos 16 s), and the source at 18 s.
+**The opening** (format approved by the user, 2026-11-25; order set by the user the same day; evidence in
+`research-deep-dive-intro.md`): the first draft didn't name the study until 0:45. Our niche's outliers make the
+subject clear within seconds. Research videos that open on the problem name the study at about 15–40 s (Welch Labs:
+24 s). So the scene makes the topic clear at once, and the study is named right after the intro line.
 
 | Slot | By | Job |
 |---|---|---|
-| 1. Scene | 0–10 s | The decisive moment on footage, outcome first. Narration starts in the first second; at most 2 sentences |
-| 2. Nut graf | ≤ 20 s | **What** (the study or project, by name), **who** (lab or company), **when or where** (date, venue), and what they did, in 1–2 sentences |
-| 3. Finding | ≤ 30 s | The headline finding the title promises, with its denominator |
-| 4. Promise | ≤ 40 s | 2–3 questions in chapter order (≤ 8 s), unanswered. Footage under them where it exists |
-| 5. Intro line | after 4 | Word for word: **"This is Pixels to Actions. We track the latest work in robotics and physical AI."** (user, 2026-11-24). Then the sting |
+| 1. Scene | 0–10 s | The decisive moment on footage, outcome first. Narration starts in the first second; at most 2 sentences. The viewer knows what the video is about from here |
+| 2. Finding | ≤ 20 s | The headline finding the title promises, with its denominator |
+| 3. Promise | ≤ 27 s | 2–3 questions in chapter order (≤ 8 s), unanswered. Footage under them where it exists |
+| 4. Intro line | ≤ 32 s | Word for word: **"This is Pixels to Actions. We track the latest work in robotics and physical AI."** (user, 2026-11-24) |
+| 5. Nut graf | right after 4 | **"Today we're looking at <study>, <a preprint / paper / release> from <lab or company>, posted on <date>."** Then **"In it, …"**: what they did, in one sentence tied back to the study (a bare "Four agents designed…" sounded cut off to the user). Plain, not salesy. Footage under it. Then the sting |
 
+- Slots 1–3 together stay ≤ ~27 s, so the study is named by ~35 s.
+- **Don't rush it** (user, 2026-11-25). Keep the narration at the episode's own rate, merge back-to-back cards into one
+  (a number with its `compare`), and give each landing a `pause` of 0.5–0.8 s: after the finding, after the twist, after
+  the questions. Use 0.3 s between the intro line and "Today…".
+- Use the same words for the same thing throughout the opening: "coding agent" every time, never "AI agent" in one line
+  and "agent" in the next. Changing the word suggests a second agent.
 - No logo, greeting or "In this video, I…" before the scene.
 - Time order: at most one jump, marked in words ("In the first round…", "This robot came later…"). A clip that isn't
   the event being described carries its label.
 - Chapter 1 doesn't repeat the nut graf or the questions.
 - **Gate:** before the full render, a fresh reviewer gets only the first-minute transcript (with times) and a stills
-  sheet. By 30 s they must be able to say what the video is about and who did it, and by the end of slot 4 what
-  they'll get from it.
-- Say what happened plainly and early. Inform, don't sell.
-- Dated framing: say when it was published ("last week", "on November 18th"), never "today" or "just announced".
+  sheet. They must be able to say what the video is about by 10 s, who did it by the end of slot 5, and what they'll
+  get by the end of slot 3.
 
 **Teaching rules** (`research-deep-dive-teaching.md` section 2 has the evidence):
 - **Jargon in two bins.**
