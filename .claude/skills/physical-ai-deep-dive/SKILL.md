@@ -135,8 +135,8 @@ reason to want it (`research-deep-dive-storytelling.md` section 3).
 
 | # | Chapter | 15-min target [range] | Story job | Teaching job |
 |---|---|---|---|---|
-| 0 | **Cold open: the anomaly** | 0:00–0:30 [0:20–0:40] | The real decisive moment, outcome first; the central question as a mystery; the title's promise shown to be true. Then the intro line and the sting | The central question, and the one number (with its denominator) that makes it a question |
-| 1 | **The goal and the stakes** | to 1:30 [to 2:00] | The real team as protagonist, what they set out to do, why it matters (sourced). The roadmap spoken as the 2–3 questions the story answers | The task concretely (input, output, pass test); the 2–4 paper-specific terms |
+| 0 | **Cold open** (format below) | 0:00–0:40 [0:35–0:45] | Scene → nut graf (what, who, when) → the title's finding → the promise as 2–3 questions → the intro line and the sting | The study named by 20 s; the one number (with its denominator) that makes it a question |
+| 1 | **The goal and the stakes** | to 1:30 [to 2:00] | What the team set out to do and why it matters (sourced). Don't repeat the nut graf or the cold open's questions | The task concretely (input, output, pass test); the 2–4 paper-specific terms |
 | 2 | **The obvious approach hits the wall** | to 4:00 [2–3 min] | What a practitioner would reach for (the paper's first attempt, its baseline, or named prior work) and its documented failure. A prediction prompt before the reveal. Earlier work enters here as earlier tries | Why the obvious approach fails, from evidence; the sourced misconception named and refuted |
 | 3–4 | **Therefore: one fix per chapter** (2–3 chapters) | to 8:00 [4–7 min] | Each chapter is one beat chain (below), ending on the question the next one answers | Each viewer can draw one component, say which problem it solves and what it costs |
 | 5 | **The turn** | to 9:00 [0:45–1:30] | A sourced result that changes what the viewer thought did the work (an ablation, a comparison, the authors' diagnosis). **Cut it if the sources hold none; never manufacture one** | The one thing to remember, in one sentence |
@@ -175,10 +175,25 @@ Then a **fresh subagent reviews the outline** against both tests and the factual
 
 ## 4. Script (`episode.json` + `script-sources.md`)
 
-**The opening:**
-- The cold open (chapter 0) comes first: no logo or greeting before the moment.
-- It ends with the intro line, word for word: **"This is Pixels to Actions. We track the latest work in robotics and
-  physical AI."** (user, 2026-11-24). Then the sting.
+**The opening** (format approved by the user, 2026-11-25; evidence in `research-deep-dive-intro.md`):
+The first draft never said what the video was about until 0:45, and the user caught it. In our niche's outlier videos
+the subject is named at a median of 5 s (research videos 16 s), and the source at 18 s.
+
+| Slot | By | Job |
+|---|---|---|
+| 1. Scene | 0–10 s | The decisive moment on footage, outcome first. Narration starts in the first second; at most 2 sentences |
+| 2. Nut graf | ≤ 20 s | **What** (the study or project, by name), **who** (lab or company), **when or where** (date, venue), and what they did, in 1–2 sentences |
+| 3. Finding | ≤ 30 s | The headline finding the title promises, with its denominator |
+| 4. Promise | ≤ 40 s | 2–3 questions in chapter order (≤ 8 s), unanswered. Footage under them where it exists |
+| 5. Intro line | after 4 | Word for word: **"This is Pixels to Actions. We track the latest work in robotics and physical AI."** (user, 2026-11-24). Then the sting |
+
+- No logo, greeting or "In this video, I…" before the scene.
+- Time order: at most one jump, marked in words ("In the first round…", "This robot came later…"). A clip that isn't
+  the event being described carries its label.
+- Chapter 1 doesn't repeat the nut graf or the questions.
+- **Gate:** before the full render, a fresh reviewer gets only the first-minute transcript (with times) and a stills
+  sheet. By 30 s they must be able to say what the video is about and who did it, and by the end of slot 4 what
+  they'll get from it.
 - Say what happened plainly and early. Inform, don't sell.
 - Dated framing: say when it was published ("last week", "on November 18th"), never "today" or "just announced".
 
