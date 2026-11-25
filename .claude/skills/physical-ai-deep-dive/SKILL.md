@@ -3,7 +3,7 @@ name: physical-ai-deep-dive
 description: One story, explained in depth — a 12–20 minute Pixels2Actions deep-dive episode (project physical-ai-daily) for engineers working in the field, told as a story, never a lecture. Picks the week's story with five gates and a blind judge panel, researches it in depth (paper, prior work, authors, wider field), outlines it as a causal chain (obstacle → fix → test), scripts it with evidence-based teaching rules, builds step-by-step diagrams, renders 4K light and dark, and makes the full package (titles, thumbnails, A/B set, Shorts, publish.md). Takes the week (its end date, e.g. "2026-11-22"). Use when the user says "/physical-ai-deep-dive <week>", "make the deep dive for <week>", or asks for a single-story deep-dive video. Independent of the weekly digest (weekly-package).
 ---
 
-# Deep dive: one story, 12–20 minutes
+# Deep dive: one story, about 12–20 minutes (a guide; the story decides)
 
 A second series, alongside the weekly digest (user, 2026-11-24; the digest may stop later if this works). One story per
 video. The viewer is **an engineer working in the field**: keep the full technical depth, make it easy to follow, and
@@ -170,9 +170,11 @@ reason to want it (`research-deep-dive-storytelling.md` section 3).
 | 8 | **What you can use; what it opens** | to 14:40 [1–2 min] | Code, data and design lessons. What the research opens, **sourced only** (the authors' future work, trusted sources), 30–60 s | What they can take away |
 | 9 | **Recap as questions** | to 15:20 [0:30–0:45] | The cold-open question answered in one line; 2–3 "why" questions, each with a one-line answer | Answer without the video |
 
-**Length:** the story decides, within 12–20 minutes (user). At 12 minutes, use two "therefore" chapters, fold the
-turn into the verdict, and give chapters 7–8 about a minute each. At 20, use three "therefore" chapters, each with its
-own test. **Add depth, never background or padding.**
+**Length:** the story decides. 12–20 minutes is a guide, not a cap (user, 2026-11-25: "fine if video goes beyond
+that. These are guidelines, not hard rules"). Never cut real depth or pauses to fit under 20, and never pad to reach
+12. At about 12 minutes, use two "therefore" chapters, fold the turn into the verdict, and give chapters 7–8 about a
+minute each. At 20 or more, use three "therefore" chapters, each with its own test. **Add depth, never background or
+padding.**
 
 **The beat chain** inside every "therefore" chapter:
 1. **BUT:** the obstacle, shown in footage or a figure, with the paper's numbers.
